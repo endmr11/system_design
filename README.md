@@ -35,7 +35,7 @@ This project serves as a detailed documentation and reference guide for system d
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/system_design.git
+git clone https://github.com/endmr11/system_design.git
 ```
 
 2. Install dependencies:
@@ -74,7 +74,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the ISC License - see the LICENSE file for details. 

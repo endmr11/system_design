@@ -2,25 +2,25 @@
 layout: home
 
 hero:
-  name: System Design Documentation
-  text: A comprehensive guide to system design patterns and best practices
-  tagline: Learn about mobile and backend development patterns
+  name: "Sistem Tasarımı"
+  text: "Backend ve Mobil"
+  tagline: Kapsamlı sistem tasarımı dokümantasyonu
   actions:
     - theme: brand
-      text: Get Started
-      link: /en/
+      text: Backend Sistem Tasarımı
+      link: /backend/
     - theme: alt
-      text: View on GitHub
-      link: https://github.com/endmr11/system_design
+      text: Mobil Sistem Tasarımı
+      link: /mobile/
 
 features:
-  - title: Mobile Development
-    details: Learn about mobile app architecture, caching strategies, and performance optimization techniques.
-    link: /en/mobile/
-  - title: Backend Development
-    details: Explore backend patterns, scalability, and best practices for building robust systems.
-    link: /en/backend/
-  - title: Best Practices
-    details: Discover industry-standard practices and patterns for building maintainable and scalable applications.
-    link: /en/best-practices/
+  - title: Backend Sistem Tasarımı
+    details: Ölçeklenebilir backend sistemleri tasarlamak için gereken tüm bilgiler
+    icon: 🖥️
+  - title: Mobil Sistem Tasarımı
+    details: Modern mobile uygulamalar için sistem tasarımı prensipleri
+    icon: 📱
+  - title: Çoklu Dil Desteği
+    details: Türkçe ve İngilizce olarak hazırlanmış kapsamlı dokümantasyon
+    icon: 🌍
 ---
