@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "System Design",
   description: "Comprehensive System Design Documentation",
+  base: '/system_design/',
 
   // Internationalization configuration
   locales: {
