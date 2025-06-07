@@ -7,8 +7,8 @@ export default withMermaid(defineConfig({
   base: '/system_design/',
 
   head: [
-    ['link', { rel: 'icon', type: 'image/x-icon', href: '/system_design/favicon.ico' }],
-    ['link', { rel: 'icon', type: 'image/png', href: '/system_design/favicon.png' }],
+    ['link', { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }],
   ],
 
   markdown: {
