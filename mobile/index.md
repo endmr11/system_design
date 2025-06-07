@@ -154,7 +154,7 @@ sequenceDiagram
 - [Deployment Strategies](/mobile/versioning/deployment-strategies)
 
 ### 11. Çapraz Platform Geliştirme
-- [Çapraz Platform Geliştirme Rehberi](/mobile/cross-platform-development-guide)
+- [Çapraz Platform Geliştirme Rehberi](/mobile/cross-platform-development)
 - [Framework Karşılaştırması](/mobile/cross-platform-development#framework-karşılaştırması)
 - [React Native Uygulaması](/mobile/cross-platform-development#react-native-uygulaması)
 - [Flutter Uygulaması](/mobile/cross-platform-development#flutter-uygulaması)

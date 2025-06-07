@@ -590,7 +590,7 @@ export default withMermaid(defineConfig({
               items: [
                 {
                   text: "Çapraz Platform Geliştirme Rehberi",
-                  link: "/mobile/cross-platform-development-guide",
+                  link: "/mobile/cross-platform-development",
                 },
                 {
                   text: "Framework Karşılaştırması",
