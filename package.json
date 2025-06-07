@@ -8,10 +8,22 @@
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"
   },
-  "keywords": ["system-design", "documentation", "backend", "mobile"],
+  "keywords": [
+    "system-design",
+    "documentation",
+    "backend",
+    "mobile"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "vitepress": "^1.6.3"
+    "@mermaid-js/mermaid-cli": "^11.4.2",
+    "@types/node": "^22.15.30",
+    "mermaid": "^11.6.0",
+    "vitepress": "^1.6.3",
+    "vitepress-plugin-mermaid": "^2.0.17"
+  },
+  "dependencies": {
+    "markdown-it-mermaid": "^0.2.5"
   }
 }

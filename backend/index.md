@@ -2,6 +2,65 @@
 
 Backend sistem tasarımı, ölçeklenebilir, güvenilir ve yüksek performanslı sunucu tarafı uygulamaları oluşturmanın temel prensiplerini kapsar.
 
+## Genel Sistem Mimarisi
+
+```mermaid
+graph TB
+    Client[Client] --> LB[Load Balancer]
+    LB --> API[API Gateway]
+    API --> Auth[Authentication]
+    API --> Service1[Service 1]
+    API --> Service2[Service 2]
+    API --> Service3[Service 3]
+    
+    Service1 --> Cache[(Cache)]
+    Service1 --> DB1[(Database 1)]
+    Service2 --> DB2[(Database 2)]
+    Service3 --> MQ[Message Queue]
+    
+    MQ --> Worker[Worker Service]
+    Worker --> DB3[(Database 3)]
+    
+    subgraph Monitoring
+        Prometheus[Prometheus]
+        Grafana[Grafana]
+        Jaeger[Jaeger]
+    end
+    
+    Service1 & Service2 & Service3 --> Prometheus
+    Prometheus --> Grafana
+    Service1 & Service2 & Service3 --> Jaeger
+```
+
+## Veri Akış Diyagramı
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API as API Gateway
+    participant Auth as Auth Service
+    participant Service as Backend Service
+    participant Cache as Cache
+    participant DB as Database
+    participant MQ as Message Queue
+
+    Client->>API: HTTP Request
+    API->>Auth: Validate Token
+    Auth-->>API: Token Valid
+    API->>Service: Forward Request
+    Service->>Cache: Check Cache
+    alt Cache Hit
+        Cache-->>Service: Return Cached Data
+    else Cache Miss
+        Service->>DB: Query Database
+        DB-->>Service: Return Data
+        Service->>Cache: Update Cache
+    end
+    Service->>MQ: Publish Event
+    Service-->>API: Return Response
+    API-->>Client: HTTP Response
+```
+
 ## 1. Temel Kavramlar ✅
 
 Bu bölümde backend sistem tasarımının temel yapı taşlarını öğreneceksiniz:
