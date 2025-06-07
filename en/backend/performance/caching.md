@@ -2,6 +2,75 @@
 
 Caching is one of the most effective optimization techniques that dramatically improves system performance. By temporarily storing data in fast-accessible locations, it minimizes expensive computation and I/O operations. Spring Boot provides comprehensive support for multi-layered caching strategies.
 
+## Cache Architecture Overview
+
+```mermaid
+graph TB
+    Client[Client] --> App[Application]
+    App --> L1[L1 Cache<br/>Local Memory]
+    App --> L2[L2 Cache<br/>Redis/Hazelcast]
+    App --> DB[(Database)]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style App fill:#bbf,stroke:#333,stroke-width:2px
+    style L1 fill:#dfd,stroke:#333,stroke-width:2px
+    style L2 fill:#dfd,stroke:#333,stroke-width:2px
+    style DB fill:#fdd,stroke:#333,stroke-width:2px
+```
+
+## Cache Patterns
+
+```mermaid
+graph LR
+    subgraph CacheAside
+        CA1[Read Request] --> CA2{Cache Hit?}
+        CA2 -->|Yes| CA3[Return Cached Data]
+        CA2 -->|No| CA4[Read from DB]
+        CA4 --> CA5[Update Cache]
+        CA5 --> CA3
+    end
+    
+    subgraph WriteThrough
+        WT1[Write Request] --> WT2[Update Cache]
+        WT2 --> WT3[Update DB]
+    end
+    
+    subgraph WriteBehind
+        WB1[Write Request] --> WB2[Update Cache]
+        WB2 --> WB3[Queue Write]
+        WB3 --> WB4[Async DB Update]
+    end
+    
+    style CacheAside fill:#f9f,stroke:#333,stroke-width:2px
+    style WriteThrough fill:#bbf,stroke:#333,stroke-width:2px
+    style WriteBehind fill:#dfd,stroke:#333,stroke-width:2px
+```
+
+## Distributed Cache Architecture
+
+```mermaid
+graph TB
+    Client[Client] --> LB[Load Balancer]
+    LB --> App1[App Server 1]
+    LB --> App2[App Server 2]
+    LB --> App3[App Server 3]
+    
+    App1 --> Redis[Redis Cluster]
+    App2 --> Redis
+    App3 --> Redis
+    
+    Redis --> R1[Redis Node 1]
+    Redis --> R2[Redis Node 2]
+    Redis --> R3[Redis Node 3]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style LB fill:#bbf,stroke:#333,stroke-width:2px
+    style App1 fill:#dfd,stroke:#333,stroke-width:2px
+    style App2 fill:#dfd,stroke:#333,stroke-width:2px
+    style App3 fill:#dfd,stroke:#333,stroke-width:2px
+    style Redis fill:#fdd,stroke:#333,stroke-width:2px
+```
+
 ## Application-Level Caching
 
 ### Spring Cache Abstraction

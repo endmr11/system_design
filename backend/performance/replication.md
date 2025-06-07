@@ -4,6 +4,20 @@ Database replication, veritabanı sistemlerinin güvenilirliğini, performansın
 
 ## Master-Slave Configuration
 
+```mermaid
+graph TD
+    A[Application] -->|Write| B[Master DB]
+    A -->|Read| C[Slave DB 1]
+    A -->|Read| D[Slave DB 2]
+    B -->|Replicate| C
+    B -->|Replicate| D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+```
+
 Master-slave replication, en yaygın kullanılan replication modelidir. Bu modelde, bir master (birincil) veritabanı tüm write işlemlerini yönetirken, slave (ikincil) veritabanları read işlemlerini destekler.
 
 **Master-Slave Avantajları:**
@@ -41,6 +55,18 @@ replication:
 
 ### 2. Master-Master Replication
 
+```mermaid
+graph TD
+    A[Application] -->|Write/Read| B[Master DB 1]
+    A -->|Write/Read| C[Master DB 2]
+    B -->|Replicate| C
+    C -->|Replicate| B
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ```yaml
 # Master-Master Configuration
 replication:
@@ -59,6 +85,20 @@ replication:
 ```
 
 ## Spring Boot ile Replication Setup
+
+```mermaid
+graph TD
+    A[Spring Boot App] -->|Routing| B[ReplicationRoutingDataSource]
+    B -->|Write| C[Master DataSource]
+    B -->|Read| D[Slave DataSource]
+    C -->|HikariCP| E[Master DB]
+    D -->|HikariCP| F[Slave DB]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 ### 1. Multiple DataSource Configuration
 

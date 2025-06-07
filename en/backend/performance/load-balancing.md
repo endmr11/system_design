@@ -1,179 +1,80 @@
-# Load Balancing and Traffic Distribution
+# Load Balancing - Spring Boot Ecosystem
 
-Load balancing is a critical technique for distributing incoming network traffic across multiple servers to ensure no single server becomes overwhelmed. This approach improves application availability, responsiveness, and scalability while preventing system failures.
+Load balancing is a critical technique that improves system performance and availability by distributing incoming requests across multiple servers. The Spring Boot ecosystem provides various load balancing strategies at both application and infrastructure levels.
 
-## What is Load Balancing?
+## Load Balancing Overview
 
-Load balancing acts as a traffic director, intelligently distributing client requests across multiple backend servers. This distribution ensures optimal resource utilization, minimizes response times, and eliminates single points of failure in your system architecture.
-
-### Why Load Balancing Matters
-
-**Performance Benefits:**
-- **Improved Response Times**: Distributing load prevents any single server from becoming a bottleneck
-- **Better Resource Utilization**: Ensures all servers contribute to handling traffic efficiently
-- **Scalability**: Enables horizontal scaling by adding more servers to handle increased load
-
-**Reliability Benefits:**
-- **High Availability**: If one server fails, traffic is automatically redirected to healthy servers
-- **Fault Tolerance**: System continues operating even when individual components fail
-- **Graceful Degradation**: Performance degrades gradually rather than experiencing complete failure
+```mermaid
+graph TB
+    Client[Client] --> LB[Load Balancer]
+    LB --> S1[Server 1]
+    LB --> S2[Server 2]
+    LB --> S3[Server 3]
+    LB --> S4[Server 4]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style LB fill:#bbf,stroke:#333,stroke-width:2px
+    style S1 fill:#dfd,stroke:#333,stroke-width:2px
+    style S2 fill:#dfd,stroke:#333,stroke-width:2px
+    style S3 fill:#dfd,stroke:#333,stroke-width:2px
+    style S4 fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 ## Load Balancing Algorithms
 
-### 1. Round Robin
-The simplest algorithm that distributes requests sequentially across servers in a circular manner.
-
-```java
-@Component
-public class RoundRobinLoadBalancer implements LoadBalancer {
-    private final List<Server> servers;
-    private final AtomicInteger currentIndex = new AtomicInteger(0);
+```mermaid
+graph LR
+    subgraph RoundRobin
+        RR1[Request 1] --> S1[Server 1]
+        RR2[Request 2] --> S2[Server 2]
+        RR3[Request 3] --> S3[Server 3]
+        RR4[Request 4] --> S1
+    end
     
-    public RoundRobinLoadBalancer(List<Server> servers) {
-        this.servers = new ArrayList<>(servers);
-    }
+    subgraph WeightedRoundRobin
+        WR1[Request 1] --> WS1[Server 1<br/>Weight: 3]
+        WR2[Request 2] --> WS1
+        WR3[Request 3] --> WS1
+        WR4[Request 4] --> WS2[Server 2<br/>Weight: 1]
+    end
     
-    @Override
-    public Server selectServer() {
-        if (servers.isEmpty()) {
-            throw new IllegalStateException("No servers available");
-        }
-        
-        int index = currentIndex.getAndIncrement() % servers.size();
-        return servers.get(index);
-    }
-}
+    subgraph LeastConnections
+        LC1[Request 1] --> LS1[Server 1<br/>2 conn]
+        LC2[Request 2] --> LS2[Server 2<br/>1 conn]
+        LC3[Request 3] --> LS2
+    end
+    
+    style RoundRobin fill:#f9f,stroke:#333,stroke-width:2px
+    style WeightedRoundRobin fill:#bbf,stroke:#333,stroke-width:2px
+    style LeastConnections fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
-**Advantages:**
-- Simple to implement and understand
-- Equal distribution when requests have similar processing times
-- No server state required
+## Infrastructure Components
 
-**Disadvantages:**
-- Doesn't consider server capacity or current load
-- May not be optimal when requests have varying processing times
-
-### 2. Weighted Round Robin
-Assigns different weights to servers based on their capacity, allowing more powerful servers to handle more requests.
-
-```java
-@Component
-public class WeightedRoundRobinLoadBalancer implements LoadBalancer {
-    private final List<WeightedServer> servers;
-    private final AtomicInteger currentWeight = new AtomicInteger(0);
+```mermaid
+graph TB
+    Client[Client] --> LB[Load Balancer]
+    LB --> NGINX[NGINX]
+    LB --> HAProxy[HAProxy]
+    LB --> ALB[AWS ALB]
     
-    @Override
-    public Server selectServer() {
-        int totalWeight = servers.stream()
-            .mapToInt(WeightedServer::getWeight)
-            .sum();
-            
-        int weight = currentWeight.getAndIncrement() % totalWeight;
-        int currentSum = 0;
-        
-        for (WeightedServer server : servers) {
-            currentSum += server.getWeight();
-            if (weight < currentSum) {
-                return server.getServer();
-            }
-        }
-        
-        return servers.get(0).getServer(); // Fallback
-    }
-}
-
-@Data
-public class WeightedServer {
-    private final Server server;
-    private final int weight; // Higher weight = more requests
-}
+    NGINX --> App1[App Server 1]
+    NGINX --> App2[App Server 2]
+    
+    HAProxy --> App3[App Server 3]
+    HAProxy --> App4[App Server 4]
+    
+    ALB --> App5[App Server 5]
+    ALB --> App6[App Server 6]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style LB fill:#bbf,stroke:#333,stroke-width:2px
+    style NGINX fill:#dfd,stroke:#333,stroke-width:2px
+    style HAProxy fill:#dfd,stroke:#333,stroke-width:2px
+    style ALB fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
-### 3. Least Connections
-Directs traffic to the server with the fewest active connections, ideal for long-running requests.
-
-```java
-@Component
-public class LeastConnectionsLoadBalancer implements LoadBalancer {
-    private final Map<Server, AtomicInteger> connectionCounts;
-    
-    public LeastConnectionsLoadBalancer(List<Server> servers) {
-        this.connectionCounts = servers.stream()
-            .collect(Collectors.toMap(
-                server -> server,
-                server -> new AtomicInteger(0)
-            ));
-    }
-    
-    @Override
-    public Server selectServer() {
-        return connectionCounts.entrySet().stream()
-            .min(Map.Entry.comparingByValue(Comparator.comparing(AtomicInteger::get)))
-            .map(Map.Entry::getKey)
-            .orElseThrow(() -> new IllegalStateException("No servers available"));
-    }
-    
-    public void onRequestStart(Server server) {
-        connectionCounts.get(server).incrementAndGet();
-    }
-    
-    public void onRequestComplete(Server server) {
-        connectionCounts.get(server).decrementAndGet();
-    }
-}
-```
-
-### 4. Health-Based Load Balancing
-Considers server health and response times when making routing decisions.
-
-```java
-@Component
-public class HealthAwareLoadBalancer implements LoadBalancer {
-    private final HealthCheckService healthCheckService;
-    private final ResponseTimeTracker responseTimeTracker;
-    
-    @Override
-    public Server selectServer() {
-        List<Server> healthyServers = healthCheckService.getHealthyServers();
-        
-        if (healthyServers.isEmpty()) {
-            throw new IllegalStateException("No healthy servers available");
-        }
-        
-        // Select server with best response time among healthy servers
-        return healthyServers.stream()
-            .min(Comparator.comparing(responseTimeTracker::getAverageResponseTime))
-            .orElse(healthyServers.get(0));
-    }
-}
-
-@Service
-public class HealthCheckService {
-    private final Map<Server, HealthStatus> serverHealth = new ConcurrentHashMap<>();
-    
-    @Scheduled(fixedRate = 30000) // Check every 30 seconds
-    public void performHealthChecks() {
-        serverHealth.keySet().parallelStream().forEach(server -> {
-            try {
-                boolean isHealthy = checkServerHealth(server);
-                serverHealth.put(server, isHealthy ? HealthStatus.HEALTHY : HealthStatus.UNHEALTHY);
-            } catch (Exception e) {
-                serverHealth.put(server, HealthStatus.UNHEALTHY);
-            }
-        });
-    }
-    
-    public List<Server> getHealthyServers() {
-        return serverHealth.entrySet().stream()
-            .filter(entry -> entry.getValue() == HealthStatus.HEALTHY)
-            .map(Map.Entry::getKey)
-            .collect(Collectors.toList());
-    }
-}
-```
-
-## Application-Level Load Balancing with Spring Cloud
+## Application-Level Load Balancing
 
 ### Spring Cloud LoadBalancer Configuration
 

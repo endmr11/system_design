@@ -1,33 +1,77 @@
-# Database Sharding and Partitioning
+# Database Sharding and Partitioning - Spring Boot Data Management
 
-Database sharding is a critical horizontal scaling technique that involves distributing large datasets across multiple database instances. This approach enables applications to handle massive amounts of data and high transaction volumes that would overwhelm a single database server.
+Database sharding and partitioning are critical techniques used to optimize data management in large-scale applications. These approaches improve database performance, provide scalability, and enhance system resilience.
 
-## What is Sharding?
+## Sharding Overview
 
-Sharding is the process of horizontally partitioning a database, where each partition (shard) contains a subset of the total data. Unlike vertical partitioning that splits tables by columns, sharding divides data rows across multiple database instances, allowing each shard to operate independently.
+```mermaid
+graph TB
+    App[Application] --> Router[Shard Router]
+    Router --> S1[Shard 1<br/>A-M Users]
+    Router --> S2[Shard 2<br/>N-Z Users]
+    Router --> S3[Shard 3<br/>Other Data]
+    
+    S1 --> DB1[(Database 1)]
+    S2 --> DB2[(Database 2)]
+    S3 --> DB3[(Database 3)]
+    
+    style App fill:#f9f,stroke:#333,stroke-width:2px
+    style Router fill:#bbf,stroke:#333,stroke-width:2px
+    style S1 fill:#dfd,stroke:#333,stroke-width:2px
+    style S2 fill:#dfd,stroke:#333,stroke-width:2px
+    style S3 fill:#dfd,stroke:#333,stroke-width:2px
+```
 
-### Why Use Sharding?
+## Sharding Strategies
 
-**Performance Benefits:**
-- **Improved Query Performance**: Smaller datasets in each shard result in faster query execution
-- **Parallel Processing**: Multiple shards can process queries simultaneously
-- **Reduced Lock Contention**: Fewer concurrent operations per shard reduce blocking
+```mermaid
+graph LR
+    subgraph RangeBased
+        RB1[User A-M] --> RB2[Shard 1]
+        RB3[User N-Z] --> RB4[Shard 2]
+    end
+    
+    subgraph HashBased
+        HB1[User ID] --> HB2[Hash Function]
+        HB2 --> HB3[Shard 0]
+        HB2 --> HB4[Shard 1]
+        HB2 --> HB5[Shard 2]
+        HB2 --> HB6[Shard 3]
+    end
+    
+    subgraph DirectoryBased
+        DB1[User ID] --> DB2[Lookup Service]
+        DB2 --> DB3[Shard Mapping]
+    end
+    
+    style RangeBased fill:#f9f,stroke:#333,stroke-width:2px
+    style HashBased fill:#bbf,stroke:#333,stroke-width:2px
+    style DirectoryBased fill:#dfd,stroke:#333,stroke-width:2px
+```
 
-**Scalability Benefits:**
-- **Horizontal Scaling**: Add more shards instead of upgrading hardware
-- **Storage Distribution**: Spread storage requirements across multiple servers
-- **Geographic Distribution**: Place shards closer to users for reduced latency
+## Partitioning Types
 
-**Availability Benefits:**
-- **Fault Isolation**: Failure in one shard doesn't affect others
-- **Maintenance Windows**: Update shards independently without full system downtime
-- **Resource Allocation**: Dedicated resources per shard for consistent performance
+```mermaid
+graph TB
+    subgraph HorizontalPartitioning
+        HP1[Table] --> HP2[Partition 1<br/>2023 Q1]
+        HP1 --> HP3[Partition 2<br/>2023 Q2]
+        HP1 --> HP4[Partition 3<br/>2023 Q3]
+        HP1 --> HP5[Partition 4<br/>2023 Q4]
+    end
+    
+    subgraph VerticalPartitioning
+        VP1[User Table] --> VP2[User Profile<br/>Frequently Accessed]
+        VP1 --> VP3[User Details<br/>Rarely Accessed]
+    end
+    
+    style HorizontalPartitioning fill:#f9f,stroke:#333,stroke-width:2px
+    style VerticalPartitioning fill:#bbf,stroke:#333,stroke-width:2px
+```
 
-### Sharding Strategies
+## Horizontal Sharding Strategies
 
-Understanding different sharding strategies is crucial for optimal data distribution:
-
-#### 1. Range-Based Sharding
+### 1. Range-Based Sharding
 Data is distributed based on value ranges of the shard key.
 
 **Advantages:**

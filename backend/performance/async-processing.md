@@ -21,6 +21,21 @@ Asenkron işlemler ve message queue'lar, modern backend sistemlerinin temel taş
 
 ### Spring Boot Async Processing
 
+```mermaid
+graph TD
+    A[Client Request] --> B[Spring Boot Application]
+    B --> C{@Async Method}
+    C --> D[Thread Pool]
+    D --> E[Background Task]
+    E --> F[Task Completion]
+    F --> G[Response to Client]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#ffd,stroke:#333,stroke-width:2px
+```
+
 Spring Boot'un asenkron işlem desteği, blocking operations'ları background thread'lerde çalıştırarak application'ın responsiveness'ini artırır. Bu yaklaşım, özellikle I/O intensive işlemler için kritiktir.
 
 **@Async Annotation Özellikleri:**
@@ -103,6 +118,26 @@ public class OrderProcessingService {
 ## Message Queue Sistemleri
 
 ### Apache Kafka ile Event-Driven Architecture
+
+```mermaid
+graph LR
+    A[Producer] -->|Publish| B[Kafka Cluster]
+    B -->|Consume| C[Consumer Group 1]
+    B -->|Consume| D[Consumer Group 2]
+    B -->|Consume| E[Consumer Group 3]
+    
+    subgraph Kafka Cluster
+        B1[Broker 1]
+        B2[Broker 2]
+        B3[Broker 3]
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 #### Kafka Producer Configuration
 ```java
@@ -193,6 +228,23 @@ public class OrderEventConsumer {
 ```
 
 ### RabbitMQ ile Message Queue Patterns
+
+```mermaid
+graph TD
+    A[Publisher] -->|Publish| B[Exchange]
+    B -->|Route| C[Queue 1]
+    B -->|Route| D[Queue 2]
+    B -->|Route| E[Queue 3]
+    C -->|Consume| F[Consumer 1]
+    D -->|Consume| G[Consumer 2]
+    E -->|Consume| H[Consumer 3]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 #### RabbitMQ Configuration
 ```java

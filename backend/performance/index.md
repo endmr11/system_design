@@ -2,6 +2,52 @@
 
 Modern backend sistemlerinin başarısı, yüksek performans ve etkili ölçeklenebilirlik stratejilerine dayanır. Bu bölüm, Spring Boot ekosistemi kullanarak enterprise seviyesinde performans optimizasyonları ve ölçeklenebilirlik çözümleri sunar.
 
+```mermaid
+graph TD
+    A[Client] -->|Request| B[Load Balancer]
+    B -->|Route| C[Application Server 1]
+    B -->|Route| D[Application Server 2]
+    B -->|Route| E[Application Server 3]
+    
+    C -->|Cache| F[Redis Cluster]
+    D -->|Cache| F
+    E -->|Cache| F
+    
+    C -->|Write| G[Master DB]
+    C -->|Read| H[Slave DB 1]
+    C -->|Read| I[Slave DB 2]
+    
+    D -->|Write| G
+    D -->|Read| H
+    D -->|Read| I
+    
+    E -->|Write| G
+    E -->|Read| H
+    E -->|Read| I
+    
+    C -->|Publish| J[Message Queue]
+    D -->|Publish| J
+    E -->|Publish| J
+    
+    J -->|Consume| K[Worker 1]
+    J -->|Consume| L[Worker 2]
+    J -->|Consume| M[Worker 3]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#dfd,stroke:#333,stroke-width:2px
+    style F fill:#ffd,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#dfd,stroke:#333,stroke-width:2px
+    style I fill:#dfd,stroke:#333,stroke-width:2px
+    style J fill:#ffd,stroke:#333,stroke-width:2px
+    style K fill:#dfd,stroke:#333,stroke-width:2px
+    style L fill:#dfd,stroke:#333,stroke-width:2px
+    style M fill:#dfd,stroke:#333,stroke-width:2px
+```
+
 ## Performans Optimizasyonunun Önemi
 
 **Performans optimizasyonu neden kritiktir?**

@@ -35,48 +35,18 @@ In this traditional approach, one primary server (master) handles all write oper
 - Slaves continuously read and apply these changes
 - Reads can be distributed across slaves for load balancing
 
-```yaml
-# Master-Slave Configuration Example
-replication:
-  topology: master-slave
-  
-  master:
-    host: master-db.company.com
-    port: 5432
-    role: primary
-    operations:
-      write: true
-      read: true
-    features:
-      - transaction_logging
-      - backup_scheduling
-      - performance_monitoring
-  
-  slaves:
-    - name: slave1
-      host: slave1-db.company.com
-      port: 5432
-      role: read_replica
-      operations:
-        read: true
-        write: false
-      replication:
-        lag_threshold: 100ms
-        sync_mode: asynchronous
-        backup_priority: high
-        
-    - name: slave2
-      host: slave2-db.company.com
-      port: 5432
-      role: read_replica
-      operations:
-        read: true
-        write: false
-      replication:
-        lag_threshold: 100ms
-        sync_mode: asynchronous
-        backup_priority: medium
-        location: different_datacenter
+```mermaid
+graph TD
+    A[Application] -->|Write| B[Master DB]
+    A -->|Read| C[Slave DB 1]
+    A -->|Read| D[Slave DB 2]
+    B -->|Replicate| C
+    B -->|Replicate| D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
 **Advantages:**
@@ -95,21 +65,16 @@ replication:
 
 This approach allows multiple servers to accept write operations simultaneously, with changes replicated bidirectionally between all master nodes.
 
-```yaml
-# Master-Master Configuration
-replication:
-  topology: master-master
-  nodes:
-    - host: master1-db.company.com
-      port: 5432
-      write_operations: true
-      read_operations: true
-      conflict_resolution: timestamp
-    - host: master2-db.company.com
-      port: 5432
-      write_operations: true
-      read_operations: true
-      conflict_resolution: timestamp
+```mermaid
+graph TD
+    A[Application] -->|Write/Read| B[Master DB 1]
+    A -->|Write/Read| C[Master DB 2]
+    B -->|Replicate| C
+    C -->|Replicate| B
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
 ## Replication Setup with Spring Boot

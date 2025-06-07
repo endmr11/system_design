@@ -2,6 +2,78 @@
 
 Load balancing, gelen istekleri birden fazla sunucu arasında dağıtarak sistem performansını ve kullanılabilirliğini artıran kritik bir tekniktir. Spring Boot ekosistemi, hem uygulama seviyesinde hem de altyapı seviyesinde çeşitli load balancing stratejileri sunar.
 
+## Load Balancing Overview
+
+```mermaid
+graph TB
+    Client[Client] --> LB[Load Balancer]
+    LB --> S1[Server 1]
+    LB --> S2[Server 2]
+    LB --> S3[Server 3]
+    LB --> S4[Server 4]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style LB fill:#bbf,stroke:#333,stroke-width:2px
+    style S1 fill:#dfd,stroke:#333,stroke-width:2px
+    style S2 fill:#dfd,stroke:#333,stroke-width:2px
+    style S3 fill:#dfd,stroke:#333,stroke-width:2px
+    style S4 fill:#dfd,stroke:#333,stroke-width:2px
+```
+
+## Load Balancing Algorithms
+
+```mermaid
+graph LR
+    subgraph RoundRobin
+        RR1[Request 1] --> S1[Server 1]
+        RR2[Request 2] --> S2[Server 2]
+        RR3[Request 3] --> S3[Server 3]
+        RR4[Request 4] --> S1
+    end
+    
+    subgraph WeightedRoundRobin
+        WR1[Request 1] --> WS1[Server 1<br/>Weight: 3]
+        WR2[Request 2] --> WS1
+        WR3[Request 3] --> WS1
+        WR4[Request 4] --> WS2[Server 2<br/>Weight: 1]
+    end
+    
+    subgraph LeastConnections
+        LC1[Request 1] --> LS1[Server 1<br/>2 conn]
+        LC2[Request 2] --> LS2[Server 2<br/>1 conn]
+        LC3[Request 3] --> LS2
+    end
+    
+    style RoundRobin fill:#f9f,stroke:#333,stroke-width:2px
+    style WeightedRoundRobin fill:#bbf,stroke:#333,stroke-width:2px
+    style LeastConnections fill:#dfd,stroke:#333,stroke-width:2px
+```
+
+## Infrastructure Components
+
+```mermaid
+graph TB
+    Client[Client] --> LB[Load Balancer]
+    LB --> NGINX[NGINX]
+    LB --> HAProxy[HAProxy]
+    LB --> ALB[AWS ALB]
+    
+    NGINX --> App1[App Server 1]
+    NGINX --> App2[App Server 2]
+    
+    HAProxy --> App3[App Server 3]
+    HAProxy --> App4[App Server 4]
+    
+    ALB --> App5[App Server 5]
+    ALB --> App6[App Server 6]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style LB fill:#bbf,stroke:#333,stroke-width:2px
+    style NGINX fill:#dfd,stroke:#333,stroke-width:2px
+    style HAProxy fill:#dfd,stroke:#333,stroke-width:2px
+    style ALB fill:#dfd,stroke:#333,stroke-width:2px
+```
+
 ## Application-Level Load Balancing
 
 ### Spring Cloud LoadBalancer
