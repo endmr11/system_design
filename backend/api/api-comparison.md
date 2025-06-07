@@ -3,93 +3,93 @@
 ## REST API
 
 ### Temel Prensipler
-- **Resource-based**
-- **Stateless**
-- **Cacheable**
-- **Uniform interface**
+- **Kaynak tabanlı**
+- **Durumsuz (stateless)**
+- **Önbelleğe alınabilir**
+- **Tekdüze arayüz**
 
 ### Kullanım Senaryoları
-- CRUD operations
-- Resource management
-- General-purpose APIs
-- Public APIs
+- CRUD işlemleri
+- Kaynak yönetimi
+- Genel amaçlı API'ler
+- Açık API'ler
 
 ### Avantajlar
 - Geniş ekosistem
 - Kolay anlaşılır
-- Caching friendly
-- Tooling support
+- Önbellek dostu
+- Araç desteği
 
 ### Dezavantajlar
-- Over/under-fetching
-- Versioning challenges
-- Multiple round trips
-- Limited real-time
+- Fazla/eksik veri çekme
+- Versiyonlama zorlukları
+- Çoklu istek ihtiyacı
+- Sınırlı gerçek zamanlılık
 
 ## GraphQL
 
 ### Temel Prensipler
-- **Client-specified queries**
-- **Single endpoint**
-- **Strong typing**
-- **Introspection**
+- **İstemci tarafından belirlenen sorgular**
+- **Tek uç nokta**
+- **Güçlü tip kontrolü**
+- **Kendi kendini tanımlama (introspection)**
 
 ### Kullanım Senaryoları
-- Complex data requirements
-- Mobile applications
-- Real-time updates
-- Microservices
+- Karmaşık veri ihtiyaçları
+- Mobil uygulamalar
+- Gerçek zamanlı güncellemeler
+- Mikroservisler
 
 ### Avantajlar
-- Flexible queries
-- Reduced network calls
-- Strong typing
-- Real-time subscriptions
+- Esnek sorgular
+- Azaltılmış ağ trafiği
+- Güçlü tip kontrolü
+- Gerçek zamanlı abonelikler
 
 ### Dezavantajlar
-- Caching complexity
-- Performance overhead
-- Security challenges
-- Learning curve
+- Önbellekleme karmaşıklığı
+- Performans yükü
+- Güvenlik zorlukları
+- Öğrenme eğrisi
 
 ## gRPC
 
 ### Temel Prensipler
 - **Protocol Buffers**
 - **HTTP/2**
-- **Strong typing**
-- **Code generation**
+- **Güçlü tip kontrolü**
+- **Kod üretimi**
 
 ### Kullanım Senaryoları
-- Microservices
-- Low-latency systems
-- Polyglot environments
-- Real-time streaming
+- Mikroservisler
+- Düşük gecikmeli sistemler
+- Çoklu dil ortamları
+- Gerçek zamanlı akış
 
 ### Avantajlar
-- High performance
-- Bi-directional streaming
-- Strong typing
-- Code generation
+- Yüksek performans
+- Çift yönlü akış
+- Güçlü tip kontrolü
+- Kod üretimi
 
 ### Dezavantajlar
-- Limited browser support
-- Steeper learning curve
-- Debugging complexity
-- Limited tooling
+- Sınırlı tarayıcı desteği
+- Daha dik öğrenme eğrisi
+- Hata ayıklama karmaşıklığı
+- Sınırlı araç desteği
 
 ## Karşılaştırma Tablosu
 
 | Özellik          | REST                  | GraphQL               | gRPC                  |
 |-------------------|-----------------------|-----------------------|-----------------------|
-| **Veri Taşınımı** | JSON/XML              | JSON                  | Protobuf (binary)     |
+| **Veri Taşınımı** | JSON/XML              | JSON                  | Protobuf (ikili)      |
 | **İstek/Yanıt**   | Kaynak tabanlı        | İstemci-tarafı sorgu  | Senkron (HTTP/2)      |
 | **Performans**    | Orta                  | Yüksek                | Çok Yüksek            |
 | **Kullanım Senaryosu** | Genel amaçlı API'ler | Esnek veri sorgulama | Yüksek hız gerektiren sistemler |
 
-## Spring Boot Implementation Comparison
+## Spring Boot Uygulama Karşılaştırması
 
-### REST API Implementation
+### REST API Uygulaması
 ```java
 @RestController
 @RequestMapping("/api/v1/users")
@@ -197,7 +197,7 @@ public class PagedResponse<T> {
 }
 ```
 
-### GraphQL Implementation
+### GraphQL Uygulaması
 ```java
 // GraphQL Schema Definition (schema.graphqls)
 ```graphql
@@ -446,7 +446,7 @@ public class GraphQLConfig {
 }
 ```
 
-### gRPC Implementation
+### gRPC Uygulaması
 ```protobuf
 // user_service.proto
 syntax = "proto3";
@@ -735,4 +735,4 @@ public class GrpcConfig {
 }
 ```
 
-Bu kapsamlı implementation, REST, GraphQL ve gRPC'nin Spring Boot ekosisteminde nasıl implemente edilebileceğini ve her birinin güçlü yanlarını gösterir.
+Bu kapsamlı uygulama, REST, GraphQL ve gRPC'nin Spring Boot ekosisteminde nasıl uygulanabileceğini ve her birinin güçlü yanlarını gösterir.

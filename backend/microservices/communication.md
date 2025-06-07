@@ -1,20 +1,14 @@
 # Senkron vs Asenkron İletişim
 
-Mikroservis mimarisinde servisler arası iletişim kritik bir konudur. Bu bölümde senkron (REST/gRPC) ve asenkron (Event-Driven) iletişim modellerinin Spring Boot ile implementasyonunu detaylı olarak inceleyeceğiz.
+Mikroservis mimarisinde servisler arası iletişim kritik bir konudur. Bu bölümde senkron (REST/gRPC) ve asenkron (Olay Tabanlı) iletişim modellerinin Spring Boot ile uygulamasını detaylı olarak inceleyeceğiz.
 
-## İçindekiler
-- [Senkron İletişim Patterns](#senkron-iletişim-patterns)
-- [Asenkron İletişim Architecture](#asenkron-iletişim-architecture)
-- [Performance Optimization](#performance-optimization)
-- [Implementation Examples](#implementation-examples)
+## Senkron İletişim Desenleri
 
-## Senkron İletişim Patterns
+### REST API İletişimi
 
-### REST API Communication
+#### Spring WebClient Uygulaması
 
-#### Spring WebClient Implementation
-
-**Reactive HTTP Client Configuration:**
+**Tepkisel HTTP İstemcisi Yapılandırması:**
 
 ```java
 @Configuration
@@ -77,7 +71,7 @@ public class WebClientConfig {
 }
 ```
 
-**WebClient Properties Configuration:**
+**WebClient Özellikleri Yapılandırması:**
 
 ```java
 @ConfigurationProperties(prefix = "webclient")
@@ -99,9 +93,9 @@ public class WebClientProperties {
 }
 ```
 
-#### Circuit Breaker Integration
+#### Devre Kesici Entegrasyonu
 
-**Resilience4j Circuit Breaker Configuration:**
+**Resilience4j Devre Kesici Yapılandırması:**
 
 ```java
 @Component
@@ -168,9 +162,9 @@ public class UserServiceClient {
 }
 ```
 
-### OpenFeign Integration
+### OpenFeign Entegrasyonu
 
-**Declarative REST Client:**
+**Deklaratif REST İstemcisi:**
 
 ```java
 @FeignClient(
@@ -212,7 +206,7 @@ public interface OrderServiceClient {
 }
 ```
 
-**Feign Configuration:**
+**Feign Yapılandırması:**
 
 ```java
 @Configuration
@@ -279,11 +273,11 @@ public class OrderServiceFeignConfig {
 }
 ```
 
-## gRPC Implementation
+## gRPC Uygulaması
 
-### Spring Boot gRPC Integration
+### Spring Boot gRPC Entegrasyonu
 
-**Server Configuration:**
+**Sunucu Yapılandırması:**
 
 ```java
 @Configuration
@@ -332,7 +326,7 @@ public class GrpcServerConfig {
 }
 ```
 
-**gRPC Service Implementation:**
+**gRPC Servis Uygulaması:**
 
 ```java
 @GrpcService
@@ -445,11 +439,11 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
 }
 ```
 
-## Asenkron İletişim Architecture
+## Asenkron İletişim Mimarisi
 
-### Event-Driven Patterns
+### Olay Tabanlı Desenler
 
-**Domain Events with Spring:**
+**Spring ile Domain Event'leri:**
 
 ```java
 @Component
@@ -517,9 +511,9 @@ public class OrderEventPublisher {
 }
 ```
 
-### Spring Cloud Stream Implementation
+### Spring Cloud Stream Uygulaması
 
-**Functional Configuration:**
+**Fonksiyonel Yapılandırma:**
 
 ```java
 @Configuration
@@ -592,7 +586,7 @@ public class StreamConfig {
 }
 ```
 
-**Error Handling and Dead Letter Queue:**
+**Hata Yönetimi ve Dead Letter Queue:**
 
 ```java
 @Component
@@ -644,9 +638,9 @@ public class OrderEventErrorHandler {
 }
 ```
 
-### Saga Pattern Implementation
+### Saga Deseni Uygulaması
 
-**Orchestration-based Saga:**
+**Orkestrasyon Tabanlı Saga:**
 
 ```java
 @Component
@@ -727,7 +721,7 @@ public class OrderSagaOrchestrator {
 }
 ```
 
-**Saga Step Implementation:**
+**Saga Adım Uygulaması:**
 
 ```java
 @Component
@@ -783,9 +777,9 @@ public class PaymentSagaStep implements SagaStep {
 }
 ```
 
-## Performance Optimization
+## Performans Optimizasyonu
 
-### Connection Pooling and Resource Management
+### Bağlantı Havuzu ve Kaynak Yönetimi
 
 ```java
 @Configuration
@@ -817,7 +811,7 @@ public class PerformanceConfig {
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         
-        // Performance optimizations
+        // Performans optimizasyonları
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
         props.put(ProducerConfig.LINGER_MS_CONFIG, 5);
         props.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
@@ -830,7 +824,7 @@ public class PerformanceConfig {
 }
 ```
 
-### Monitoring and Metrics
+### İzleme ve Metrikler
 
 ```java
 @Component
@@ -887,4 +881,4 @@ public class CommunicationMetrics {
 }
 ```
 
-Bu kapsamlı implementasyon, mikroservis iletişiminin tüm yönlerini Spring Boot ekosistemi ile birlikte ele almaktadır. Her pattern için production-ready örnekler, error handling, monitoring ve performance optimizasyonları içermektedir.
+Bu kapsamlı uygulama, mikroservis iletişiminin tüm yönlerini Spring Boot ekosistemi ile birlikte ele almaktadır. Her desen için üretime hazır örnekler, hata yönetimi, izleme ve performans optimizasyonları içermektedir.

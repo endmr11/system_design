@@ -1,14 +1,14 @@
-# Tracing (Jaeger, Zipkin) - Dağıtık İstek İzleme
+# Dağıtık İzleme (Jaeger, Zipkin)
 
-Distributed tracing, mikroservis mimarisinde isteklerin servisler arası yolculuğunu takip etmek için kullanılır.
+Dağıtık izleme, mikroservis mimarisinde isteklerin servisler arasında nasıl ilerlediğini takip etmek için kullanılır.
 
-## Distributed Tracing Kavramları
+## Dağıtık İzleme Kavramları
 
-### Temel Konseptler
+### Temel Kavramlar
 
 **Trace**: Bir isteğin başından sonuna kadar olan tüm yaşam döngüsü
 **Span**: Trace içindeki bir operasyonun süresini ve detaylarını temsil eder
-**Context Propagation**: Trace bilgilerinin servisler arası aktarımı
+**Context Propagation**: Trace bilgilerinin servisler arasında aktarımı
 
 ```java
 // Trace ve Span yapısı örneği

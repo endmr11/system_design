@@ -2,12 +2,6 @@
 
 Service Mesh is an infrastructure layer used to manage service-to-service communication in microservice architecture. In this section, we will examine Istio and Spring Boot integration in detail.
 
-## Table of Contents
-- [Istio Service Mesh](#istio-service-mesh)
-- [Spring Boot + Istio Integration](#spring-boot--istio-integration)
-- [Service Mesh vs Application-Level Solutions](#service-mesh-vs-application-level-solutions)
-- [Implementation Examples](#implementation-examples)
-
 ## Istio Service Mesh
 
 ### Sidecar Proxy Pattern

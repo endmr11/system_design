@@ -1,8 +1,8 @@
-# Distributed Tracing ve Correlation IDs - Dağıtık Sistem İzleme
+# Dağıtık İzleme ve Korelasyon Kimlikleri (Correlation IDs)
 
-Mikroservis mimarisinde isteklerin servisler arası takibi ve korelasyon yönetimi için gelişmiş teknikler.
+Mikroservis mimarisinde isteklerin servisler arasında takibi ve korelasyon yönetimi için gelişmiş teknikler.
 
-## Correlation ID Implementasyonu
+## Korelasyon Kimliği (Correlation ID) Uygulaması
 
 ### MDC (Mapped Diagnostic Context) Kullanımı
 
@@ -177,9 +177,9 @@ public class CorrelationContext {
 }
 ```
 
-## Cross-Service Correlation
+## Servisler Arası Korelasyon
 
-### HTTP Client Interceptor
+### HTTP İstemci Araçları için Kesici (Interceptor)
 
 ```java
 @Component
@@ -223,7 +223,7 @@ public class CorrelationHttpClientInterceptor implements ClientHttpRequestInterc
 }
 ```
 
-### Feign Client Interceptor
+### Feign İstemci Araçları için Kesici (Interceptor)
 
 ```java
 @Component
@@ -261,7 +261,7 @@ public class CorrelationFeignInterceptor implements RequestInterceptor {
 }
 ```
 
-### Message Queue Correlation
+### Mesaj Kuyruğu Korelasyonu
 
 ```java
 @Component
@@ -346,9 +346,9 @@ public class CorrelationKafkaConsumer {
 }
 ```
 
-## Advanced Correlation Patterns
+## Gelişmiş Korelasyon Desenleri
 
-### User Journey Tracking
+### Kullanıcı Seyahati Takibi
 
 ```java
 @Service
@@ -445,7 +445,7 @@ public class ConversionEvent {
 }
 ```
 
-### Error Correlation
+### Hata Korelasyonu
 
 ```java
 @Component
@@ -537,9 +537,9 @@ public class ErrorEvent {
 }
 ```
 
-## Production Considerations
+## Üretim (Production) Dikkate Alınması Gerekenler
 
-### Sampling Strategy
+### Örnekleme Stratejisi
 
 ```java
 @Configuration
@@ -589,7 +589,7 @@ public class TracingSamplingConfiguration {
 }
 ```
 
-### Performance Impact Monitoring
+### Performans Etkisi İzleme
 
 ```java
 @Component
@@ -640,4 +640,4 @@ public class TracingPerformanceMonitor {
 }
 ```
 
-Bu Türkçe distributed tracing dokümantasyonu, correlation ID yönetimi, cross-service propagation ve production considerations'ı kapsamlı bir şekilde ele alır.
+Bu Türkçe dağıtık izleme dokümantasyonu, korelasyon ID yönetimi, cross-service propagation ve üretim dikkate alınması gerekenleri kapsamlı bir şekilde ele alır.

@@ -346,26 +346,6 @@ class KeyManagementStrategy {
 }
 ```
 
-### Secure Storage Architecture
-
-```mermaid
-graph TB
-    A[Application Layer] --> B[Secure Storage Manager]
-    B --> C{Data Classification}
-    C -->|Public| D[Standard Storage]
-    C -->|Internal| E[Encrypted Storage]
-    C -->|Confidential| F[Hardware-backed Storage]
-    C -->|Restricted| G[Biometric-protected Storage]
-    
-    E --> H[Platform Encryption APIs]
-    F --> I[Hardware Security Module]
-    G --> J[Biometric Authentication]
-    
-    H --> K[OS-level Encryption]
-    I --> L[TEE/Secure Enclave]
-    J --> M[Biometric Hardware]
-```
-
 ### Error Handling and Fallbacks
 
 ```swift

@@ -255,9 +255,9 @@ public class ClientCredentialsService {
 }
 ```
 
-### 4. Social Login Integration
+### 4. Sosyal Giriş (Social Login) Entegrasyonu
 
-**OAuth2 login** major providers ile:
+**OAuth2 ile giriş** başlıca sağlayıcılarla:
 
 ```yaml
 spring:

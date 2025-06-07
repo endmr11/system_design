@@ -2,40 +2,7 @@
 
 Özellik bayrakları (feature toggles), ekiplerin kod değişikliklerini hemen tüm kullanıcılara sunmadan dağıtmasına olanak tanır. Bu yaklaşım, kademeli dağıtımlar, A/B testleri ve uygulama mağazası güncellemesi gerektirmeden hızlı geri alma (rollback) gibi avantajlar sağlar.
 
-## İçindekiler
-1. [Feature Flag Mimarisi](#feature-flag-mimarisi)
-2. [Uygulama Stratejileri](#uygulama-stratejileri)
-3. [Platforma Özel Uygulamalar](#platforma-özel-uygulamalar)
-4. [Backend Servisleri](#backend-servisleri)
-5. [Gelişmiş Özellikler](#gelişmiş-özellikler)
-6. [En İyi Uygulamalar](#en-iyi-uygulamalar)
-
 ## Feature Flag Mimarisi
-
-### Sistem Bileşenleri
-
-```mermaid
-graph TB
-    A[Mobil Uygulama] --> B[Feature Flag İstemcisi]
-    B --> C[Yerel Önbellek]
-    B --> D[Uzaktan Konfigürasyon Servisi]
-    D --> E[Feature Flag Dashboard]
-    D --> F[Kullanıcı Segmentasyon Motoru]
-    F --> G[Analitik Servisi]
-    E --> H[Yönetici Arayüzü]
-    
-    subgraph "Bayrak Değerlendirme"
-        I[Kullanıcı Bağlamı]
-        J[Cihaz Bağlamı]
-        K[Uygulama Sürümü]
-        L[Coğrafi Konum]
-    end
-    
-    B --> I
-    B --> J
-    B --> K
-    B --> L
-```
 
 ### Bayrak Türleri
 

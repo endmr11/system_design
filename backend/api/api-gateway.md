@@ -2,67 +2,67 @@
 
 ## Temel Fonksiyonlar
 
-### Routing
-- **Path-based routing**
-- **Service discovery**
-- **Load balancing**
-- **Circuit breaking**
+### Yönlendirme (Routing)
+- **Yol tabanlı yönlendirme**
+- **Servis keşfi**
+- **Yük dengeleme**
+- **Devre kesici**
 
-### Security
-- **Authentication**
-- **Authorization**
-- **SSL/TLS termination**
-- **API key management**
+### Güvenlik
+- **Kimlik doğrulama**
+- **Yetkilendirme**
+- **SSL/TLS sonlandırma**
+- **API anahtarı yönetimi**
 
-### Monitoring
-- **Request/response logging**
-- **Metrics collection**
-- **Performance monitoring**
-- **Error tracking**
+### İzleme
+- **İstek/yanıt kaydı**
+- **Metrik toplama**
+- **Performans izleme**
+- **Hata takibi**
 
 ## Kong Gateway
 
 ### Özellikler
-- **Plugin architecture**
-- **Declarative configuration**
-- **Database-less mode**
-- **Kubernetes integration**
+- **Eklenti mimarisi**
+- **Deklaratif yapılandırma**
+- **Veritabanısız mod**
+- **Kubernetes entegrasyonu**
 
-### Plugins
-- Rate limiting
-- JWT authentication
+### Eklentiler (Plugins)
+- Oran sınırlama (Rate limiting)
+- JWT kimlik doğrulama
 - OAuth2
-- Request transformer
+- İstek dönüştürücü (Request transformer)
 
-### Deployment
-- Docker containers
-- Kubernetes operator
-- Hybrid mode
-- Multi-datacenter
+### Dağıtım
+- Docker konteynerleri
+- Kubernetes operatörü
+- Hibrit mod
+- Çoklu veri merkezi
 
 ## Apigee
 
 ### Özellikler
-- **API lifecycle management**
-- **Developer portal**
-- **Analytics dashboard**
-- **Monetization**
+- **API yaşam döngüsü yönetimi**
+- **Geliştirici portalı**
+- **Analitik paneli**
+- **Ticarileştirme (Monetization)**
 
-### Security
+### Güvenlik
 - OAuth2/OpenID Connect
-- API key management
-- Threat protection
-- Data encryption
+- API anahtarı yönetimi
+- Tehdit koruması
+- Veri şifreleme
 
-### Integration
-- Cloud services
-- On-premise systems
-- Third-party APIs
-- Custom backends
+### Entegrasyon
+- Bulut servisleri
+- Yerel sistemler
+- Üçüncü parti API'ler
+- Özel arka uçlar
 
-## Spring Boot API Gateway Implementation
+## Spring Boot API Gateway Uygulaması
 
-### Spring Cloud Gateway Configuration
+### Spring Cloud Gateway Yapılandırması
 ```java
 @Configuration
 @EnableConfigurationProperties({GatewayProperties.class})
@@ -169,7 +169,7 @@ public class ApiGatewayConfig {
 }
 ```
 
-### Custom Authentication Filter
+### Özel Kimlik Doğrulama Filtresi
 ```java
 @Component
 public class AuthenticationGatewayFilterFactory extends AbstractGatewayFilterFactory<AuthenticationGatewayFilterFactory.Config> {
@@ -368,7 +368,7 @@ public class AuthenticationException extends RuntimeException {
 }
 ```
 
-### Circuit Breaker Configuration
+### Devre Kesici Yapılandırması
 ```java
 @Configuration
 public class CircuitBreakerConfig {
@@ -409,7 +409,7 @@ public class CircuitBreakerConfig {
 }
 ```
 
-### Fallback Controllers
+### Fallback Kontrolcüleri
 ```java
 @RestController
 @RequestMapping("/fallback")
@@ -464,7 +464,7 @@ public class FallbackController {
 }
 ```
 
-### Gateway Metrics and Monitoring
+### Gateway Metrikleri ve İzleme
 ```java
 @Component
 @Slf4j
@@ -588,7 +588,7 @@ public class GatewayLoggingFilter implements GlobalFilter, Ordered {
 }
 ```
 
-### API Gateway Health Checks
+### API Gateway Sağlık Kontrolleri
 ```java
 @Component
 public class ServiceHealthIndicator implements HealthIndicator {
@@ -655,4 +655,4 @@ public class ServiceHealthIndicator implements HealthIndicator {
 }
 ```
 
-Bu implementation Spring Cloud Gateway'i production ortamında güvenli ve ölçeklenebilir bir şekilde kullanmak için gerekli tüm bileşenleri içerir.
+Bu uygulama, Spring Cloud Gateway'i üretim ortamında güvenli ve ölçeklenebilir bir şekilde kullanmak için gerekli tüm bileşenleri içerir.

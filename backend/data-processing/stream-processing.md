@@ -1,11 +1,11 @@
-# Stream Processing (Akış İşleme)
+# Akış İşleme (Stream Processing)
 
-Stream Processing, gerçek zamanlı veri akışlarını sürekli olarak işleyen mimarilerdir. Bu yaklaşım, geleneksel batch processing'den farklı olarak verileri geldikçe işler ve anında sonuç üretir.
+Akış işleme, gerçek zamanlı veri akışlarını sürekli olarak işleyen mimarilerdir. Bu yaklaşım, geleneksel toplu işleme (batch processing)'den farklı olarak verileri geldikçe işler ve anında sonuç üretir.
 
 ## Temel Kavramlar
 
-### Event Stream
-Event Stream, zaman damgasıyla sıralanmış sonsuz veri dizisidir:
+### Olay Akışı (Event Stream)
+Olay akışı, zaman damgasıyla sıralanmış sonsuz veri dizisidir:
 
 ```java
 @Entity
@@ -50,8 +50,8 @@ public class EventStream {
 }
 ```
 
-### Stream Producer
-Kafka ile stream producer implementasyonu:
+### Akış Üreticisi (Stream Producer)
+Kafka ile akış üretici implementasyonu:
 
 ```java
 @Service
@@ -124,10 +124,10 @@ public class StreamProducerService {
 }
 ```
 
-## Apache Flink İmplementasyonu
+## Apache Flink Uygulaması
 
-### Flink Stream Job
-Apache Flink ile stream processing job'u:
+### Flink Akış Görevi (Stream Job)
+Apache Flink ile akış işleme görevi:
 
 ```java
 @Component
@@ -226,8 +226,8 @@ public class OrderStreamProcessor {
 }
 ```
 
-### Custom Aggregators
-Flink için özel aggregator sınıfları:
+### Özel Toplayıcılar (Custom Aggregators)
+Flink için özel toplayıcı sınıfları:
 
 ```java
 public class OrderCountAggregator implements AggregateFunction<OrderEvent, CustomerOrderStats, CustomerOrderStats> {
@@ -293,10 +293,10 @@ public class RevenueAggregator implements AggregateFunction<OrderEvent, RevenueS
 }
 ```
 
-## Kafka Streams İmplementasyonu
+## Kafka Streams Uygulaması
 
-### Kafka Streams Application
-Kafka Streams ile lightweight stream processing:
+### Kafka Streams Uygulaması
+Kafka Streams ile hafif akış işleme:
 
 ```java
 @Service
@@ -446,9 +446,9 @@ public class KafkaStreamsOrderProcessor {
 }
 ```
 
-## Windowing ve Time-Based Processing
+## Zaman Pencereleri ve Zaman Tabanlı İşleme
 
-### Time Windows
+### Zaman Pencereleri (Time Windows)
 Zaman tabanlı pencere işlemleri:
 
 ```java
@@ -495,10 +495,10 @@ public class WindowedAnalyticsProcessor {
 }
 ```
 
-## State Management
+## Durum Yönetimi (State Management)
 
-### Stateful Processing
-Durum yönetimi ve fault tolerance:
+### Durumlu İşleme (Stateful Processing)
+Durum yönetimi ve hata toleransı:
 
 ```java
 @Service
@@ -562,10 +562,10 @@ public class StatefulOrderProcessor {
 }
 ```
 
-## Performance ve Monitoring
+## Performans ve İzleme
 
-### Stream Metrics
-Stream processing performans metrikleri:
+### Akış Metrikleri (Stream Metrics)
+Akış işleme performans metrikleri:
 
 ```java
 @Component
@@ -656,9 +656,9 @@ public class StreamMetricsCollector {
 }
 ```
 
-## Error Handling ve Resilience
+## Hata Yönetimi ve Dayanıklılık
 
-### Error Recovery
+### Hata Kurtarma (Error Recovery)
 Hata yönetimi ve kurtarma stratejileri:
 
 ```java
@@ -807,10 +807,10 @@ public class RetryTransformer<K, V> implements Transformer<K, V, KeyValue<K, Pro
 }
 ```
 
-## Batch vs Stream Processing Karşılaştırması
+## Toplu İşleme (Batch) ve Akış İşleme Karşılaştırması
 
-### Batch Processing Örneği
-Geleneksel batch processing yaklaşımı:
+### Toplu İşleme Örneği
+Geleneksel toplu işleme yaklaşımı:
 
 ```java
 @Service
@@ -896,23 +896,23 @@ public class BatchOrderProcessor {
 }
 ```
 
-### Stream vs Batch Karşılaştırması
+### Akış vs Toplu İşleme Karşılaştırması
 
-| Özellik | Stream Processing | Batch Processing |
-|---------|------------------|------------------|
-| **Latency** | Düşük (ms-seconds) | Yüksek (minutes-hours) |
-| **Throughput** | Orta-Yüksek | Çok Yüksek |
+| Özellik | Akış İşleme | Toplu İşleme |
+|---------|-------------|--------------|
+| **Gecikme** | Düşük (ms-saniye) | Yüksek (dakika-saat) |
+| **Verimlilik** | Orta-Yüksek | Çok Yüksek |
 | **Veri Modeli** | Sonsuz akış | Sabit veri seti |
 | **İşleme Zamanı** | Gerçek zamanlı | Periyodik |
 | **Kaynak Kullanımı** | Sürekli | Periyodik |
-| **Fault Tolerance** | Checkpoint/Recovery | Restart from beginning |
-| **Use Cases** | Real-time analytics, Fraud detection | ETL, Reporting |
+| **Hata Toleransı** | Checkpoint/Kurtarma | Baştan başlatma |
+| **Kullanım Alanları** | Gerçek zamanlı analiz, Sahtekarlık tespiti | ETL, Raporlama |
 
-Stream Processing modern uygulamalar için kritik önemdedir çünkü:
+Akış işleme modern uygulamalar için kritik önemdedir çünkü:
 
-1. **Gerçek Zamanlı İnsight**: Anlık karar verme imkanı
+1. **Gerçek Zamanlı İçgörü**: Anlık karar verme imkanı
 2. **Proaktif Yaklaşım**: Sorunları önceden tespit etme
 3. **Müşteri Deneyimi**: Hızlı tepki ve kişiselleştirme
 4. **İş Sürekliliği**: Kesintisiz veri işleme
 
-Bu örneklerde Apache Flink ve Kafka Streams ile gerçek zamanlı veri işleme, windowing, state management ve error handling implementasyonlarını gördük. Stream processing modern veri mimarilerinin temel taşıdır.
+Bu örneklerde Apache Flink ve Kafka Streams ile gerçek zamanlı veri işleme, pencereleme, durum yönetimi ve hata yönetimi uygulamalarını gördük. Akış işleme modern veri mimarilerinin temel taşıdır.

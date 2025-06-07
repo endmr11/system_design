@@ -4,36 +4,36 @@
 
 ### Temel Kavramlar
 - Multi-Paxos ve Single-Paxos
-- Proposer, Acceptor, Learner roller
+- Öneren (Proposer), Kabul Eden (Acceptor), Öğrenen (Learner) roller
 - Promise ve Accept mesajları
-- Quorum-based voting
+- Çoğunluk oylama (quorum-based voting)
 
 ### Protokol Aşamaları
 
-#### 1. Prepare Phase
-- Proposal number generation
-- Promise requests
-- Majority acceptance
+#### 1. Hazırlık Aşaması (Prepare Phase)
+- Teklif numarası üretimi
+- Promise istekleri
+- Çoğunluk kabulü
 
-#### 2. Accept Phase
-- Value proposal
-- Accept requests
-- Value commitment
+#### 2. Kabul Aşaması (Accept Phase)
+- Değer önerisi
+- Accept istekleri
+- Değerin taahhüdü
 
-#### 3. Learn Phase
-- Value propagation
-- State replication
-- Consistency maintenance
+#### 3. Öğrenme Aşaması (Learn Phase)
+- Değerin yayılması
+- Durum çoğaltma
+- Tutarlılığın korunması
 
 ### Kullanım Senaryoları
-- Distributed locking
-- Configuration management
-- State machine replication
-- Leader election
+- Dağıtık kilitleme
+- Konfigürasyon yönetimi
+- Durum makinesi çoğaltma
+- Lider seçimi
 
-### Spring Boot Paxos-Style Implementation
+### Spring Boot Paxos-Tarzı Uygulama
 
-#### Distributed Configuration Service
+#### Dağıtık Konfigürasyon Servisi
 ```java
 @Component
 public class PaxosStyleConfigurationService {
@@ -253,47 +253,47 @@ public class ConfigurationNode {
 
 ### Temel Bileşenler
 
-#### Leader Election
-- Term-based voting
-- Heartbeat mechanism
-- Timeout handling
-- Log consistency check
+#### Lider Seçimi (Leader Election)
+- Dönem tabanlı oylama
+- Heartbeat mekanizması
+- Zaman aşımı yönetimi
+- Log tutarlılık kontrolü
 
-#### Log Replication
-- Append-only log
-- Log matching property
-- Log compaction
-- Snapshot mechanism
+#### Log Çoğaltma (Log Replication)
+- Sadece ekleme yapılan log
+- Log eşleşme özelliği
+- Log sıkıştırma
+- Snapshot mekanizması
 
-#### Safety Mechanisms
-- Leader-only updates
-- Log consistency
-- Term validation
-- Conflict resolution
+#### Güvenlik Mekanizmaları
+- Sadece lider güncelleyebilir
+- Log tutarlılığı
+- Dönem doğrulama
+- Çakışma çözümü
 
-### Implementasyon Örnekleri
+### Uygulama Örnekleri
 
 #### etcd
-- Key-value store
-- Watch mechanism
-- Lease system
-- Distributed locking
+- Anahtar-değer deposu
+- İzleme mekanizması
+- Kira sistemi (lease system)
+- Dağıtık kilitleme
 
 #### Consul
-- Service discovery
-- Health checking
-- Key-value store
-- Distributed locking
+- Servis keşfi
+- Sağlık kontrolü
+- Anahtar-değer deposu
+- Dağıtık kilitleme
 
 #### Kubernetes
-- etcd integration
-- State management
-- Configuration storage
-- Leader election
+- etcd entegrasyonu
+- Durum yönetimi
+- Konfigürasyon saklama
+- Lider seçimi
 
-### Spring Boot Raft-Style Implementation
+### Spring Boot Raft-Tarzı Uygulama
 
-#### Distributed State Machine
+#### Dağıtık Durum Makinesi
 ```java
 @Component
 public class RaftStyleStateMachine {
@@ -681,15 +681,15 @@ public class RaftStyleStateMachine {
 - Daha karmaşık protokol
 - Optimize edilmiş mesaj sayısı
 - Daha esnek yapı
-- Zor implementasyon
+- Zor uygulama
 
 #### Raft
 - Daha basit protokol
 - Daha fazla mesaj trafiği
 - Daha anlaşılır yapı
-- Kolay implementasyon
+- Kolay uygulama
 
-### Spring Boot ile Consensus Service
+### Spring Boot ile Konsensüs Servisi
 ```java
 @Service
 public class ConsensusService {
@@ -721,4 +721,4 @@ public class ConsensusService {
 }
 ```
 
-Bu implementasyonlar, Paxos ve Raft algoritalarının temel konseptlerini Spring Boot ekosisteminde nasıl uygulayabileceğinizi göstermektedir.
+Bu uygulamalar, Paxos ve Raft algoritmalarının temel konseptlerini Spring Boot ekosisteminde nasıl uygulayabileceğinizi göstermektedir.

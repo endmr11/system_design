@@ -1,14 +1,14 @@
-# API Security
+# API Güvenliği
 
 ## Giriş
 
-API güvenliği, web uygulamalarının en kritik bileşenlerinden biridir. Defense in depth stratejisi ile request integrity, authentication, rate limiting ve input validation gibi çok katmanlı güvenlik yaklaşımları uygulanır.
+API güvenliği, web uygulamalarının en kritik bileşenlerinden biridir. Derinlemesine savunma (defense in depth) stratejisi ile istek bütünlüğü, kimlik doğrulama, oran sınırlama ve girdi doğrulama gibi çok katmanlı güvenlik yaklaşımları uygulanır.
 
-## Request Integrity & Authentication
+## İstek Bütünlüğü & Kimlik Doğrulama
 
-### 1. HMAC Implementation
+### 1. HMAC Uygulaması
 
-**Spring Security HMAC filter**:
+**Spring Security HMAC filtresi**:
 
 ```java
 @Component
@@ -86,7 +86,7 @@ public class HmacAuthenticationFilter extends OncePerRequestFilter {
 }
 ```
 
-**HMAC Service implementation**:
+**HMAC Servis uygulaması**:
 
 ```java
 @Service
@@ -186,9 +186,9 @@ public class CachedBodyHttpServletRequest extends HttpServletRequestWrapper {
 }
 ```
 
-### 2. API Key Management
+### 2. API Anahtarı Yönetimi
 
-**Custom authentication filter** ve API key rotation:
+**Özel kimlik doğrulama filtresi** ve API anahtarı döngüsü:
 
 ```java
 @Component
@@ -264,7 +264,7 @@ public class ApiKeyAuthenticationFilter extends OncePerRequestFilter {
 }
 ```
 
-**API Key Service** rotation ve usage tracking ile:
+**API Anahtarı Servisi** döngü ve kullanım takibi ile:
 
 ```java
 @Service
@@ -386,11 +386,11 @@ public class ApiKeyService {
 }
 ```
 
-## Rate Limiting (Spring Boot)
+## Oran Sınırlama (Spring Boot)
 
-### 1. Application-Level Rate Limiting
+### 1. Uygulama Seviyesi Oran Sınırlama
 
-**Spring AOP-based rate limiting**:
+**Spring AOP tabanlı oran sınırlama**:
 
 ```java
 @Aspect
@@ -437,7 +437,7 @@ public @interface RateLimited {
 }
 ```
 
-**Redis-backed rate limiting service**:
+**Redis destekli oran sınırlama servisi**:
 
 ```java
 @Service
@@ -496,9 +496,9 @@ public class RedisRateLimitService implements RateLimitService {
 }
 ```
 
-### 2. Bucket4j Integration
+### 2. Bucket4j Entegrasyonu
 
-**Token bucket implementation**:
+**Token bucket uygulaması**:
 
 ```java
 @Configuration
@@ -574,11 +574,11 @@ public class Bucket4jRateLimitService implements RateLimitService {
 }
 ```
 
-## Web Application Firewall (WAF) Integration
+## Web Uygulama Güvenlik Duvarı (WAF) Entegrasyonu
 
-### 1. OWASP Top 10 Protection
+### 1. OWASP Top 10 Koruması
 
-**Security headers configuration**:
+**Güvenlik başlıkları yapılandırması**:
 
 ```java
 @Configuration
@@ -612,7 +612,7 @@ public class SecurityHeadersConfig {
 }
 ```
 
-**SQL Injection prevention**:
+**SQL Enjeksiyon önleme**:
 
 ```java
 @Component
@@ -673,7 +673,7 @@ public class SqlInjectionFilter implements Filter {
 }
 ```
 
-**XSS filtering**:
+**XSS filtreleme**:
 
 ```java
 @Component
@@ -753,53 +753,53 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 }
 ```
 
-## Input Validation & Sanitization
+## Girdi Doğrulama & Temizleme
 
 ### 1. Bean Validation
 
-**Advanced validation annotations**:
+**Gelişmiş doğrulama anotasyonları**:
 
 ```java
 @Entity
 public class UserRegistrationRequest {
     
-    @NotNull(message = "Username is required")
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username can only contain letters, numbers and underscores")
+    @NotNull(message = "Kullanıcı adı gereklidir")
+    @Size(min = 3, max = 50, message = "Kullanıcı adı 3 ile 50 karakter arasında olmalıdır")
+    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Kullanıcı adı sadece harf, rakam ve alt çizgi içerebilir")
     private String username;
     
-    @NotNull(message = "Email is required")
-    @Email(message = "Email must be valid")
+    @NotNull(message = "E-posta gereklidir")
+    @Email(message = "Geçerli bir e-posta adresi girin")
     @UniqueEmail
     private String email;
     
-    @NotNull(message = "Password is required")
+    @NotNull(message = "Şifre gereklidir")
     @StrongPassword
     private String password;
     
     @Valid
-    @NotNull(message = "Address is required")
+    @NotNull(message = "Adres gereklidir")
     private Address address;
     
-    @NotNull(message = "Date of birth is required")
-    @Past(message = "Date of birth must be in the past")
+    @NotNull(message = "Doğum tarihi gereklidir")
+    @Past(message = "Doğum tarihi geçmişte olmalıdır")
     @MinAge(18)
     private LocalDate dateOfBirth;
     
-    @NotEmpty(message = "At least one role is required")
-    @Size(max = 5, message = "Maximum 5 roles allowed")
+    @NotEmpty(message = "En az bir rol gereklidir")
+    @Size(max = 5, message = "Maksimum 5 rol izinlidir")
     private Set<@ValidRole String> roles;
 }
 ```
 
-**Custom validators**:
+**Özel doğrulayıcılar**:
 
 ```java
 @Constraint(validatedBy = StrongPasswordValidator.class)
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface StrongPassword {
-    String message() default "Password must contain at least 8 characters, including uppercase, lowercase, number and special character";
+    String message() default "Şifre en az 8 karakter, büyük harf, küçük harf, rakam ve özel karakter içermelidir";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
@@ -831,19 +831,19 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
             List<String> violations = new ArrayList<>();
             
             if (password.length() < 8) {
-                violations.add("Password must be at least 8 characters long");
+                violations.add("Şifre en az 8 karakter uzunluğunda olmalıdır");
             }
             if (!password.matches(".*[a-z].*")) {
-                violations.add("Password must contain at least one lowercase letter");
+                violations.add("Şifre en az bir küçük harf içermelidir");
             }
             if (!password.matches(".*[A-Z].*")) {
-                violations.add("Password must contain at least one uppercase letter");
+                violations.add("Şifre en az bir büyük harf içermelidir");
             }
             if (!password.matches(".*\\d.*")) {
-                violations.add("Password must contain at least one digit");
+                violations.add("Şifre en az bir rakam içermelidir");
             }
             if (!password.matches(".*[@$!%*?&].*")) {
-                violations.add("Password must contain at least one special character");
+                violations.add("Şifre en az bir özel karakter içermelidir");
             }
             
             context.buildConstraintViolationWithTemplate(String.join(", ", violations))
@@ -855,7 +855,7 @@ public class StrongPasswordValidator implements ConstraintValidator<StrongPasswo
 }
 ```
 
-**Cross-field validation**:
+**Alanlar arası doğrulama**:
 
 ```java
 @CrossFieldValidation
@@ -878,7 +878,7 @@ public class PasswordChangeRequest {
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CrossFieldValidation {
-    String message() default "Cross field validation failed";
+    String message() default "Alanlar arası doğrulama hatası";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
@@ -895,7 +895,7 @@ public class CrossFieldValidator implements ConstraintValidator<CrossFieldValida
         
         // Check if new password is different from current password
         if (Objects.equals(request.getCurrentPassword(), request.getNewPassword())) {
-            context.buildConstraintViolationWithTemplate("New password must be different from current password")
+            context.buildConstraintViolationWithTemplate("Yeni şifre mevcut şifreden farklı olmalıdır")
                    .addPropertyNode("newPassword")
                    .addConstraintViolation();
             isValid = false;
@@ -903,7 +903,7 @@ public class CrossFieldValidator implements ConstraintValidator<CrossFieldValida
         
         // Check if new password and confirm password match
         if (!Objects.equals(request.getNewPassword(), request.getConfirmPassword())) {
-            context.buildConstraintViolationWithTemplate("Password confirmation does not match")
+            context.buildConstraintViolationWithTemplate("Şifre onayı eşleşmiyor")
                    .addPropertyNode("confirmPassword")
                    .addConstraintViolation();
             isValid = false;
@@ -918,4 +918,4 @@ public class CrossFieldValidator implements ConstraintValidator<CrossFieldValida
 }
 ```
 
-Bu kapsamlı API Security implementasyonu, çok katmanlı güvenlik yaklaşımı ile modern web uygulamaları için gereken tüm güvenlik bileşenlerini sağlar.
+Bu kapsamlı API Güvenliği uygulaması, çok katmanlı güvenlik yaklaşımı ile modern web uygulamaları için gereken tüm güvenlik bileşenlerini sağlar.

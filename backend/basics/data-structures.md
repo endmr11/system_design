@@ -1,174 +1,174 @@
-# Temel Veri Yapıları ve Algoritmalar - System Design Context
+# Temel Veri Yapıları ve Algoritmalar - Sistem Tasarımı Bağlamı
 
-## Veri Yapıları (Production Use Cases)
+## Veri Yapıları (Üretim Kullanım Senaryoları)
 
-### Array/List
+### Dizi/List
 - **Spring Framework'te dependency injection container**
-- `@Autowired List<Service>` ile multiple bean injection
-- Fixed-size vs dynamic arrays
-- Memory locality advantages
+- `@Autowired List<Service>` ile birden fazla bean enjeksiyonu
+- Sabit boyutlu ve dinamik diziler
+- Bellek yakınlığı avantajları
 
-### Linked List
-- **LRU cache implementation**
-- Queue structures in messaging systems
-- **Spring Cloud Stream message handling**
-- Insertion/deletion at O(1)
+### Bağlı Liste
+- **LRU önbellek uygulaması**
+- Mesajlaşma sistemlerinde kuyruk yapıları
+- **Spring Cloud Stream mesaj işleme**
+- O(1) ekleme/silme
 
-### Hash Table/Map
-- **Spring cache abstractions**
-- `ConcurrentHashMap` for thread-safe operations
-- **Distributed caching with Redis**
-- O(1) average lookup time
+### Hash Tablosu/Map
+- **Spring önbellek soyutlamaları**
+- Thread-safe işlemler için `ConcurrentHashMap`
+- **Redis ile dağıtık önbellekleme**
+- Ortalama O(1) arama süresi
 
-### Tree Structures
-- **B-tree indices in databases**
-- **Trie structures** for autocomplete features
-- **Decision trees** in business rules
-- Balanced trees for guaranteed performance
+### Ağaç Yapıları
+- **Veritabanlarında B-tree indeksleri**
+- **Otomatik tamamlama için trie yapıları**
+- **İş kurallarında karar ağaçları**
+- Dengeli ağaçlar ile garanti edilen performans
 
-### Graph Structures
-- **Dependency graphs** in Spring IoC container
-- Social networks
-- Recommendation systems
-- **Circuit breaker state machines**
+### Grafik Yapıları
+- **Spring IoC container'da bağımlılık grafikleri**
+- Sosyal ağlar
+- Öneri sistemleri
+- **Circuit breaker durum makineleri**
 
-## Algoritmalar (Real-World Applications)
+## Algoritmalar (Gerçek Dünya Uygulamaları)
 
-### Search Algorithms
-- **Binary search** in sorted datasets
-- **DFS/BFS** in microservice dependency resolution
-- **A*** in route planning
-- Full-text search in Elasticsearch
+### Arama Algoritmaları
+- Sıralı veri kümelerinde **ikili arama**
+- Mikroservis bağımlılık çözümlemede **DFS/BFS**
+- Rota planlamada **A***
+- Elasticsearch'te tam metin arama
 
-### Sorting Algorithms
-- **TimSort** in Java Collections
-- **External sorting** for large datasets
-- **Distributed sorting** in big data processing
-- Quick sort vs merge sort trade-offs
+### Sıralama Algoritmaları
+- Java Collections'da **TimSort**
+- Büyük veri kümeleri için **harici sıralama**
+- Büyük veri işleme için **dağıtık sıralama**
+- Quick sort ve merge sort karşılaştırmaları
 
-### Caching Algorithms
-- **LRU/LFU eviction policies**
-- **Write-through/write-back strategies**
-- **Distributed cache consistency**
-- Cache replacement policies
+### Önbellekleme Algoritmaları
+- **LRU/LFU tahliye politikaları**
+- **Write-through/write-back stratejileri**
+- **Dağıtık önbellek tutarlılığı**
+- Önbellek değiştirme politikaları
 
-### Load Balancing
-- **Round-robin** algorithm
-- **Weighted round-robin**
-- **Least connections** algorithms in Spring Cloud LoadBalancer
-- Consistent hashing for distributed systems
+### Yük Dengeleme
+- **Round-robin** algoritması
+- **Ağırlıklı round-robin**
+- Spring Cloud LoadBalancer'da **en az bağlantı** algoritmaları
+- Dağıtık sistemler için tutarlı karma
 
-### Consensus Algorithms
-- **Raft** in distributed systems
-- **Paxos** for distributed consensus
-- **Leader election** in microservices
-- Byzantine fault tolerance
+### Uzlaşma Algoritmaları
+- Dağıtık sistemlerde **Raft**
+- Dağıtık uzlaşma için **Paxos**
+- Mikroservislerde **lider seçimi**
+- Bizans hata toleransı
 
-## Performance Implications
+## Performans Sonuçları
 
-### Time Complexity
-- **O(1)** hash lookups in cache systems
-- **O(log n)** database index seeks
-- **O(n log n)** sorting operations
-- **O(n²)** nested loops to avoid
+### Zaman Karmaşıklığı
+- Önbellek sistemlerinde **O(1)** hash aramaları
+- Veritabanı indeks aramalarında **O(log n)**
+- Sıralama işlemlerinde **O(n log n)**
+- Kaçınılması gereken **O(n²)** iç içe döngüler
 
-### Space Complexity
-- Memory-efficient data structures
-- Garbage collection considerations
-- **Off-heap storage strategies**
-- Memory pools and object reuse
+### Alan Karmaşıklığı
+- Bellek verimli veri yapıları
+- Çöp toplama (garbage collection) dikkate alınması
+- **Heap dışı depolama stratejileri**
+- Bellek havuzları ve nesne tekrar kullanımı
 
-### Distributed Systems
-- **CAP theorem** trade-offs
-- **Eventual consistency** models
-- **Partitioning strategies**
-- Network latency considerations
+### Dağıtık Sistemler
+- **CAP teoremi** dengeleri
+- **Sonunda tutarlılık** modelleri
+- **Bölümlendirme stratejileri**
+- Ağ gecikmesi dikkate alınması
 
-## Distributed Systems Patterns
+## Dağıtık Sistem Desenleri
 
-### Consensus Algorithms
-- **Raft**: Leader-based consensus, log replication
-- **Paxos**: Byzantine fault tolerance, complex but robust
-- **ZAB**: ZooKeeper Atomic Broadcast, total ordering
+### Uzlaşma Algoritmaları
+- **Raft**: Lider tabanlı uzlaşma, log çoğaltma
+- **Paxos**: Bizans hata toleransı, karmaşık ama sağlam
+- **ZAB**: ZooKeeper Atomic Broadcast, tam sıralama
 
-### Leader Election
-- **ZooKeeper** based leader election
-- **etcd** for service coordination
-- Custom implementation patterns
-- Split-brain prevention
+### Lider Seçimi
+- **ZooKeeper** tabanlı lider seçimi
+- Servis koordinasyonu için **etcd**
+- Özel uygulama desenleri
+- Split-brain önleme
 
-### Distributed Locking
-- **Redis-based locks** with expiration
-- **Database locks** for consistency
-- Optimistic vs pessimistic locking
-- Deadlock detection and prevention
+### Dağıtık Kilitleme
+- Süreli **Redis tabanlı kilitler**
+- Tutarlılık için **veritabanı kilitleri**
+- İyimser ve kötümser kilitleme
+- Deadlock tespiti ve önlenmesi
 
-### Eventual Consistency
-- **CRDTs** (Conflict-free Replicated Data Types)
-- **Vector clocks** for causality tracking
-- **Version vectors** for conflict resolution
-- Gossip protocols for data propagation
+### Sonunda Tutarlılık
+- **CRDT**'ler (Çakışmasız çoğaltılmış veri tipleri)
+- Nedensellik takibi için **vektör saatler**
+- Çakışma çözümü için **sürüm vektörleri**
+- Veri yayılımı için gossip protokolleri
 
-### Failure Detection
-- **Heartbeat mechanism** for liveness detection
-- **Timeout strategies** for failure detection
-- Phi accrual failure detector
-- Adaptive timeout algorithms
+### Hata Tespiti
+- Canlılık tespiti için **heartbeat mekanizması**
+- Hata tespiti için zaman aşımı stratejileri
+- Phi accrual hata dedektörü
+- Uyarlanabilir zaman aşımı algoritmaları
 
-## Scalability Patterns
+## Ölçeklenebilirlik Desenleri
 
-### Horizontal Scaling
-- **Stateless services** design
-- **Shared-nothing architecture**
-- Microservices decomposition
-- Database sharding strategies
+### Yatay Ölçekleme
+- **Durumsuz servis** tasarımı
+- **Paylaşımsız mimari**
+- Mikroservis ayrıştırması
+- Veritabanı parçalama stratejileri
 
-### Vertical Scaling
-- **Resource optimization** techniques
-- **JVM tuning** parameters
-- Hardware upgrade strategies
-- Performance bottleneck identification
+### Dikey Ölçekleme
+- **Kaynak optimizasyonu** teknikleri
+- **JVM ayarları** parametreleri
+- Donanım yükseltme stratejileri
+- Performans darboğazı tespiti
 
-### Caching Strategies
-- **Multi-level caching** hierarchy
-- **Cache invalidation** strategies
-- Write-through vs write-behind
-- Cache stampede prevention
+### Önbellekleme Stratejileri
+- **Çok katmanlı önbellek** hiyerarşisi
+- **Önbellek geçersiz kılma** stratejileri
+- Write-through ve write-behind karşılaştırması
+- Önbellek baskını önleme
 
-### Database Scaling
-- **Read replicas** for read scaling
-- **Sharding** for write scaling
-- **Partitioning** strategies
-- Cross-shard query challenges
+### Veritabanı Ölçekleme
+- Okuma ölçekleme için **okuma kopyaları**
+- Yazma ölçekleme için **parçalama**
+- **Bölümlendirme** stratejileri
+- Parçalar arası sorgu zorlukları
 
-### Message Queue
-- **Asynchronous processing** patterns
-- **Back-pressure handling** mechanisms
-- Message ordering guarantees
-- Dead letter queue handling
+### Mesaj Kuyruğu
+- **Asenkron işleme** desenleri
+- **Geri basınç yönetimi** mekanizmaları
+- Mesaj sıralama garantileri
+- Dead letter queue yönetimi
 
-## Algorithm Complexity Analysis
+## Algoritma Karmaşıklık Analizi
 
-### Common Operations
-| Data Structure | Access | Search | Insertion | Deletion |
+### Yaygın İşlemler
+| Veri Yapısı | Erişim | Arama | Ekleme | Silme |
 |----------------|--------|--------|-----------|----------|
-| Array | O(1) | O(n) | O(n) | O(n) |
-| Linked List | O(n) | O(n) | O(1) | O(1) |
-| Hash Table | O(1) | O(1) | O(1) | O(1) |
-| Binary Tree | O(log n) | O(log n) | O(log n) | O(log n) |
+| Dizi | O(1) | O(n) | O(n) | O(n) |
+| Bağlı Liste | O(n) | O(n) | O(1) | O(1) |
+| Hash Tablosu | O(1) | O(1) | O(1) | O(1) |
+| İkili Ağaç | O(log n) | O(log n) | O(log n) | O(log n) |
 | B-Tree | O(log n) | O(log n) | O(log n) | O(log n) |
 
-### Sorting Algorithms
-| Algorithm | Best Case | Average Case | Worst Case | Space |
+### Sıralama Algoritmaları
+| Algoritma | En İyi Durum | Ortalama Durum | En Kötü Durum | Alan |
 |-----------|-----------|--------------|------------|-------|
 | Quick Sort | O(n log n) | O(n log n) | O(n²) | O(log n) |
 | Merge Sort | O(n log n) | O(n log n) | O(n log n) | O(n) |
 | Heap Sort | O(n log n) | O(n log n) | O(n log n) | O(1) |
 | Tim Sort | O(n) | O(n log n) | O(n log n) | O(n) |
 
-## Production Implementation Examples
+## Üretim Ortamı Uygulama Örnekleri
 
-### LRU Cache Implementation
+### LRU Önbellek Uygulaması
 ```java
 @Component
 public class LRUCache<K, V> {
@@ -189,7 +189,7 @@ public class LRUCache<K, V> {
 }
 ```
 
-### Consistent Hashing for Load Balancing
+### Yük Dengeleme için Tutarlı Karma
 ```java
 @Component
 public class ConsistentHashLoadBalancer {
@@ -210,30 +210,30 @@ public class ConsistentHashLoadBalancer {
 }
 ```
 
-## Memory Management
+## Bellek Yönetimi
 
-### JVM Memory Optimization
-- Heap size tuning (-Xmx, -Xms)
-- Garbage collection algorithm selection
-- Off-heap storage for large datasets
-- Memory leak detection and prevention
+### JVM Bellek Optimizasyonu
+- Heap boyutu ayarı (-Xmx, -Xms)
+- Çöp toplama algoritması seçimi
+- Büyük veri kümeleri için heap dışı depolama
+- Bellek sızıntısı tespiti ve önlenmesi
 
-### Distributed Memory
-- Redis clustering for distributed cache
-- Hazelcast for in-memory data grid
-- Apache Ignite for distributed computing
-- Consistency vs performance trade-offs
+### Dağıtık Bellek
+- Dağıtık önbellek için Redis kümeleme
+- Bellek içi veri ızgarası için Hazelcast
+- Dağıtık hesaplama için Apache Ignite
+- Tutarlılık ve performans dengesi
 
-## Security Considerations
+## Güvenlik Dikkatleri
 
-### Algorithm Security
-- Cryptographic hash functions
-- Secure random number generation
-- Timing attack prevention
-- Side-channel attack mitigation
+### Algoritma Güvenliği
+- Kriptografik hash fonksiyonları
+- Güvenli rastgele sayı üretimi
+- Zamanlama saldırısı önleme
+- Yan kanal saldırısı azaltma
 
-### Data Structure Security
-- Input validation for data structures
-- Bounds checking for arrays
-- Hash collision attack prevention
-- Memory safety in native code
+### Veri Yapısı Güvenliği
+- Veri yapıları için giriş doğrulama
+- Dizilerde sınır kontrolü
+- Hash çakışma saldırısı önleme
+- Yerel kodda bellek güvenliği

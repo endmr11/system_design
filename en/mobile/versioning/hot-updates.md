@@ -2,43 +2,7 @@
 
 Hot updates and code push functionality allow mobile applications to update their JavaScript code, assets, and configurations without requiring users to download a new version from app stores. This capability is particularly valuable for React Native and hybrid applications.
 
-## Table of Contents
-1. [Architecture Overview](#architecture-overview)
-2. [Implementation Strategies](#implementation-strategies) 
-3. [Platform-Specific Solutions](#platform-specific-solutions)
-4. [Backend Infrastructure](#backend-infrastructure)
-5. [Security & Validation](#security--validation)
-6. [Best Practices](#best-practices)
-
 ## Architecture Overview
-
-### System Components
-
-```mermaid
-graph TB
-    A[Mobile App] --> B[Update Client]
-    B --> C[Local Storage]
-    B --> D[Update Server]
-    D --> E[CDN]
-    D --> F[Metadata API]
-    F --> G[Version Control]
-    G --> H[Build Pipeline]
-    H --> I[Security Validation]
-    
-    subgraph "Update Process"
-        J[Check Updates]
-        K[Download Bundle]
-        L[Verify Signature]
-        M[Apply Update]
-        N[Rollback if Failed]
-    end
-    
-    B --> J
-    J --> K
-    K --> L
-    L --> M
-    M --> N
-```
 
 ### Update Types
 

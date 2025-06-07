@@ -2,13 +2,6 @@
 
 Event Sourcing, sistem durumunun geçmiş tüm olaylar (event'ler) olarak kaydedilmesi yaklaşımıdır. Bu bölümde Event Sourcing'in Spring Boot ile detaylı implementasyonunu inceleyeceğiz.
 
-## İçindekiler
-- [Event Sourcing Temelleri](#event-sourcing-temelleri)
-- [Spring Boot ile Event Store Implementasyonu](#spring-boot-ile-event-store-implementasyonu)
-- [Event Bus ve Message Publishing](#event-bus-ve-message-publishing)
-- [Event Handlers ve Projection](#event-handlers-ve-projection)
-- [Implementation Examples](#implementation-examples)
-
 ## Event Sourcing Temelleri
 
 ### Temel Bileşenler

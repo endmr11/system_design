@@ -2,14 +2,6 @@
 
 Mobil uygulamalarda sürüm yönetimi, kullanıcıya kesintisiz deneyim sunmak ve uygulamanın yaşam döngüsünü etkili şekilde yönetmek için kritik öneme sahiptir. Bu dokümantasyon, modern sürüm yönetimi stratejilerini ve CI/CD entegrasyonunu kapsar.
 
-## İçindekiler
-1. [Semantic Versioning](#semantic-versioning)
-2. [iOS App Store Sürümleme](#ios-app-store-sürümleme)
-3. [Android Play Store Sürümleme](#android-play-store-sürümleme)
-4. [Sürüm Pipeline](#sürüm-pipeline)
-5. [Kademeli Dağıtım](#kademeli-dağıtım)
-6. [A/B Test Entegrasyonu](#ab-test-entegrasyonu)
-
 ## Semantic Versioning
 
 ### Versiyon Numaralandırma

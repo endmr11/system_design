@@ -2,12 +2,6 @@
 
 Microservice communication patterns are critical for building scalable and resilient distributed systems. This section covers comprehensive Spring Boot implementations for both synchronous (REST/gRPC) and asynchronous (Event-Driven) communication models.
 
-## Table of Contents
-- [Synchronous Communication Patterns](#synchronous-communication-patterns)
-- [Asynchronous Communication Architecture](#asynchronous-communication-architecture)
-- [Performance Optimization](#performance-optimization)
-- [Implementation Examples](#implementation-examples)
-
 ## Synchronous Communication Patterns
 
 ### REST API Communication

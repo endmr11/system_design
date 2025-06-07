@@ -2,12 +2,6 @@
 
 Service Discovery is a critical component in microservice architecture that enables services to dynamically find each other. In this section, we will examine detailed implementations of Spring Cloud Netflix Eureka and alternative solutions.
 
-## Table of Contents
-- [Spring Cloud Eureka](#spring-cloud-eureka)
-- [Alternative Service Discovery Solutions](#alternative-service-discovery-solutions)
-- [Advanced Service Discovery Patterns](#advanced-service-discovery-patterns)
-- [Implementation Examples](#implementation-examples)
-
 ## Spring Cloud Eureka
 
 ### Eureka Server Configuration

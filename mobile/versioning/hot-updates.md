@@ -2,43 +2,7 @@
 
 Anlık güncellemeler (hot update) ve kod gönderme (code push) işlevleri, mobil uygulamaların JavaScript kodunu, varlıklarını ve yapılandırmalarını kullanıcıların uygulama mağazasından yeni bir sürüm indirmesine gerek kalmadan güncelleyebilmesini sağlar. Bu yetenek özellikle React Native ve hibrit uygulamalar için çok değerlidir.
 
-## İçindekiler
-1. [Mimari Genel Bakış](#mimari-genel-bakis)
-2. [Uygulama Stratejileri](#uygulama-stratejileri)
-3. [Platforma Özel Çözümler](#platforma-ozel-cozumler)
-4. [Sunucu Altyapısı](#sunucu-altyapisi)
-5. [Güvenlik ve Doğrulama](#guvenlik-ve-dogrulama)
-6. [En İyi Uygulamalar](#en-iyi-uygulamalar)
-
 ## Mimari Genel Bakış
-
-### Sistem Bileşenleri
-
-```mermaid
-graph TB
-    A[Mobil Uygulama] --> B[Güncelleme İstemcisi]
-    B --> C[Yerel Depolama]
-    B --> D[Güncelleme Sunucusu]
-    D --> E[CDN]
-    D --> F[Metadata API]
-    F --> G[Sürüm Kontrol]
-    G --> H[Build Pipeline]
-    H --> I[Güvenlik Doğrulama]
-    
-    subgraph "Güncelleme Süreci"
-        J[Güncellemeleri Kontrol Et]
-        K[Bundle İndir]
-        L[İmzayı Doğrula]
-        M[Güncellemeyi Uygula]
-        N[Başarısızsa Geri Al]
-    end
-    
-    B --> J
-    J --> K
-    K --> L
-    L --> M
-    M --> N
-```
 
 ### Güncelleme Türleri
 

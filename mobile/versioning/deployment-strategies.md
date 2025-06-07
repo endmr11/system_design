@@ -2,46 +2,7 @@
 
 Mobil uygulamalarda dağıtım stratejileri, uygulamaların uygulama mağazaları, kurumsal dağıtım ve alternatif dağıtım kanalları üzerinden son kullanıcılara ulaştırılması sürecinin tamamını kapsar ve güvenilirlik, performans ve kullanıcı memnuniyetini sağlamayı hedefler.
 
-## İçindekiler
-1. [Dağıtım Mimarisi](#dağıtım-mimarisi)
-2. [Uygulama Mağazası Dağıtımı](#uygulama-mağazası-dağıtımı)
-3. [Kurumsal Dağıtım](#kurumsal-dağıtım)
-4. [Kademeli Dağıtım Stratejileri](#kademeli-dağıtım-stratejileri)
-5. [Blue-Green Dağıtım](#blue-green-dağıtım)
-6. [İzleme ve Analitik](#izleme-ve-analitik)
-
 ## Dağıtım Mimarisi
-
-### Dağıtım Pipeline Genel Bakış
-
-```mermaid
-graph TB
-    A[Kaynak Kod] --> B[Build Pipeline]
-    B --> C[Test Suite]
-    C --> D[Güvenlik Taraması]
-    D --> E[Uygulama İmzalama]
-    E --> F[Dağıtım Stratejisi]
-    
-    F --> G[App Store Connect]
-    F --> H[Google Play Console]
-    F --> I[Kurumsal MDM]
-    F --> J[Dahili Dağıtım]
-    
-    G --> K[iOS App Store]
-    H --> L[Google Play Store]
-    I --> M[Kurumsal Kullanıcılar]
-    J --> N[Beta Testçiler]
-    
-    subgraph "İzleme"
-        O[Çökme Analitiği]
-        R[İş Metrikleri]
-    end
-    
-    K --> O
-    L --> O
-    M --> O
-    N --> O
-```
 
 ### Dağıtım Ortamları
 

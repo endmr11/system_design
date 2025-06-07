@@ -1,18 +1,12 @@
-# Service Mesh
+# Servis Mesh
 
-Service Mesh, mikroservis mimarisinde servis-servis iletişimini yönetmek için kullanılan bir infrastructure layer'dır. Bu bölümde Istio ve Spring Boot entegrasyonunu detaylı olarak inceleyeceğiz.
+Service Mesh, mikroservis mimarisinde servisler arası iletişimi yönetmek için kullanılan bir altyapı katmanıdır. Bu bölümde Istio ve Spring Boot entegrasyonunu detaylı olarak inceleyeceğiz.
 
-## İçindekiler
-- [Istio Service Mesh](#istio-service-mesh)
-- [Spring Boot + Istio Integration](#spring-boot--istio-integration)
-- [Service Mesh vs Application-Level Solutions](#service-mesh-vs-application-level-solutions)
-- [Implementation Examples](#implementation-examples)
+## Istio Servis Mesh
 
-## Istio Service Mesh
+### Sidecar Proxy Deseni
 
-### Sidecar Proxy Pattern
-
-**Envoy Proxy Configuration:**
+**Envoy Proxy Yapılandırması:**
 
 ```yaml
 apiVersion: v1
@@ -77,7 +71,7 @@ data:
                     port_value: 8080
 ```
 
-**Istio Injection Configuration:**
+**Istio Enjeksiyon Yapılandırması:**
 
 ```yaml
 apiVersion: v1
@@ -126,9 +120,9 @@ spec:
             cpu: "500m"
 ```
 
-### Traffic Management
+### Trafik Yönetimi
 
-**VirtualService Configuration:**
+**VirtualService Yapılandırması:**
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -193,7 +187,7 @@ spec:
       retryOn: gateway-error,connect-failure,refused-stream
 ```
 
-**DestinationRule Configuration:**
+**DestinationRule Yapılandırması:**
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -249,9 +243,9 @@ spec:
           maxConnections: 100
 ```
 
-### Security Features
+### Güvenlik Özellikleri
 
-**PeerAuthentication Configuration:**
+**PeerAuthentication Yapılandırması:**
 
 ```yaml
 apiVersion: security.istio.io/v1beta1
@@ -280,7 +274,7 @@ spec:
       mode: STRICT
 ```
 
-**AuthorizationPolicy Configuration:**
+**AuthorizationPolicy Yapılandırması:**
 
 ```yaml
 apiVersion: security.istio.io/v1beta1
@@ -345,11 +339,11 @@ spec:
       prefix: "Bearer "
 ```
 
-## Spring Boot + Istio Integration
+## Spring Boot + Istio Entegrasyonu
 
-### Configuration Management
+### Konfigürasyon Yönetimi
 
-**Spring Boot Application Configuration:**
+**Spring Boot Uygulama Konfigürasyonu:**
 
 ```java
 @Configuration
@@ -378,7 +372,7 @@ public class IstioConfiguration {
 }
 ```
 
-**Istio Header Processing:**
+**Istio Header İşleme:**
 
 ```java
 @Component
@@ -426,7 +420,7 @@ public class IstioHeaderFilter implements Filter {
 }
 ```
 
-**JWT Processing with Istio:**
+**Istio ile JWT İşleme:**
 
 ```java
 @Component
@@ -473,9 +467,9 @@ public class IstioJwtProcessor {
 }
 ```
 
-### Circuit Breaking and Fallbacks
+### Devre Kesici ve Fallback
 
-**Istio Circuit Breaker Integration:**
+**Istio Devre Kesici Entegrasyonu:**
 
 ```java
 @Service
@@ -537,9 +531,9 @@ public class PaymentServiceClient {
 }
 ```
 
-### Observability Integration
+### Gözlemlenebilirlik Entegrasyonu
 
-**Tracing and Metrics:**
+**İzleme ve Metrikler:**
 
 ```java
 @RestController
@@ -636,9 +630,9 @@ public class OrderController {
 }
 ```
 
-### Canary Deployments
+### Canary Dağıtımları
 
-**Automated Canary Deployment with Flagger:**
+**Flagger ile Otomatik Canary Dağıtımı:**
 
 ```yaml
 apiVersion: flagger.app/v1beta1
@@ -688,23 +682,23 @@ spec:
         cmd: "hey -z 1m -q 10 -c 2 http://order-service-canary.microservices:8080/api/orders"
 ```
 
-## Service Mesh vs Application-Level Solutions
+## Service Mesh vs Uygulama Seviyesi Çözümler
 
-### Comparison Matrix
+### Karşılaştırma Matrisi
 
-| Feature | Service Mesh (Istio) | Application-Level (Spring Cloud) |
+| Özellik | Service Mesh (Istio) | Uygulama Seviyesi (Spring Cloud) |
 |---------|---------------------|-----------------------------------|
-| **Language Agnostic** | ✅ Yes | ❌ Java/JVM only |
-| **Infrastructure Separation** | ✅ Proxy-based | ❌ Library-based |
-| **Operations Control** | ✅ Platform team | ❌ Development team |
-| **Learning Curve** | ⚠️ Steep | ✅ Familiar to Java developers |
-| **Debugging** | ⚠️ Complex | ✅ Easier with IDE support |
-| **Resource Overhead** | ⚠️ Sidecar proxy | ✅ Lower memory footprint |
-| **Fine-grained Control** | ⚠️ Configuration-based | ✅ Code-based |
-| **Testing** | ⚠️ Requires cluster | ✅ Unit/Integration tests |
-| **Vendor Lock-in** | ⚠️ Istio-specific | ⚠️ Spring-specific |
+| **Dil Bağımsız** | ✅ Evet | ❌ Sadece Java/JVM |
+| **Altyapı Ayrımı** | ✅ Proxy-tabanlı | ❌ Kütüphane-tabanlı |
+| **Operasyon Kontrolü** | ✅ Platform ekibi | ❌ Geliştirme ekibi |
+| **Öğrenme Eğrisi** | ⚠️ Dik | ✅ Java geliştiricileri için tanıdık |
+| **Hata Ayıklama** | ⚠️ Karmaşık | ✅ IDE desteği ile daha kolay |
+| **Kaynak Aşırı Yükü** | ⚠️ Sidecar proxy | ✅ Daha düşük bellek kullanımı |
+| **İnce Ayar Kontrolü** | ⚠️ Konfigürasyon-tabanlı | ✅ Kod-tabanlı |
+| **Test** | ⚠️ Küme gerektirir | ✅ Birim/Entegrasyon testleri |
+| **Satıcı Bağımlılığı** | ⚠️ Istio'ya özgü | ⚠️ Spring'e özgü |
 
-### Hybrid Approach Implementation
+### Hibrit Yaklaşım Uygulaması
 
 ```java
 @Configuration
@@ -747,7 +741,7 @@ public class ServiceMeshConfig {
 }
 ```
 
-### Migration Strategy
+### Geçiş Stratejisi
 
 ```java
 @Component
@@ -801,4 +795,4 @@ public class ServiceMeshMigrationManager {
 }
 ```
 
-Bu kapsamlı Service Mesh implementasyonu, Istio'nun tüm özelliklerini Spring Boot uygulamaları ile entegre etmenin yanı sıra migration stratejileri ve hybrid yaklaşımları da içermektedir. Production-ready örnekler ile birlikte her konunun detaylı açıklaması sunulmuştur.
+Bu kapsamlı Service Mesh uygulaması, Istio'nun tüm özelliklerini Spring Boot uygulamaları ile entegre etmenin yanı sıra geçiş stratejileri ve hibrit yaklaşımları da içermektedir. Üretime hazır örneklerle birlikte her konunun detaylı açıklaması sunulmuştur.

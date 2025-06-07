@@ -4,26 +4,6 @@ Biometric authentication leverages unique biological characteristics to verify u
 
 ## Biometric Authentication Architecture
 
-### Security Layers
-```mermaid
-graph TB
-    A[User Biometric Input] --> B[Biometric Sensor]
-    B --> C[Secure Hardware]
-    C --> D[Template Matching]
-    D --> E[Authentication Decision]
-    E --> F[Cryptographic Key Release]
-    F --> G[Application Access]
-    
-    C --> H[TEE/Secure Enclave]
-    C --> I[Hardware Security Module]
-    
-    D --> J[Anti-Spoofing]
-    D --> K[Liveness Detection]
-    
-    E --> L[Fallback Mechanisms]
-    E --> M[Audit Logging]
-```
-
 ## Platform Implementation
 
 ### iOS Face ID & Touch ID

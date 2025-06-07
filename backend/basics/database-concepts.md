@@ -1,224 +1,224 @@
 # Temel Veritabanı Kavramları
 
-## SQL Databases (Spring Boot ile)
+## SQL Veritabanları (Spring Boot ile)
 
 ### Spring Data JPA
-- **Hibernate ORM** üzerinden entity mapping
-- `@Entity`/`@Table` annotations ile schema mapping
+- **Hibernate ORM** üzerinden entity eşleme
+- `@Entity`/`@Table` anotasyonları ile şema eşleme
 
-### Repository Pattern
-- `JpaRepository<Entity, ID>` ile CRUD operations
-- Custom query methods (`@Query` annotation)
+### Repository Deseni
+- `JpaRepository<Entity, ID>` ile CRUD işlemleri
+- Özel sorgu metotları (`@Query` anotasyonu)
 
-### Transaction Management
-- `@Transactional` annotation ile declarative transaction management
-- Isolation levels
-- Propagation behaviors
+### Transaction Yönetimi
+- `@Transactional` anotasyonu ile deklaratif transaction yönetimi
+- İzolasyon seviyeleri
+- Yayılım davranışları
 
-### Connection Pooling
-- **HikariCP** ile production-ready connection pooling
-- Connection leak detection
+### Bağlantı Havuzu (Connection Pooling)
+- **HikariCP** ile üretime hazır bağlantı havuzu
+- Bağlantı sızıntısı tespiti
 
-### Database Migration
-- **Flyway/Liquibase** ile schema versioning
-- Baseline migrations
-- Repeatable scripts
+### Veritabanı Göçleri (Migration)
+- **Flyway/Liquibase** ile şema versiyonlama
+- Başlangıç göçleri
+- Tekrarlanabilir scriptler
 
 ### PostgreSQL
-- JSON/JSONB support
-- Advanced indexing
-- Full-text search
-- Horizontal scaling ile CitusDB
+- JSON/JSONB desteği
+- Gelişmiş indeksleme
+- Tam metin arama
+- Yatay ölçekleme ile CitusDB
 
 ### MySQL
-- Master-slave replication
-- InnoDB storage engine
-- Partitioning strategies
+- Master-slave replikasyonu
+- InnoDB depolama motoru
+- Bölümlendirme stratejileri
 
-## NoSQL Databases (Spring Boot ile)
+## NoSQL Veritabanları (Spring Boot ile)
 
 ### MongoDB
-- **Spring Data MongoDB** ile document-based storage
-- `@Document` annotation
-- Reactive support
+- **Spring Data MongoDB** ile doküman tabanlı depolama
+- `@Document` anotasyonu
+- Tepkisel (reactive) destek
 
 ### Redis
-- **Spring Data Redis** ile caching layer
+- **Spring Data Redis** ile önbellekleme katmanı
 - RedisTemplate/StringRedisTemplate
-- Pub/sub messaging
+- Yayın/abone mesajlaşma
 
 ### Elasticsearch
-- **Spring Data Elasticsearch** ile full-text search
-- Aggregations
-- Real-time analytics
+- **Spring Data Elasticsearch** ile tam metin arama
+- Toplu sorgular (aggregations)
+- Gerçek zamanlı analizler
 
 ### Cassandra
-- **Spring Data Cassandra** ile wide-column store
-- Eventual consistency
-- High availability
+- **Spring Data Cassandra** ile geniş sütunlu veri deposu
+- Sonunda tutarlılık (eventual consistency)
+- Yüksek erişilebilirlik
 
-## Database Design Patterns
+## Veritabanı Tasarım Desenleri
 
-### Domain-Driven Design
-- Aggregate boundaries
-- Entity vs value objects
-- Repository per aggregate
+### Alan Odaklı Tasarım (Domain-Driven Design)
+- Küme sınırları (aggregate boundaries)
+- Varlık ve değer nesneleri
+- Her küme için repository
 
-### Event Sourcing
-- Event store as single source of truth
-- Projection views
-- Replay capability
+### Olay Kaynaklı Mimari (Event Sourcing)
+- Olay deposu tek gerçek kaynak
+- Projeksiyon görünümleri
+- Olayları tekrar oynatma yeteneği
 
 ### CQRS
-- Command Query Responsibility Segregation
-- Separate read/write models
-- Eventual consistency
+- Komut ve sorgu sorumluluğu ayrımı
+- Ayrı okuma/yazma modelleri
+- Sonunda tutarlılık
 
-### Database per Service
-- Microservices pattern
-- Data ownership
-- Distributed transactions challenges
+### Servis Başına Veritabanı
+- Mikroservis deseni
+- Veri sahipliği
+- Dağıtık transaction zorlukları
 
-## İndeksleme (Indexing) - Spring Boot Perspective
+## İndeksleme (Indexleme) - Spring Boot Perspektifi
 
-### JPA Index Annotations
-- `@Index` annotation ile entity-level index tanımları
-- `@Table(indexes = {...})` ile composite indices
+### JPA İndeks Anotasyonları
+- `@Index` anotasyonu ile entity seviyesinde indeks tanımları
+- `@Table(indexes = {...})` ile bileşik indeksler
 
-### Database-Specific Indices
-- **PostgreSQL JSONB indices**
-- **MySQL full-text indices**
-- **Spatial indices** for geographic data
+### Veritabanına Özgü İndeksler
+- **PostgreSQL JSONB indeksleri**
+- **MySQL tam metin indeksleri**
+- **Coğrafi veriler için uzamsal indeksler**
 
-### Performance Monitoring
-- Spring Boot Actuator ile slow query detection
-- Hibernate statistics
-- Connection pool metrics
+### Performans İzleme
+- Spring Boot Actuator ile yavaş sorgu tespiti
+- Hibernate istatistikleri
+- Bağlantı havuzu metrikleri
 
-### Index Strategy
-- Cardinality analysis
-- Covering indices ile query performance
-- Partial indices ile storage optimization
+### İndeks Stratejisi
+- Kardinalite analizi
+- Kapsayıcı indeksler ile sorgu performansı
+- Kısmi indeksler ile depolama optimizasyonu
 
-### B-tree Implementation
-- Balanced tree structure
-- O(log n) search complexity
-- Range queries support
-- Write performance trade-offs
+### B-tree Uygulaması
+- Dengeli ağaç yapısı
+- O(log n) arama karmaşıklığı
+- Aralık sorguları desteği
+- Yazma performansı dengesi
 
-## Normalizasyon ve Denormalizasyon - Spring Boot Context
+## Normalizasyon ve Denormalizasyon - Spring Boot Bağlamı
 
-### Normalization (3NF/BCNF)
-- JPA `@OneToMany`/`@ManyToOne` relationships ile foreign key constraints
-- `@JoinColumn` ile relationship mapping
+### Normalizasyon (3NF/BCNF)
+- JPA `@OneToMany`/`@ManyToOne` ilişkileri ile yabancı anahtar kısıtları
+- `@JoinColumn` ile ilişki eşleme
 
-### Denormalization Strategies
-- `@Formula` annotation ile computed fields
-- `@SecondaryTable` ile table splitting
-- Read-optimized views
+### Denormalizasyon Stratejileri
+- `@Formula` anotasyonu ile hesaplanmış alanlar
+- `@SecondaryTable` ile tablo bölme
+- Okuma için optimize görünümler
 
-### Event-Driven Denormalization
-- Domain events ile derived data synchronization
-- Eventual consistency patterns
+### Olay Tabanlı Denormalizasyon
+- Alan olayları ile türetilmiş veri senkronizasyonu
+- Sonunda tutarlılık desenleri
 
-### Materialized Views
-- Database-level precomputed aggregations
-- Spring scheduled tasks ile view refresh
+### Materyalize Görünümler
+- Veritabanı seviyesinde önceden hesaplanmış toplulaştırmalar
+- Spring zamanlanmış görevler ile görünüm güncelleme
 
-### Trade-offs
-- Write complexity vs read performance
-- Storage cost vs query speed
-- Consistency vs availability
+### Tercihler
+- Yazma karmaşıklığı vs okuma performansı
+- Depolama maliyeti vs sorgu hızı
+- Tutarlılık vs erişilebilirlik
 
-## Performance Optimization
+## Performans Optimizasyonu
 
-### Indexing Strategies
-- **B-tree indices**: Default index type, good for equality and range queries
-- **Partial indices**: Index only specific rows, reduces index size
-- **Composite indices**: Multiple columns, order matters
-- **Covering indices**: Include all needed columns, avoid table lookup
+### İndeksleme Stratejileri
+- **B-tree indeksleri**: Varsayılan indeks türü, eşitlik ve aralık sorguları için iyi
+- **Kısmi indeksler**: Sadece belirli satırları indeksler, indeks boyutunu azaltır
+- **Bileşik indeksler**: Birden fazla sütun, sıralama önemli
+- **Kapsayıcı indeksler**: Tüm gerekli sütunları içerir, tabloya erişimi önler
 
-### Query Optimization
-- **EXPLAIN PLAN** analysis
-- **N+1 query problem** (`@EntityGraph`, `@BatchSize`)
+### Sorgu Optimizasyonu
+- **EXPLAIN PLAN** analizi
+- **N+1 sorgu problemi** (`@EntityGraph`, `@BatchSize`)
 
-### Caching Layers
-- **Second-level cache** (Hibernate)
-- **Query result cache**
-- **Distributed cache** (Redis)
+### Önbellekleme Katmanları
+- **İkinci seviye önbellek** (Hibernate)
+- **Sorgu sonucu önbelleği**
+- **Dağıtık önbellek** (Redis)
 
-### Read Replicas
-- Master-slave replication
-- Read-write splitting
-- Eventual consistency handling
+### Okuma Kopyaları (Read Replicas)
+- Master-slave replikasyonu
+- Okuma-yazma ayrımı
+- Sonunda tutarlılık yönetimi
 
-## Distributed Database Patterns
+## Dağıtık Veritabanı Desenleri
 
-### Sharding Strategies
-- **Horizontal partitioning**
-- **Consistent hashing**
-- **Range-based sharding**
-- **Directory-based sharding**
+### Parçalama Stratejileri (Sharding)
+- **Yatay bölümlendirme**
+- **Tutarlı karma (consistent hashing)**
+- **Aralık tabanlı parçalama**
+- **Dizin tabanlı parçalama**
 
-### Replication
-- **Master-slave**: Single write node, multiple read replicas
-- **Multi-master**: Multiple write nodes, conflict resolution
-- **Eventual consistency**: Updates propagate asynchronously
+### Replikasyon
+- **Master-slave**: Tek yazma düğümü, çoklu okuma kopyası
+- **Çoklu master**: Çoklu yazma düğümü, çakışma çözümü
+- **Sonunda tutarlılık**: Güncellemeler eşzamansız yayılır
 
-### CAP Theorem
-- **Consistency**: All nodes see same data simultaneously
-- **Availability**: System remains operational
-- **Partition tolerance**: System continues despite network failures
+### CAP Teoremi
+- **Tutarlılık**: Tüm düğümler aynı veriyi aynı anda görür
+- **Erişilebilirlik**: Sistem çalışır durumda kalır
+- **Bölünme toleransı**: Ağ hatalarına rağmen sistem devam eder
 
-### Database Federation
-- Cross-database queries
-- Data virtualization
-- Service-oriented data access
+### Veritabanı Federasyonu
+- Veritabanları arası sorgular
+- Veri sanallaştırma
+- Servis odaklı veri erişimi
 
-### Polyglot Persistence
-- Right tool for right job
-- Hybrid storage strategies
-- Data synchronization challenges
+### Çoklu Veritabanı Kullanımı (Polyglot Persistence)
+- Doğru iş için doğru araç
+- Hibrit depolama stratejileri
+- Veri senkronizasyonu zorlukları
 
-## SQL vs NoSQL Karşılaştırması
+## SQL ve NoSQL Karşılaştırması
 
 | Özellik | SQL | NoSQL |
 |---------|-----|-------|
-| Schema | Fixed | Flexible |
-| ACID | ✅ | Varies |
-| Scalability | Vertical | Horizontal |
-| Complex Queries | ✅ | Limited |
-| Consistency | Strong | Eventual |
-| Maturity | High | Varies |
+| Şema | Sabit | Esnek |
+| ACID | ✅ | Değişken |
+| Ölçeklenebilirlik | Dikey | Yatay |
+| Karmaşık Sorgular | ✅ | Sınırlı |
+| Tutarlılık | Güçlü | Sonunda |
+| Olgunluk | Yüksek | Değişken |
 
-## Database Selection Criteria
+## Veritabanı Seçim Kriterleri
 
-### SQL Databases Kullan
-- Complex relationships
-- ACID compliance required
-- Complex queries and analytics
-- Strong consistency needs
-- Mature ecosystem requirements
+### SQL Veritabanı Kullan
+- Karmaşık ilişkiler
+- ACID uyumluluğu gerekli
+- Karmaşık sorgular ve analizler
+- Güçlü tutarlılık ihtiyacı
+- Olgun ekosistem gereksinimi
 
-### NoSQL Databases Kullan
-- Horizontal scaling needs
-- Flexible schema requirements
-- High availability priorities
-- Simple query patterns
-- Rapid development cycles
+### NoSQL Veritabanı Kullan
+- Yatay ölçeklenebilirlik ihtiyacı
+- Esnek şema gereksinimi
+- Yüksek erişilebilirlik önceliği
+- Basit sorgu desenleri
+- Hızlı geliştirme döngüleri
 
-## Monitoring & Performance
+## İzleme ve Performans
 
-### Database Metrics
-- Query execution time
-- Connection pool usage
-- Index utilization
-- Lock contention
-- Replication lag
+### Veritabanı Metrikleri
+- Sorgu yürütme süresi
+- Bağlantı havuzu kullanımı
+- İndeks kullanımı
+- Kilitlenme (lock contention)
+- Replikasyon gecikmesi
 
-### Optimization Techniques
-- Query performance tuning
-- Index optimization
-- Connection pool tuning
-- Partitioning strategies
-- Caching implementations
+### Optimizasyon Teknikleri
+- Sorgu performans ayarı
+- İndeks optimizasyonu
+- Bağlantı havuzu ayarı
+- Bölümlendirme stratejileri
+- Önbellekleme uygulamaları

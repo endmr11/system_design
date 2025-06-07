@@ -2,42 +2,9 @@
 
 Geriye dönük uyumluluk, mobil uygulamaların yeni sürümlerinin eski API'ler, veri formatları ve kullanıcı beklentileriyle çalışmaya devam etmesini sağlarken yeni özelliklerin de eklenmesine olanak tanır. Bu, farklı cihaz ekosistemlerinde ve API sürümlerinde kullanıcı deneyimini korumak için kritiktir.
 
-## İçindekiler
-1. [Uyumluluk Stratejisi](#uyumluluk-stratejisi)
-2. [API Versiyonlama](#api-versiyonlama)
-3. [Veri Geçişi](#veri-gecisi)
-4. [Platform Uyumluluğu](#platform-uyumlulugu)
-5. [Test ve Doğrulama](#test-ve-dogrulama)
-6. [Tasarım Kalıpları](#tasarim-kaliplari)
-
 ## Uyumluluk Stratejisi
 
 ### Uyumluluk Matrisi
-
-```mermaid
-graph TB
-    A[Mobile App v3.0] --> B[API v3]
-    A --> C[API v2]
-    A --> D[API v1]
-    
-    E[Mobile App v2.0] --> C
-    E --> D
-    
-    F[Mobile App v1.0] --> D
-    
-    subgraph "Database Compatibility"
-        G[Schema v3]
-        H[Schema v2]
-        I[Schema v1]
-    end
-    
-    B --> G
-    C --> H
-    D --> I
-    
-    G --> H
-    H --> I
-```
 
 ### Uyumluluk Seviyeleri
 

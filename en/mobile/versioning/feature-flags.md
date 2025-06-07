@@ -2,40 +2,7 @@
 
 Feature flags (also known as feature toggles) enable teams to deploy code changes without immediately exposing them to users. This approach allows for gradual rollouts, A/B testing, and quick feature rollbacks without requiring app store deployments.
 
-## Table of Contents
-1. [Feature Flag Architecture](#feature-flag-architecture)
-2. [Implementation Strategies](#implementation-strategies)
-3. [Platform-Specific Implementations](#platform-specific-implementations)
-4. [Backend Services](#backend-services)
-5. [Advanced Features](#advanced-features)
-6. [Best Practices](#best-practices)
-
 ## Feature Flag Architecture
-
-### System Components
-
-```mermaid
-graph TB
-    A[Mobile App] --> B[Feature Flag Client]
-    B --> C[Local Cache]
-    B --> D[Remote Config Service]
-    D --> E[Feature Flag Dashboard]
-    D --> F[User Segmentation Engine]
-    F --> G[Analytics Service]
-    E --> H[Admin Interface]
-    
-    subgraph "Flag Evaluation"
-        I[User Context]
-        J[Device Context]
-        K[App Version]
-        L[Geographic Location]
-    end
-    
-    B --> I
-    B --> J
-    B --> K
-    B --> L
-```
 
 ### Flag Types
 

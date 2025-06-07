@@ -1,18 +1,18 @@
 # Diğer Tutarlılık Modelleri
 
-Distributed sistemlerde Strong ve Eventual Consistency dışında çeşitli tutarlılık modelleri kullanılmaktadır. Bu modeller, performans ve tutarlılık arasında farklı trade-off'lar sunar.
+Dağıtık sistemlerde Strong ve Eventual Consistency dışında çeşitli tutarlılık modelleri kullanılmaktadır. Bu modeller, performans ve tutarlılık arasında farklı denge noktaları (trade-off'lar) sunar.
 
-## Causal Consistency
+## Nedensel Tutarlılık (Causal Consistency)
 
 ### Tanım ve Özellikler
 - Nedensel bağlantılı işlemlerin sırası korunur
-- Partial ordering garantisi
-- Vector clocks kullanımı
-- Conflict-free Replicated Data Types (CRDTs)
+- Kısmi sıralama garantisi
+- Vector clock kullanımı
+- Çakışmasız Çoğaltılmış Veri Tipleri (CRDTs)
 
-### Spring Boot ile Causal Consistency Implementation
+### Spring Boot ile Nedensel Tutarlılık Uygulaması
 
-#### Vector Clock Service
+#### Vector Clock Servisi
 ```java
 @Component
 @Slf4j
@@ -103,7 +103,7 @@ public class VectorClock {
 }
 ```
 
-#### Causal Ordering Event Store
+#### Nedensel Sıralama Olay Deposu
 ```java
 @Entity
 @Table(name = "causal_events")
@@ -229,7 +229,7 @@ public class CausalConsistencyService {
 }
 ```
 
-#### CRDT (Conflict-free Replicated Data Types) Implementation
+#### CRDT (Çakışmasız Çoğaltılmış Veri Tipleri) Uygulaması
 ```java
 @Component
 public class GCounterCRDT {
@@ -294,17 +294,17 @@ public class GSetCRDT<T> {
 }
 ```
 
-## Sequential Consistency
+## Sıralı Tutarlılık (Sequential Consistency)
 
 ### Tanım ve Özellikler
 - İşlemlerin sıralı yürütülmesi
-- Program order korunumu
-- Memory model uyumu
-- Atomic operations
+- Program sırası korunumu
+- Bellek modeli uyumu
+- Atomik işlemler
 
-### Spring Boot ile Sequential Consistency Implementation
+### Spring Boot ile Sıralı Tutarlılık Uygulaması
 
-#### Sequential Operation Manager
+#### Sıralı İşlem Yöneticisi
 ```java
 @Service
 @Slf4j
@@ -420,7 +420,7 @@ public class SequentialOperation {
 }
 ```
 
-#### Memory Model Consistency
+#### Bellek Modeli Tutarlılığı
 ```java
 @Component
 public class MemoryModelConsistencyManager {
@@ -468,17 +468,17 @@ public class MemoryModelConsistencyManager {
 }
 ```
 
-## Read Your Writes Consistency
+## Kendi Yazdığını Okuma Tutarlılığı (Read Your Writes Consistency)
 
 ### Tanım ve Özellikler
 - Kendi yazdığı veriyi okuyabilme
-- Session-based consistency
-- Sticky sessions
-- Client-side caching
+- Oturum tabanlı tutarlılık
+- Yapışkan oturumlar (sticky sessions)
+- İstemci tarafı önbellekleme
 
-### Spring Boot ile Read Your Writes Implementation
+### Spring Boot ile Read Your Writes Uygulaması
 
-#### Session-Based Consistency
+#### Oturum Tabanlı Tutarlılık
 ```java
 @Component
 @Scope("session")
@@ -564,7 +564,7 @@ public class VersionedData {
 }
 ```
 
-#### Sticky Session Implementation
+#### Sticky Session Uygulaması
 ```java
 @Component
 public class StickySessionManager {
@@ -677,17 +677,17 @@ public class ConsistentReadController {
 }
 ```
 
-## Monotonic Read Consistency
+## Monotonik Okuma Tutarlılığı (Monotonic Read Consistency)
 
 ### Tanım ve Özellikler
 - Veri değerlerinin monoton artışı
-- Version-based consistency
-- Timestamp ordering
-- Conflict resolution
+- Versiyon tabanlı tutarlılık
+- Zaman damgası sıralaması
+- Çakışma çözümü
 
-### Spring Boot ile Monotonic Read Implementation
+### Spring Boot ile Monotonik Okuma Uygulaması
 
-#### Version-Based Monotonic Reads
+#### Versiyon Tabanlı Monotonik Okuma
 ```java
 @Service
 @Slf4j
@@ -759,7 +759,7 @@ public class MonotonicReadState {
 }
 ```
 
-#### Timestamp-Based Monotonic Ordering
+#### Zaman Damgası Tabanlı Monotonik Sıralama
 ```java
 @Service
 public class TimestampOrderingService {
@@ -813,7 +813,7 @@ public class TimestampedValue {
 }
 ```
 
-#### Conflict Resolution Service
+#### Çakışma Çözüm Servisi
 ```java
 @Service
 @Slf4j
@@ -900,9 +900,9 @@ public enum ConflictResolutionStrategy {
 }
 ```
 
-## Configuration ve Best Practices
+## Konfigürasyon ve En İyi Pratikler
 
-### Application Properties
+### Uygulama Ayarları
 ```yaml
 # application.yml
 consistency:
@@ -939,4 +939,4 @@ spring:
       password: ${DB_PASSWORD}
 ```
 
-Bu tutarlılık modelleri, distributed sistemlerde farklı consistency-performance trade-off'ları sunar. Her modelin kendine özgü kullanım senaryoları ve implementasyon detayları vardır.
+Bu tutarlılık modelleri, dağıtık sistemlerde farklı tutarlılık-performans dengeleri sunar. Her modelin kendine özgü kullanım senaryoları ve uygulama detayları vardır.

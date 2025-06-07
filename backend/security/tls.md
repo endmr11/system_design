@@ -2,13 +2,13 @@
 
 ## Giriş
 
-Transport Layer Security (TLS) ve Mutual TLS (mTLS), ağ iletişiminde veri bütünlüğü ve gizliliği sağlayan kritik güvenlik protokolleridir. Spring Boot ile HTTPS configuration ve certificate-based authentication implementasyonları güvenli iletişim altyapısını oluşturur.
+Transport Layer Security (TLS) ve Mutual TLS (mTLS), ağ iletişiminde veri bütünlüğü ve gizliliği sağlayan kritik güvenlik protokolleridir. Spring Boot ile HTTPS yapılandırması ve sertifika tabanlı kimlik doğrulama uygulamaları güvenli iletişim altyapısını oluşturur.
 
-## HTTPS Configuration (Spring Boot)
+## HTTPS Yapılandırması (Spring Boot)
 
-### 1. SSL Certificate Management
+### 1. SSL Sertifika Yönetimi
 
-**KeyStore configuration** PKCS12 format ile:
+**KeyStore yapılandırması** PKCS12 formatı ile:
 
 ```yaml
 server:
@@ -23,7 +23,7 @@ server:
     ciphers: TLS_AES_128_GCM_SHA256,TLS_AES_256_GCM_SHA384,TLS_CHACHA20_POLY1305_SHA256
 ```
 
-**Self-signed certificates** development için:
+**Kendi imzalı sertifikalar** geliştirme için:
 
 ```bash
 # Generate keystore with self-signed certificate
@@ -44,7 +44,7 @@ keytool -export \
     -storetype PKCS12
 ```
 
-**Let's Encrypt integration** production için:
+**Let's Encrypt entegrasyonu** üretim için:
 
 ```java
 @Configuration
@@ -121,9 +121,9 @@ public class LetsEncryptConfig {
 }
 ```
 
-### 2. Application Properties Configuration
+### 2. Uygulama Özellikleri Yapılandırması
 
-**SSL/TLS protocol versions** ve cipher suite selection:
+**SSL/TLS protokol sürümleri** ve şifre takımı seçimi:
 
 ```yaml
 server:
@@ -166,7 +166,7 @@ security:
   require-ssl: true
 ```
 
-**Custom SSL configuration**:
+**Özel SSL yapılandırması**:
 
 ```java
 @Configuration
@@ -201,11 +201,11 @@ public class SSLConfig {
 }
 ```
 
-## Mutual TLS (mTLS) Implementation
+## Karşılıklı TLS (mTLS) Uygulaması
 
-### 1. Certificate-Based Authentication
+### 1. Sertifika Tabanlı Kimlik Doğrulama
 
-**Client certificate validation**:
+**İstemci sertifikası doğrulama**:
 
 ```java
 @Configuration
@@ -238,7 +238,7 @@ public class MTLSSecurityConfig {
 }
 ```
 
-**Certificate validation** ve mapping:
+**Sertifika doğrulama** ve eşleme:
 
 ```java
 @Service
@@ -274,7 +274,7 @@ public class CustomX509UserDetailsService implements UserDetailsService {
 }
 ```
 
-**X.509 Certificate Filter**:
+**X.509 Sertifika Filtresi**:
 
 ```java
 @Component
@@ -326,9 +326,9 @@ public class X509CertificateFilter extends OncePerRequestFilter {
 }
 ```
 
-### 2. Certificate Validation Service
+### 2. Sertifika Doğrulama Servisi
 
-**Advanced certificate validation**:
+**Gelişmiş sertifika doğrulama**:
 
 ```java
 @Service
@@ -400,11 +400,11 @@ public class CertificateValidationService {
 }
 ```
 
-## Certificate Management
+## Sertifika Yönetimi
 
-### 1. Certificate Authorities
+### 1. Sertifika Otoriteleri
 
-**Internal CA setup** OpenSSL ile:
+**Dahili CA kurulumu** OpenSSL ile:
 
 ```bash
 #!/bin/bash
@@ -443,7 +443,7 @@ cat ca/certs/intermediate.cert.pem \
     ca/certs/ca.cert.pem > ca/certs/ca-chain.cert.pem
 ```
 
-**Certificate signing workflow**:
+**Sertifika imzalama iş akışı**:
 
 ```java
 @Service
@@ -493,9 +493,9 @@ public class CertificateSigningService {
 }
 ```
 
-### 2. Certificate Rotation
+### 2. Sertifika Döngüsü (Rotation)
 
-**Automated renewal** cert-manager ile:
+**Otomatik yenileme** cert-manager ile:
 
 ```yaml
 apiVersion: cert-manager.io/v1
@@ -522,7 +522,7 @@ spec:
     size: 2048
 ```
 
-**Zero-downtime certificate updates**:
+**Sıfır kesintiyle sertifika güncelleme**:
 
 ```java
 @Component
@@ -583,4 +583,4 @@ public class CertificateRotationService {
 }
 ```
 
-Bu kapsamlı TLS/SSL ve mTLS implementasyonu, güvenli iletişim altyapısı ve certificate management için gereken tüm bileşenleri sağlar.
+Bu kapsamlı TLS/SSL ve mTLS uygulaması, güvenli iletişim altyapısı ve sertifika yönetimi için gereken tüm bileşenleri sağlar.

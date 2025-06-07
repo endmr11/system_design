@@ -4,30 +4,6 @@ API security in mobile applications involves protecting communication between mo
 
 ## API Security Architecture
 
-### Security Layers
-```mermaid
-graph TB
-    A[Mobile Client] --> B[API Gateway]
-    B --> C[Authentication Service]
-    B --> D[Rate Limiting]
-    B --> E[Request Validation]
-    B --> F[Response Filtering]
-    B --> G[Backend Services]
-    
-    C --> H[JWT Validation]
-    C --> I[OAuth 2.0]
-    C --> J[API Key Management]
-    
-    D --> K[Per-User Limits]
-    D --> L[Global Limits]
-    
-    E --> M[Input Sanitization]
-    E --> N[Schema Validation]
-    
-    F --> O[Data Masking]
-    F --> P[Error Filtering]
-```
-
 ## Authentication & Authorization
 
 ### JWT Token Implementation

@@ -3,35 +3,35 @@
 ## Tanım
 Dağıtık sistemlerde aynı anda sadece iki özellik sağlanabilir:
 
-### 1. Consistency (Tutarlılık)
+### 1. Tutarlılık (Consistency)
 - Tüm düğümler aynı veriyi görür
-- Atomic operations
-- Linearizability
-- Sequential consistency
+- Atomik işlemler
+- Doğrusallık (Linearizability)
+- Sıralı tutarlılık (Sequential consistency)
 
-### 2. Availability (Erişilebilirlik)
+### 2. Erişilebilirlik (Availability)
 - Her istek yanıt alır
-- No timeout
-- No error responses
-- Always responsive
+- Zaman aşımı yok
+- Hata yanıtı yok
+- Her zaman yanıt verir
 
-### 3. Partition Tolerance (Bölümleme Toleransı)
-- Network partition durumunda çalışmaya devam eder
-- Split-brain handling
-- Network failure recovery
-- Geographic distribution
+### 3. Bölümleme Toleransı (Partition Tolerance)
+- Ağ bölünmesi durumunda çalışmaya devam eder
+- Split-brain yönetimi
+- Ağ hatası kurtarma
+- Coğrafi dağıtım
 
 ## Uygulama Örnekleri
 
 ### CP Sistemleri
 
 #### MongoDB
-- Replica set configuration
-- Write concern levels
-- Read preference modes
-- Sharding strategy
+- Replica set yapılandırması
+- Yazma onay seviyeleri
+- Okuma tercih modları
+- Parçalama stratejisi
 
-##### Spring Boot MongoDB CP Implementation
+##### Spring Boot MongoDB CP Uygulaması
 ```java
 @Configuration
 public class MongoDBCPConfig {
@@ -101,12 +101,12 @@ public class ConsistentOrderService {
 ```
 
 #### PostgreSQL
-- Synchronous replication
-- Two-phase commit
-- Serializable isolation
-- Distributed transactions
+- Senkron replikasyon
+- İki aşamalı onay (two-phase commit)
+- Seri hale getirilebilir izolasyon
+- Dağıtık işlemler
 
-##### Spring Boot PostgreSQL CP Implementation
+##### Spring Boot PostgreSQL CP Uygulaması
 ```java
 @Configuration
 @EnableTransactionManagement
@@ -215,12 +215,12 @@ public class ConsistentBankingService {
 ```
 
 #### etcd
-- Raft consensus
-- Strong consistency
-- Leader election
-- Atomic operations
+- Raft uzlaşma algoritması
+- Güçlü tutarlılık
+- Lider seçimi
+- Atomik işlemler
 
-##### Spring Boot etcd Integration
+##### Spring Boot etcd Entegrasyonu
 ```java
 @Configuration
 public class EtcdCPConfig {
@@ -306,12 +306,12 @@ public class EtcdConsistentConfigService {
 ### AP Sistemleri
 
 #### Cassandra
-- Tunable consistency levels
+- Ayarlanabilir tutarlılık seviyeleri
 - Hinted handoff
-- Read repair
+- Okuma onarımı (read repair)
 - Anti-entropy
 
-##### Spring Boot Cassandra AP Implementation
+##### Spring Boot Cassandra AP Uygulaması
 ```java
 @Configuration
 public class CassandraAPConfig {
@@ -379,12 +379,12 @@ public class AvailableBlogService {
 ```
 
 #### DynamoDB
-- Eventually consistent reads
-- Conditional writes
-- Atomic counters
-- Global tables
+- Sonunda tutarlı okuma
+- Koşullu yazma
+- Atomik sayaçlar
+- Global tablolar
 
-##### Spring Boot DynamoDB AP Implementation
+##### Spring Boot DynamoDB AP Uygulaması
 ```java
 @Configuration
 public class DynamoDBAP Config {
@@ -465,12 +465,12 @@ public class AvailableUserService {
 ```
 
 #### Redis
-- Asynchronous replication
+- Asenkron replikasyon
 - Redis Cluster
-- Sentinel mode
-- Pub/Sub messaging
+- Sentinel modu
+- Yayın/abone mesajlaşma
 
-##### Spring Boot Redis AP Implementation
+##### Spring Boot Redis AP Uygulaması
 ```java
 @Configuration
 public class RedisAPConfig {
@@ -570,7 +570,7 @@ public class RedisMessageListener implements MessageListener {
 }
 ```
 
-## CAP Teoremi Trade-offs
+## CAP Teoremi Trade-off'ları
 
 ### CP vs AP Seçimi
 ```java
@@ -622,4 +622,4 @@ public class AdaptiveConsistencyService {
 }
 ```
 
-CAP teoremi, dağıtık sistem tasarımında kritik kararlar almanızı sağlar. Her uygulama için doğru trade-off'u seçmek önemlidir.
+CAP teoremi, dağıtık sistem tasarımında kritik kararlar almanızı sağlar. Her uygulama için doğru dengeyi (trade-off) seçmek önemlidir.

@@ -1,19 +1,12 @@
-# CQRS (Command Query Responsibility Segregation)
+# CQRS (Komut ve Sorgu Sorumluluğu Ayrımı)
 
-CQRS, yazma (Command) ve okuma (Query) işlemlerini ayrı modellerde yönetme desenidir. Bu bölümde Spring Boot ile CQRS'in detaylı implementasyonunu inceleyeceğiz.
-
-## İçindekiler
-- [CQRS Mimarisi](#cqrs-mimarisi)
-- [Command Side Implementation](#command-side-implementation)
-- [Query Side Implementation](#query-side-implementation)
-- [Event-Driven CQRS](#event-driven-cqrs)
-- [Implementation Examples](#implementation-examples)
+CQRS, yazma (Komut) ve okuma (Sorgu) işlemlerini ayrı modellerde yönetme desenidir. Bu bölümde Spring Boot ile CQRS'in detaylı uygulamasını inceleyeceğiz.
 
 ## CQRS Mimarisi
 
-### Temel Mimari Bileşenleri
+### Temel Mimari Bileşenler
 
-**CQRS Configuration:**
+**CQRS Yapılandırması:**
 
 ```java
 @Configuration
@@ -95,38 +88,38 @@ public class CqrsConfiguration {
 }
 ```
 
-### Command and Query Interfaces
+### Komut ve Sorgu Arayüzleri
 
 ```java
-// Command interface
+// Komut arayüzü
 public interface Command {
     String getCommandId();
     Instant getTimestamp();
 }
 
-// Query interface
+// Sorgu arayüzü
 public interface Query<T> {
     String getQueryId();
     Class<T> getResponseType();
 }
 
-// Command Handler interface
+// Komut Yöneticisi arayüzü
 public interface CommandHandler<T extends Command> {
     void handle(T command);
 }
 
-// Query Handler interface
+// Sorgu Yöneticisi arayüzü
 public interface QueryHandler<Q extends Query<R>, R> {
     R handle(Q query);
 }
 ```
 
-## Command Side Implementation
+## Komut Tarafı Uygulaması
 
-### Command Model
+### Komut Modeli
 
 ```java
-// Order Commands
+// Sipariş Komutları
 public class CreateOrderCommand implements Command {
     private final String commandId;
     private final Instant timestamp;
@@ -142,7 +135,7 @@ public class CreateOrderCommand implements Command {
         this.shippingAddress = shippingAddress;
     }
     
-    // Getters
+    // Getter'lar
 }
 
 public class ConfirmOrderCommand implements Command {
@@ -156,7 +149,7 @@ public class ConfirmOrderCommand implements Command {
         this.orderId = orderId;
     }
     
-    // Getters
+    // Getter'lar
 }
 
 public class CancelOrderCommand implements Command {
@@ -172,11 +165,11 @@ public class CancelOrderCommand implements Command {
         this.reason = reason;
     }
     
-    // Getters
+    // Getter'lar
 }
 ```
 
-### Command Entities (Write Model)
+### Komut Varlıkları (Yazma Modeli)
 
 ```java
 @Entity
@@ -208,7 +201,7 @@ public class OrderEntity {
     @Version
     private Long version;
     
-    // Constructors, getters, setters
+    // Yapıcılar, getter'lar, setter'lar
 }
 
 @Entity
@@ -234,11 +227,11 @@ public class OrderItemEntity {
     @Column(nullable = false)
     private Integer quantity;
     
-    // Constructors, getters, setters
+    // Yapıcılar, getter'lar, setter'lar
 }
 ```
 
-### Command Handlers
+### Komut Yöneticileri (Command Handlers)
 
 ```java
 @Component
@@ -269,15 +262,15 @@ public class OrderCommandHandler implements
         Timer.Sample sample = Timer.start(meterRegistry);
         
         try {
-            // Validate command
+            // Komutu doğrula
             validateCreateOrderCommand(command);
             
-            // Calculate total amount
+            // Toplam tutarı hesapla
             BigDecimal totalAmount = command.getItems().stream()
                 .map(item -> item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
             
-            // Create order entity
+            // Sipariş varlığını oluştur
             OrderEntity order = new OrderEntity();
             order.setOrderId(UUID.randomUUID().toString());
             order.setCustomerId(command.getCustomerId());
@@ -288,7 +281,7 @@ public class OrderCommandHandler implements
             
             orderRepository.save(order);
             
-            // Create order items
+            // Sipariş kalemlerini oluştur
             List<OrderItemEntity> orderItems = command.getItems().stream()
                 .map(item -> {
                     OrderItemEntity orderItem = new OrderItemEntity();
@@ -303,7 +296,7 @@ public class OrderCommandHandler implements
             
             orderItemRepository.saveAll(orderItems);
             
-            // Publish domain event
+            // Alan olayını yayınla
             OrderCreatedEvent event = new OrderCreatedEvent(
                 order.getOrderId(),
                 command.getCustomerId(),
@@ -313,12 +306,12 @@ public class OrderCommandHandler implements
             eventPublisher.publishEvent(event);
             
             meterRegistry.counter("command.order_created").increment();
-            log.info("Order created successfully: {}", order.getOrderId());
+            log.info("Sipariş başarıyla oluşturuldu: {}", order.getOrderId());
             
         } catch (Exception e) {
             meterRegistry.counter("command.order_creation_failed").increment();
-            log.error("Failed to create order", e);
-            throw new CommandHandlingException("Failed to create order", e);
+            log.error("Sipariş oluşturulurken hata oluştu", e);
+            throw new CommandHandlingException("Sipariş oluşturulurken hata oluştu", e);
         } finally {
             sample.stop(Timer.builder("command.create_order_duration")
                 .register(meterRegistry));
@@ -333,14 +326,14 @@ public class OrderCommandHandler implements
             Optional<OrderEntity> optionalOrder = orderRepository.findById(command.getOrderId());
             
             if (optionalOrder.isEmpty()) {
-                throw new OrderNotFoundException("Order not found: " + command.getOrderId());
+                throw new OrderNotFoundException("Sipariş bulunamadı: " + command.getOrderId());
             }
             
             OrderEntity order = optionalOrder.get();
             
             if (order.getStatus() != OrderStatus.PENDING) {
                 throw new InvalidOrderStateException(
-                    "Order cannot be confirmed in current state: " + order.getStatus());
+                    "Sipariş mevcut durumda onaylanamaz: " + order.getStatus());
             }
             
             order.setStatus(OrderStatus.CONFIRMED);
@@ -348,7 +341,7 @@ public class OrderCommandHandler implements
             
             orderRepository.save(order);
             
-            // Publish domain event
+            // Alan olayını yayınla
             OrderConfirmedEvent event = new OrderConfirmedEvent(
                 order.getOrderId(),
                 command.getTimestamp()
@@ -356,12 +349,12 @@ public class OrderCommandHandler implements
             eventPublisher.publishEvent(event);
             
             meterRegistry.counter("command.order_confirmed").increment();
-            log.info("Order confirmed successfully: {}", order.getOrderId());
+            log.info("Sipariş başarıyla onaylandı: {}", order.getOrderId());
             
         } catch (Exception e) {
             meterRegistry.counter("command.order_confirmation_failed").increment();
-            log.error("Failed to confirm order: {}", command.getOrderId(), e);
-            throw new CommandHandlingException("Failed to confirm order", e);
+            log.error("Sipariş onaylanırken hata oluştu: {}", command.getOrderId(), e);
+            throw new CommandHandlingException("Sipariş onaylanırken hata oluştu", e);
         } finally {
             sample.stop(Timer.builder("command.confirm_order_duration")
                 .register(meterRegistry));
@@ -376,7 +369,7 @@ public class OrderCommandHandler implements
             Optional<OrderEntity> optionalOrder = orderRepository.findById(command.getOrderId());
             
             if (optionalOrder.isEmpty()) {
-                throw new OrderNotFoundException("Order not found: " + command.getOrderId());
+                throw new OrderNotFoundException("Sipariş bulunamadı: " + command.getOrderId());
             }
             
             OrderEntity order = optionalOrder.get();
@@ -384,7 +377,7 @@ public class OrderCommandHandler implements
             if (order.getStatus() == OrderStatus.CANCELLED || 
                 order.getStatus() == OrderStatus.DELIVERED) {
                 throw new InvalidOrderStateException(
-                    "Order cannot be cancelled in current state: " + order.getStatus());
+                    "Sipariş mevcut durumda iptal edilemez: " + order.getStatus());
             }
             
             order.setStatus(OrderStatus.CANCELLED);
@@ -393,7 +386,7 @@ public class OrderCommandHandler implements
             
             orderRepository.save(order);
             
-            // Publish domain event
+            // Alan olayını yayınla
             OrderCancelledEvent event = new OrderCancelledEvent(
                 order.getOrderId(),
                 command.getReason(),
@@ -402,12 +395,12 @@ public class OrderCommandHandler implements
             eventPublisher.publishEvent(event);
             
             meterRegistry.counter("command.order_cancelled").increment();
-            log.info("Order cancelled successfully: {}", order.getOrderId());
+            log.info("Sipariş başarıyla iptal edildi: {}", order.getOrderId());
             
         } catch (Exception e) {
             meterRegistry.counter("command.order_cancellation_failed").increment();
-            log.error("Failed to cancel order: {}", command.getOrderId(), e);
-            throw new CommandHandlingException("Failed to cancel order", e);
+            log.error("Sipariş iptal edilirken hata oluştu: {}", command.getOrderId(), e);
+            throw new CommandHandlingException("Sipariş iptal edilirken hata oluştu", e);
         } finally {
             sample.stop(Timer.builder("command.cancel_order_duration")
                 .register(meterRegistry));
@@ -416,36 +409,36 @@ public class OrderCommandHandler implements
     
     private void validateCreateOrderCommand(CreateOrderCommand command) {
         if (command.getCustomerId() == null || command.getCustomerId().trim().isEmpty()) {
-            throw new InvalidCommandException("Customer ID is required");
+            throw new InvalidCommandException("Müşteri ID'si gereklidir");
         }
         
         if (command.getItems() == null || command.getItems().isEmpty()) {
-            throw new InvalidCommandException("Order items are required");
+            throw new InvalidCommandException("Sipariş kalemleri gereklidir");
         }
         
         if (command.getShippingAddress() == null || command.getShippingAddress().trim().isEmpty()) {
-            throw new InvalidCommandException("Shipping address is required");
+            throw new InvalidCommandException("Gönderim adresi gereklidir");
         }
         
-        // Additional business validations
+        // Ek iş kuralları doğrulamaları
         for (OrderItem item : command.getItems()) {
             if (item.getQuantity() <= 0) {
-                throw new InvalidCommandException("Item quantity must be greater than zero");
+                throw new InvalidCommandException("Kalem miktarı sıfırdan büyük olmalıdır");
             }
             if (item.getUnitPrice().compareTo(BigDecimal.ZERO) <= 0) {
-                throw new InvalidCommandException("Item price must be greater than zero");
+                throw new InvalidCommandException("Kalem fiyatı sıfırdan büyük olmalıdır");
             }
         }
     }
 }
 ```
 
-## Query Side Implementation
+## Sorgu Tarafı Uygulaması
 
-### Query Model
+### Sorgu Modeli
 
 ```java
-// Order Queries
+// Sipariş Sorguları
 public class GetOrderByIdQuery implements Query<OrderDto> {
     private final String queryId;
     private final String orderId;
@@ -460,7 +453,7 @@ public class GetOrderByIdQuery implements Query<OrderDto> {
         return OrderDto.class;
     }
     
-    // Getters
+    // Getter'lar
 }
 
 public class GetOrdersByCustomerQuery implements Query<List<OrderSummaryDto>> {
@@ -481,7 +474,7 @@ public class GetOrdersByCustomerQuery implements Query<List<OrderSummaryDto>> {
         return (Class<List<OrderSummaryDto>>) (Class<?>) List.class;
     }
     
-    // Getters
+    // Getter'lar
 }
 
 public class GetOrderStatisticsQuery implements Query<OrderStatisticsDto> {
@@ -500,11 +493,11 @@ public class GetOrderStatisticsQuery implements Query<OrderStatisticsDto> {
         return OrderStatisticsDto.class;
     }
     
-    // Getters
+    // Getter'lar
 }
 ```
 
-### Query Entities (Read Model)
+### Sorgu Varlıkları (Okuma Modeli)
 
 ```java
 @Entity
@@ -545,7 +538,7 @@ public class OrderReadModelEntity {
     @Column(nullable = false)
     private Instant lastUpdated;
     
-    // Constructors, getters, setters
+    // Yapıcılar, getter'lar, setter'lar
 }
 
 @Entity
@@ -577,11 +570,11 @@ public class OrderItemReadModelEntity {
     @Column(nullable = false)
     private BigDecimal totalPrice;
     
-    // Constructors, getters, setters
+    // Yapıcılar, getter'lar, setter'lar
 }
 ```
 
-### Query Handlers
+### Sorgu Yöneticileri (Query Handlers)
 
 ```java
 @Component
@@ -613,7 +606,7 @@ public class OrderQueryHandler implements
                 orderQueryRepository.findById(query.getOrderId());
             
             if (optionalOrder.isEmpty()) {
-                throw new OrderNotFoundException("Order not found: " + query.getOrderId());
+                throw new OrderNotFoundException("Sipariş bulunamadı: " + query.getOrderId());
             }
             
             OrderReadModelEntity order = optionalOrder.get();
@@ -623,7 +616,7 @@ public class OrderQueryHandler implements
             OrderDto dto = mapToOrderDto(order, items);
             
             meterRegistry.counter("query.get_order_by_id").increment();
-            log.debug("Retrieved order: {}", query.getOrderId());
+            log.debug("Sipariş alındı: {}", query.getOrderId());
             
             return dto;
             
@@ -647,7 +640,7 @@ public class OrderQueryHandler implements
                 .collect(Collectors.toList());
             
             meterRegistry.counter("query.get_orders_by_customer").increment();
-            log.debug("Retrieved {} orders for customer: {}", 
+            log.debug("Müşteri için {} sipariş alındı: {}", 
                 summaries.size(), query.getCustomerId());
             
             return summaries;
@@ -675,7 +668,7 @@ public class OrderQueryHandler implements
             dto.setPendingOrders(stats.getPendingOrders());
             
             meterRegistry.counter("query.get_order_statistics").increment();
-            log.debug("Retrieved order statistics for period: {} to {}", 
+            log.debug("Sipariş istatistikleri alındı, dönem: {} - {}", 
                 query.getStartDate(), query.getEndDate());
             
             return dto;
@@ -732,9 +725,9 @@ public class OrderQueryHandler implements
 }
 ```
 
-## Event-Driven CQRS
+## Olay Tabanlı CQRS
 
-### Event Handlers for Read Model Updates
+### Okuma Modeli Güncellemeleri için Olay Yöneticileri
 
 ```java
 @Component
@@ -764,10 +757,10 @@ public class OrderReadModelUpdater {
     @Transactional("queryTransactionManager")
     public void handleOrderCreated(OrderCreatedEvent event) {
         try {
-            // Get customer information
+            // Müşteri bilgilerini al
             CustomerDto customer = customerService.getCustomer(event.getCustomerId());
             
-            // Create order read model
+            // Sipariş okuma modelini oluştur
             OrderReadModelEntity orderReadModel = new OrderReadModelEntity();
             orderReadModel.setOrderId(event.getAggregateId());
             orderReadModel.setCustomerId(event.getCustomerId());
@@ -782,7 +775,7 @@ public class OrderReadModelUpdater {
             
             orderQueryRepository.save(orderReadModel);
             
-            // Create order item read models
+            // Sipariş kalemleri okuma modellerini oluştur
             List<OrderItemReadModelEntity> itemReadModels = event.getItems().stream()
                 .map(item -> {
                     ProductDto product = productService.getProduct(item.getProductId());
@@ -804,12 +797,12 @@ public class OrderReadModelUpdater {
             orderItemQueryRepository.saveAll(itemReadModels);
             
             meterRegistry.counter("read_model.order_created").increment();
-            log.info("Updated read model for order created: {}", event.getAggregateId());
+            log.info("Okuma modeli güncellendi, sipariş oluşturuldu: {}", event.getAggregateId());
             
         } catch (Exception e) {
             meterRegistry.counter("read_model.update_errors",
                 "event_type", "OrderCreatedEvent").increment();
-            log.error("Failed to update read model for OrderCreatedEvent", e);
+            log.error("OrderCreatedEvent için okuma modeli güncellenirken hata oluştu", e);
         }
     }
     
@@ -830,15 +823,15 @@ public class OrderReadModelUpdater {
                 orderQueryRepository.save(order);
                 
                 meterRegistry.counter("read_model.order_confirmed").increment();
-                log.info("Updated read model for order confirmed: {}", event.getAggregateId());
+                log.info("Okuma modeli güncellendi, sipariş onaylandı: {}", event.getAggregateId());
             } else {
-                log.warn("Order not found in read model for confirmation: {}", event.getAggregateId());
+                log.warn("Onay için okuma modelinde sipariş bulunamadı: {}", event.getAggregateId());
             }
             
         } catch (Exception e) {
             meterRegistry.counter("read_model.update_errors",
                 "event_type", "OrderConfirmedEvent").increment();
-            log.error("Failed to update read model for OrderConfirmedEvent", e);
+            log.error("OrderConfirmedEvent için okuma modeli güncellenirken hata oluştu", e);
         }
     }
     
@@ -860,21 +853,21 @@ public class OrderReadModelUpdater {
                 orderQueryRepository.save(order);
                 
                 meterRegistry.counter("read_model.order_cancelled").increment();
-                log.info("Updated read model for order cancelled: {}", event.getAggregateId());
+                log.info("Okuma modeli güncellendi, sipariş iptal edildi: {}", event.getAggregateId());
             } else {
-                log.warn("Order not found in read model for cancellation: {}", event.getAggregateId());
+                log.warn("İptal için okuma modelinde sipariş bulunamadı: {}", event.getAggregateId());
             }
             
         } catch (Exception e) {
             meterRegistry.counter("read_model.update_errors",
                 "event_type", "OrderCancelledEvent").increment();
-            log.error("Failed to update read model for OrderCancelledEvent", e);
+            log.error("OrderCancelledEvent için okuma modeli güncellenirken hata oluştu", e);
         }
     }
 }
 ```
 
-### Command and Query Bus
+### Komut ve Sorgu Bus
 
 ```java
 @Component
@@ -895,13 +888,13 @@ public class CommandBus {
         
         if (handler == null) {
             throw new CommandHandlerNotFoundException(
-                "No handler found for command: " + command.getClass().getSimpleName());
+                "Komut için hiçbir yöneticisi bulunamadı: " + command.getClass().getSimpleName());
         }
         
         Timer.Sample sample = Timer.start(meterRegistry);
         
         try {
-            log.info("Dispatching command: {} with ID: {}", 
+            log.info("Komut gönderiliyor: {} ID'si ile", 
                 command.getClass().getSimpleName(), command.getCommandId());
             
             handler.handle(command);
@@ -912,7 +905,7 @@ public class CommandBus {
         } catch (Exception e) {
             meterRegistry.counter("command_bus.dispatch_errors",
                 "command_type", command.getClass().getSimpleName()).increment();
-            log.error("Failed to dispatch command: {}", command.getClass().getSimpleName(), e);
+            log.error("Komut gönderilirken hata oluştu: {}", command.getClass().getSimpleName(), e);
             throw e;
         } finally {
             sample.stop(Timer.builder("command_bus.dispatch_duration")
@@ -956,13 +949,13 @@ public class QueryBus {
         
         if (handler == null) {
             throw new QueryHandlerNotFoundException(
-                "No handler found for query: " + query.getClass().getSimpleName());
+                "Sorgu için hiçbir yöneticisi bulunamadı: " + query.getClass().getSimpleName());
         }
         
         Timer.Sample sample = Timer.start(meterRegistry);
         
         try {
-            log.debug("Dispatching query: {} with ID: {}", 
+            log.debug("Sorgu gönderiliyor: {} ID'si ile", 
                 query.getClass().getSimpleName(), query.getQueryId());
             
             R result = handler.handle(query);
@@ -975,7 +968,7 @@ public class QueryBus {
         } catch (Exception e) {
             meterRegistry.counter("query_bus.dispatch_errors",
                 "query_type", query.getClass().getSimpleName()).increment();
-            log.error("Failed to dispatch query: {}", query.getClass().getSimpleName(), e);
+            log.error("Sorgu gönderilirken hata oluştu: {}", query.getClass().getSimpleName(), e);
             throw e;
         } finally {
             sample.stop(Timer.builder("query_bus.dispatch_duration")
@@ -1002,7 +995,7 @@ public class QueryBus {
 }
 ```
 
-### REST Controller with CQRS
+### CQRS ile REST Controller
 
 ```java
 @RestController
@@ -1076,4 +1069,4 @@ public class OrderController {
 }
 ```
 
-Bu kapsamlı CQRS implementasyonu, Spring Boot ekosisteminde yazma ve okuma işlemlerinin ayrı optimizasyonuna olanak tanıyarak yüksek performans ve ölçeklenebilirlik sağlamaktadır.
+Bu kapsamlı CQRS uygulaması, Spring Boot ekosisteminde yazma ve okuma işlemlerinin ayrı optimizasyonuna olanak tanıyarak yüksek performans ve ölçeklenebilirlik sağlamaktadır.

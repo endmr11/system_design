@@ -1,150 +1,150 @@
 # HTTP, REST, gRPC Protokolleri
 
-## Spring Boot ile REST API Development
+## Spring Boot ile REST API Geliştirme
 
 ### Spring WebMVC
-- Traditional servlet-based approach
-- Blocking I/O model
-- Widely adopted ve mature
+- Geleneksel servlet tabanlı yaklaşım
+- Bloklanabilir I/O modeli
+- Yaygın olarak benimsenmiş ve olgun
 
 ### Spring WebFlux
-- Reactive programming model
-- Non-blocking I/O
-- Mono/Flux types ile async streams
+- Reaktif programlama modeli
+- Bloklanmayan I/O
+- Mono/Flux türleri ile eşzamansız akışlar
 
-### Content Negotiation
-- `@RequestMapping(produces/consumes)` ile MediaType handling
-- JSON/XML/Protocol Buffers support
+### İçerik Müzakeresi
+- `@RequestMapping(produces/consumes)` ile MediaType işleme
+- JSON/XML/Protocol Buffers desteği
 
-### Validation
-- Bean Validation (`@Valid`, `@NotNull`, `@Size`) ile request validation
-- MethodValidationInterceptor ile method-level validation
+### Doğrulama
+- Bean Validation (`@Valid`, `@NotNull`, `@Size`) ile istek doğrulama
+- MethodValidationInterceptor ile metod seviyesi doğrulama
 
-### Error Handling
-- `@ControllerAdvice` ile global exception handling
-- ResponseEntity ile custom HTTP status codes
+### Hata İşleme
+- `@ControllerAdvice` ile global istisna işleme
+- ResponseEntity ile özel HTTP durum kodları
 
-## REST API Best Practices (Spring Boot ile)
+## REST API En İyi Uygulamalar (Spring Boot ile)
 
-### Richardson Maturity Model
-- **Level 0**: HTTP as transport
-- **Level 1**: Resources
-- **Level 2**: HTTP Verbs
-- **Level 3**: HATEOAS support için Spring HATEOAS library
+### Richardson Olgunluk Modeli
+- **Seviye 0**: HTTP taşıma olarak
+- **Seviye 1**: Kaynaklar
+- **Seviye 2**: HTTP Fiilleri
+- **Seviye 3**: HATEOAS desteği için Spring HATEOAS kütüphanesi
 
-### Versioning Strategies
-- **URL versioning** (`/api/v1/`)
-- **Header-based versioning**
-- **Content negotiation**
+### Sürümleme Stratejileri
+- **URL sürümlemesi** (`/api/v1/`)
+- **Başlık tabanlı sürümleme**
+- **İçerik müzakeresi**
 
-### Documentation
-- **SpringDoc OpenAPI** (Swagger) ile automatic API documentation
-- `@Operation` ve `@Schema` annotations
+### Dokümantasyon
+- **SpringDoc OpenAPI** (Swagger) ile otomatik API dokümantasyonu
+- `@Operation` ve `@Schema` açıklamaları
 
-### Security
-- **Spring Security** ile JWT token validation
-- **OAuth2 Resource Server** configuration
+### Güvenlik
+- **Spring Security** ile JWT token doğrulama
+- **OAuth2 Resource Server** yapılandırması
 
-## gRPC Integration (Spring Boot ile)
+## gRPC Entegrasyonu (Spring Boot ile)
 
-### gRPC Starters
-- `spring-boot-starter-grpc-server`/`client` dependencies
+### gRPC Başlatıcıları
+- `spring-boot-starter-grpc-server`/`client` bağımlılıkları
 
-### Protobuf Code Generation
-- `protobuf-maven-plugin` ile Java class generation
+### Protobuf Kod Üretimi
+- `protobuf-maven-plugin` ile Java sınıf üretimi
 
-### Service Implementation
-- `@GrpcService` annotation ile service implementation
-- Blocking/non-blocking stub'lar
+### Servis Uygulaması
+- `@GrpcService` açıklaması ile servis uygulaması
+- Bloklanabilir/bloklanmayan taslaklar
 
-### Interceptors
-- gRPC interceptors ile authentication, logging, metrics collection
+### Kesiciler
+- gRPC kesicileri ile kimlik doğrulama, günlükleme, metrik toplama
 
-### Performance Benefits
-- Binary serialization ile %30-50 daha az bandwidth
-- HTTP/2 multiplexing
-- Bi-directional streaming
+### Performans Faydaları
+- İkili serileştirme ile %30-50 daha az bant genişliği
+- HTTP/2 çoklama
+- Çift yönlü akış
 
-## Protocol Selection Criteria
+## Protokol Seçim Kriterleri
 
 ### REST
-- ✅ Public API'ler
-- ✅ Browser-based clients
-- ✅ Human-readable requirements
-- ✅ Caching support
-- ❌ High-performance scenarios
+- ✅ Genel API'ler
+- ✅ Tarayıcı tabanlı istemciler
+- ✅ İnsan tarafından okunabilir gereksinimler
+- ✅ Önbellek desteği
+- ❌ Yüksek performans senaryoları
 
 ### gRPC
-- ✅ High-performance internal services
-- ✅ Polyglot microservices
-- ✅ Real-time streaming requirements
-- ✅ Type safety
-- ❌ Browser support
+- ✅ Yüksek performanslı dahili servisler
+- ✅ Çok dilli mikroservisler
+- ✅ Gerçek zamanlı akış gereksinimleri
+- ✅ Tür güvenliği
+- ❌ Tarayıcı desteği
 
 ### GraphQL
-- ✅ Complex query requirements
-- ✅ Mobile clients ile bandwidth optimization
-- ✅ Frontend-driven development
-- ❌ Caching complexity
+- ✅ Karmaşık sorgu gereksinimleri
+- ✅ Mobil istemciler ile bant genişliği optimizasyonu
+- ✅ Ön uç odaklı geliştirme
+- ❌ Önbellek karmaşıklığı
 
-## GraphQL Integration
+## GraphQL Entegrasyonu
 
 ### Spring GraphQL
-- Schema-first approach
-- Type definitions
+- Şema öncelikli yaklaşım
+- Tür tanımları
 
 ### DataFetcher
-- Custom resolver implementations
+- Özel çözümleyici uygulamaları
 - N+1 problem çözümü
 
-### Batching & Caching
-- DataLoader pattern
-- Field-level caching
+### Toplu İşleme ve Önbellek
+- DataLoader deseni
+- Alan seviyesi önbellekleme
 
-### Security
-- Field-level authorization
-- Depth limiting
+### Güvenlik
+- Alan seviyesi yetkilendirme
+- Derinlik sınırlama
 
-### Performance Monitoring
-- Query complexity analysis
-- Execution time tracking
+### Performans İzleme
+- Sorgu karmaşıklığı analizi
+- Yürütme süresi takibi
 
-## WebSocket & Server-Sent Events
+## WebSocket ve Sunucu Gönderilen Olaylar
 
 ### Spring WebSocket
-- STOMP protocol
-- Message broker integration
+- STOMP protokolü
+- Mesaj aracısı entegrasyonu
 
-### Real-time Updates
-- Pub/sub pattern
-- Topic-based messaging
+### Gerçek Zamanlı Güncellemeler
+- Yayın/abone deseni
+- Konu tabanlı mesajlaşma
 
-### Connection Management
-- Heartbeat mechanism
-- Reconnection strategy
+### Bağlantı Yönetimi
+- Kalp atışı mekanizması
+- Yeniden bağlanma stratejisi
 
-### Scalability
-- WebSocket clustering
-- Sticky sessions
+### Ölçeklenebilirlik
+- WebSocket kümeleme
+- Yapışkan oturumlar
 
-### Security
-- CSRF protection
-- Origin validation
+### Güvenlik
+- CSRF koruması
+- Kaynak doğrulama
 
-## Protocol Comparison
+## Protokol Karşılaştırması
 
 | Özellik | REST | gRPC | GraphQL |
 |---------|------|------|---------|
-| Performance | Orta | Yüksek | Orta |
-| Browser Support | ✅ | ❌ | ✅ |
-| Streaming | ❌ | ✅ | ✅ |
-| Type Safety | ❌ | ✅ | ✅ |
-| Caching | ✅ | ❌ | Karmaşık |
-| Learning Curve | Düşük | Orta | Yüksek |
+| Performans | Orta | Yüksek | Orta |
+| Tarayıcı Desteği | ✅ | ❌ | ✅ |
+| Akış | ❌ | ✅ | ✅ |
+| Tür Güvenliği | ❌ | ✅ | ✅ |
+| Önbellekleme | ✅ | ❌ | Karmaşık |
+| Öğrenme Eğrisi | Düşük | Orta | Yüksek |
 
-## Implementation Examples
+## Uygulama Örnekleri
 
-### REST Endpoint
+### REST Uç Noktası
 ```java
 @RestController
 @RequestMapping("/api/v1/users")
@@ -164,7 +164,7 @@ public class UserController {
 }
 ```
 
-### gRPC Service
+### gRPC Servisi
 ```java
 @GrpcService
 public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
@@ -182,24 +182,25 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
 }
 ```
 
-## Performance Optimization
+## Performans Optimizasyonu
 
-### REST API Optimization
-- HTTP/2 support
-- Response compression
-- ETag caching
-- Pagination
-- Field selection
+### REST API Optimizasyonu
+- HTTP/2 desteği
+- Yanıt sıkıştırma
+- ETag önbellekleme
+- Sayfalama
+- Alan seçimi
 
-### gRPC Optimization
-- Connection pooling
-- Streaming for large datasets
-- Compression algorithms
-- Keep-alive settings
+### gRPC Optimizasyonu
+- Bağlantı havuzu
+- Büyük veri kümeleri için akış
+- Sıkıştırma algoritmaları
+- Canlı tutma ayarları
 
-### Common Optimizations
-- Request batching
-- Connection reuse
-- Circuit breaker pattern
-- Load balancing
-- Health checks
+### Ortak Optimizasyonlar
+- İstek toplu işleme
+- Bağlantı yeniden kullanımı
+- Devre kesici deseni
+- Yük dengeleme
+- Sağlık kontrolleri
+
