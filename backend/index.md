@@ -1,4 +1,4 @@
-# Backend System Design
+# Backend Sistem Tasarımı
 
 Backend sistem tasarımı, ölçeklenebilir, güvenilir ve yüksek performanslı sunucu tarafı uygulamaları oluşturmanın temel prensiplerini kapsar.
 
