@@ -1,5 +1,81 @@
 # Mobile System Design
 
+## Mobile Application Architecture
+
+```mermaid
+graph TB
+    subgraph Presentation Layer
+        UI[UI Components]
+        VM[View Models]
+        State[State Management]
+    end
+    
+    subgraph Domain Layer
+        UseCases[Use Cases]
+        Repositories[Repositories]
+        Models[Domain Models]
+    end
+    
+    subgraph Data Layer
+        LocalDB[(Local Database)]
+        RemoteAPI[Remote API]
+        Cache[(Cache)]
+    end
+    
+    UI --> VM
+    VM --> State
+    State --> UseCases
+    UseCases --> Repositories
+    Repositories --> Models
+    Repositories --> LocalDB
+    Repositories --> RemoteAPI
+    Repositories --> Cache
+    
+    subgraph Infrastructure
+        Analytics[Analytics]
+        CrashReporting[Crash Reporting]
+        PushNotifications[Push Notifications]
+    end
+    
+    UI --> Analytics
+    UI --> CrashReporting
+    UI --> PushNotifications
+```
+
+## Data Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI as UI Layer
+    participant VM as ViewModel
+    participant UseCase as UseCase
+    participant Repo as Repository
+    participant Cache as Cache
+    participant API as Remote API
+    participant DB as Local DB
+
+    User->>UI: User Action
+    UI->>VM: Update State
+    VM->>UseCase: Execute Use Case
+    UseCase->>Repo: Request Data
+    
+    alt Cache Available
+        Repo->>Cache: Check Cache
+        Cache-->>Repo: Return Cached Data
+    else Cache Miss
+        Repo->>API: Fetch from API
+        API-->>Repo: Return Data
+        Repo->>Cache: Update Cache
+    end
+    
+    Repo->>DB: Persist Data
+    Repo-->>UseCase: Return Data
+    UseCase-->>VM: Update ViewModel
+    VM-->>UI: Update UI
+    UI-->>User: Show Result
+```
+
 Modern mobile application development is a much broader system design discipline than simply writing code. Today's mobile applications serving millions of users require complex architectural decisions, performance optimizations, and comprehensive security strategies. This documentation provides an in-depth examination of all aspects of enterprise-level mobile system design.
 
 ## Comprehensive Chapter List

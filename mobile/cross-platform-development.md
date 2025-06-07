@@ -1,10 +1,29 @@
 <!-- filepath: /Users/eren/Desktop/system_design/mobile/cross-platform-development.md -->
 # Çapraz Platform Mobil Geliştirme
 
-## Genel Bakış
+## Framework Karşılaştırma Diyagramı
 
-Bu bölümde, mobilde platformlar arası geliştirme stratejileri, avantajları, dezavantajları ve popüler frameworklerin detaylı karşılaştırmaları sunulmaktadır.
+```mermaid
+graph TD
+    Native[Native (iOS/Android)]
+    RN[React Native]
+    Flutter[Flutter]
+    Xamarin[Xamarin]
+    Ionic[Ionic]
+    Shared[Paylaşılan Kod]
+    UI[UI Katmanı]
+    Logic[İş Mantığı]
+    Platform[Platform API]
 
+    Shared --> RN
+    Shared --> Flutter
+    Shared --> Xamarin
+    Shared --> Ionic
+    RN --> UI
+    Flutter --> UI
+    Xamarin --> UI
+    Ionic --> UI
+    UI --> Platform
 ## Framework Karşılaştırma Matrisi
 
 ### Özellik Karşılaştırması

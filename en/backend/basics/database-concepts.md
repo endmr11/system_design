@@ -1,3 +1,23 @@
+# Core Database Concepts
+
+## Database Architecture Diagram
+
+```mermaid
+graph TD
+    subgraph SQL
+        SQLApp[Application]
+        SQLDB[(SQL Database)]
+        SQLApp -- SQL Query --> SQLDB
+    end
+    subgraph NoSQL
+        NoSQLApp[Application]
+        NoSQLDB[(NoSQL Database)]
+        NoSQLApp -- JSON/BSON/Key-Value --> NoSQLDB
+    end
+    SQLApp -.-> NoSQLDB
+    NoSQLApp -.-> SQLDB
+```
+
 # Basic Database Concepts
 
 ## SQL Databases (with Spring Boot)

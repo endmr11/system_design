@@ -1,5 +1,25 @@
 # HTTP, REST, gRPC Protocols
 
+## Protocol Interaction
+
+```mermaid
+graph TD
+    Client1[Web/Mobile Client]
+    Client2[Microservice]
+    Client3[Frontend]
+    REST[REST API]
+    gRPC[gRPC Service]
+    GraphQL[GraphQL API]
+    DB[(Database)]
+
+    Client1 -- HTTP/JSON --> REST
+    Client2 -- HTTP/2 ProtoBuf --> gRPC
+    Client3 -- Query/Mutation --> GraphQL
+    REST -- CRUD --> DB
+    gRPC -- RPC --> DB
+    GraphQL -- Resolver --> DB
+```
+
 ## REST API Development with Spring Boot
 
 ### Spring WebMVC

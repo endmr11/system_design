@@ -1,4 +1,21 @@
-# Basic Data Structures and Algorithms - System Design Context
+# Core Data Structures and Algorithms - System Design Context
+
+## Data Structures Diagram
+
+```mermaid
+graph TD
+    Array[Array/List]
+    LinkedList[Linked List]
+    HashMap[Hash Table/Map]
+    Tree[Tree Structure]
+    Graph[Graph Structure]
+
+    Array -->|Used by| HashMap
+    HashMap -->|Used by| Tree
+    Tree -->|Used by| Graph
+    LinkedList -->|Used by| Array
+    Graph -->|Complex relations| HashMap
+```
 
 ## Data Structures (Production Use Cases)
 

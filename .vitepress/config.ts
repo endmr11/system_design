@@ -1,9 +1,14 @@
 import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: "System Design",
   description: "Comprehensive System Design Documentation",
   base: '/system_design/',
+
+  markdown: {
+    mermaid: true
+  },
 
   // Internationalization configuration
   locales: {
@@ -1244,4 +1249,4 @@ export default defineConfig({
       provider: "local",
     },
   },
-}) 
+})) 

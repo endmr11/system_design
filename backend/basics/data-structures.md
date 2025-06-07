@@ -1,5 +1,22 @@
 # Temel Veri Yapıları ve Algoritmalar - Sistem Tasarımı Bağlamı
 
+## Veri Yapıları Diyagramı
+
+```mermaid
+graph TD
+    Array[Dizi/List]
+    LinkedList[Bağlı Liste]
+    HashMap[Hash Tablosu/Map]
+    Tree[Ağaç Yapısı]
+    Graph[Grafik Yapısı]
+
+    Array -->|Kullanılır| HashMap
+    HashMap -->|Kullanılır| Tree
+    Tree -->|Kullanılır| Graph
+    LinkedList -->|Kullanılır| Array
+    Graph -->|Karmaşık ilişkiler| HashMap
+```
+
 ## Veri Yapıları (Üretim Kullanım Senaryoları)
 
 ### Dizi/List

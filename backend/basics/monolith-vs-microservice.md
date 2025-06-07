@@ -1,5 +1,34 @@
 # Monolith vs. Microservice Mimari
 
+## Mimari Karşılaştırması
+
+```mermaid
+graph TB
+    subgraph Monolith
+        M[Monolithic App]
+        M --> DB[(Database)]
+        M --> Cache[(Cache)]
+        M --> Auth[Auth]
+        M --> UI[UI]
+    end
+
+    subgraph Microservices
+        API[API Gateway]
+        API --> S1[Service 1]
+        API --> S2[Service 2]
+        API --> S3[Service 3]
+        S1 --> DB1[(DB 1)]
+        S2 --> DB2[(DB 2)]
+        S3 --> DB3[(DB 3)]
+        S1 --> Cache[(Cache)]
+        S2 --> Cache
+        S3 --> Cache
+    end
+
+    style Monolith fill:#f9f,stroke:#333,stroke-width:2px
+    style Microservices fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ## Monolitik Mimari (Spring Boot ile)
 
 ### Tek Uygulama Yaklaşımı

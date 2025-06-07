@@ -1,5 +1,23 @@
 # Temel Veritabanı Kavramları
 
+## Veritabanı Mimarisi Diyagramı
+
+```mermaid
+graph TD
+    subgraph SQL
+        SQLApp[Uygulama]
+        SQLDB[(SQL Database)]
+        SQLApp -- SQL Query --> SQLDB
+    end
+    subgraph NoSQL
+        NoSQLApp[Uygulama]
+        NoSQLDB[(NoSQL Database)]
+        NoSQLApp -- JSON/BSON/Key-Value --> NoSQLDB
+    end
+    SQLApp -.-> NoSQLDB
+    NoSQLApp -.-> SQLDB
+```
+
 ## SQL Veritabanları (Spring Boot ile)
 
 ### Spring Data JPA
