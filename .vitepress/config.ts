@@ -9,6 +9,19 @@ export default withMermaid(defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/x-icon', href: '/system_design/favicon.ico' }],
     ['link', { rel: 'icon', type: 'image/png', href: 'logo.png' }],
+    ['script', {}, `
+      (function() {
+        const browserLang = navigator.language || navigator.userLanguage;
+        const isTurkish = browserLang.toLowerCase().startsWith('tr');
+        
+        if (!isTurkish && window.location.pathname === '/system_design/') {
+          window.location.href = '/system_design/en/';
+        }
+        else if (isTurkish && window.location.pathname === '/system_design/en/') {
+          window.location.href = '/system_design/';
+        }
+      })();
+    `],
   ],
 
   // Internationalization configuration
