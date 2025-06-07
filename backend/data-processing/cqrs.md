@@ -4,6 +4,87 @@ CQRS, yazma (Komut) ve okuma (Sorgu) işlemlerini ayrı modellerde yönetme dese
 
 ## CQRS Mimarisi
 
+### Genel Mimari Diyagramı
+
+```mermaid
+graph TB
+    Client[İstemci] --> |Komut| CommandBus[Komut Bus]
+    Client --> |Sorgu| QueryBus[Sorgu Bus]
+    
+    CommandBus --> |İşle| CommandHandler[Komut İşleyicileri]
+    QueryBus --> |İşle| QueryHandler[Sorgu İşleyicileri]
+    
+    CommandHandler --> |Yaz| CommandDB[(Komut Veritabanı)]
+    QueryHandler --> |Oku| QueryDB[(Sorgu Veritabanı)]
+    
+    CommandHandler --> |Olay Yayınla| EventBus[Olay Bus]
+    EventBus --> |Güncelle| ReadModel[Okuma Modeli Güncelleyici]
+    ReadModel --> |Güncelle| QueryDB
+    
+    subgraph "Komut Tarafı"
+        CommandBus
+        CommandHandler
+        CommandDB
+    end
+    
+    subgraph "Sorgu Tarafı"
+        QueryBus
+        QueryHandler
+        QueryDB
+    end
+    
+    subgraph "Olay Tabanlı Senkronizasyon"
+        EventBus
+        ReadModel
+    end
+```
+
+### Komut ve Sorgu Akış Diyagramı
+
+```mermaid
+sequenceDiagram
+    participant Client as İstemci
+    participant CB as Komut Bus
+    participant CH as Komut İşleyici
+    participant CDB as Komut DB
+    participant EB as Olay Bus
+    participant RM as Okuma Modeli
+    participant QDB as Sorgu DB
+    participant QH as Sorgu İşleyici
+    participant QB as Sorgu Bus
+
+    Client->>CB: Komut Gönder
+    CB->>CH: Komutu İşle
+    CH->>CDB: Durum Güncelle
+    CH->>EB: Olay Yayınla
+    EB->>RM: Olayı İşle
+    RM->>QDB: Okuma Modelini Güncelle
+    
+    Client->>QB: Sorgu Gönder
+    QB->>QH: Sorguyu İşle
+    QH->>QDB: Veri Oku
+    QH->>Client: Sonuç Döndür
+```
+
+### Olay Tabanlı Okuma Modeli Güncelleme Diyagramı
+
+```mermaid
+stateDiagram-v2
+    [*] --> Komutİşleme
+    Komutİşleme --> OlayYayınlama: Başarılı
+    Komutİşleme --> Hata: Başarısız
+    
+    OlayYayınlama --> OkumaModeliGüncelleme
+    OkumaModeliGüncelleme --> Başarılı: Güncelleme Tamamlandı
+    OkumaModeliGüncelleme --> YenidenDeneme: Hata
+    
+    YenidenDeneme --> OkumaModeliGüncelleme: Belirli Aralıklarla
+    YenidenDeneme --> Hata: Maksimum Deneme Sayısı
+    
+    Başarılı --> [*]
+    Hata --> [*]
+```
+
 ### Temel Mimari Bileşenler
 
 **CQRS Yapılandırması:**

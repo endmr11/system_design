@@ -407,167 +407,71 @@ public class ShardCoordinatorService {
 }
 ```
 
+## Resharding Stratejisi
+
+```mermaid
+graph TB
+    subgraph ReshardingProcess
+        R1[Başlangıç] --> R2[Yeni Shard Ekleme]
+        R2 --> R3[Veri Migrasyonu]
+        R3 --> R4[Veri Doğrulama]
+        R4 --> R5[Traffic Yönlendirme]
+        R5 --> R6[Eski Shard Kaldırma]
+    end
+    
+    subgraph ZeroDowntime
+        Z1[Canlı Sistem] --> Z2[Yeni Shard]
+        Z2 --> Z3[Paralel Yazma]
+        Z3 --> Z4[Veri Senkronizasyonu]
+        Z4 --> Z5[Traffic Switch]
+    end
+    
+    style ReshardingProcess fill:#f9f,stroke:#333,stroke-width:2px
+    style ZeroDowntime fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ## Monitoring ve Health Checks
 
-### 1. Shard Health Monitoring
-
-```java
-@Component
-public class ShardHealthMonitor {
+```mermaid
+graph LR
+    subgraph Monitoring
+        M1[Metrics Collection] --> M2[Performance Metrics]
+        M1 --> M3[Health Checks]
+        M1 --> M4[Data Skew Detection]
+    end
     
-    private final Map<String, DataSource> shardDataSources;
-    private final MeterRegistry meterRegistry;
+    subgraph Alerts
+        A1[Threshold Breach] --> A2[Alert Generation]
+        A2 --> A3[Notification]
+        A3 --> A4[Action Trigger]
+    end
     
-    @Scheduled(fixedRate = 30000) // 30 seconds
-    public void checkShardHealth() {
-        shardDataSources.forEach((shardName, dataSource) -> {
-            Timer.Sample sample = Timer.start(meterRegistry);
-            
-            try (Connection connection = dataSource.getConnection()) {
-                boolean isHealthy = connection.isValid(5); // 5 second timeout
-                
-                meterRegistry.gauge("shard.health", 
-                    Tags.of("shard", shardName), 
-                    isHealthy ? 1.0 : 0.0);
-                
-                if (!isHealthy) {
-                    log.warn("Shard {} is unhealthy", shardName);
-                    // Trigger alerts
-                    triggerShardAlert(shardName, "Shard health check failed");
-                }
-            } catch (SQLException e) {
-                log.error("Failed to check health for shard {}", shardName, e);
-                meterRegistry.gauge("shard.health", 
-                    Tags.of("shard", shardName), 0.0);
-            } finally {
-                sample.stop(Timer.builder("shard.health.check.duration")
-                    .tag("shard", shardName)
-                    .register(meterRegistry));
-            }
-        });
-    }
-}
-```
-
-### 2. Performance Metrics
-
-```java
-@Aspect
-@Component
-public class ShardingMetricsAspect {
-    
-    private final MeterRegistry meterRegistry;
-    
-    @Around("@annotation(Sharded)")
-    public Object measureShardingOperation(ProceedingJoinPoint joinPoint) throws Throwable {
-        String operation = joinPoint.getSignature().getName();
-        Timer.Sample sample = Timer.start(meterRegistry);
-        
-        try {
-            Object result = joinPoint.proceed();
-            
-            meterRegistry.counter("sharding.operation.success",
-                "operation", operation).increment();
-            
-            return result;
-        } catch (Exception e) {
-            meterRegistry.counter("sharding.operation.error",
-                "operation", operation,
-                "error", e.getClass().getSimpleName()).increment();
-            throw e;
-        } finally {
-            sample.stop(Timer.builder("sharding.operation.duration")
-                .tag("operation", operation)
-                .register(meterRegistry));
-        }
-    }
-}
-```
-
-## Docker Compose ile Multi-Shard Setup
-
-```yaml
-version: '3.8'
-services:
-  shard1-db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: users_shard1
-      POSTGRES_USER: shard1_user
-      POSTGRES_PASSWORD: shard1_pass
-    ports:
-      - "5432:5432"
-    volumes:
-      - shard1_data:/var/lib/postgresql/data
-    
-  shard2-db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: users_shard2
-      POSTGRES_USER: shard2_user
-      POSTGRES_PASSWORD: shard2_pass
-    ports:
-      - "5433:5432"
-    volumes:
-      - shard2_data:/var/lib/postgresql/data
-      
-  shard3-db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: users_shard3
-      POSTGRES_USER: shard3_user
-      POSTGRES_PASSWORD: shard3_pass
-    ports:
-      - "5434:5432"
-    volumes:
-      - shard3_data:/var/lib/postgresql/data
-      
-  redis-coordinator:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    command: redis-server --appendonly yes
-    volumes:
-      - redis_data:/data
-
-  application:
-    build: .
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: sharded
-      SHARD1_URL: jdbc:postgresql://shard1-db:5432/users_shard1
-      SHARD2_URL: jdbc:postgresql://shard2-db:5432/users_shard2
-      SHARD3_URL: jdbc:postgresql://shard3-db:5432/users_shard3
-      REDIS_URL: redis://redis-coordinator:6379
-    depends_on:
-      - shard1-db
-      - shard2-db
-      - shard3-db
-      - redis-coordinator
-
-volumes:
-  shard1_data:
-  shard2_data:
-  shard3_data:
-  redis_data:
+    style Monitoring fill:#f9f,stroke:#333,stroke-width:2px
+    style Alerts fill:#bbf,stroke:#333,stroke-width:2px
 ```
 
 ## Best Practices
 
-### 1. Shard Key Seçimi
-- Uniform dağılım sağlayan key'ler seçin
-- Immutable field'ları tercih edin
-- Cross-shard query'leri minimize edin
-
-### 2. Resharding Stratejisi
-- Gradual migration planlayın
-- Zero-downtime migration techniques kullanın
-- Rollback planı hazırlayın
-
-### 3. Monitoring
-- Shard-level metrics toplayın
-- Cross-shard query performance'ını izleyin
-- Data skew'u detect edin
+```mermaid
+graph TB
+    subgraph ShardKeySelection
+        S1[Uniform Distribution] --> S2[Immutable Fields]
+        S2 --> S3[Minimize Cross-Shard]
+    end
+    
+    subgraph Monitoring
+        M1[Shard Metrics] --> M2[Query Performance]
+        M2 --> M3[Data Skew]
+    end
+    
+    subgraph Resharding
+        R1[Gradual Migration] --> R2[Zero-Downtime]
+        R2 --> R3[Rollback Plan]
+    end
+    
+    style ShardKeySelection fill:#f9f,stroke:#333,stroke-width:2px
+    style Monitoring fill:#bbf,stroke:#333,stroke-width:2px
+    style Resharding fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 Sharding, büyük ölçekli sistemlerde kaçınılmaz bir gereksinimdir, ancak complexity ekler. Doğru strateji ve implementasyon ile sistem performansını büyük ölçüde artırabilir.

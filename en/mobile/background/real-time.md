@@ -4,6 +4,62 @@
 
 Real-time communication enables instantaneous data exchange between mobile clients and servers, providing users with immediate updates and interactive experiences. This includes chat messaging, live updates, collaborative editing, gaming, and live streaming features.
 
+## System Architecture
+
+```mermaid
+graph TB
+    Client[Mobile Client] --> |WebSocket/SSE| LoadBalancer[Load Balancer]
+    LoadBalancer --> |Sticky Session| Server1[Server 1]
+    LoadBalancer --> |Sticky Session| Server2[Server 2]
+    LoadBalancer --> |Sticky Session| ServerN[Server N]
+    Server1 --> Redis[(Redis)]
+    Server2 --> Redis
+    ServerN --> Redis
+    Redis --> DB[(Database)]
+```
+
+## Connection Management
+
+```mermaid
+stateDiagram-v2
+    [*] --> Disconnected
+    Disconnected --> Connecting: Connection Request
+    Connecting --> Connected: Success
+    Connecting --> Disconnected: Failed
+    Connected --> Reconnecting: Connection Lost
+    Reconnecting --> Connected: Success
+    Reconnecting --> Disconnected: Max Retries Exceeded
+    Connected --> [*]: User Logout
+```
+
+## Message Processing Flow
+
+```mermaid
+sequenceDiagram
+    participant Client as Client
+    participant Queue as Message Queue
+    participant Server as Server
+    participant DB as Database
+    
+    Client->>Queue: Send Message
+    Queue->>Server: Forward if Connected
+    Server->>DB: Store Message
+    Server-->>Client: Send Acknowledgment
+    Server->>Queue: Failed Delivery
+    Queue->>Queue: Retry
+```
+
+## Performance Optimization
+
+```mermaid
+graph LR
+    Client[Mobile Client] --> |Batch Messages| Optimizer[Message Optimizer]
+    Optimizer --> |Compress| Network[Network Layer]
+    Network --> |Decompress| Server[Server]
+    Server --> |Cache| Redis[(Redis Cache)]
+    Redis --> |Persist| DB[(Database)]
+```
+
 ## Core Technologies and Protocols
 
 ### WebSocket Implementation

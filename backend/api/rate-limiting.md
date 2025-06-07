@@ -8,17 +8,53 @@
 - **Token distribution**
 - **Overflow handling**
 
+```mermaid
+graph TD
+    A[Token Bucket] --> B[Token Ekleme]
+    A --> C[Token Tüketme]
+    B --> D[Sabit Hızda Token Ekleme]
+    B --> E[Kapasite Kontrolü]
+    C --> F[Token Var mı?]
+    F -->|Evet| G[İsteği İşle]
+    F -->|Hayır| H[İsteği Reddet]
+    E -->|Dolu| I[Token Kaybı]
+    E -->|Boş| J[Token Ekle]
+```
+
 ### Leaky Bucket
 - **Constant rate processing**
 - **Queue management**
 - **Overflow handling**
 - **Rate smoothing**
 
+```mermaid
+graph TD
+    A[Leaky Bucket] --> B[İstek Kuyruğu]
+    A --> C[Sabit Hızda İşleme]
+    B --> D[Kuyruk Dolu mu?]
+    D -->|Evet| E[İsteği Reddet]
+    D -->|Hayır| F[Kuyruğa Ekle]
+    C --> G[Sabit Hızda İşle]
+    G --> H[İşlenen İstek]
+```
+
 ### Fixed Window
 - **Time-based limits**
 - **Request counting**
 - **Reset intervals**
 - **Simple implementation**
+
+```mermaid
+graph TD
+    A[Fixed Window] --> B[Zaman Penceresi]
+    A --> C[İstek Sayacı]
+    B --> D[Pencere Başlangıcı]
+    B --> E[Pencere Bitişi]
+    C --> F[Limit Kontrolü]
+    F -->|Aşıldı| G[İsteği Reddet]
+    F -->|Uygun| H[İsteği İşle]
+    E --> I[Sayacı Sıfırla]
+```
 
 ## Throttling Mekanizmaları
 
@@ -55,6 +91,22 @@
 - Burst handling
 
 ## Spring Boot Hız Sınırlama Implementation
+
+```mermaid
+graph TD
+    A[Spring Boot Uygulaması] --> B[Rate Limiting Interceptor]
+    B --> C[Rate Limit Configuration Service]
+    B --> D[Token Bucket Limiter]
+    B --> E[Sliding Window Limiter]
+    C --> F[Redis Configuration]
+    D --> F
+    E --> F
+    B --> G[Rate Limiting Aspect]
+    G --> D
+    G --> E
+    H[Controller] --> G
+    I[Custom Annotations] --> G
+```
 
 ### Redis-Based Token Bucket Implementation
 ```java

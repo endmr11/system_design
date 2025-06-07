@@ -2,6 +2,46 @@
 
 Mikroservis mimarisinde isteklerin servisler arasında takibi ve korelasyon yönetimi için gelişmiş teknikler.
 
+## Sistem Mimarisi
+
+```mermaid
+graph TD
+    Client[İstemci] -->|HTTP İsteği| API[API Gateway]
+    API -->|X-Correlation-ID| Service1[Mikroservis 1]
+    API -->|X-Correlation-ID| Service2[Mikroservis 2]
+    Service1 -->|X-Correlation-ID| Service3[Mikroservis 3]
+    Service2 -->|X-Correlation-ID| Service4[Mikroservis 4]
+    Service1 -->|X-Correlation-ID| Queue[Message Queue]
+    Queue -->|X-Correlation-ID| Service5[Mikroservis 5]
+    
+    subgraph "Korelasyon ID Akışı"
+        API -->|Header| Service1
+        Service1 -->|Header| Service3
+        Service1 -->|Header| Queue
+        Queue -->|Header| Service5
+    end
+```
+
+## Korelasyon ID Yaşam Döngüsü
+
+```mermaid
+sequenceDiagram
+    participant Client as İstemci
+    participant Gateway as API Gateway
+    participant Service as Mikroservis
+    participant Queue as Message Queue
+    
+    Client->>Gateway: HTTP İsteği
+    Gateway->>Gateway: Correlation ID Oluştur
+    Gateway->>Service: X-Correlation-ID Header
+    Service->>Service: MDC'ye Kaydet
+    Service->>Queue: Mesaj + Correlation ID
+    Queue->>Service: Mesaj İşleme
+    Service->>Service: MDC'den Oku
+    Service->>Gateway: Yanıt + Correlation ID
+    Gateway->>Client: Yanıt
+```
+
 ## Korelasyon Kimliği (Correlation ID) Uygulaması
 
 ### MDC (Mapped Diagnostic Context) Kullanımı

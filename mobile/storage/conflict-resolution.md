@@ -10,6 +10,23 @@ Mobil uygulamalarda çoklu cihaz kullanımı, offline düzenleme ve eşzamanlı 
 
 ### Tipik Çakışma Senaryoları
 
+```mermaid
+graph TD
+    A[Çoklu Cihaz Düzenleme] --> B[Çakışma Tespiti]
+    B --> C{Çakışma Var mı?}
+    C -->|Evet| D[Çakışma Çözümü]
+    C -->|Hayır| E[Senkronizasyon]
+    D --> F[Çözüm Stratejisi]
+    F --> G[Last Write Wins]
+    F --> H[First Write Wins]
+    F --> I[Custom Business Logic]
+    F --> J[CRDT]
+    G --> K[Senkronizasyon]
+    H --> K
+    I --> K
+    J --> K
+```
+
 **Multi-Device Editing**
 ```typescript
 // Aynı dökümanın farklı cihazlarda düzenlenmesi
@@ -108,31 +125,17 @@ class CollaborativeConflictResolver {
 ### Last-Write-Wins (LWW)
 En basit conflict resolution stratejisi.
 
-```swift
-// iOS Last-Write-Wins Implementation
-struct LWWResolver {
-    static func resolve<T: Timestamped>(_ local: T, _ remote: T) -> T {
-        return local.timestamp > remote.timestamp ? local : remote
-    }
-}
-
-// Usage with Core Data
-extension NSManagedObject {
-    func resolveConflictLWW(with remote: NSManagedObject) {
-        guard let localTimestamp = self.value(forKey: "lastModified") as? Date,
-              let remoteTimestamp = remote.value(forKey: "lastModified") as? Date else {
-            return
-        }
-        
-        if remoteTimestamp > localTimestamp {
-            // Remote wins - update local
-            for key in remote.entity.attributesByName.keys {
-                self.setValue(remote.value(forKey: key), forKey: key)
-            }
-        }
-        // Local wins - no action needed
-    }
-}
+```mermaid
+sequenceDiagram
+    participant C1 as Cihaz 1
+    participant S as Sunucu
+    participant C2 as Cihaz 2
+    
+    C1->>S: Veri Güncelleme (t1)
+    C2->>S: Veri Güncelleme (t2)
+    Note over S: t2 > t1
+    S->>C1: Cihaz 2'nin değişiklikleri
+    S->>C2: Onay
 ```
 
 **LWW Problems**
@@ -243,6 +246,18 @@ class BusinessLogicResolver {
 
 ### State-based CRDTs
 State merge ile conflict-free replication.
+
+```mermaid
+graph LR
+    A[CRDT Tipleri] --> B[State-based]
+    A --> C[Operation-based]
+    B --> D[G-Counter]
+    B --> E[PN-Counter]
+    B --> F[G-Set]
+    C --> G[LWW-Element-Set]
+    C --> H[RGA]
+    C --> I[YATA]
+```
 
 ```javascript
 // G-Counter (Grow-only Counter) CRDT

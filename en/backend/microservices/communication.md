@@ -2,6 +2,62 @@
 
 Microservice communication patterns are critical for building scalable and resilient distributed systems. This section covers comprehensive Spring Boot implementations for both synchronous (REST/gRPC) and asynchronous (Event-Driven) communication models.
 
+## Communication Models
+
+### Synchronous Communication
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ServiceA
+    participant ServiceB
+    
+    Client->>ServiceA: HTTP/gRPC Request
+    ServiceA->>ServiceB: HTTP/gRPC Request
+    ServiceB-->>ServiceA: Response
+    ServiceA-->>Client: Response
+```
+
+### Asynchronous Communication
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ServiceA
+    participant MessageBroker
+    participant ServiceB
+    
+    Client->>ServiceA: Request
+    ServiceA->>MessageBroker: Publish Event
+    ServiceA-->>Client: Immediate Response
+    MessageBroker->>ServiceB: Deliver Event
+    ServiceB->>ServiceB: Process
+```
+
+### Circuit Breaker Pattern
+```mermaid
+stateDiagram-v2
+    [*] --> CLOSED
+    CLOSED --> OPEN: Error Threshold Exceeded
+    OPEN --> HALF_OPEN: Timeout
+    HALF_OPEN --> CLOSED: Successful Request
+    HALF_OPEN --> OPEN: Failed Request
+```
+
+### Saga Pattern
+```mermaid
+sequenceDiagram
+    participant OrderService
+    participant PaymentService
+    participant InventoryService
+    participant ShippingService
+    
+    OrderService->>PaymentService: Payment Request
+    PaymentService-->>OrderService: Payment Confirmation
+    OrderService->>InventoryService: Update Stock
+    InventoryService-->>OrderService: Stock Updated
+    OrderService->>ShippingService: Shipping Request
+    ShippingService-->>OrderService: Shipping Confirmation
+```
+
 ## Synchronous Communication Patterns
 
 ### REST API Communication

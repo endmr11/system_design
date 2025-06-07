@@ -15,6 +15,22 @@ Bileşen, belirli bir işlevselliği kapsayan, bağımsız ve yeniden kullanıla
 - **Diğer bileşenlerle gevşek bağlıdır**
 - **Test edilebilir ve sürdürülebilirdir**
 
+```mermaid
+graph TD
+    A[Bileşen] --> B[Kendi Sorumluluğu]
+    A --> C[Belirli Arayüz]
+    A --> D[Gevşek Bağlılık]
+    A --> E[Test Edilebilirlik]
+    A --> F[Sürdürülebilirlik]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
+    style E fill:#bbf,stroke:#333,stroke-width:1px
+    style F fill:#bbf,stroke:#333,stroke-width:1px
+```
+
 ### Bileşen Türleri
 
 #### 1. UI Bileşenleri
@@ -42,6 +58,29 @@ CustomButton(title: "Kaydet") {
 }
 ```
 
+```mermaid
+graph TD
+    A[UI Bileşenleri] --> B[Görsel Öğeler]
+    A --> C[Etkileşim]
+    A --> D[Stil ve Tema]
+    
+    B --> B1[Butonlar]
+    B --> B2[Formlar]
+    B --> B3[Kartlar]
+    
+    C --> C1[Olaylar]
+    C --> C2[Durumlar]
+    
+    D --> D1[Renkler]
+    D --> D2[Yazı Tipleri]
+    D --> D3[Boyutlar]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
+```
+
 #### 2. İş Mantığı Bileşenleri
 ```kotlin
 // Android - İş Mantığı Bileşeni
@@ -67,6 +106,28 @@ class UserService {
         }
     }
 }
+```
+
+```mermaid
+graph TD
+    A[İş Mantığı Bileşenleri] --> B[Servisler]
+    A --> C[Validasyon]
+    A --> D[İş Kuralları]
+    
+    B --> B1[Kullanıcı Servisi]
+    B --> B2[Ödeme Servisi]
+    B --> B3[Veri Servisi]
+    
+    C --> C1[Form Validasyonu]
+    C --> C2[İş Kuralı Validasyonu]
+    
+    D --> D1[İş Akışları]
+    D --> D2[Kurallar]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
 ```
 
 #### 3. Veri Bileşenleri
@@ -109,6 +170,27 @@ class UserDataService implements DataService<User> {
     return users.map(userData => JSON.parse(userData));
   }
 }
+```
+
+```mermaid
+graph TD
+    A[Veri Bileşenleri] --> B[Veri Erişimi]
+    A --> C[Veri Dönüşümü]
+    A --> D[Veri Depolama]
+    
+    B --> B1[API İstekleri]
+    B --> B2[Veritabanı İşlemleri]
+    
+    C --> C1[Veri Formatları]
+    C --> C2[Veri Doğrulama]
+    
+    D --> D1[Yerel Depolama]
+    D --> D2[Uzak Depolama]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
 ```
 
 ## Bileşen Tasarım Prensipleri

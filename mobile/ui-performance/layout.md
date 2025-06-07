@@ -1,51 +1,51 @@
-# Layout Performance
+# Düzen Performansı
 
-## Layout Optimization Fundamentals
+## Düzen Optimizasyonu Temelleri
 
-### Understanding Layout Process
-- **Measure Phase**: View boyutlarının hesaplanması
-- **Layout Phase**: View pozisyonlarının belirlenmesi  
-- **Draw Phase**: Canvas'a çizim işlemi
+### Düzen Sürecini Anlama
+- **Ölçüm Aşaması**: View boyutlarının hesaplanması
+- **Düzen Aşaması**: View pozisyonlarının belirlenmesi  
+- **Çizim Aşaması**: Canvas'a çizim işlemi
 
-### Android Layout Optimization
+### Android Düzen Optimizasyonu
 
-#### ConstraintLayout Best Practices
+#### ConstraintLayout En İyi Uygulamaları
 ```kotlin
-// Optimized ConstraintLayout Example
+// Optimize Edilmiş ConstraintLayout Örneği
 class OptimizedConstraintLayout : ConstraintLayout {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        // Custom measure logic for performance
+        // Performans için özel ölçüm mantığı
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 }
 ```
 
-#### View Hierarchy Flattening
+#### View Hiyerarşisini Düzleştirme
 ```kotlin
-// Flatten nested LinearLayouts
+// İç içe LinearLayout'ları düzleştirme
 fun flattenLinearLayouts(parent: ViewGroup) {
     for (i in 0 until parent.childCount) {
         val child = parent.getChildAt(i)
         if (child is LinearLayout && child.childCount == 1) {
-            // Consider flattening
+            // Düzleştirmeyi düşün
         }
     }
 }
 ```
 
-### iOS Auto Layout Optimization
+### iOS Auto Layout Optimizasyonu
 
-#### Constraint Priority Management
+#### Kısıtlama Önceliği Yönetimi
 ```swift
-// iOS Auto Layout Optimization
+// iOS Auto Layout Optimizasyonu
 class OptimizedAutoLayoutView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
-        // Custom layout optimization
+        // Özel düzen optimizasyonu
     }
     
     func optimizeConstraints() {
-        // Reduce constraint complexity
+        // Kısıtlama karmaşıklığını azalt
         constraints.forEach { constraint in
             if constraint.priority.rawValue < 1000 {
                 constraint.priority = UILayoutPriority(999)
@@ -55,19 +55,19 @@ class OptimizedAutoLayoutView: UIView {
 }
 ```
 
-### Flutter Layout Performance
+### Flutter Düzen Performansı
 
-#### Efficient Widget Composition
+#### Verimli Widget Kompozisyonu
 ```dart
-// Flutter Layout Optimization
+// Flutter Düzen Optimizasyonu
 class OptimizedLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Use const constructors when possible
-        const Text('Static Text'),
-        // Minimize widget rebuilds
+        // Mümkün olduğunda const yapıcıları kullan
+        const Text('Statik Metin'),
+        // Widget yeniden oluşturmalarını minimize et
         RepaintBoundary(
           child: CustomPainter(
             painter: OptimizedPainter(),
@@ -79,11 +79,11 @@ class OptimizedLayout extends StatelessWidget {
 }
 ```
 
-## Performance Monitoring
+## Performans İzleme
 
-### Layout Performance Metrics
+### Düzen Performans Metrikleri
 ```kotlin
-// Android Layout Performance Monitoring
+// Android Düzen Performans İzleme
 class LayoutPerformanceMonitor {
     fun measureLayoutTime(view: View): Long {
         val startTime = System.nanoTime()

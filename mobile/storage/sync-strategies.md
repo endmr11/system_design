@@ -11,6 +11,19 @@ Modern mobil uygulamalarda veri senkronizasyonu, kullanıcı deneyiminin kesinti
 ### Full Synchronization
 Tüm veritabanının periodic olarak senkronize edildiği yaklaşımdır.
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Database
+    
+    Client->>Server: Tüm veriyi iste
+    Server->>Database: Verileri al
+    Database-->>Server: Tüm veriler
+    Server-->>Client: Tüm veriler
+    Client->>Database: Verileri kaydet
+```
+
 **Avantajları:**
 - Basit implementasyon
 - Garantili data consistency
@@ -23,6 +36,19 @@ Tüm veritabanının periodic olarak senkronize edildiği yaklaşımdır.
 
 ### Incremental Synchronization
 Sadece değişen verilerin senkronize edildiği yaklaşımdır.
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Database
+    
+    Client->>Server: Son senkronizasyon zamanını gönder
+    Server->>Database: Değişen verileri sorgula
+    Database-->>Server: Değişen veriler
+    Server-->>Client: Delta veriler
+    Client->>Database: Delta verileri uygula
+```
 
 **Delta Sync**
 ```kotlin
@@ -56,6 +82,19 @@ class DeltaSyncManager {
 ### Bi-directional Synchronization
 İki yönlü veri senkronizasyonu için merkezi conflict resolution gereklidir.
 
+```mermaid
+sequenceDiagram
+    participant Client1
+    participant Server
+    participant Client2
+    
+    Client1->>Server: Değişiklikleri gönder
+    Server->>Server: Conflict kontrolü
+    Server-->>Client1: Sonuç
+    Server-->>Client2: Değişiklikleri bildir
+    Client2->>Server: Değişiklikleri onayla
+```
+
 **Timestamp-based Sync**
 ```swift
 // iOS Timestamp-based Sync
@@ -83,34 +122,17 @@ class BiDirectionalSync {
 ### WebSocket-based Sync
 Gerçek zamanlı veri güncellemeleri için WebSocket connection'ları kullanılır.
 
-```javascript
-// React Native WebSocket Sync
-class RealtimeSync {
-  constructor() {
-    this.ws = new WebSocket('wss://api.example.com/sync');
-    this.setupEventHandlers();
-  }
-
-  setupEventHandlers() {
-    this.ws.onmessage = (event) => {
-      const { type, payload } = JSON.parse(event.data);
-      
-      switch(type) {
-        case 'entity_updated':
-          this.handleEntityUpdate(payload);
-          break;
-        case 'entity_deleted':
-          this.handleEntityDeletion(payload);
-          break;
-      }
-    };
-  }
-
-  async handleEntityUpdate(entity) {
-    await this.localDatabase.upsert(entity);
-    this.notifyUI(entity);
-  }
-}
+```mermaid
+sequenceDiagram
+    participant Client
+    participant WebSocket
+    participant Server
+    
+    Client->>WebSocket: Bağlantı kur
+    WebSocket->>Server: Bağlantı onayı
+    Server-->>WebSocket: Gerçek zamanlı güncellemeler
+    WebSocket-->>Client: Güncellemeleri ilet
+    Client->>Client: Verileri güncelle
 ```
 
 ### Server-Sent Events (SSE)
@@ -168,27 +190,12 @@ class PushTriggeredSync: UNUserNotificationCenterDelegate {
 ### Vector Clocks
 Distributed sistemlerde causal ordering için vector clock kullanımı.
 
-```kotlin
-// Vector Clock Implementation
-data class VectorClock(
-    val clocks: MutableMap<String, Long> = mutableMapOf()
-) {
-    fun increment(nodeId: String) {
-        clocks[nodeId] = (clocks[nodeId] ?: 0) + 1
-    }
-    
-    fun merge(other: VectorClock) {
-        for ((nodeId, timestamp) in other.clocks) {
-            clocks[nodeId] = maxOf(clocks[nodeId] ?: 0, timestamp)
-        }
-    }
-    
-    fun happensBefore(other: VectorClock): Boolean {
-        return clocks.all { (nodeId, timestamp) ->
-            timestamp <= (other.clocks[nodeId] ?: 0)
-        } && clocks != other.clocks
-    }
-}
+```mermaid
+graph TD
+    A[Node A] -->|Vector Clock: [A:1, B:0]| B[Node B]
+    B -->|Vector Clock: [A:1, B:1]| C[Node C]
+    C -->|Vector Clock: [A:1, B:1, C:1]| A
+    A -->|Conflict Resolution| D[Final State]
 ```
 
 ### Three-way Merge

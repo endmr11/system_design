@@ -5,36 +5,36 @@ Mobil uygulamalarda büyük veri setlerini verimli şekilde yüklemek ve göster
 ## Sayfalama Mimari Desenleri
 
 ### Geleneksel Sayfalama
-- **Offset-Based Pagination**: 
-  - `?page=2&limit=20` ile page-based navigation
-  - Simple implementation ama large datasets'te performance issues
-  - Skip-limit pattern ile database query optimization challenges
-- **Cursor-Based Pagination**:
-  - `?after=cursor_id&limit=20` ile stateful navigation
-  - Consistent results even with data changes
-  - Better performance for large datasets
+- **Offset Tabanlı Sayfalama**: 
+  - `?page=2&limit=20` ile sayfa tabanlı gezinme
+  - Basit uygulama ancak büyük veri setlerinde performans sorunları
+  - Skip-limit deseni ile veritabanı sorgu optimizasyon zorlukları
+- **İmleç Tabanlı Sayfalama**:
+  - `?after=cursor_id&limit=20` ile durum bilgili gezinme
+  - Veri değişikliklerinde bile tutarlı sonuçlar
+  - Büyük veri setleri için daha iyi performans
 
 ### Mobil-Optimize Sayfalama Stratejileri
-- **Progressive Loading**: Small initial page, larger subsequent pages
-- **Adaptive Page Sizes**: Network conditions'a göre dynamic page sizing
-- **Predictive Loading**: User behavior patterns ile intelligent prefetching
+- **Aşamalı Yükleme**: Küçük başlangıç sayfası, daha büyük sonraki sayfalar
+- **Uyarlanabilir Sayfa Boyutları**: Ağ koşullarına göre dinamik sayfa boyutlandırma
+- **Öngörülü Yükleme**: Kullanıcı davranış kalıpları ile akıllı ön yükleme
 
 ## Platform-Spesifik Sayfalama Uygulamaları
 
 ### Android Sayfalama Çözümleri
-- **Paging 3 Library Architecture**:
-  - PagingSource ile data loading abstraction
-  - RemoteMediator ile network + database coordination
-  - PagingDataAdapter ile RecyclerView integration
-  - LoadState handling ile loading/error states
-- **Advanced Features**:
-  - Separators ile grouped content
-  - Headers/Footers ile additional content
-  - Retry mechanisms ile error recovery
-  - Placeholder support ile smooth scrolling
+- **Paging 3 Kütüphane Mimarisi**:
+  - PagingSource ile veri yükleme soyutlaması
+  - RemoteMediator ile ağ + veritabanı koordinasyonu
+  - PagingDataAdapter ile RecyclerView entegrasyonu
+  - LoadState yönetimi ile yükleme/hata durumları
+- **Gelişmiş Özellikler**:
+  - Separators ile gruplandırılmış içerik
+  - Headers/Footers ile ek içerik
+  - Retry mekanizmaları ile hata kurtarma
+  - Placeholder desteği ile akıcı kaydırma
 
 ```kotlin
-// Android Paging 3 Implementation
+// Android Paging 3 Uygulaması
 class ItemPagingSource(
     private val apiService: ApiService,
     private val query: String
@@ -67,7 +67,7 @@ class ItemPagingSource(
     }
 }
 
-// Repository Implementation
+// Repository Uygulaması
 class ItemRepository(private val apiService: ApiService) {
     
     fun getItemsPagingFlow(query: String): Flow<PagingData<Item>> {
@@ -82,7 +82,7 @@ class ItemRepository(private val apiService: ApiService) {
     }
 }
 
-// Adapter Implementation
+// Adapter Uygulaması
 class ItemAdapter : PagingDataAdapter<Item, ItemViewHolder>(ItemDiffCallback()) {
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -101,17 +101,17 @@ class ItemAdapter : PagingDataAdapter<Item, ItemViewHolder>(ItemDiffCallback()) 
 ```
 
 ### iOS Sayfalama Desenleri
-- **UICollectionView Pagination**:
-  - `UICollectionViewDiffableDataSource` ile modern approach
-  - `willDisplay` delegate methods ile load triggers
-  - `NSFetchedResultsController` ile Core Data integration
-- **SwiftUI Pagination**:
-  - LazyVStack ile efficient list rendering
-  - @StateObject ile pagination state management
-  - Combine publishers ile reactive data loading
+- **UICollectionView Sayfalama**:
+  - `UICollectionViewDiffableDataSource` ile modern yaklaşım
+  - `willDisplay` delegate metodları ile yükleme tetikleyicileri
+  - `NSFetchedResultsController` ile Core Data entegrasyonu
+- **SwiftUI Sayfalama**:
+  - LazyVStack ile verimli liste render etme
+  - @StateObject ile sayfalama durum yönetimi
+  - Combine yayıncıları ile reaktif veri yükleme
 
 ```swift
-// iOS UICollectionView Pagination
+// iOS UICollectionView Sayfalama
 class ItemViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -170,7 +170,7 @@ extension ItemViewController: UICollectionViewDelegate {
     }
 }
 
-// SwiftUI Pagination
+// SwiftUI Sayfalama
 struct ItemListView: View {
     @StateObject private var viewModel = ItemViewModel()
     
@@ -194,7 +194,7 @@ struct ItemListView: View {
                     }
                 }
             }
-            .navigationTitle("Items")
+            .navigationTitle("Öğeler")
             .refreshable {
                 await viewModel.refresh()
             }
@@ -206,18 +206,18 @@ struct ItemListView: View {
 }
 ```
 
-### Flutter Pagination Solutions
-- **infinite_scroll_pagination Package**:
-  - PagingController ile state management
-  - Built-in error handling ile user experience
-  - Custom item builders ile flexible UI
-- **Custom Pagination Implementation**:
-  - ScrollController ile scroll position detection
-  - FutureBuilder ile async data loading
-  - State management ile pagination coordination
+### Flutter Sayfalama Çözümleri
+- **infinite_scroll_pagination Paketi**:
+  - PagingController ile durum yönetimi
+  - Yerleşik hata yönetimi ile kullanıcı deneyimi
+  - Özel öğe oluşturucuları ile esnek UI
+- **Özel Sayfalama Uygulaması**:
+  - ScrollController ile kaydırma pozisyonu tespiti
+  - FutureBuilder ile asenkron veri yükleme
+  - Durum yönetimi ile sayfalama koordinasyonu
 
 ```dart
-// Flutter Custom Pagination Implementation
+// Flutter Özel Sayfalama Uygulaması
 class PaginatedListView<T> extends StatefulWidget {
   final Future<List<T>> Function(int page) onLoadPage;
   final Widget Function(BuildContext context, T item) itemBuilder;
@@ -329,10 +329,10 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>> {
           Center(
             child: Column(
               children: [
-                Text('Error: $_error'),
+                Text('Hata: $_error'),
                 ElevatedButton(
                   onPressed: _loadPage,
-                  child: Text('Retry'),
+                  child: Text('Tekrar Dene'),
                 ),
               ],
             ),
@@ -345,55 +345,55 @@ class _PaginatedListViewState<T> extends State<PaginatedListView<T>> {
 }
 ```
 
-## Infinite Scroll Implementation
+## Sonsuz Kaydırma Uygulaması
 
-### Scroll Detection Mechanisms
-- **Threshold-Based Loading**: Load when 80% scrolled
-- **Predictive Loading**: Load based on scroll velocity
-- **Viewport-Based Loading**: Load when approaching visible area
+### Kaydırma Tespit Mekanizmaları
+- **Eşik Tabanlı Yükleme**: %80 kaydırıldığında yükleme
+- **Öngörülü Yükleme**: Kaydırma hızına göre yükleme
+- **Görünüm Alanı Tabanlı Yükleme**: Görünür alana yaklaşırken yükleme
 
-### Performance Optimization Techniques
-- **View Recycling**: 
-  - RecyclerView ViewHolder pattern (Android)
-  - UITableView cell reuse (iOS)
-  - ListView.builder efficient rendering (Flutter)
-- **Memory Management**:
-  - Window-based data management
-  - Automatic data cleanup for distant items
-  - Image lazy loading ile memory optimization
+### Performans Optimizasyon Teknikleri
+- **Görünüm Geri Dönüşümü**: 
+  - RecyclerView ViewHolder deseni (Android)
+  - UITableView hücre yeniden kullanımı (iOS)
+  - ListView.builder verimli render etme (Flutter)
+- **Bellek Yönetimi**:
+  - Pencere tabanlı veri yönetimi
+  - Uzak öğeler için otomatik veri temizleme
+  - Görüntü tembel yükleme ile bellek optimizasyonu
 
-### Advanced Infinite Scroll Features
-- **Bidirectional Scrolling**: Both forward and backward pagination
-- **Pull-to-Refresh Integration**: Manual refresh capability
-- **Empty State Handling**: No more data scenarios
-- **Error State Recovery**: Network error ile retry mechanisms
+### Gelişmiş Sonsuz Kaydırma Özellikleri
+- **Çift Yönlü Kaydırma**: İleri ve geri sayfalama
+- **Aşağı Çekerek Yenileme Entegrasyonu**: Manuel yenileme yeteneği
+- **Boş Durum Yönetimi**: Daha fazla veri olmayan senaryolar
+- **Hata Durumu Kurtarma**: Ağ hatası ile yeniden deneme mekanizmaları
 
-## Data Consistency Challenges
+## Veri Tutarlılığı Zorlukları
 
-### Real-Time Data Updates
-- **New Item Insertion**: Handle newly added items during pagination
-- **Item Modifications**: Update existing items without breaking pagination
-- **Item Deletions**: Remove items while maintaining scroll position
+### Gerçek Zamanlı Veri Güncellemeleri
+- **Yeni Öğe Ekleme**: Sayfalama sırasında yeni eklenen öğeleri yönetme
+- **Öğe Değişiklikleri**: Sayfalamayı bozmadan mevcut öğeleri güncelleme
+- **Öğe Silme**: Kaydırma pozisyonunu koruyarak öğeleri kaldırma
 
-### Concurrent Access Management
-- **Race Condition Prevention**: Multiple page loads'ı coordinate etme
-- **Cache Coordination**: Ensure consistency between cached and fresh data
-- **State Synchronization**: Multi-screen pagination state management
+### Eşzamanlı Erişim Yönetimi
+- **Yarış Durumu Önleme**: Çoklu sayfa yüklemelerini koordine etme
+- **Önbellek Koordinasyonu**: Önbelleklenmiş ve taze veri arasında tutarlılık sağlama
+- **Durum Senkronizasyonu**: Çoklu ekran sayfalama durum yönetimi
 
-## Network Optimization
+## Ağ Optimizasyonu
 
-### Smart Prefetching
-- **Usage Pattern Analysis**: Learn user scrolling behavior
-- **Network Condition Awareness**: Adjust prefetch strategy based on connection
-- **Battery Consideration**: Reduce prefetching on low battery
+### Akıllı Ön Yükleme
+- **Kullanım Kalıbı Analizi**: Kullanıcı kaydırma davranışını öğrenme
+- **Ağ Durumu Farkındalığı**: Bağlantıya göre ön yükleme stratejisini ayarlama
+- **Pil Düşüncesi**: Düşük pilde ön yüklemeyi azaltma
 
-### Request Optimization
-- **Request Deduplication**: Prevent duplicate page requests
-- **Request Cancellation**: Cancel unnecessary requests on scroll direction change
-- **Batch Loading**: Load multiple pages in single request when appropriate
+### İstek Optimizasyonu
+- **İstek Tekrarlarını Önleme**: Yinelenen sayfa isteklerini önleme
+- **İstek İptali**: Kaydırma yönü değiştiğinde gereksiz istekleri iptal etme
+- **Toplu Yükleme**: Uygun olduğunda tek istekte birden fazla sayfa yükleme
 
-## Metrics & Analytics
-- **Scroll Depth Tracking**: How far users typically scroll
-- **Page Load Performance**: Time to load each page
-- **User Engagement**: Correlation between pagination and user retention
-- **Error Rate Monitoring**: Failed page loads ile user experience impact
+## Metrikler ve Analitik
+- **Kaydırma Derinliği Takibi**: Kullanıcıların tipik olarak ne kadar kaydırdığı
+- **Sayfa Yükleme Performansı**: Her sayfayı yükleme süresi
+- **Kullanıcı Etkileşimi**: Sayfalama ile kullanıcı tutma arasındaki korelasyon
+- **Hata Oranı İzleme**: Başarısız sayfa yüklemeleri ile kullanıcı deneyimi etkisi

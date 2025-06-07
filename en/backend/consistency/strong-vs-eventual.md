@@ -10,6 +10,26 @@ In distributed systems, consistency models define how data behaves across multip
 - Immediate consistency guarantee
 - Linearizability and serializability
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Node1
+    participant Node2
+    participant Node3
+    
+    Client->>Node1: Write Request
+    Node1->>Node2: Sync Replication
+    Node1->>Node3: Sync Replication
+    Node2-->>Node1: ACK
+    Node3-->>Node1: ACK
+    Node1-->>Client: Write Success
+    
+    Client->>Node2: Read Request
+    Node2-->>Client: Latest Data
+    Client->>Node3: Read Request
+    Node3-->>Client: Latest Data
+```
+
 ### Spring Boot Strong Consistency Implementation
 
 #### Database Transaction Management
@@ -474,6 +494,26 @@ public class DatabaseTransactionParticipant implements TransactionParticipant {
 - High availability and partition tolerance
 - BASE properties (Basically Available, Soft state, Eventual consistency)
 - Event-driven architecture
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Node1
+    participant Node2
+    participant Node3
+    
+    Client->>Node1: Write Request
+    Node1-->>Client: Write Success
+    Node1->>Node2: Async Replication
+    Node1->>Node3: Async Replication
+    
+    Client->>Node2: Read Request
+    Node2-->>Client: Stale Data
+    Client->>Node3: Read Request
+    Node3-->>Client: Stale Data
+    
+    Note over Node2,Node3: Eventually Consistent
+```
 
 ### Spring Boot Eventual Consistency Implementation
 

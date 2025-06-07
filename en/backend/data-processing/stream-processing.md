@@ -7,6 +7,27 @@ Stream Processing is an architectural approach that continuously processes data 
 ### Event Stream
 Event Stream is an infinite sequence of data ordered by timestamp:
 
+```mermaid
+graph LR
+    A[Data Sources] --> B[Stream Producer]
+    B --> C[Message Broker/Kafka]
+    C --> D[Stream Processor]
+    D --> E[Analytics]
+    D --> F[Alerts]
+    D --> G[Storage]
+    
+    subgraph "Stream Processing Architecture"
+        B
+        C
+        D
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbb,stroke:#333,stroke-width:2px
+```
+
 ```java
 @Entity
 @Table(name = "event_streams")
@@ -451,6 +472,28 @@ public class KafkaStreamsOrderProcessor {
 ### Time Windows
 Time-based windowing operations:
 
+```mermaid
+graph TD
+    subgraph "Windowing Types"
+        A[Tumbling Window] --> A1[Fixed Size]
+        A --> A2[No Overlap]
+        
+        B[Hopping Window] --> B1[Fixed Size]
+        B --> B2[Overlapping]
+        
+        C[Session Window] --> C1[Variable Size]
+        C --> C2[Activity Based]
+        
+        D[Custom Window] --> D1[Configurable]
+        D --> D2[Grace Period]
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbb,stroke:#333,stroke-width:2px
+```
+
 ```java
 @Component
 public class WindowedAnalyticsProcessor {
@@ -660,6 +703,39 @@ public class StreamMetricsCollector {
 
 ### Error Recovery
 Error management and recovery strategies:
+
+```mermaid
+graph TD
+    A[Stream Input] --> B{Event Valid?}
+    B -->|Yes| C[Process Event]
+    B -->|No| D[Dead Letter Queue]
+    
+    C --> E{Processing Success?}
+    E -->|Yes| F[Update State]
+    E -->|No| G[Retry Logic]
+    
+    G --> H{Retry Count < Max?}
+    H -->|Yes| C
+    H -->|No| D
+    
+    F --> I[Output Streams]
+    D --> J[Error Monitoring]
+    
+    subgraph "Error Handling Flow"
+        B
+        C
+        D
+        E
+        G
+        H
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbb,stroke:#333,stroke-width:2px
+    style G fill:#fbb,stroke:#333,stroke-width:2px
+```
 
 ```java
 @Service

@@ -14,6 +14,20 @@ The View layer manages user interface components and user interaction handling. 
 
 The ViewModel layer provides sophisticated bridge functionality between Model and View. This layer completely separates business logic from View while executing UI-specific state management operations. ViewModels transform user actions into business operations while coordinating asynchronous operations.
 
+```mermaid
+graph TD
+    subgraph MVVM Architecture
+        View[View Layer]
+        ViewModel[ViewModel Layer]
+        Model[Model Layer]
+        
+        View -->|User Actions| ViewModel
+        ViewModel -->|State Updates| View
+        ViewModel -->|Data Operations| Model
+        Model -->|Data Changes| ViewModel
+    end
+```
+
 ### Platform-Specific MVVM Implementations
 
 In the Android ecosystem, Jetpack Architecture Components provide comprehensive MVVM support. Jetpack ViewModel classes survive configuration changes while enabling reactive data binding with LiveData and StateFlow. The Data Binding library provides two-way binding capabilities, while Jetpack Compose supports modern MVVM implementation with remember and collectAsState functions.
@@ -95,6 +109,23 @@ The Model component maintains a complete representation of application state wit
 
 The View component renders the UI representation of the current state while transforming user interactions into Intent objects. Since Views are stateless, testing and debugging are significantly simplified.
 
+```mermaid
+graph LR
+    subgraph MVI Architecture
+        View[View]
+        Intent[Intent]
+        Model[Model]
+        
+        View -->|User Actions| Intent
+        Intent -->|Process| Model
+        Model -->|State Updates| View
+        
+        style View fill:#f9f,stroke:#333,stroke-width:2px
+        style Intent fill:#bbf,stroke:#333,stroke-width:2px
+        style Model fill:#bfb,stroke:#333,stroke-width:2px
+    end
+```
+
 ### Advanced MVI Implementation Patterns
 
 State immutability enforcement optimizes memory efficiency with copy-on-write mechanisms while maintaining performance with structural sharing algorithms. Intent processing pipelines execute complex business logic operations in a sequential manner while integrating error handling and recovery mechanisms.
@@ -166,6 +197,30 @@ The Store component maintains the application's complete state tree while managi
 Actions are plain objects that describe state change intentions. Action creators provide type-safe action generation while ensuring payload validation. This approach enables explicit documentation of application operations.
 
 Reducers are pure functions that receive current state and action as input and return a new state object. Reducer composition organizes complex state management into manageable pieces while state normalization enables optimal data structures.
+
+```mermaid
+graph TD
+    subgraph Redux Architecture
+        View[View]
+        Action[Action]
+        Store[Store]
+        Reducer[Reducer]
+        State[State]
+        
+        View -->|Dispatch| Action
+        Action -->|Process| Store
+        Store -->|Update| State
+        State -->|Subscribe| View
+        Store -->|Reduce| Reducer
+        Reducer -->|New State| Store
+        
+        style View fill:#f9f,stroke:#333,stroke-width:2px
+        style Action fill:#bbf,stroke:#333,stroke-width:2px
+        style Store fill:#bfb,stroke:#333,stroke-width:2px
+        style Reducer fill:#fbb,stroke:#333,stroke-width:2px
+        style State fill:#fbf,stroke:#333,stroke-width:2px
+    end
+```
 
 ### Advanced Redux Implementation Strategies
 

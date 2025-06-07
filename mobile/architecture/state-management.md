@@ -14,6 +14,20 @@ View layer, user interface components'larını ve user interaction handling'ini 
 
 ViewModel layer, Model ile View arasında sophisticated bridge functionality provide eder. Bu layer, business logic'i View'dan completely separate ederken, UI-specific state management operations execute eder. ViewModel'ler, user actions'ları business operations'lara transform ederken, asynchronous operations'ları coordinate eder.
 
+```mermaid
+graph TD
+    subgraph MVVM Architecture
+        View[View Layer]
+        ViewModel[ViewModel Layer]
+        Model[Model Layer]
+        
+        View -->|User Actions| ViewModel
+        ViewModel -->|State Updates| View
+        ViewModel -->|Data Operations| Model
+        Model -->|Data Changes| ViewModel
+    end
+```
+
 ### Platform-Specific MVVM Implementations
 
 Android ecosystem'inde Jetpack Architecture Components comprehensive MVVM support provide eder. Jetpack ViewModel class'ları configuration changes survive ederken, LiveData ve StateFlow ile reactive data binding enable eder. Data Binding library two-way binding capabilities provide ederken, Jetpack Compose remember ve collectAsState functions ile modern MVVM implementation support eder.
@@ -95,6 +109,23 @@ Model component, application state'in complete representation'ını immutable da
 
 View component, current state'in UI representation'ını render ederken, user interactions'ı Intent objects'a transform eder. View'lar stateless olduğu için, testing ve debugging significantly simplified eder.
 
+```mermaid
+graph LR
+    subgraph MVI Architecture
+        View[View]
+        Intent[Intent]
+        Model[Model]
+        
+        View -->|User Actions| Intent
+        Intent -->|Process| Model
+        Model -->|State Updates| View
+        
+        style View fill:#f9f,stroke:#333,stroke-width:2px
+        style Intent fill:#bbf,stroke:#333,stroke-width:2px
+        style Model fill:#bfb,stroke:#333,stroke-width:2px
+    end
+```
+
 ### Advanced MVI Implementation Patterns
 
 State immutability enforcement, copy-on-write mechanisms ile memory efficiency optimize ederken, structural sharing algorithms ile performance maintain eder. Intent processing pipelines, complex business logic operations'ı sequential manner'da execute ederken, error handling ve recovery mechanisms integrate eder.
@@ -166,6 +197,30 @@ Store component, application'ın complete state tree'sini maintain ederken, stat
 Actions, state change intentions'ını describe eden plain objects'lardır. Action creators, type-safe action generation'ı provide ederken, payload validation ensure eder. Bu approach, application operations'ının explicit documentation'ını enable eder.
 
 Reducers, current state ve action'ı input olarak receive ederek, new state object return eden pure functions'lardır. Reducer composition, complex state management'ı manageable pieces'lara organize ederken, state normalization optimal data structures enable eder.
+
+```mermaid
+graph TD
+    subgraph Redux Architecture
+        View[View]
+        Action[Action]
+        Store[Store]
+        Reducer[Reducer]
+        State[State]
+        
+        View -->|Dispatch| Action
+        Action -->|Process| Store
+        Store -->|Update| State
+        State -->|Subscribe| View
+        Store -->|Reduce| Reducer
+        Reducer -->|New State| Store
+        
+        style View fill:#f9f,stroke:#333,stroke-width:2px
+        style Action fill:#bbf,stroke:#333,stroke-width:2px
+        style Store fill:#bfb,stroke:#333,stroke-width:2px
+        style Reducer fill:#fbb,stroke:#333,stroke-width:2px
+        style State fill:#fbf,stroke:#333,stroke-width:2px
+    end
+```
 
 ### Advanced Redux Implementation Strategies
 

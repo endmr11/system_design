@@ -527,3 +527,210 @@ class GPUMemoryManager {
     }
 }
 ```
+
+## GPU Bellek Yönetimi ve Optimizasyon
+
+### Bellek Yönetimi Stratejileri
+```kotlin
+// Android GPU Bellek Yönetimi
+class GPUBellekYoneticisi {
+    private val bellekKullanim = mutableMapOf<String, Long>()
+    private val aktiviteYoneticisi = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    
+    fun dokuBellekTakibi(isim: String, genislik: Int, yukseklik: Int, pikselBasinaByte: Int) {
+        val bellekBoyutu = (genislik * yukseklik * pikselBasinaByte).toLong()
+        bellekKullanim[isim] = bellekBoyutu
+        
+        bellekKullaniminiLogla()
+    }
+    
+    fun dokuyuSerbestBirak(isim: String) {
+        bellekKullanim.remove(isim)
+        bellekKullaniminiLogla()
+    }
+    
+    private fun bellekKullaniminiLogla() {
+        val toplamGPUBellek = bellekKullanim.values.sum()
+        val bellekBilgisi = ActivityManager.MemoryInfo()
+        aktiviteYoneticisi.getMemoryInfo(bellekBilgisi)
+        
+        Log.d("GPU Bellek", "Toplam GPU doku belleği: ${toplamGPUBellek / (1024 * 1024)} MB")
+        Log.d("GPU Bellek", "Kullanılabilir sistem belleği: ${bellekBilgisi.availMem / (1024 * 1024)} MB")
+        
+        if (toplamGPUBellek > bellekBilgisi.availMem * 0.1) { // Kullanılabilir belleğin %10'u
+            Log.w("GPU Bellek", "Yüksek GPU bellek kullanımı tespit edildi - doku sıkıştırma düşünülebilir")
+        }
+    }
+    
+    fun dokuFormatlariniOptimizeEt(): Map<String, String> {
+        return mapOf(
+            "RGBA8888" to "Şeffaflık içeren yüksek kaliteli görüntüler için kullan",
+            "RGB565" to "Şeffaf olmayan görüntüler için %50 bellek tasarrufu sağlar",
+            "ETC2" to "Android için sıkıştırılmış format (OpenGL ES 3.0+)",
+            "ASTC" to "ASTC destekli üst düzey cihazlar için kullan",
+            "S3TC/DXT" to "Masaüstü/üst düzey mobil GPU'lar için kullan"
+        )
+    }
+}
+```
+
+### Asenkron GPU İşlemleri
+```kotlin
+// Android - Asenkron GPU işleme
+class AsenkronGPUIsleyici {
+    private val glExecutor = Executors.newSingleThreadExecutor()
+    private val hesaplamaExecutor = Executors.newFixedThreadPool(2)
+    
+    fun asenkronIsle(
+        girdiVerisi: FloatArray,
+        geriCagri: (FloatArray) -> Unit
+    ) {
+        hesaplamaExecutor.submit {
+            try {
+                val sonuc = GPUdaIsle(girdiVerisi)
+                
+                // Sonucu ana thread'e döndür
+                Handler(Looper.getMainLooper()).post {
+                    geriCagri(sonuc)
+                }
+            } catch (e: Exception) {
+                Log.e("AsenkronGPU", "İşleme başarısız", e)
+            }
+        }
+    }
+    
+    private fun GPUdaIsle(veri: FloatArray): FloatArray {
+        // GPU işleme implementasyonu
+        return veri.map { it * 2.0f }.toFloatArray()
+    }
+    
+    fun topluIsle(
+        topluVeriler: List<FloatArray>,
+        ilerlemeGeriCagri: (Int, Int) -> Unit,
+        tamamlanmaGeriCagri: (List<FloatArray>) -> Unit
+    ) {
+        val sonuclar = mutableListOf<FloatArray>()
+        val toplamToplu = topluVeriler.size
+        
+        topluVeriler.forEachIndexed { index, toplu ->
+            hesaplamaExecutor.submit {
+                val sonuc = GPUdaIsle(toplu)
+                
+                synchronized(sonuclar) {
+                    sonuclar.add(sonuc)
+                    
+                    Handler(Looper.getMainLooper()).post {
+                        ilerlemeGeriCagri(index + 1, toplamToplu)
+                        
+                        if (sonuclar.size == toplamToplu) {
+                            tamamlanmaGeriCagri(sonuclar.toList())
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+## Donanım Tespiti ve Yedekleme Stratejileri
+
+### Yetenek Tespiti
+```typescript
+// Çapraz platform donanım yetenek tespiti
+interface DonanimYetenekleri {
+  GPUvar: boolean;
+  NPUvar: boolean;
+  DSPvar: boolean;
+  gpuBellek: number;
+  hesaplamaBirimleri: number;
+  desteklenenFormatlar: string[];
+}
+
+class DonanimTespitci {
+  static async yetenekleriAl(): Promise<DonanimYetenekleri> {
+    if (Platform.OS === 'ios') {
+      return await this.iOSYetenekleriniAl();
+    } else {
+      return await this.androidYetenekleriniAl();
+    }
+  }
+  
+  private static async iOSYetenekleriniAl(): Promise<DonanimYetenekleri> {
+    const yetenekler = await NativeModules.DonanimTespitci.iOSYetenekleriniAl();
+    
+    return {
+      GPUvar: yetenekler.GPUvar,
+      NPUvar: yetenekler.neuralEngineVar,
+      DSPvar: yetenekler.imageSignalProcessorVar,
+      gpuBellek: yetenekler.gpuBellek,
+      hesaplamaBirimleri: yetenekler.gpuCekirdekleri,
+      desteklenenFormatlar: yetenekler.desteklenenPikselFormatlari
+    };
+  }
+  
+  private static async androidYetenekleriniAl(): Promise<DonanimYetenekleri> {
+    const yetenekler = await NativeModules.DonanimTespitci.androidYetenekleriniAl();
+    
+    return {
+      GPUvar: yetenekler.GPUvar,
+      NPUvar: yetenekler.NNAPIvar,
+      DSPvar: yetenekler.hexagonDSPvar,
+      gpuBellek: yetenekler.gpuBellek,
+      hesaplamaBirimleri: yetenekler.gpuCekirdekleri,
+      desteklenenFormatlar: yetenekler.desteklenenFormatlar
+    };
+  }
+  
+  static optimalIsleyiciSec(
+    yetenekler: DonanimYetenekleri,
+    gorevTipi: 'goruntu' | 'ml' | 'hesaplama'
+  ): IsleyiciTipi {
+    switch (gorevTipi) {
+      case 'goruntu':
+        return yetenekler.GPUvar ? 'gpu' : 'cpu';
+      case 'ml':
+        return yetenekler.NPUvar ? 'npu' : 
+               yetenekler.GPUvar ? 'gpu' : 'cpu';
+      case 'hesaplama':
+        return yetenekler.DSPvar ? 'dsp' :
+               yetenekler.GPUvar ? 'gpu' : 'cpu';
+      default:
+        return 'cpu';
+    }
+  }
+}
+
+type IsleyiciTipi = 'cpu' | 'gpu' | 'npu' | 'dsp';
+```
+
+## En İyi Uygulamalar
+
+### Donanım Hızlandırma Kılavuzu
+
+1. **Doğru hızlandırıcıyı seçin**
+   - GPU: Paralel grafik ve hesaplama işlemleri
+   - NPU: Makine öğrenimi çıkarımı
+   - DSP: Sinyal işleme ve ses
+
+2. **Bellek optimizasyonu**
+   - GPU tamponlarını havuzda tutun
+   - CPU-GPU aktarımlarını minimize edin
+   - Uygun bellek tiplerini kullanın
+
+3. **Asenkron işleme**
+   - Ana thread'i bloklamayın
+   - Uygun hata yönetimi uygulayın
+   - İlerleme geri bildirimi sağlayın
+
+4. **Yedekleme stratejileri**
+   - Donanım yeteneklerini tespit edin
+   - CPU yedeklemeleri uygulayın
+   - Zarif düşüş sağlayın
+
+5. **Güç verimliliği**
+   - Termal durumu izleyin
+   - Performans ve pil ömrü dengesini koruyun
+   - Uyarlanabilir kalite ayarları kullanın
+
+Donanım hızlandırma, performans kritik mobil uygulamalar için gereklidir. Doğru uygulama, farklı cihaz yetenekleri arasında enerji verimliliğini korurken önemli performans iyileştirmeleri sağlayabilir.

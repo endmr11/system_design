@@ -22,6 +22,45 @@
 - Maliyet açısından daha uygundur
 - Örnek: AWS RDS Multi-AZ deployment
 
+```mermaid
+graph TD
+    subgraph "Aktif-Pasif Failover"
+        A[Ana Sunucu] -->|Aktif| B[Yük Dengeleyici]
+        C[Yedek Sunucu] -->|Pasif| B
+        B -->|Trafik| D[İstemciler]
+    end
+
+    subgraph "Aktif-Aktif Failover"
+        E[Sunucu 1] -->|Aktif| F[Yük Dengeleyici]
+        G[Sunucu 2] -->|Aktif| F
+        F -->|Trafik Dağıtımı| H[İstemciler]
+    end
+```
+
+```mermaid
+graph TD
+    subgraph "Multi-Level Cache Failover"
+        A[İstemci] -->|1. Seviye| B[Local Cache]
+        B -->|Cache Miss| C[Redis Cache]
+        C -->|Cache Miss| D[Veritabanı]
+        D -->|Veri| C
+        C -->|Veri| B
+        B -->|Veri| A
+    end
+```
+
+```mermaid
+graph TD
+    subgraph "Service-to-Service Failover"
+        A[İstemci] -->|İstek| B[Circuit Breaker]
+        B -->|Başarılı| C[Ana Servis]
+        B -->|Başarısız| D[Yedek Servis]
+        C -->|Yanıt| A
+        D -->|Yanıt| A
+        E[Health Check] -->|Durum| B
+    end
+```
+
 ## Failover Stratejileri
 
 ### Otomatik Failover

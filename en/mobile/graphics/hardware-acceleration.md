@@ -727,3 +727,315 @@ type ProcessorType = 'cpu' | 'gpu' | 'npu' | 'dsp';
    - Use adaptive quality settings
 
 Hardware acceleration is essential for performance-critical mobile applications. Proper implementation can provide significant performance improvements while maintaining energy efficiency across different device capabilities.
+
+## Advanced GPU Features
+
+### Compute Shaders and Parallel Processing
+```swift
+// iOS - Advanced Metal Compute Shaders
+class AdvancedMetalCompute {
+    private let device: MTLDevice
+    private let commandQueue: MTLCommandQueue
+    private let library: MTLLibrary
+    
+    init() throws {
+        guard let device = MTLCreateSystemDefaultDevice(),
+              let commandQueue = device.makeCommandQueue(),
+              let library = device.makeDefaultLibrary() else {
+            throw GPUError.deviceNotAvailable
+        }
+        
+        self.device = device
+        self.commandQueue = commandQueue
+        self.library = library
+    }
+    
+    func performParallelReduction(data: [Float]) -> Float {
+        guard let function = library.makeFunction(name: "parallel_reduction"),
+              let pipeline = try? device.makeComputePipelineState(function: function) else {
+            return 0.0
+        }
+        
+        let inputBuffer = device.makeBuffer(bytes: data,
+                                          length: data.count * MemoryLayout<Float>.size,
+                                          options: [])!
+        
+        let outputBuffer = device.makeBuffer(length: MemoryLayout<Float>.size,
+                                           options: [])!
+        
+        let commandBuffer = commandQueue.makeCommandBuffer()!
+        let encoder = commandBuffer.makeComputeCommandEncoder()!
+        
+        encoder.setComputePipelineState(pipeline)
+        encoder.setBuffer(inputBuffer, offset: 0, index: 0)
+        encoder.setBuffer(outputBuffer, offset: 0, index: 1)
+        
+        let threadsPerGroup = MTLSize(width: 256, height: 1, depth: 1)
+        let numGroups = MTLSize(width: (data.count + 255) / 256, height: 1, depth: 1)
+        
+        encoder.dispatchThreadgroups(numGroups, threadsPerThreadgroup: threadsPerGroup)
+        encoder.endEncoding()
+        
+        commandBuffer.commit()
+        commandBuffer.waitUntilCompleted()
+        
+        let result = outputBuffer.contents().load(as: Float.self)
+        return result
+    }
+}
+```
+
+### Performance Monitoring and Profiling
+```kotlin
+// Android - GPU Performance Monitoring
+class GPUPerformanceMonitor {
+    private val metrics = mutableMapOf<String, PerformanceMetric>()
+    private val frameTimeHistory = CircularBuffer<Long>(60) // Store last 60 frames
+    
+    data class PerformanceMetric(
+        val name: String,
+        var totalTime: Long = 0,
+        var callCount: Int = 0,
+        var peakTime: Long = 0
+    )
+    
+    fun beginOperation(name: String) {
+        val startTime = System.nanoTime()
+        metrics.getOrPut(name) { PerformanceMetric(name) }.apply {
+            callCount++
+            val duration = System.nanoTime() - startTime
+            totalTime += duration
+            peakTime = maxOf(peakTime, duration)
+        }
+    }
+    
+    fun recordFrameTime(frameTime: Long) {
+        frameTimeHistory.add(frameTime)
+        updatePerformanceMetrics()
+    }
+    
+    private fun updatePerformanceMetrics() {
+        val averageFrameTime = frameTimeHistory.average()
+        val fps = 1_000_000_000.0 / averageFrameTime
+        
+        Log.d("GPU Performance", "Average FPS: $fps")
+        Log.d("GPU Performance", "Frame Time: ${averageFrameTime / 1_000_000}ms")
+        
+        metrics.forEach { (name, metric) ->
+            Log.d("GPU Performance", """
+                Operation: $name
+                Average Time: ${metric.totalTime / metric.callCount / 1_000_000}ms
+                Peak Time: ${metric.peakTime / 1_000_000}ms
+                Call Count: ${metric.callCount}
+            """.trimIndent())
+        }
+    }
+    
+    fun generatePerformanceReport(): String {
+        return buildString {
+            appendLine("GPU Performance Report")
+            appendLine("====================")
+            appendLine("Frame Statistics:")
+            appendLine("Average FPS: ${1_000_000_000.0 / frameTimeHistory.average()}")
+            appendLine("Frame Time: ${frameTimeHistory.average() / 1_000_000}ms")
+            appendLine("\nOperation Statistics:")
+            metrics.forEach { (name, metric) ->
+                appendLine("$name:")
+                appendLine("  Average Time: ${metric.totalTime / metric.callCount / 1_000_000}ms")
+                appendLine("  Peak Time: ${metric.peakTime / 1_000_000}ms")
+                appendLine("  Call Count: ${metric.callCount}")
+            }
+        }
+    }
+}
+```
+
+### Thermal Management
+```swift
+// iOS - GPU Thermal Management
+class GPUThermalManager {
+    private let device: MTLDevice
+    private var thermalState: MTLDeviceThermalState = .nominal
+    private var thermalStateCallback: ((MTLDeviceThermalState) -> Void)?
+    
+    init(device: MTLDevice) {
+        self.device = device
+        setupThermalMonitoring()
+    }
+    
+    private func setupThermalMonitoring() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(thermalStateChanged),
+            name: .MTLDeviceThermalStateDidChange,
+            object: device
+        )
+    }
+    
+    @objc private func thermalStateChanged(_ notification: Notification) {
+        thermalState = device.thermalState
+        thermalStateCallback?(thermalState)
+        
+        switch thermalState {
+        case .nominal:
+            Log.info("GPU thermal state: Nominal")
+        case .fair:
+            Log.warning("GPU thermal state: Fair - Consider reducing workload")
+        case .serious:
+            Log.error("GPU thermal state: Serious - Reduce workload immediately")
+        case .critical:
+            Log.error("GPU thermal state: Critical - Stop GPU operations")
+        @unknown default:
+            Log.error("Unknown GPU thermal state")
+        }
+    }
+    
+    func setThermalStateCallback(_ callback: @escaping (MTLDeviceThermalState) -> Void) {
+        thermalStateCallback = callback
+    }
+    
+    func adjustWorkloadForThermalState() -> WorkloadAdjustment {
+        switch thermalState {
+        case .nominal:
+            return .full
+        case .fair:
+            return .reduced
+        case .serious:
+            return .minimal
+        case .critical:
+            return .none
+        @unknown default:
+            return .reduced
+        }
+    }
+}
+
+enum WorkloadAdjustment {
+    case full
+    case reduced
+    case minimal
+    case none
+}
+```
+
+## Advanced Optimization Techniques
+
+### Pipeline State Caching
+```kotlin
+// Android - Pipeline State Caching
+class PipelineStateCache {
+    private val cache = LruCache<String, PipelineState>(10)
+    private val pipelineStates = mutableMapOf<String, PipelineState>()
+    
+    data class PipelineState(
+        val vertexShader: String,
+        val fragmentShader: String,
+        val blendState: BlendState,
+        val depthState: DepthState
+    )
+    
+    fun getOrCreatePipelineState(
+        vertexShader: String,
+        fragmentShader: String,
+        blendState: BlendState,
+        depthState: DepthState
+    ): PipelineState {
+        val key = generatePipelineKey(vertexShader, fragmentShader, blendState, depthState)
+        
+        return pipelineStates.getOrPut(key) {
+            createPipelineState(vertexShader, fragmentShader, blendState, depthState)
+        }
+    }
+    
+    private fun generatePipelineKey(
+        vertexShader: String,
+        fragmentShader: String,
+        blendState: BlendState,
+        depthState: DepthState
+    ): String {
+        return "$vertexShader|$fragmentShader|$blendState|$depthState"
+    }
+    
+    private fun createPipelineState(
+        vertexShader: String,
+        fragmentShader: String,
+        blendState: BlendState,
+        depthState: DepthState
+    ): PipelineState {
+        // Create and compile pipeline state
+        return PipelineState(vertexShader, fragmentShader, blendState, depthState)
+    }
+}
+```
+
+### Memory Pool Management
+```swift
+// iOS - Advanced Memory Pool Management
+class AdvancedMemoryPool {
+    private let device: MTLDevice
+    private var bufferPools: [Int: [MTLBuffer]] = [:]
+    private let maxPoolSize = 10
+    
+    init(device: MTLDevice) {
+        self.device = device
+    }
+    
+    func getBuffer(size: Int, options: MTLResourceOptions = []) -> MTLBuffer? {
+        let pool = bufferPools[size] ?? []
+        
+        if let buffer = pool.first {
+            bufferPools[size] = Array(pool.dropFirst())
+            return buffer
+        }
+        
+        return device.makeBuffer(length: size, options: options)
+    }
+    
+    func returnBuffer(_ buffer: MTLBuffer) {
+        let size = buffer.length
+        var pool = bufferPools[size] ?? []
+        
+        if pool.count < maxPoolSize {
+            pool.append(buffer)
+            bufferPools[size] = pool
+        }
+    }
+    
+    func clearPools() {
+        bufferPools.removeAll()
+    }
+    
+    func getPoolStats() -> [String: Int] {
+        return bufferPools.mapValues { $0.count }
+    }
+}
+```
+
+## Best Practices for Advanced GPU Programming
+
+1. **Pipeline State Management**
+   - Cache pipeline states
+   - Minimize state changes
+   - Use state objects efficiently
+
+2. **Memory Optimization**
+   - Implement buffer pools
+   - Use appropriate memory types
+   - Monitor memory usage
+
+3. **Performance Monitoring**
+   - Track frame times
+   - Monitor thermal state
+   - Profile GPU operations
+
+4. **Advanced Features**
+   - Use compute shaders
+   - Implement parallel processing
+   - Optimize for specific hardware
+
+5. **Error Handling**
+   - Implement proper fallbacks
+   - Handle thermal throttling
+   - Monitor GPU errors
+
+Advanced GPU programming requires careful consideration of performance, memory management, and hardware capabilities. By following these best practices and implementing advanced features appropriately, developers can create high-performance mobile applications that make efficient use of GPU resources.

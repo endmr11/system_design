@@ -4,6 +4,41 @@
 
 Containerlar, uygulamaların ve bağımlılıklarının izole edilmiş ortamlarda çalıştırılması için kullanılan hafif sanallaştırma teknolojisidir. Docker, bu teknolojinin en yaygın kullanılan implementasyonudur.
 
+### Docker Mimarisi
+
+```mermaid
+graph TB
+    Client[Docker Client] -->|Komutlar| Daemon[Docker Daemon]
+    Daemon -->|Yönetim| Containers[Containers]
+    Daemon -->|Build| Images[Images]
+    Daemon -->|Depolama| Registry[Docker Registry]
+    
+    subgraph Container
+        App[Uygulama]
+        Lib[Kütüphaneler]
+        Config[Konfigürasyon]
+    end
+    
+    subgraph Image
+        Layers[Image Layers]
+        Base[Base Image]
+    end
+```
+
+### Container Yaşam Döngüsü
+
+```mermaid
+stateDiagram-v2
+    [*] --> Created
+    Created --> Running: docker start
+    Running --> Paused: docker pause
+    Paused --> Running: docker unpause
+    Running --> Stopped: docker stop
+    Stopped --> Running: docker start
+    Stopped --> [*]: docker rm
+    Running --> [*]: docker rm -f
+```
+
 ## Docker Temel Kavramlar
 
 ### 1. Docker Architecture

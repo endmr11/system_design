@@ -52,16 +52,28 @@ graph TD
 ## Algorithms (Real-World Applications)
 
 ### Search Algorithms
-- **Binary search** in sorted datasets
-- **DFS/BFS** in microservice dependency resolution
-- **A*** in route planning
-- Full-text search in Elasticsearch
+```mermaid
+graph TD
+    A[Start] --> B{Is Data Sorted?}
+    B -->|Yes| C[Binary Search]
+    B -->|No| D[Linear Search]
+    C --> E[Result Found]
+    D --> E
+    C --> F[Result Not Found]
+    D --> F
+```
 
 ### Sorting Algorithms
-- **TimSort** in Java Collections
-- **External sorting** for large datasets
-- **Distributed sorting** in big data processing
-- Quick sort vs merge sort trade-offs
+```mermaid
+graph TD
+    A[Dataset] --> B{Data Size}
+    B -->|Small| C[Quick Sort]
+    B -->|Medium| D[Merge Sort]
+    B -->|Large| E[External Sort]
+    C --> F[Sorted Data]
+    D --> F
+    E --> F
+```
 
 ### Caching Algorithms
 - **LRU/LFU eviction policies**
@@ -254,3 +266,17 @@ public class ConsistentHashLoadBalancer {
 - Bounds checking for arrays
 - Hash collision attack prevention
 - Memory safety in native code
+
+### Distributed Systems Patterns
+```mermaid
+graph TD
+    A[Distributed System] --> B[Consensus]
+    A --> C[Leader Election]
+    A --> D[Locking]
+    A --> E[Consistency]
+    B --> F[Raft]
+    B --> G[Paxos]
+    C --> H[ZooKeeper]
+    D --> I[Redis Lock]
+    E --> J[CRDT]
+```

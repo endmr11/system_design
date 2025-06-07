@@ -4,6 +4,51 @@
 
 Gerçek zamanlı iletişim, modern mobil uygulamalarda kullanıcı etkileşimini artıran kritik bir özelliktir. Bu dokümantasyon WebSocket, Server-Sent Events ve diğer gerçek zamanlı teknolojilerin mobil platformlarda kullanımını kapsar.
 
+## Sistem Mimarisi
+
+```mermaid
+graph TB
+    Client[İstemci Uygulaması] --> |WebSocket/SSE| LoadBalancer[Yük Dengeleyici]
+    LoadBalancer --> |Sticky Session| Server1[Sunucu 1]
+    LoadBalancer --> |Sticky Session| Server2[Sunucu 2]
+    LoadBalancer --> |Sticky Session| ServerN[Sunucu N]
+    Server1 --> Redis[(Redis)]
+    Server2 --> Redis
+    ServerN --> Redis
+    Redis --> DB[(Veritabanı)]
+```
+
+## Bağlantı Yönetimi
+
+```mermaid
+stateDiagram-v2
+    [*] --> BağlantıYok
+    BağlantıYok --> Bağlanıyor: Bağlantı İsteği
+    Bağlanıyor --> Bağlı: Başarılı
+    Bağlanıyor --> BağlantıYok: Başarısız
+    Bağlı --> YenidenBağlanıyor: Bağlantı Kesildi
+    YenidenBağlanıyor --> Bağlı: Başarılı
+    YenidenBağlanıyor --> BağlantıYok: Maksimum Deneme Aşıldı
+    Bağlı --> [*]: Kullanıcı Çıkışı
+```
+
+## Mesaj İşleme Akışı
+
+```mermaid
+sequenceDiagram
+    participant Client as İstemci
+    participant Queue as Mesaj Kuyruğu
+    participant Server as Sunucu
+    participant DB as Veritabanı
+    
+    Client->>Queue: Mesaj Gönder
+    Queue->>Server: Bağlantı Varsa İlet
+    Server->>DB: Mesajı Kaydet
+    Server-->>Client: Onay Gönder
+    Server->>Queue: Başarısız İletim
+    Queue->>Queue: Yeniden Deneme
+```
+
 ## WebSocket Implementation
 
 ### iOS WebSocket

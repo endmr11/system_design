@@ -5,24 +5,24 @@ Mobil uygulamalarda güvenli ağ iletişimi ve veri koruması için kritik güve
 ## Taşıma Katmanı Güvenliği (TLS)
 
 ### TLS Yapılandırması
-- **Modern TLS Versions**:
-  - TLS 1.3 requirement için enhanced security
-  - Backward compatibility considerations
-  - Cipher suite optimization
-- **Certificate Management**:
-  - Certificate pinning implementation
-  - Certificate validation
-  - Fallback strategies
-- **Perfect Forward Secrecy**:
-  - Ephemeral key exchange
-  - Session security isolation
-  - Long-term key protection
+- **Modern TLS Versiyonları**:
+  - Gelişmiş güvenlik için TLS 1.3 gerekliliği
+  - Geriye dönük uyumluluk değerlendirmeleri
+  - Şifreleme paketi optimizasyonu
+- **Sertifika Yönetimi**:
+  - Sertifika sabitleme uygulaması
+  - Sertifika doğrulama
+  - Yedek stratejiler
+- **Mükemmel İleri Gizlilik**:
+  - Geçici anahtar değişimi
+  - Oturum güvenliği izolasyonu
+  - Uzun vadeli anahtar koruması
 
 ### Platform-Spesifik Güvenlik
 
 #### Android Ağ Güvenlik Yapılandırması
 ```xml
-<!-- Android Network Security Config -->
+<!-- Android Ağ Güvenlik Yapılandırması -->
 <network-security-config>
     <domain-config>
         <domain includeSubdomains="true">api.example.com</domain>
@@ -42,7 +42,7 @@ Mobil uygulamalarda güvenli ağ iletişimi ve veri koruması için kritik güve
 
 #### iOS Uygulama Taşıma Güvenliği
 ```swift
-// iOS TLS Implementation
+// iOS TLS Uygulaması
 class SecureNetworkManager {
     private lazy var session: URLSession = {
         let config = URLSessionConfiguration.default
@@ -62,7 +62,7 @@ extension SecureNetworkManager: URLSessionDelegate {
         didReceive challenge: URLAuthenticationChallenge,
         completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     ) {
-        // Certificate pinning implementation
+        // Sertifika sabitleme uygulaması
         guard let serverTrust = challenge.protectionSpace.serverTrust,
               let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) else {
             completionHandler(.cancelAuthenticationChallenge, nil)
@@ -81,15 +81,15 @@ extension SecureNetworkManager: URLSessionDelegate {
 }
 ```
 
-#### Flutter Certificate Verification
+#### Flutter Sertifika Doğrulama
 ```dart
-// Flutter TLS Configuration
+// Flutter TLS Yapılandırması
 class SecureHttpClient {
   static HttpClient createSecureClient() {
     final client = HttpClient();
     
     client.badCertificateCallback = (cert, host, port) {
-      // Custom certificate validation
+      // Özel sertifika doğrulama
       return validateCertificate(cert, host, port);
     };
     
@@ -97,78 +97,78 @@ class SecureHttpClient {
   }
   
   static bool validateCertificate(X509Certificate cert, String host, int port) {
-    // Certificate pinning logic
+    // Sertifika sabitleme mantığı
     final certHash = sha256.convert(cert.der).toString();
     return pinnedCertificates.contains(certHash);
   }
 }
 ```
 
-## Data Encryption
+## Veri Şifreleme
 
-### At-Rest Encryption
-- **Secure Storage Implementation**:
-  - Encrypted SharedPreferences (Android)
-  - Keychain Services (iOS)
-  - Flutter Secure Storage
-- **Key Management**:
-  - Hardware security modules
-  - Biometric key protection
-  - Key rotation strategies
-- **Data Classification**:
-  - Sensitive data identification
-  - Encryption level determination
-  - Storage location decisions
+### Durağan Veri Şifreleme
+- **Güvenli Depolama Uygulaması**:
+  - Şifrelenmiş SharedPreferences (Android)
+  - Keychain Servisleri (iOS)
+  - Flutter Güvenli Depolama
+- **Anahtar Yönetimi**:
+  - Donanım güvenlik modülleri
+  - Biyometrik anahtar koruması
+  - Anahtar rotasyon stratejileri
+- **Veri Sınıflandırma**:
+  - Hassas veri tanımlama
+  - Şifreleme seviyesi belirleme
+  - Depolama konumu kararları
 
-### In-Transit Encryption
-- **End-to-End Encryption**:
-  - Message-level encryption
-  - Key exchange protocols
-  - Forward secrecy implementation
-- **Secure WebSocket**:
-  - WSS protocol usage
-  - Custom encryption layers
-  - Real-time communication security
-- **Encrypted API Communication**:
-  - Request/response encryption
-  - JWT token security
-  - API key protection
+### İletim Sırasında Şifreleme
+- **Uçtan Uca Şifreleme**:
+  - Mesaj seviyesi şifreleme
+  - Anahtar değişim protokolleri
+  - İleri gizlilik uygulaması
+- **Güvenli WebSocket**:
+  - WSS protokolü kullanımı
+  - Özel şifreleme katmanları
+  - Gerçek zamanlı iletişim güvenliği
+- **Şifrelenmiş API İletişimi**:
+  - İstek/yanıt şifreleme
+  - JWT token güvenliği
+  - API anahtarı koruması
 
-## Security Best Practices
+## Güvenlik En İyi Uygulamaları
 
-### API Security
-- **Token-Based Authentication**:
-  - JWT implementation
-  - Token refresh mechanisms
-  - Secure token storage
-- **OAuth 2.0 Implementation**:
-  - Authorization code flow
-  - PKCE extension
-  - Scope management
-- **API Key Management**:
-  - Secure key distribution
-  - Key rotation
-  - Environment-specific keys
+### API Güvenliği
+- **Token Tabanlı Kimlik Doğrulama**:
+  - JWT uygulaması
+  - Token yenileme mekanizmaları
+  - Güvenli token depolama
+- **OAuth 2.0 Uygulaması**:
+  - Yetkilendirme kodu akışı
+  - PKCE uzantısı
+  - Kapsam yönetimi
+- **API Anahtarı Yönetimi**:
+  - Güvenli anahtar dağıtımı
+  - Anahtar rotasyonu
+  - Ortama özel anahtarlar
 
-### Data Protection
-- **Sensitive Data Handling**:
-  - PII data encryption
-  - Data minimization
-  - Secure transmission
-- **Secure Key Storage**:
-  - Platform-specific secure storage
-  - Hardware-backed keystores
-  - Biometric protection
-- **Memory Protection**:
-  - Sensitive data cleanup
-  - Memory dump protection
-  - Anti-debugging measures
+### Veri Koruması
+- **Hassas Veri İşleme**:
+  - Kişisel veri şifreleme
+  - Veri minimizasyonu
+  - Güvenli iletim
+- **Güvenli Anahtar Depolama**:
+  - Platform-spesifik güvenli depolama
+  - Donanım destekli anahtar depoları
+  - Biyometrik koruma
+- **Bellek Koruması**:
+  - Hassas veri temizleme
+  - Bellek dökümü koruması
+  - Anti-hata ayıklama önlemleri
 
-## Advanced Security Techniques
+## Gelişmiş Güvenlik Teknikleri
 
-### Certificate Pinning Implementation
+### Sertifika Sabitleme Uygulaması
 ```kotlin
-// Android Certificate Pinning with OkHttp
+// OkHttp ile Android Sertifika Sabitleme
 class CertificatePinner {
     companion object {
         fun create(): CertificatePinning {
@@ -185,48 +185,48 @@ val okHttpClient = OkHttpClient.Builder()
     .build()
 ```
 
-### Secure Communication Patterns
-- **Message Authentication**:
-  - HMAC verification
-  - Digital signatures
-  - Integrity checking
-- **Replay Attack Prevention**:
-  - Timestamp validation
-  - Nonce usage
-  - Sequence numbers
-- **Man-in-the-Middle Protection**:
-  - Certificate validation
-  - Public key pinning
-  - Certificate transparency
+### Güvenli İletişim Desenleri
+- **Mesaj Doğrulama**:
+  - HMAC doğrulama
+  - Dijital imzalar
+  - Bütünlük kontrolü
+- **Tekrar Saldırısı Önleme**:
+  - Zaman damgası doğrulama
+  - Nonce kullanımı
+  - Sıra numaraları
+- **Ortadaki Adam Koruması**:
+  - Sertifika doğrulama
+  - Genel anahtar sabitleme
+  - Sertifika şeffaflığı
 
-## Security Monitoring
+## Güvenlik İzleme
 
-### Threat Detection
-- **Network Anomaly Detection**:
-  - Unusual traffic patterns
-  - Suspicious endpoints
-  - Certificate changes
-- **Security Event Logging**:
-  - Authentication failures
-  - Certificate validation errors
-  - Encryption failures
+### Tehdit Tespiti
+- **Ağ Anomali Tespiti**:
+  - Olağandışı trafik desenleri
+  - Şüpheli uç noktalar
+  - Sertifika değişiklikleri
+- **Güvenlik Olay Günlüğü**:
+  - Kimlik doğrulama başarısızlıkları
+  - Sertifika doğrulama hataları
+  - Şifreleme hataları
 
-### Compliance & Standards
-- **GDPR Compliance**:
-  - Data protection requirements
-  - User consent management
-  - Data portability
-- **Industry Standards**:
-  - OWASP Mobile Top 10
-  - NIST cybersecurity framework
-  - ISO 27001 alignment
+### Uyumluluk ve Standartlar
+- **KVKK Uyumluluğu**:
+  - Veri koruma gereksinimleri
+  - Kullanıcı onay yönetimi
+  - Veri taşınabilirliği
+- **Endüstri Standartları**:
+  - OWASP Mobil Top 10
+  - NIST siber güvenlik çerçevesi
+  - ISO 27001 uyumu
 
-## Security Testing
-- **Penetration Testing**:
-  - Network layer attacks
-  - Certificate validation testing
-  - Encryption strength testing
-- **Security Auditing**:
-  - Code security reviews
-  - Dependency vulnerability scanning
-  - Configuration validation
+## Güvenlik Testi
+- **Sızma Testi**:
+  - Ağ katmanı saldırıları
+  - Sertifika doğrulama testi
+  - Şifreleme gücü testi
+- **Güvenlik Denetimi**:
+  - Kod güvenlik incelemeleri
+  - Bağımlılık güvenlik açığı taraması
+  - Yapılandırma doğrulama

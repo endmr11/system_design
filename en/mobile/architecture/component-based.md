@@ -15,6 +15,22 @@ A component is an independent and reusable unit of code that encapsulates specif
 - **Is loosely coupled with other components**
 - **Is testable and maintainable**
 
+```mermaid
+graph TD
+    A[Component] --> B[Own Responsibility]
+    A --> C[Specific Interface]
+    A --> D[Loose Coupling]
+    A --> E[Testability]
+    A --> F[Maintainability]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
+    style E fill:#bbf,stroke:#333,stroke-width:1px
+    style F fill:#bbf,stroke:#333,stroke-width:1px
+```
+
 ### Types of Components
 
 #### 1. UI Components
@@ -42,6 +58,29 @@ CustomButton(title: "Save") {
 }
 ```
 
+```mermaid
+graph TD
+    A[UI Components] --> B[Visual Elements]
+    A --> C[Interaction]
+    A --> D[Style and Theme]
+    
+    B --> B1[Buttons]
+    B --> B2[Forms]
+    B --> B3[Cards]
+    
+    C --> C1[Events]
+    C --> C2[States]
+    
+    D --> D1[Colors]
+    D --> D2[Fonts]
+    D --> D3[Sizes]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
+```
+
 #### 2. Business Logic Components
 ```kotlin
 // Android - Business Logic Component
@@ -67,6 +106,28 @@ class UserService {
         }
     }
 }
+```
+
+```mermaid
+graph TD
+    A[Business Logic Components] --> B[Services]
+    A --> C[Validation]
+    A --> D[Business Rules]
+    
+    B --> B1[User Service]
+    B --> B2[Payment Service]
+    B --> B3[Data Service]
+    
+    C --> C1[Form Validation]
+    C --> C2[Business Rule Validation]
+    
+    D --> D1[Workflows]
+    D --> D2[Rules]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
 ```
 
 #### 3. Data Components
@@ -109,6 +170,27 @@ class UserDataService implements DataService<User> {
     return users.map(userData => JSON.parse(userData));
   }
 }
+```
+
+```mermaid
+graph TD
+    A[Data Components] --> B[Data Access]
+    A --> C[Data Transformation]
+    A --> D[Data Storage]
+    
+    B --> B1[API Requests]
+    B --> B2[Database Operations]
+    
+    C --> C1[Data Formats]
+    C --> C2[Data Validation]
+    
+    D --> D1[Local Storage]
+    D --> D2[Remote Storage]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bbf,stroke:#333,stroke-width:1px
+    style D fill:#bbf,stroke:#333,stroke-width:1px
 ```
 
 ## Component Design Principles

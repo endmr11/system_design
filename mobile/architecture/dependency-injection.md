@@ -41,6 +41,35 @@ class UserService {
 
 Bu approach, compile-time'da missing dependencies'lerin detect edilmesini sağlar ve unit testing sırasında mock objects'lerin kolayca enjekte edilmesine imkan tanır.
 
+```mermaid
+classDiagram
+    class UserService {
+        -UserRepository userRepository
+        -Logger logger
+        -UserValidator validator
+        +UserService(UserRepository, Logger, UserValidator)
+        +updateUser(String, Partial~User~) Promise~User~
+    }
+    class UserRepository {
+        <<interface>>
+        +getUserById(String) Promise~User~
+        +saveUser(User) Promise~void~
+    }
+    class Logger {
+        <<interface>>
+        +info(String) void
+        +error(String) void
+        +warn(String) void
+    }
+    class UserValidator {
+        <<interface>>
+        +validate(Partial~User~) Partial~User~
+    }
+    UserService --> UserRepository
+    UserService --> Logger
+    UserService --> UserValidator
+```
+
 ### Property ve Method Injection Teknikleri
 
 Property injection, optional dependencies veya framework-specific scenarios'larda tercih edilen bir tekniktir. Bu yaklaşım, constructor'dan sonra properties üzerinden dependencies'lerin set edilmesini sağlar.
@@ -73,6 +102,25 @@ Method injection ise, runtime'da dynamic dependencies'lerin sağlanması gereken
 ## IoC Container Architectures
 
 Inversion of Control (IoC) container'lar, dependencies'lerin merkezi bir şekilde yönetilmesini ve automatic injection'ın gerçekleştirilmesini sağlayan sophisticated sistemlerdir. Enterprise-level mobil uygulamalarda, bu container'lar complex dependency graphs'ın yönetiminde kritik rol oynarlar.
+
+```mermaid
+graph TD
+    A[IoC Container] --> B[Service Registration]
+    A --> C[Dependency Resolution]
+    A --> D[Lifecycle Management]
+    
+    B --> B1[Singleton]
+    B --> B2[Transient]
+    B --> B3[Scoped]
+    
+    C --> C1[Constructor Injection]
+    C --> C2[Property Injection]
+    C --> C3[Method Injection]
+    
+    D --> D1[Application Scope]
+    D --> D2[Activity Scope]
+    D --> D3[Fragment Scope]
+```
 
 ### Service Registration Patterns
 
@@ -152,6 +200,25 @@ class DependencyContainer: ObservableObject {
 ## Multi-Module Dependency Architecture
 
 Large-scale mobil uygulamalarda, modular architecture pattern'i ile birlikte kullanılan DI sistemleri, cross-module communication'ı facilitate eden sophisticated mechanisms gerektirir. Bu architecture'da her module kendi dependencies'lerini declare eder ve expose edeceklerini specify eder.
+
+```mermaid
+graph LR
+    A[Core Module] --> B[Feature Module 1]
+    A --> C[Feature Module 2]
+    A --> D[Feature Module 3]
+    
+    B --> E[Event Bus]
+    C --> E
+    D --> E
+    
+    B --> F[Shared Services]
+    C --> F
+    D --> F
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#bfb,stroke:#333,stroke-width:2px
+```
 
 ### Module Boundary Definition
 

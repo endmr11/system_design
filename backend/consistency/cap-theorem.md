@@ -21,6 +21,56 @@ Dağıtık sistemlerde aynı anda sadece iki özellik sağlanabilir:
 - Ağ hatası kurtarma
 - Coğrafi dağıtım
 
+## CAP Teoremi Diyagramları
+
+### CAP Üçgeni
+```mermaid
+graph TD
+    A[CAP Teoremi] --> B[Tutarlılık]
+    A --> C[Erişilebilirlik]
+    A --> D[Bölümleme Toleransı]
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### CP vs AP Sistemleri
+```mermaid
+graph LR
+    A[Dağıtık Sistem] --> B[CP Sistemleri]
+    A --> C[AP Sistemleri]
+    
+    B --> D[MongoDB]
+    B --> E[PostgreSQL]
+    B --> F[etcd]
+    
+    C --> G[Cassandra]
+    C --> H[DynamoDB]
+    C --> I[Redis Cluster]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### Ağ Bölünmesi Senaryosu
+```mermaid
+graph TD
+    A[Client] --> B[Node 1]
+    A --> C[Node 2]
+    A --> D[Node 3]
+    
+    B -.->|Network Partition| C
+    B -.->|Network Partition| D
+    C -.->|Network Partition| D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ## Uygulama Örnekleri
 
 ### CP Sistemleri

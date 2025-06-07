@@ -4,9 +4,38 @@
 
 Backpressure control is a critical mechanism for safely managing requests that exceed system capacity. It prevents system crashes during high traffic scenarios while maintaining performance and reliability.
 
+```mermaid
+graph TD
+    A[Client Requests] --> B[Rate Limiting]
+    B --> C{Request Accepted?}
+    C -->|Yes| D[Processing Queue]
+    C -->|No| E[429 Too Many Requests]
+    D --> F{Circuit Breaker Open?}
+    F -->|No| G[Processing]
+    F -->|Yes| H[503 Service Unavailable]
+    G --> I[Result]
+    I --> J[Client]
+```
+
 ## Rate Limiting
 
 ### Token Bucket Algorithm
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant T as Token Bucket
+    participant S as System
+    
+    C->>T: Request
+    T->>T: Check Token
+    alt Has Token
+        T->>S: Process
+        S-->>C: Success Response
+    else No Token
+        T-->>C: 429 Too Many Requests
+    end
+```
 
 ```java
 @Component
@@ -210,6 +239,16 @@ public class BackpressureException extends RuntimeException {
 ```
 
 ## Circuit Breaking
+
+```mermaid
+stateDiagram-v2
+    [*] --> Closed
+    Closed --> Open: Error Threshold Exceeded
+    Open --> HalfOpen: Wait Duration Elapsed
+    HalfOpen --> Closed: Successful Request
+    HalfOpen --> Open: Failed Request
+    Closed --> [*]
+```
 
 ### Resilience4j Integration
 

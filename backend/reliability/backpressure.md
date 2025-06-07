@@ -1,12 +1,41 @@
-# 3.4 Backpressure Control
+# 3.4 Backpressure Kontrolü
 
 ## Genel Bakış
 
 Backpressure control, sistem kapasitesini aşan isteklerin güvenli bir şekilde yönetilmesi için kritik bir mekanizmadır. Yüksek trafikli durumlarda sistemin çökmesini önleyerek performans ve güvenilirliği korur.
 
+```mermaid
+graph TD
+    A[İstemci İstekleri] --> B[Rate Limiting]
+    B --> C{İstek Kabul Edildi mi?}
+    C -->|Evet| D[İşlem Kuyruğu]
+    C -->|Hayır| E[429 Too Many Requests]
+    D --> F{Circuit Breaker Açık mı?}
+    F -->|Hayır| G[İşlem]
+    F -->|Evet| H[503 Service Unavailable]
+    G --> I[Sonuç]
+    I --> J[İstemci]
+```
+
 ## Rate Limiting
 
 ### Token Bucket Algoritması
+
+```mermaid
+sequenceDiagram
+    participant C as İstemci
+    participant T as Token Bucket
+    participant S as Sistem
+    
+    C->>T: İstek
+    T->>T: Token Kontrolü
+    alt Token Var
+        T->>S: İşleme Al
+        S-->>C: Başarılı Yanıt
+    else Token Yok
+        T-->>C: 429 Too Many Requests
+    end
+```
 
 ```java
 @Component
@@ -210,6 +239,16 @@ public class BackpressureException extends RuntimeException {
 ```
 
 ## Circuit Breaking
+
+```mermaid
+stateDiagram-v2
+    [*] --> Kapalı
+    Kapalı --> Açık: Hata Eşiği Aşıldı
+    Açık --> YarıAçık: Bekleme Süresi Doldu
+    YarıAçık --> Kapalı: Başarılı İstek
+    YarıAçık --> Açık: Başarısız İstek
+    Kapalı --> [*]
+```
 
 ### Resilience4j Integration
 

@@ -8,6 +8,26 @@ The evolution of CI/CD reflects the broader shift toward DevOps practices, where
 
 ### Continuous Integration (CI)
 CI is the practice of automatically building and testing code changes as they are committed to version control. Key principles include:
+
+```mermaid
+graph LR
+    A[Code Change] --> B[CI Pipeline]
+    B --> C[Build]
+    B --> D[Test]
+    B --> E[Code Quality]
+    B --> F[Security Scan]
+    B --> G[Artifact Creation]
+    G --> H[CD Pipeline]
+    H --> I[Staging Deployment]
+    I --> J[Integration Tests]
+    J --> K[Production Deployment]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+    style K fill:#bfb,stroke:#333,stroke-width:2px
+```
+
 - **Frequent Integration**: Developers integrate code changes multiple times per day
 - **Automated Building**: Every commit triggers an automated build process
 - **Automated Testing**: Comprehensive test suites run automatically
@@ -19,6 +39,36 @@ CD extends CI by automatically deploying validated code changes to production en
 - **Environment Promotion**: Automatic promotion through staging environments
 - **Rollback Capabilities**: Quick rollback mechanisms for failed deployments
 - **Release Automation**: Coordinated release of multiple components
+
+```mermaid
+graph TB
+    subgraph "Blue-Green Deployment"
+        A[Blue Environment] --> B[Active]
+        C[Green Environment] --> D[Inactive]
+        B --> E[Switch Traffic]
+        E --> F[New Active]
+    end
+    
+    subgraph "Canary Deployment"
+        G[Current Version] --> H[Canary Version]
+        H --> I[10% Traffic]
+        I --> J[Monitor Metrics]
+        J --> K[Full Rollout]
+    end
+    
+    subgraph "Rolling Update"
+        L[Version 1] --> M[Version 1.1]
+        M --> N[Version 1.2]
+        N --> O[Version 2]
+    end
+    
+    style A fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#fbb,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
+    style O fill:#bfb,stroke:#333,stroke-width:2px
+```
 
 ## Benefits of CI/CD
 

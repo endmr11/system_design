@@ -17,6 +17,7 @@ graph TD
     SQLApp -.-> NoSQLDB
     NoSQLApp -.-> SQLDB
 ```
+# Temel Veritabanı Konseptleri
 
 ## SQL Veritabanları (Spring Boot ile)
 
@@ -78,19 +79,41 @@ graph TD
 ## Veritabanı Tasarım Desenleri
 
 ### Alan Odaklı Tasarım (Domain-Driven Design)
-- Küme sınırları (aggregate boundaries)
-- Varlık ve değer nesneleri
-- Her küme için repository
+```mermaid
+graph TD
+    A[Aggregate Root] --> B[Entity 1]
+    A --> C[Entity 2]
+    B --> D[Value Object 1]
+    C --> E[Value Object 2]
+    F[Repository] --> A
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 ### Olay Kaynaklı Mimari (Event Sourcing)
-- Olay deposu tek gerçek kaynak
-- Projeksiyon görünümleri
-- Olayları tekrar oynatma yeteneği
+```mermaid
+graph LR
+    A[Command] --> B[Event Store]
+    B --> C[Event Stream]
+    C --> D[Projection 1]
+    C --> E[Projection 2]
+    C --> F[Projection 3]
+    style B fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### CQRS
-- Komut ve sorgu sorumluluğu ayrımı
-- Ayrı okuma/yazma modelleri
-- Sonunda tutarlılık
+```mermaid
+graph TD
+    A[Command] --> B[Command Handler]
+    B --> C[Write Model]
+    C --> D[Event Store]
+    D --> E[Event Handler]
+    E --> F[Read Model]
+    G[Query] --> H[Query Handler]
+    H --> F
+    style C fill:#f96,stroke:#333,stroke-width:2px
+    style F fill:#9f6,stroke:#333,stroke-width:2px
+```
 
 ### Servis Başına Veritabanı
 - Mikroservis deseni
@@ -119,10 +142,19 @@ graph TD
 - Kısmi indeksler ile depolama optimizasyonu
 
 ### B-tree Uygulaması
-- Dengeli ağaç yapısı
-- O(log n) arama karmaşıklığı
-- Aralık sorguları desteği
-- Yazma performansı dengesi
+```mermaid
+graph TD
+    A[Root Node] --> B[Child 1]
+    A --> C[Child 2]
+    A --> D[Child 3]
+    B --> E[Leaf 1]
+    B --> F[Leaf 2]
+    C --> G[Leaf 3]
+    C --> H[Leaf 4]
+    D --> I[Leaf 5]
+    D --> J[Leaf 6]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ## Normalizasyon ve Denormalizasyon - Spring Boot Bağlamı
 
@@ -173,20 +205,40 @@ graph TD
 ## Dağıtık Veritabanı Desenleri
 
 ### Parçalama Stratejileri (Sharding)
-- **Yatay bölümlendirme**
-- **Tutarlı karma (consistent hashing)**
-- **Aralık tabanlı parçalama**
-- **Dizin tabanlı parçalama**
+```mermaid
+graph TD
+    A[Router] --> B[Shard 1]
+    A --> C[Shard 2]
+    A --> D[Shard 3]
+    B --> E[Data Partition 1]
+    C --> F[Data Partition 2]
+    D --> G[Data Partition 3]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### Replikasyon
-- **Master-slave**: Tek yazma düğümü, çoklu okuma kopyası
-- **Çoklu master**: Çoklu yazma düğümü, çakışma çözümü
-- **Sonunda tutarlılık**: Güncellemeler eşzamansız yayılır
+```mermaid
+graph TD
+    A[Master] --> B[Slave 1]
+    A --> C[Slave 2]
+    A --> D[Slave 3]
+    B --> E[Read Replica 1]
+    C --> F[Read Replica 2]
+    D --> G[Read Replica 3]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### CAP Teoremi
-- **Tutarlılık**: Tüm düğümler aynı veriyi aynı anda görür
-- **Erişilebilirlik**: Sistem çalışır durumda kalır
-- **Bölünme toleransı**: Ağ hatalarına rağmen sistem devam eder
+```mermaid
+graph TD
+    A[CAP Theorem] --> B[Consistency]
+    A --> C[Availability]
+    A --> D[Partition Tolerance]
+    B --> E[All nodes see same data]
+    C --> F[System remains operational]
+    D --> G[System continues despite network failures]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### Veritabanı Federasyonu
 - Veritabanları arası sorgular

@@ -4,6 +4,43 @@
 
 Health checks, sistem bileşenlerinin sağlık durumunu sürekli olarak izleyerek sistem güvenilirliğini artıran mekanizmalardır.
 
+```mermaid
+graph TD
+    A[Health Check] --> B[Liveness Probe]
+    A --> C[Readiness Probe]
+    A --> D[Startup Probe]
+    
+    B --> B1[Uygulama Yaşam Döngüsü]
+    B --> B2[Deadlock Detection]
+    B --> B3[Memory Leak Detection]
+    
+    C --> C1[Dependency Health]
+    C --> C2[Resource Availability]
+    C --> C3[Service Initialization]
+    
+    D --> D1[Initial Startup]
+    D --> D2[Configuration]
+    D --> D3[Resource Allocation]
+```
+
+```mermaid
+sequenceDiagram
+    participant K as Kubernetes
+    participant A as Application
+    participant D as Database
+    participant R as Redis
+    
+    K->>A: Liveness Probe
+    A-->>K: 200 OK
+    
+    K->>A: Readiness Probe
+    A->>D: Check Connection
+    A->>R: Check Connection
+    D-->>A: Connection OK
+    R-->>A: Connection OK
+    A-->>K: 200 OK
+```
+
 ### Liveness Probes
 - Uygulama yaşam döngüsü kontrolü
 - Deadlock detection

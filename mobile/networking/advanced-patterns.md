@@ -2,6 +2,27 @@
 
 ## WebSocket Uygulaması
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Heartbeat
+    
+    Client->>Server: WebSocket Bağlantısı
+    Server-->>Client: Bağlantı Onayı
+    loop Her 30 saniyede
+        Client->>Server: Ping
+        Server-->>Client: Pong
+    end
+    Note over Client,Server: Heartbeat Mekanizması
+    
+    alt Bağlantı Kopması
+        Client->>Client: Yeniden Bağlanma Stratejisi
+        Note over Client: Exponential Backoff
+        Client->>Server: Yeniden Bağlanma Denemesi
+    end
+```
+
 ### Bağlantı Yönetimi
 
 WebSocket bağlantıları long-running connections oldukları için dikkatli bir connection management gerektirir:
@@ -331,7 +352,24 @@ class iOSWebSocketManager: NSObject, URLSessionWebSocketDelegate {
 }
 ```
 
-## GraphQL Optimization
+## GraphQL Optimizasyonu
+
+```mermaid
+graph TD
+    A[Client] -->|1. Query Request| B[GraphQL Client]
+    B -->|2. Cache Check| C{Cache Hit?}
+    C -->|Yes| D[Return Cached Data]
+    C -->|No| E[Network Request]
+    E -->|3. Query Execution| F[GraphQL Server]
+    F -->|4. Data Fetch| G[Database/External APIs]
+    G -->|5. Response| F
+    F -->|6. Response| B
+    B -->|7. Cache Update| H[Cache Store]
+    B -->|8. Response| A
+    
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 ### Query Optimization
 
@@ -559,7 +597,31 @@ class GraphQLService {
 }
 ```
 
-## Real-Time Data Sync
+## Gerçek Zamanlı Veri Senkronizasyonu
+
+```mermaid
+stateDiagram-v2
+    [*] --> LocalState
+    LocalState --> OptimisticUpdate: Kullanıcı Değişikliği
+    OptimisticUpdate --> PendingUpdate: UI Güncelleme
+    PendingUpdate --> ServerSync: Sunucuya Gönder
+    ServerSync --> ConfirmedUpdate: Başarılı
+    ServerSync --> Rollback: Hata
+    ConfirmedUpdate --> LocalState: State Güncelleme
+    Rollback --> LocalState: Önceki State'e Dön
+    
+    state OptimisticUpdate {
+        [*] --> UpdateUI
+        UpdateUI --> StorePreviousState
+        StorePreviousState --> [*]
+    }
+    
+    state ServerSync {
+        [*] --> SendToServer
+        SendToServer --> WaitResponse
+        WaitResponse --> [*]
+    }
+```
 
 ### Conflict Resolution
 

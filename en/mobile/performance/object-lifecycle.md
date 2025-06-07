@@ -5,6 +5,20 @@
 - **Memory Pressure**: System resource constraints and application responses
 - **Lifecycle Awareness**: Platform-specific lifecycle integration
 
+```mermaid
+graph TD
+    A[Object Creation] --> B[Object Usage]
+    B --> C{Reference Management}
+    C -->|Strong Reference| D[Memory Retention]
+    C -->|Weak Reference| E[Automatic Cleanup]
+    D --> F{Lifecycle State}
+    F -->|Active| G[Normal Usage]
+    F -->|Inactive| H[Memory Cleanup]
+    G --> I[Object Destruction]
+    H --> I
+    E --> I
+```
+
 ## Singleton vs Scoped Objects
 
 ### Singleton Pattern in Mobile
@@ -293,6 +307,23 @@ class CacheEntry {
   - Garbage collection hints
   - Cache size reduction strategies
 
+```mermaid
+graph TD
+    A[Memory Pressure Detection] --> B{Pressure Level}
+    B -->|Low| C[Light Cleanup]
+    B -->|Medium| D[Moderate Cleanup]
+    B -->|High| E[Aggressive Cleanup]
+    C --> F[Clear Non-Essential Cache]
+    D --> G[Clear Non-Critical Objects]
+    E --> H[Clear All Cache]
+    F --> I[Memory Status Check]
+    G --> I
+    H --> I
+    I --> J{Memory Sufficient?}
+    J -->|Yes| K[Continue Normal Operation]
+    J -->|No| A
+```
+
 ### Intelligent Cache Eviction
 - **Priority-Based Eviction**:
   - Critical vs non-critical data
@@ -362,6 +393,26 @@ interface MemoryAwareCache {
   - Size limits and growth strategies
   - Object validation and reset
   - Thread safety considerations
+
+```mermaid
+graph TD
+    A[Object Request] --> B{Object in Pool?}
+    B -->|Yes| C[Get Object from Pool]
+    B -->|No| D{Create New Object}
+    D -->|Pool Full| E[Clean Oldest Object]
+    D -->|Pool Empty| F[Create New Object]
+    C --> G[Object Usage]
+    E --> F
+    F --> G
+    G --> H{Usage Complete?}
+    H -->|Yes| I[Return to Pool]
+    H -->|No| G
+    I --> J{Object Clean?}
+    J -->|Yes| K[Add to Pool]
+    J -->|No| L[Clean Object]
+    L --> K
+    K --> A
+```
 
 ### Platform-Specific Pooling
 - **Android**:

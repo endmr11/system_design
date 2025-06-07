@@ -46,6 +46,23 @@ graph LR
     style WriteBehind fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
+### Cache Pattern Descriptions
+
+1. **Cache-Aside (Lazy Loading)**
+   - Application manually manages the cache
+   - Automatic data loading on cache miss
+   - Enables selective caching
+
+2. **Write-Through**
+   - Synchronous write to both cache and database
+   - Guarantees data consistency
+   - Requires two operations for each write
+
+3. **Write-Behind (Write-Back)**
+   - Immediate write to cache, asynchronous write to database
+   - Provides high performance
+   - Risk of data loss
+
 ## Distributed Cache Architecture
 
 ```mermaid
@@ -340,6 +357,35 @@ public class WriteBehindCacheService {
 
 ## Multi-Level Caching
 
+```mermaid
+graph TB
+    Client[Client Request] --> L1[L1 Cache<br/>Local Memory]
+    L1 -->|Cache Miss| L2[L2 Cache<br/>Redis/Hazelcast]
+    L2 -->|Cache Miss| DB[(Database)]
+    
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style L1 fill:#bbf,stroke:#333,stroke-width:2px
+    style L2 fill:#dfd,stroke:#333,stroke-width:2px
+    style DB fill:#fdd,stroke:#333,stroke-width:2px
+```
+
+### Multi-Level Cache Features
+
+1. **L1 Cache (Local Memory)**
+   - Fastest access time
+   - Application instance specific
+   - Limited memory capacity
+
+2. **L2 Cache (Distributed)**
+   - Cluster-wide sharing
+   - Higher capacity
+   - Network latency impact
+
+3. **Database**
+   - Used as last resort
+   - Complete data consistency
+   - Slowest access time
+
 ### L1 (Local) + L2 (Distributed) Cache
 ```java
 @Service
@@ -400,61 +446,46 @@ public class MultiLevelCacheService {
 
 ## Cache Invalidation Strategies
 
-### Event-Based Invalidation
-```java
-@Component
-public class CacheInvalidationHandler {
+```mermaid
+graph LR
+    subgraph EventBased
+        EB1[Data Change] --> EB2[Event Publisher]
+        EB2 --> EB3[Event Listener]
+        EB3 --> EB4[Cache Invalidation]
+    end
     
-    @Autowired
-    private CacheManager cacheManager;
+    subgraph TimeBased
+        TB1[Cache Entry] --> TB2{TTL Expired?}
+        TB2 -->|Yes| TB3[Remove from Cache]
+        TB2 -->|No| TB4[Keep in Cache]
+    end
     
-    @EventListener
-    public void handleUserUpdateEvent(UserUpdateEvent event) {
-        Cache userCache = cacheManager.getCache("users");
-        if (userCache != null) {
-            userCache.evict(event.getUserId());
-            log.info("Evicted user {} from cache", event.getUserId());
-        }
-    }
+    subgraph Manual
+        M1[Admin Action] --> M2[Cache Clear]
+        M2 --> M3[Selective Invalidation]
+    end
     
-    @EventListener
-    public void handleProductCategoryUpdateEvent(ProductCategoryUpdateEvent event) {
-        Cache productCache = cacheManager.getCache("products");
-        if (productCache != null) {
-            // Invalidate all products in the category
-            event.getProductIds().forEach(productCache::evict);
-        }
-    }
-}
+    style EventBased fill:#f9f,stroke:#333,stroke-width:2px
+    style TimeBased fill:#bbf,stroke:#333,stroke-width:2px
+    style Manual fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
-### Time-Based Invalidation
-```java
-@Service
-public class TimeBasedCacheService {
-    
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-    
-    public void cacheWithTTL(String key, Object value, Duration ttl) {
-        redisTemplate.opsForValue().set(key, value, ttl);
-    }
-    
-    public void cacheWithExpiry(String key, Object value, Instant expiryTime) {
-        Duration ttl = Duration.between(Instant.now(), expiryTime);
-        redisTemplate.opsForValue().set(key, value, ttl);
-    }
-    
-    @Scheduled(cron = "0 0 2 * * *") // Every night at 02:00
-    public void clearDailyCache() {
-        Set<String> keys = redisTemplate.keys("daily:*");
-        if (!keys.isEmpty()) {
-            redisTemplate.delete(keys);
-            log.info("Cleared {} daily cache entries", keys.size());
-        }
-    }
-}
-```
+### Cache Invalidation Strategies
+
+1. **Event-Based Invalidation**
+   - Automatic triggering on data changes
+   - Integration with event-driven architecture
+   - Selective cache clearing
+
+2. **Time-Based Invalidation**
+   - TTL (Time-To-Live) based clearing
+   - Automatic cache refresh
+   - Simple and effective management
+
+3. **Manual Invalidation**
+   - Admin control
+   - Emergency intervention
+   - Selective cache management
 
 ## CDN Integration
 

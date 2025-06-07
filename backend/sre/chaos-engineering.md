@@ -6,6 +6,30 @@ Chaos Engineering, sistemlerin dayanıklılığını test etmek ve güçlendirme
 
 ### Chaos Engineering Prensipleri
 
+```mermaid
+graph TD
+    A[Chaos Engineering] --> B[Steady State Hypothesis]
+    A --> C[Experiment Design]
+    A --> D[Production Testing]
+    A --> E[Automated Experiments]
+    
+    B --> B1[Define Baseline]
+    B --> B2[Set Tolerances]
+    B --> B3[Validate State]
+    
+    C --> C1[Define Scope]
+    C --> C2[Plan Actions]
+    C --> C3[Set Duration]
+    
+    D --> D1[Control Blast Radius]
+    D --> D2[Monitor Impact]
+    D --> D3[Safety Controls]
+    
+    E --> E1[Schedule Tests]
+    E --> E2[Automate Execution]
+    E --> E3[Collect Results]
+```
+
 #### 1. Steady State Hypothesis
 ```java
 // Chaos Engineering Hypothesis Framework
@@ -152,6 +176,27 @@ public class ChaosExperimentService {
 ```
 
 ## Chaos Monkey Implementation
+
+```mermaid
+sequenceDiagram
+    participant CM as Chaos Monkey
+    participant SS as Safety Service
+    participant K8s as Kubernetes
+    participant Metrics as Metrics Collector
+    
+    CM->>SS: Check Safety Conditions
+    SS-->>CM: Safety Status
+    
+    alt Safe to Proceed
+        CM->>K8s: Get Eligible Pods
+        K8s-->>CM: Pod List
+        CM->>CM: Select Random Pod
+        CM->>K8s: Terminate Pod
+        CM->>Metrics: Record Metrics
+    else Unsafe Conditions
+        CM->>CM: Skip Experiment
+    end
+```
 
 ### 1. Service Termination
 ```java
@@ -357,6 +402,26 @@ public class ResourceExhaustionChaos {
 ```
 
 ## Gremlin Integration
+
+```mermaid
+graph LR
+    A[Chaos Service] --> B[Gremlin API]
+    B --> C[Resource Attacks]
+    B --> D[Network Attacks]
+    B --> E[State Attacks]
+    
+    C --> C1[CPU Stress]
+    C --> C2[Memory Pressure]
+    C --> C3[Disk Fill]
+    
+    D --> D1[Latency]
+    D --> D2[Packet Loss]
+    D --> D3[Bandwidth]
+    
+    E --> E1[Process Kill]
+    E --> E2[Time Travel]
+    E --> E3[Blackhole]
+```
 
 ### 1. Gremlin API Integration
 ```java

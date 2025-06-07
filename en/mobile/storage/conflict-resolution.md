@@ -10,6 +10,19 @@ Conflict resolution is a critical aspect of mobile data synchronization when mul
 
 ### Version-Based Detection
 
+```mermaid
+graph TD
+    A[Version Check] --> B{Version Match?}
+    B -->|Yes| C[No Conflict]
+    B -->|No| D[Conflict Detected]
+    D --> E[Version Comparison]
+    E --> F{Local > Server?}
+    F -->|Yes| G[Local Newer]
+    F -->|No| H[Server Newer]
+    G --> I[Resolution Strategy]
+    H --> I
+```
+
 Version-based conflict detection uses version numbers or timestamps to identify when the same piece of data has been modified by multiple clients.
 
 #### Optimistic Locking with Version Numbers
@@ -302,6 +315,19 @@ interface FieldChanges {
 ## Resolution Strategies
 
 ### Last Writer Wins (LWW)
+
+```mermaid
+sequenceDiagram
+    participant C1 as Client 1
+    participant S as Server
+    participant C2 as Client 2
+    
+    C1->>S: Update Data (t1)
+    C2->>S: Update Data (t2)
+    Note over S: t2 > t1
+    S->>C1: Client 2's changes
+    S->>C2: Confirmation
+```
 
 The simplest strategy where the most recently modified version wins.
 
@@ -1061,6 +1087,25 @@ class ConflictComparisonViewController: UIViewController {
 
 ### Semantic Conflict Resolution
 
+```mermaid
+graph TD
+    A[Semantic Analysis] --> B[Text Analysis]
+    A --> C[List Analysis]
+    A --> D[Object Analysis]
+    B --> E[Diff Analysis]
+    B --> F[Content Similarity]
+    C --> G[Set Operations]
+    C --> H[Order Preservation]
+    D --> I[Property Merge]
+    D --> J[Deep Comparison]
+    E --> K[Resolution Strategy]
+    F --> K
+    G --> K
+    H --> K
+    I --> K
+    J --> K
+```
+
 ```python
 # Python semantic conflict resolver
 import difflib
@@ -1515,6 +1560,19 @@ enum class PreferenceStrategy {
 ## Monitoring and Analytics
 
 ### Conflict Metrics Collection
+
+```mermaid
+graph LR
+    A[Conflict Detection] --> B[Metrics Collection]
+    B --> C[Resolution Tracking]
+    C --> D[Analytics Processing]
+    D --> E[Performance Metrics]
+    D --> F[Resolution Success]
+    D --> G[User Intervention]
+    E --> H[Reporting]
+    F --> H
+    G --> H
+```
 
 ```typescript
 // TypeScript conflict analytics

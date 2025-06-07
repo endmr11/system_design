@@ -2,6 +2,40 @@
 
 Service Discovery, mikroservis mimarisinde servislerin birbirini dinamik olarak bulabilmesi için kritik bir bileşendir. Bu bölümde Spring Cloud Netflix Eureka ve alternatif çözümlerin detaylı implementasyonunu inceleyeceğiz.
 
+```mermaid
+graph TB
+    subgraph "Service Registry"
+        E[Eureka Server]
+    end
+    
+    subgraph "Service Instances"
+        S1[Service 1]
+        S2[Service 2]
+        S3[Service 3]
+    end
+    
+    subgraph "Client Applications"
+        C1[Client 1]
+        C2[Client 2]
+    end
+    
+    S1 -->|Register| E
+    S2 -->|Register| E
+    S3 -->|Register| E
+    
+    E -->|Heartbeat| S1
+    E -->|Heartbeat| S2
+    E -->|Heartbeat| S3
+    
+    C1 -->|Query| E
+    C2 -->|Query| E
+    
+    C1 -->|Call| S1
+    C1 -->|Call| S2
+    C2 -->|Call| S2
+    C2 -->|Call| S3
+```
+
 ## Spring Cloud Eureka
 
 ### Eureka Server Configuration
@@ -108,6 +142,37 @@ eureka:
   client:
     service-url:
       defaultZone: http://eureka-server-1:8761/eureka/,http://eureka-server-2:8762/eureka/
+```
+
+```mermaid
+graph TB
+    subgraph "Eureka Cluster"
+        E1[Eureka Server 1]
+        E2[Eureka Server 2]
+        E3[Eureka Server 3]
+    end
+    
+    subgraph "Service Instances"
+        S1[Service 1]
+        S2[Service 2]
+        S3[Service 3]
+    end
+    
+    E1 <-->|Peer Replication| E2
+    E1 <-->|Peer Replication| E3
+    E2 <-->|Peer Replication| E3
+    
+    S1 -->|Register| E1
+    S1 -->|Register| E2
+    S1 -->|Register| E3
+    
+    S2 -->|Register| E1
+    S2 -->|Register| E2
+    S2 -->|Register| E3
+    
+    S3 -->|Register| E1
+    S3 -->|Register| E2
+    S3 -->|Register| E3
 ```
 
 ### Eureka Client Configuration
@@ -745,6 +810,35 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
 }
+```
+
+```mermaid
+graph TB
+    subgraph "Client"
+        C[Client Application]
+    end
+    
+    subgraph "Istio Service Mesh"
+        I[Istio Ingress Gateway]
+        P[Pilot]
+        M[Mixer]
+        S[Sidecar Proxy]
+    end
+    
+    subgraph "Microservices"
+        MS1[Order Service]
+        MS2[Payment Service]
+        MS3[User Service]
+    end
+    
+    C -->|HTTP Request| I
+    I -->|Route| S
+    S -->|Service Call| MS1
+    S -->|Service Call| MS2
+    S -->|Service Call| MS3
+    
+    P -->|Configuration| S
+    M -->|Telemetry| S
 ```
 
 ### Service Discovery Events and Monitoring

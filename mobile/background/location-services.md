@@ -5,10 +5,10 @@ Mobil uygulamalarda lokasyon servisleri, kullanıcı deneyimini zenginleştiren 
 ## Temel Kavramlar
 
 ### 1. Lokasyon Hassasiyeti
-- **High Accuracy**: GPS + Network + Passive
-- **Balanced Power**: Network + Passive
-- **Low Power**: Passive only
-- **No Power**: Cache'd locations only
+- **Yüksek Hassasiyet**: GPS + Ağ + Pasif
+- **Dengeli Güç**: Ağ + Pasif
+- **Düşük Güç**: Sadece Pasif
+- **Güç Yok**: Sadece Önbellek Konumları
 
 ### 2. Lokasyon Türleri
 - **GPS**: En hassas, en yüksek batarya tüketimi

@@ -2,6 +2,62 @@
 
 Mikroservis mimarisinde servisler arası iletişim kritik bir konudur. Bu bölümde senkron (REST/gRPC) ve asenkron (Olay Tabanlı) iletişim modellerinin Spring Boot ile uygulamasını detaylı olarak inceleyeceğiz.
 
+## İletişim Modelleri
+
+### Senkron İletişim
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ServiceA
+    participant ServiceB
+    
+    Client->>ServiceA: HTTP/gRPC İsteği
+    ServiceA->>ServiceB: HTTP/gRPC İsteği
+    ServiceB-->>ServiceA: Yanıt
+    ServiceA-->>Client: Yanıt
+```
+
+### Asenkron İletişim
+```mermaid
+sequenceDiagram
+    participant Client
+    participant ServiceA
+    participant MessageBroker
+    participant ServiceB
+    
+    Client->>ServiceA: İstek
+    ServiceA->>MessageBroker: Olay Yayınla
+    ServiceA-->>Client: Hemen Yanıt
+    MessageBroker->>ServiceB: Olay İlet
+    ServiceB->>ServiceB: İşle
+```
+
+### Devre Kesici (Circuit Breaker) Deseni
+```mermaid
+stateDiagram-v2
+    [*] --> CLOSED
+    CLOSED --> OPEN: Hata Eşiği Aşıldı
+    OPEN --> HALF_OPEN: Zaman Aşımı
+    HALF_OPEN --> CLOSED: Başarılı İstek
+    HALF_OPEN --> OPEN: Başarısız İstek
+```
+
+### Saga Deseni
+```mermaid
+sequenceDiagram
+    participant OrderService
+    participant PaymentService
+    participant InventoryService
+    participant ShippingService
+    
+    OrderService->>PaymentService: Ödeme İsteği
+    PaymentService-->>OrderService: Ödeme Onayı
+    OrderService->>InventoryService: Stok Güncelleme
+    InventoryService-->>OrderService: Stok Güncellendi
+    OrderService->>ShippingService: Kargo İsteği
+    ShippingService-->>OrderService: Kargo Onayı
+```
+
 ## Senkron İletişim Desenleri
 
 ### REST API İletişimi

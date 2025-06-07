@@ -10,42 +10,21 @@ Kimlik doğrulama (Authentication) ve yetkilendirme (Authorization), güvenli uy
 
 **Spring Authorization Server** (eski Spring Security OAuth2) ile özelleştirilebilir token generation:
 
-```java
-@Configuration
-@EnableAuthorizationServer
-public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Auth Server
+    participant Resource Server
     
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("client")
-                .secret("{noop}secret")
-                .scopes("read", "write")
-                .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(3600);
-    }
-    
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .tokenStore(tokenStore())
-                .accessTokenConverter(jwtAccessTokenConverter())
-                .userDetailsService(userDetailsService)
-                .authenticationManager(authenticationManager);
-    }
-    
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("signing-key");
-        return converter;
-    }
-    
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-}
+    Client->>Auth Server: Authorization Request
+    Auth Server->>Client: Redirect to Login
+    Client->>Auth Server: User Credentials
+    Auth Server->>Auth Server: Validate Credentials
+    Auth Server->>Client: Authorization Code
+    Client->>Auth Server: Token Request (Code)
+    Auth Server->>Client: Access Token + Refresh Token
+    Client->>Resource Server: API Request (Access Token)
+    Resource Server->>Client: Protected Resource
 ```
 
 **Client Management** ve scope yapılandırması:
@@ -343,66 +322,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 **Header, Payload, Signature** yapılandırması:
 
-```java
-@Service
-public class JwtTokenService {
+```mermaid
+graph TD
+    A[JWT Token] --> B[Header]
+    A --> C[Payload]
+    A --> D[Signature]
     
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    B --> B1[alg: HS256]
+    B --> B2[typ: JWT]
     
-    @Value("${jwt.expiration}")
-    private int jwtExpiration;
+    C --> C1[sub: user123]
+    C --> C2[exp: 1516239022]
+    C --> C3[roles: [ADMIN,USER]]
     
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("roles", userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList()));
-        claims.put("userId", ((CustomUserDetails) userDetails).getId());
-        
-        return createToken(claims, userDetails.getUsername());
-    }
-    
-    private String createToken(Map<String, Object> claims, String subject) {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + jwtExpiration * 1000);
-        
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
-                .compact();
-    }
-    
-    public boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
-    
-    public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
-    }
-    
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
-    
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
-    }
-    
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-    }
-    
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-}
+    D --> D1[HMACSHA256]
+    D --> D2[Base64Url]
 ```
 
 ### 2. Token Refresh Implementation
@@ -505,6 +439,24 @@ public class CookieUtils {
 ### 1. @PreAuthorize/@PostAuthorize
 
 **Expression-based access control**:
+
+```mermaid
+graph TD
+    A[User] --> B{Role Check}
+    B -->|Admin| C[Full Access]
+    B -->|User| D[Limited Access]
+    B -->|Guest| E[Read Only]
+    
+    C --> F[Create]
+    C --> G[Read]
+    C --> H[Update]
+    C --> I[Delete]
+    
+    D --> G
+    D --> H
+    
+    E --> G
+```
 
 ```java
 @Service

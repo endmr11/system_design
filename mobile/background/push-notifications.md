@@ -11,6 +11,39 @@ Push bildirimleri, mobil uygulamalarda kullanıcı katılımını artıran kriti
 [Mobile App] → [APNs/FCM] → [Push Service] → [Message Queue] → [Backend API]
 ```
 
+```mermaid
+graph LR
+    A[Mobile App] --> B[APNs/FCM]
+    B --> C[Push Service]
+    C --> D[Message Queue]
+    D --> E[Backend API]
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style D fill:#fbb,stroke:#333,stroke-width:2px
+    style E fill:#fbf,stroke:#333,stroke-width:2px
+```
+
+```mermaid
+sequenceDiagram
+    participant MA as Mobile App
+    participant PS as Push Service
+    participant MQ as Message Queue
+    participant BA as Backend API
+    
+    MA->>PS: Register Device Token
+    PS->>BA: Store Token
+    BA-->>PS: Token Stored
+    PS-->>MA: Registration Complete
+    
+    Note over BA,MQ: When sending notification
+    BA->>MQ: Queue Notification
+    MQ->>PS: Process Notification
+    PS->>MA: Deliver Notification
+    MA-->>PS: Delivery Confirmation
+    PS-->>BA: Update Delivery Status
+```
+
 ### Platform-Specific Implementation
 
 #### iOS - Apple Push Notification Service (APNs)

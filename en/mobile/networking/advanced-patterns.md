@@ -2,6 +2,27 @@
 
 ## WebSocket Implementation
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Heartbeat
+    
+    Client->>Server: WebSocket Connection
+    Server-->>Client: Connection Acknowledgment
+    loop Every 30 seconds
+        Client->>Server: Ping
+        Server-->>Client: Pong
+    end
+    Note over Client,Server: Heartbeat Mechanism
+    
+    alt Connection Loss
+        Client->>Client: Reconnection Strategy
+        Note over Client: Exponential Backoff
+        Client->>Server: Reconnection Attempt
+    end
+```
+
 ### Connection Management
 
 WebSocket connections require careful connection management as they are long-running connections:
@@ -333,6 +354,23 @@ class iOSWebSocketManager: NSObject, URLSessionWebSocketDelegate {
 
 ## GraphQL Optimization
 
+```mermaid
+graph TD
+    A[Client] -->|1. Query Request| B[GraphQL Client]
+    B -->|2. Cache Check| C{Cache Hit?}
+    C -->|Yes| D[Return Cached Data]
+    C -->|No| E[Network Request]
+    E -->|3. Query Execution| F[GraphQL Server]
+    F -->|4. Data Fetch| G[Database/External APIs]
+    G -->|5. Response| F
+    F -->|6. Response| B
+    B -->|7. Cache Update| H[Cache Store]
+    B -->|8. Response| A
+    
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ### Query Optimization
 
 #### Field Selection
@@ -561,6 +599,30 @@ class GraphQLService {
 
 ## Real-Time Data Sync
 
+```mermaid
+stateDiagram-v2
+    [*] --> LocalState
+    LocalState --> OptimisticUpdate: User Change
+    OptimisticUpdate --> PendingUpdate: UI Update
+    PendingUpdate --> ServerSync: Send to Server
+    ServerSync --> ConfirmedUpdate: Success
+    ServerSync --> Rollback: Error
+    ConfirmedUpdate --> LocalState: State Update
+    Rollback --> LocalState: Revert to Previous State
+    
+    state OptimisticUpdate {
+        [*] --> UpdateUI
+        UpdateUI --> StorePreviousState
+        StorePreviousState --> [*]
+    }
+    
+    state ServerSync {
+        [*] --> SendToServer
+        SendToServer --> WaitResponse
+        WaitResponse --> [*]
+    }
+```
+
 ### Conflict Resolution
 
 #### Last-Write-Wins Strategy
@@ -693,121 +755,3 @@ class VectorClock {
   }
 }
 ```
-
-### State Management
-
-#### Optimistic Updates
-```javascript
-class OptimisticUpdateManager {
-  constructor() {
-    this.pendingUpdates = new Map();
-    this.rollbackStack = [];
-  }
-
-  async optimisticUpdate(id, updateFn, serverUpdateFn) {
-    // Update local state immediately
-    const previousState = this.getCurrentState(id);
-    const optimisticState = updateFn(previousState);
-    
-    // Store previous state for rollback
-    this.rollbackStack.push({ id, previousState });
-    this.pendingUpdates.set(id, { optimisticState, timestamp: Date.now() });
-    
-    // Update UI
-    this.updateUI(id, optimisticState);
-    
-    try {
-      // Send to server asynchronously
-      const serverResult = await serverUpdateFn(optimisticState);
-      
-      // Confirm optimistic update if successful
-      this.confirmUpdate(id, serverResult);
-    } catch (error) {
-      // Rollback on error
-      this.rollbackUpdate(id);
-      throw error;
-    }
-  }
-
-  confirmUpdate(id, serverResult) {
-    this.pendingUpdates.delete(id);
-    this.updateUI(id, serverResult);
-    
-    // Remove from rollback stack
-    this.rollbackStack = this.rollbackStack.filter(item => item.id !== id);
-  }
-
-  rollbackUpdate(id) {
-    const rollbackItem = this.rollbackStack.find(item => item.id === id);
-    if (rollbackItem) {
-      this.updateUI(id, rollbackItem.previousState);
-      this.pendingUpdates.delete(id);
-      this.rollbackStack = this.rollbackStack.filter(item => item.id !== id);
-    }
-  }
-
-  isPending(id) {
-    return this.pendingUpdates.has(id);
-  }
-}
-```
-
-#### State Reconciliation
-```javascript
-class StateReconciler {
-  constructor() {
-    this.localState = new Map();
-    this.remoteState = new Map();
-    this.conflictResolver = new MergeStrategy();
-  }
-
-  async reconcile(entityId) {
-    const local = this.localState.get(entityId);
-    const remote = this.remoteState.get(entityId);
-    
-    if (!local && !remote) {
-      return null;
-    }
-    
-    if (!local) {
-      this.localState.set(entityId, remote);
-      return remote;
-    }
-    
-    if (!remote) {
-      // Local changes need to be synced to server
-      await this.syncToServer(entityId, local);
-      return local;
-    }
-    
-    // Both exist, need to resolve conflicts
-    const resolved = this.conflictResolver.smartMerge(local, remote);
-    
-    // Update both local and remote states
-    this.localState.set(entityId, resolved);
-    await this.syncToServer(entityId, resolved);
-    
-    return resolved;
-  }
-
-  async syncToServer(entityId, data) {
-    try {
-      const response = await fetch(`/api/entities/${entityId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      
-      if (response.ok) {
-        const serverData = await response.json();
-        this.remoteState.set(entityId, serverData);
-      }
-    } catch (error) {
-      console.error('Server sync failed:', error);
-      throw error;
-    }
-  }
-}
-```
-
-These advanced network patterns are critical for real-time communication, efficient data transfer, and robust state management in modern mobile applications. WebSocket, GraphQL, and state synchronization techniques significantly improve user experience.

@@ -41,6 +41,35 @@ class UserService {
 
 This approach enables compile-time detection of missing dependencies and facilitates easy injection of mock objects during unit testing.
 
+```mermaid
+classDiagram
+    class UserService {
+        -UserRepository userRepository
+        -Logger logger
+        -UserValidator validator
+        +UserService(UserRepository, Logger, UserValidator)
+        +updateUser(String, Partial~User~) Promise~User~
+    }
+    class UserRepository {
+        <<interface>>
+        +getUserById(String) Promise~User~
+        +saveUser(User) Promise~void~
+    }
+    class Logger {
+        <<interface>>
+        +info(String) void
+        +error(String) void
+        +warn(String) void
+    }
+    class UserValidator {
+        <<interface>>
+        +validate(Partial~User~) Partial~User~
+    }
+    UserService --> UserRepository
+    UserService --> Logger
+    UserService --> UserValidator
+```
+
 ### Property and Method Injection Techniques
 
 Property injection is preferred for optional dependencies or framework-specific scenarios. This approach allows dependencies to be set through properties after constructor execution.
@@ -73,6 +102,25 @@ Method injection is used when dynamic dependencies need to be provided at runtim
 ## IoC Container Architectures
 
 Inversion of Control (IoC) containers are sophisticated systems that enable centralized dependency management and automatic injection. In enterprise-level mobile applications, these containers play a critical role in managing complex dependency graphs.
+
+```mermaid
+graph TD
+    A[IoC Container] --> B[Service Registration]
+    A --> C[Dependency Resolution]
+    A --> D[Lifecycle Management]
+    
+    B --> B1[Singleton]
+    B --> B2[Transient]
+    B --> B3[Scoped]
+    
+    C --> C1[Constructor Injection]
+    C --> C2[Property Injection]
+    C --> C3[Method Injection]
+    
+    D --> D1[Application Scope]
+    D --> D2[Activity Scope]
+    D --> D3[Fragment Scope]
+```
 
 ### Service Registration Patterns
 
@@ -152,6 +200,25 @@ class DependencyContainer: ObservableObject {
 ## Multi-Module Dependency Architecture
 
 In large-scale mobile applications, DI systems used in conjunction with modular architecture patterns require sophisticated mechanisms that facilitate cross-module communication. In this architecture, each module declares its own dependencies and specifies what it will expose.
+
+```mermaid
+graph LR
+    A[Core Module] --> B[Feature Module 1]
+    A --> C[Feature Module 2]
+    A --> D[Feature Module 3]
+    
+    B --> E[Event Bus]
+    C --> E
+    D --> E
+    
+    B --> F[Shared Services]
+    C --> F
+    D --> F
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#bfb,stroke:#333,stroke-width:2px
+```
 
 ### Module Boundary Definition
 

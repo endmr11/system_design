@@ -4,6 +4,63 @@
 
 Distributed tracing extends beyond basic tracing by providing comprehensive request tracking across multiple services, enabling correlation of related operations, and maintaining context throughout complex distributed workflows. This approach is essential for understanding user journeys, debugging cross-service issues, and monitoring business processes.
 
+## System Architecture
+
+```mermaid
+graph TD
+    Client[Client] -->|HTTP Request| API[API Gateway]
+    API -->|X-Correlation-ID| Service1[Microservice 1]
+    API -->|X-Correlation-ID| Service2[Microservice 2]
+    Service1 -->|X-Correlation-ID| Service3[Microservice 3]
+    Service2 -->|X-Correlation-ID| Service4[Microservice 4]
+    Service1 -->|X-Correlation-ID| Queue[Message Queue]
+    Queue -->|X-Correlation-ID| Service5[Microservice 5]
+    
+    subgraph "Correlation ID Flow"
+        API -->|Header| Service1
+        Service1 -->|Header| Service3
+        Service1 -->|Header| Queue
+        Queue -->|Header| Service5
+    end
+```
+
+## Correlation ID Lifecycle
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Gateway as API Gateway
+    participant Service as Microservice
+    participant Queue as Message Queue
+    
+    Client->>Gateway: HTTP Request
+    Gateway->>Gateway: Generate Correlation ID
+    Gateway->>Service: X-Correlation-ID Header
+    Service->>Service: Store in MDC
+    Service->>Queue: Message + Correlation ID
+    Queue->>Service: Message Processing
+    Service->>Service: Read from MDC
+    Service->>Gateway: Response + Correlation ID
+    Gateway->>Client: Response
+```
+
+## Error Correlation Flow
+
+```mermaid
+graph TD
+    Error[Error Occurs] -->|Record| ErrorService[Error Service]
+    ErrorService -->|Store| Redis[(Redis)]
+    ErrorService -->|Notify| Alert[Alert System]
+    ErrorService -->|Log| Logs[Log System]
+    
+    subgraph "Error Context"
+        ErrorService -->|Correlation ID| Context[Error Context]
+        Context -->|User ID| UserInfo[User Info]
+        Context -->|Request Info| RequestInfo[Request Info]
+        Context -->|Stack Trace| StackTrace[Stack Trace]
+    end
+```
+
 ## Correlation ID Implementation
 
 ### 1. Basic Correlation ID Service

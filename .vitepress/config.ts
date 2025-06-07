@@ -92,7 +92,7 @@ export default withMermaid(defineConfig({
                   link: "/backend/reliability/health-checks",
                 },
                 {
-                  text: "Geri Basınç Kontrolü",
+                  text: "Backpressure Kontrolü",
                   link: "/backend/reliability/backpressure",
                 },
               ],

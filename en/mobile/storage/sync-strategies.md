@@ -12,6 +12,19 @@ Data synchronization in mobile applications is crucial for maintaining consisten
 
 Pull-based sync involves the client actively requesting data updates from the server. This approach provides better control over when and what data is synchronized.
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Server
+    participant Database
+    
+    Client->>Server: Request Data Updates
+    Server->>Database: Query Changes
+    Database-->>Server: Return Changes
+    Server-->>Client: Send Updates
+    Client->>Database: Apply Updates
+```
+
 #### Polling Implementation
 
 ```swift
@@ -217,6 +230,18 @@ class DeltaSyncManager {
 
 Push-based synchronization involves the server actively notifying clients of data changes through real-time communication channels.
 
+```mermaid
+sequenceDiagram
+    participant Server
+    participant Client1
+    participant Client2
+    
+    Server->>Client1: Push Update
+    Server->>Client2: Push Update
+    Client1-->>Server: Acknowledge
+    Client2-->>Server: Acknowledge
+```
+
 #### WebSocket Implementation
 
 ```dart
@@ -396,6 +421,16 @@ class SSESyncManager {
 
 Combining pull and push strategies for optimal performance and reliability.
 
+```mermaid
+graph TD
+    A[Client] -->|Pull| B[Server]
+    B -->|Push| A
+    A -->|Local Cache| C[Database]
+    B -->|Server Cache| D[Server DB]
+    E[Network Monitor] -->|Status| A
+    E -->|Status| B
+```
+
 ```swift
 // iOS hybrid sync manager
 class HybridSyncManager {
@@ -462,88 +497,18 @@ class HybridSyncManager {
 
 Implementing optimistic updates to improve perceived performance while maintaining data consistency.
 
-```kotlin
-// Android optimistic updates
-class OptimisticSyncManager(
-    private val apiService: ApiService,
-    private val database: AppDatabase,
-    private val eventBus: EventBus
-) {
-    suspend fun updateItemOptimistically(item: LocalItem, updates: ItemUpdates) {
-        // 1. Apply changes locally immediately
-        val optimisticItem = item.copy(
-            title = updates.title ?: item.title,
-            content = updates.content ?: item.content,
-            lastModified = System.currentTimeMillis(),
-            syncStatus = SyncStatus.PENDING
-        )
-        
-        database.itemDao().update(optimisticItem)
-        eventBus.post(ItemUpdatedEvent(optimisticItem))
-        
-        // 2. Send to server in background
-        try {
-            val serverResponse = apiService.updateItem(item.serverId, updates)
-            
-            // 3. Update with server response
-            val syncedItem = optimisticItem.copy(
-                serverId = serverResponse.id,
-                lastModified = serverResponse.lastModified,
-                syncStatus = SyncStatus.SYNCED
-            )
-            
-            database.itemDao().update(syncedItem)
-            eventBus.post(ItemSyncedEvent(syncedItem))
-            
-        } catch (e: Exception) {
-            // 4. Handle sync failure
-            when (e) {
-                is ConflictException -> {
-                    handleConflict(optimisticItem, e.serverItem)
-                }
-                is NetworkException -> {
-                    // Keep as pending, retry later
-                    scheduleRetry(optimisticItem)
-                }
-                else -> {
-                    // Revert optimistic changes
-                    revertOptimisticUpdate(optimisticItem, item)
-                }
-            }
-        }
-    }
+```mermaid
+sequenceDiagram
+    participant UI
+    participant Client
+    participant Server
     
-    private suspend fun handleConflict(localItem: LocalItem, serverItem: ServerItem) {
-        val conflictResolution = ConflictResolver.resolve(localItem, serverItem)
-        
-        val resolvedItem = when (conflictResolution.strategy) {
-            ConflictStrategy.KEEP_LOCAL -> localItem.copy(syncStatus = SyncStatus.CONFLICT)
-            ConflictStrategy.KEEP_SERVER -> LocalItem.fromServer(serverItem, SyncStatus.SYNCED)
-            ConflictStrategy.MERGE -> mergeItems(localItem, serverItem)
-        }
-        
-        database.itemDao().update(resolvedItem)
-        eventBus.post(ConflictResolvedEvent(resolvedItem, conflictResolution))
-    }
-    
-    private suspend fun revertOptimisticUpdate(optimisticItem: LocalItem, originalItem: LocalItem) {
-        database.itemDao().update(originalItem.copy(syncStatus = SyncStatus.FAILED))
-        eventBus.post(SyncFailedEvent(optimisticItem))
-    }
-    
-    private fun scheduleRetry(item: LocalItem) {
-        // Schedule background retry with exponential backoff
-        WorkManager.getInstance()
-            .enqueueUniqueWork(
-                "sync_item_${item.id}",
-                ExistingWorkPolicy.REPLACE,
-                OneTimeWorkRequest.Builder(ItemSyncWorker::class.java)
-                    .setInputData(workDataOf("itemId" to item.id))
-                    .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 30, TimeUnit.SECONDS)
-                    .build()
-            )
-    }
-}
+    UI->>Client: User Action
+    Client->>Client: Optimistic Update
+    Client->>UI: Immediate Response
+    Client->>Server: Sync Request
+    Server-->>Client: Confirmation
+    Client->>UI: Final Update
 ```
 
 ### Operational Transform
@@ -742,6 +707,17 @@ class CollaborativeEditor {
 
 ### Work Managers and Background Tasks
 
+```mermaid
+graph TD
+    A[App] -->|Schedule| B[WorkManager]
+    B -->|Execute| C[Background Task]
+    C -->|Network Check| D[Network]
+    C -->|Battery Check| E[Battery]
+    C -->|Sync| F[Server]
+    F -->|Result| C
+    C -->|Update| G[Local DB]
+```
+
 ```kotlin
 // Android WorkManager for background sync
 class SyncWorker(
@@ -839,6 +815,16 @@ class BackgroundSyncManager {
 ## Performance Optimization
 
 ### Batch Operations
+
+```mermaid
+graph TD
+    A[Client] -->|Batch Request| B[Server]
+    B -->|Process Batch| C[Database]
+    C -->|Batch Response| B
+    B -->|Batch Result| A
+    A -->|Apply Batch| D[Local DB]
+    E[Batch Size Monitor] -->|Adjust| A
+```
 
 ```dart
 // Flutter batch sync optimization

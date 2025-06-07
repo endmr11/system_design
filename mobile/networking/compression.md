@@ -3,26 +3,26 @@
 Mobil uygulamalarda bant genişliği tasarrufu ve performans optimizasyonu için kritik sıkıştırma teknikleri.
 
 ## Mobil için Sıkıştırma Temelleri
-- **Bandwidth Savings**: Reduced data transfer ile faster loading
-- **Battery Optimization**: Less radio activity ile improved battery life
-- **User Experience**: Faster content loading ile improved engagement
-- **Cost Savings**: Reduced data usage ile user cost consideration
+- **Bant Genişliği Tasarrufu**: Azaltılmış veri transferi ile daha hızlı yükleme
+- **Pil Optimizasyonu**: Daha az radyo aktivitesi ile geliştirilmiş pil ömrü
+- **Kullanıcı Deneyimi**: Daha hızlı içerik yükleme ile geliştirilmiş etkileşim
+- **Maliyet Tasarrufu**: Azaltılmış veri kullanımı ile kullanıcı maliyeti göz önünde bulundurma
 
 ## HTTP İçerik Sıkıştırma
 
 ### Gzip Sıkıştırma
-- **Server-Side Configuration**:
-  - Accept-Encoding: gzip header ile client capability advertisement
-  - Content-Encoding: gzip header ile server response compression
-  - Compression ratio: Typically 60-80% size reduction
-- **Mobile Implementation**:
-  - **Android OkHttp**: Automatic gzip compression support
-  - **iOS URLSession**: Built-in gzip handling
-  - **Flutter HTTP**: Automatic compression ile dart:io integration
-- **Selective Compression**:
-  - Text-based content: JSON, HTML, CSS, JavaScript
-  - Binary content: Usually not beneficial (images, videos)
-  - Size threshold: Only compress responses > 1KB
+- **Sunucu Tarafı Yapılandırma**:
+  - Accept-Encoding: gzip başlığı ile istemci yeteneklerinin tanıtımı
+  - Content-Encoding: gzip başlığı ile sunucu yanıt sıkıştırması
+  - Sıkıştırma oranı: Tipik olarak %60-80 boyut azaltması
+- **Mobil Uygulama**:
+  - **Android OkHttp**: Otomatik gzip sıkıştırma desteği
+  - **iOS URLSession**: Yerleşik gzip işleme
+  - **Flutter HTTP**: Otomatik sıkıştırma ile dart:io entegrasyonu
+- **Seçici Sıkıştırma**:
+  - Metin tabanlı içerik: JSON, HTML, CSS, JavaScript
+  - İkili içerik: Genellikle faydalı değil (resimler, videolar)
+  - Boyut eşiği: Sadece 1KB'dan büyük yanıtları sıkıştır
 
 ```kotlin
 // Android OkHttp Gzip Configuration
@@ -96,25 +96,25 @@ class NetworkManager {
 ```
 
 ### Brotli Sıkıştırma
-- **Advanced Compression**: Better compression ratios than gzip
-- **Browser Support**: Modern mobile browsers ile native support
-- **Implementation Considerations**: Server capability requirements
+- **Gelişmiş Sıkıştırma**: Gzip'ten daha iyi sıkıştırma oranları
+- **Tarayıcı Desteği**: Modern mobil tarayıcılar ile yerel destek
+- **Uygulama Hususları**: Sunucu yetenek gereksinimleri
 
-## Image Compression & Optimization
+## Resim Sıkıştırma ve Optimizasyon
 
 ### WebP Formatı
-- **Compression Benefits**:
-  - 25-35% smaller than JPEG
-  - Transparency support like PNG
-  - Animation support like GIF
-- **Platform Support**:
-  - **Android**: Native support since API 14+
-  - **iOS**: Native support since iOS 14+
-  - **Flutter**: Auto-format selection ile cross-platform optimization
-- **Implementation Strategies**:
-  - Server-side format selection based on client capability
-  - Progressive enhancement ile fallback to JPEG/PNG
-  - Dynamic format negotiation ile optimal selection
+- **Sıkıştırma Avantajları**:
+  - JPEG'den %25-35 daha küçük
+  - PNG gibi şeffaflık desteği
+  - GIF gibi animasyon desteği
+- **Platform Desteği**:
+  - **Android**: API 14+ sürümünden itibaren yerel destek
+  - **iOS**: iOS 14+ sürümünden itibaren yerel destek
+  - **Flutter**: Otomatik format seçimi ile çapraz platform optimizasyonu
+- **Uygulama Stratejileri**:
+  - İstemci yeteneğine göre sunucu tarafı format seçimi
+  - JPEG/PNG'ye geri dönüş ile kademeli geliştirme
+  - Optimal seçim ile dinamik format müzakere
 
 ```dart
 // Flutter WebP Implementation with Fallback
@@ -176,39 +176,39 @@ class ImageLoader {
 ```
 
 ### AVIF & HEIC Formatları
-- **Next-Generation Formats**: Even better compression than WebP
-- **Platform Adoption**: Gradual rollout ile compatibility considerations
-- **Implementation**: Feature detection ile progressive enhancement
+- **Yeni Nesil Formatlar**: WebP'den daha iyi sıkıştırma
+- **Platform Benimsemesi**: Uyumluluk hususları ile kademeli yayılım
+- **Uygulama**: Kademeli geliştirme ile özellik algılama
 
 ### Gelişmiş Görüntü Optimizasyonu
-- **Responsive Images**: Multiple resolutions için different compressions
-- **Lazy Loading Integration**: Compression optimization ile progressive loading
-- **Quality Adaptation**: Network conditions'a göre dynamic quality adjustment
+- **Duyarlı Resimler**: Farklı çözünürlükler için farklı sıkıştırmalar
+- **Tembel Yükleme Entegrasyonu**: Kademeli yükleme ile sıkıştırma optimizasyonu
+- **Kalite Adaptasyonu**: Ağ koşullarına göre dinamik kalite ayarlaması
 
-## Platform-Specific Compression
+## Platform Özel Sıkıştırma
 
 ### Android Sıkıştırma Kütüphaneleri
-- **Built-in Compression**:
-  - `GZIPOutputStream` ile custom compression
-  - `DeflaterOutputStream` ile advanced compression options
-- **Third-Party Solutions**:
-  - LZ4 compression ile high-speed compression
-  - Snappy compression ile CPU-efficient compression
+- **Yerleşik Sıkıştırma**:
+  - `GZIPOutputStream` ile özel sıkıştırma
+  - `DeflaterOutputStream` ile gelişmiş sıkıştırma seçenekleri
+- **Üçüncü Taraf Çözümler**:
+  - Yüksek hızlı sıkıştırma ile LZ4 sıkıştırma
+  - CPU verimli sıkıştırma ile Snappy sıkıştırma
 
 ### iOS Sıkıştırma API'leri
-- **Compression Framework**:
-  - `NSData` compression methods
-  - Algorithm selection (LZFSE, LZ4, ZLIB)
-  - Streaming compression ile large data handling
-- **Image Compression**:
-  - `UIImage` compression quality settings
-  - Core Graphics ile custom compression logic
+- **Sıkıştırma Çerçevesi**:
+  - `NSData` sıkıştırma yöntemleri
+  - Algoritma seçimi (LZFSE, LZ4, ZLIB)
+  - Büyük veri işleme ile akış sıkıştırma
+- **Resim Sıkıştırma**:
+  - `UIImage` sıkıştırma kalite ayarları
+  - Özel sıkıştırma mantığı ile Core Graphics
 
 ### Flutter Sıkıştırma
-- **dart:io Compression**:
-  - GZipCodec ile built-in gzip support
-  - ZLibCodec ile zlib compression
-  - Custom codec implementation ile specialized compression
+- **dart:io Sıkıştırma**:
+  - Yerleşik gzip desteği ile GZipCodec
+  - zlib sıkıştırma ile ZLibCodec
+  - Özel sıkıştırma ile özel codec uygulaması
 
 ```dart
 // Flutter Custom Compression Implementation
@@ -264,43 +264,43 @@ class DataService {
 }
 ```
 
-## Real-Time Compression Strategies
+## Gerçek Zamanlı Sıkıştırma Stratejileri
 
 ### Uyarlanabilir Sıkıştırma
-- **Dynamic Compression Levels**:
-  - Network speed-based adjustment
-  - Device capability consideration
-  - Battery level awareness
-- **Content-Type Optimization**:
-  - Text vs binary compression
-  - Media-specific compression
-  - Mixed content handling
+- **Dinamik Sıkıştırma Seviyeleri**:
+  - Ağ hızına dayalı ayarlama
+  - Cihaz yeteneklerini göz önünde bulundurma
+  - Pil seviyesi farkındalığı
+- **İçerik Tipi Optimizasyonu**:
+  - Metin ve ikili sıkıştırma
+  - Medyaya özel sıkıştırma
+  - Karma içerik işleme
 
 ### Aşamalı Sıkıştırma
-- **Multi-Stage Compression**:
-  - Initial quick compression
-  - Background optimization
-  - Quality improvement over time
-- **Streaming Compression**:
-  - Real-time compression
-  - Chunk-based processing
-  - Memory-efficient implementation
+- **Çok Aşamalı Sıkıştırma**:
+  - İlk hızlı sıkıştırma
+  - Arka plan optimizasyonu
+  - Zamanla kalite iyileştirme
+- **Akış Sıkıştırma**:
+  - Gerçek zamanlı sıkıştırma
+  - Parça tabanlı işleme
+  - Bellek verimli uygulama
 
-## Performance Considerations
+## Performans Hususları
 
 ### Sıkıştırma vs CPU Dengeleri
-- **CPU Impact**: Compression/decompression processing overhead
-- **Battery Drain**: Processing power ile battery consumption
-- **Memory Usage**: Compression buffers ile memory management
-- **Thermal Management**: Intensive compression ile device heating
+- **CPU Etkisi**: Sıkıştırma/açma işleme yükü
+- **Pil Tüketimi**: İşlem gücü ile pil tüketimi
+- **Bellek Kullanımı**: Sıkıştırma tamponları ile bellek yönetimi
+- **Termal Yönetim**: Yoğun sıkıştırma ile cihaz ısınması
 
 ### Sıkıştırılmış Veri Önbellekleme
-- **Cache Storage**: Store compressed or uncompressed data
-- **Decompression Caching**: Cache decompressed data için repeated access
-- **Hybrid Caching**: Different strategies for different content types
+- **Önbellek Depolama**: Sıkıştırılmış veya açılmış veriyi saklama
+- **Açma Önbellekleme**: Tekrarlanan erişim için açılmış veriyi önbellekleme
+- **Karma Önbellekleme**: Farklı içerik tipleri için farklı stratejiler
 
-## Monitoring & Analytics
-- **Compression Effectiveness**: Size reduction ratios tracking
-- **Performance Impact**: Load time improvements measurement
-- **Error Rates**: Compression-related failures monitoring
-- **User Experience Correlation**: Compression benefits ile engagement metrics
+## İzleme ve Analitik
+- **Sıkıştırma Etkinliği**: Boyut azaltma oranlarının takibi
+- **Performans Etkisi**: Yükleme süresi iyileştirmelerinin ölçümü
+- **Hata Oranları**: Sıkıştırma ile ilgili hataların izlenmesi
+- **Kullanıcı Deneyimi Korelasyonu**: Etkileşim metrikleri ile sıkıştırma faydaları

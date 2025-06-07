@@ -8,6 +8,26 @@
 - Sıralı işlem yürütme (sequential execution)
 - Atomic işlemler
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Node1
+    participant Node2
+    participant Node3
+    
+    Client->>Node1: Write Request
+    Node1->>Node2: Sync Replication
+    Node1->>Node3: Sync Replication
+    Node2-->>Node1: ACK
+    Node3-->>Node1: ACK
+    Node1-->>Client: Write Success
+    
+    Client->>Node2: Read Request
+    Node2-->>Client: Latest Data
+    Client->>Node3: Read Request
+    Node3-->>Client: Latest Data
+```
+
 ### Kullanım Senaryoları
 - Finansal işlemler
 - Kullanıcı kimlik doğrulama
@@ -202,6 +222,26 @@ public class CriticalOperationService {
 - Geçici tutarsızlıklara izin verir
 - Yüksek performans ve ölçeklenebilirlik
 - Asenkron replikasyon
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Node1
+    participant Node2
+    participant Node3
+    
+    Client->>Node1: Write Request
+    Node1-->>Client: Write Success
+    Node1->>Node2: Async Replication
+    Node1->>Node3: Async Replication
+    
+    Client->>Node2: Read Request
+    Node2-->>Client: Stale Data
+    Client->>Node3: Read Request
+    Node3-->>Client: Stale Data
+    
+    Note over Node2,Node3: Eventually Consistent
+```
 
 ### Kullanım Senaryoları
 - Sosyal medya feed'leri

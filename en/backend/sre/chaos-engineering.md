@@ -6,40 +6,28 @@ Chaos Engineering is the discipline of experimenting on a system to build confid
 
 ### Core Principles
 
-```yaml
-chaos_engineering_principles:
-  hypothesis_driven:
-    description: "Define a hypothesis about steady state behavior"
-    example: "99% of requests complete successfully under normal load"
+```mermaid
+graph TD
+    A[Chaos Engineering] --> B[Hypothesis Driven]
+    A --> C[Real World Events]
+    A --> D[Production Testing]
+    A --> E[Automated Experiments]
     
-  real_world_events:
-    description: "Vary real-world events that can cause disruptions"
-    examples:
-      - server_failures
-      - network_partitions
-      - dependency_outages
-      - resource_exhaustion
-      
-  production_experiments:
-    description: "Run experiments in production when possible"
-    considerations:
-      - blast_radius_control
-      - safety_mechanisms
-      - monitoring_coverage
-      
-  automate_experiments:
-    description: "Automate experiments to run continuously"
-    benefits:
-      - consistent_execution
-      - reduced_human_error
-      - continuous_validation
-      
-  minimize_blast_radius:
-    description: "Limit the scope of potential damage"
-    strategies:
-      - canary_experiments
-      - progressive_rollout
-      - automated_rollback
+    B --> B1[Define Steady State]
+    B --> B2[Set Metrics]
+    B --> B3[Validate Behavior]
+    
+    C --> C1[Server Failures]
+    C --> C2[Network Issues]
+    C --> C3[Resource Exhaustion]
+    
+    D --> D1[Blast Radius Control]
+    D --> D2[Safety Mechanisms]
+    D --> D3[Monitoring Coverage]
+    
+    E --> E1[Consistent Execution]
+    E --> E2[Reduced Human Error]
+    E --> E3[Continuous Validation]
 ```
 
 ### Chaos Engineering Maturity Model
@@ -86,6 +74,27 @@ public class ChaosMaturityAssessment {
 ## 2. Chaos Monkey Implementation
 
 ### Basic Chaos Monkey Service
+
+```mermaid
+sequenceDiagram
+    participant CM as Chaos Monkey
+    participant SS as Safety Service
+    participant K8s as Kubernetes
+    participant Metrics as Metrics Collector
+    
+    CM->>SS: Check Safety Conditions
+    SS-->>CM: Safety Status
+    
+    alt Safe to Proceed
+        CM->>K8s: Get Eligible Pods
+        K8s-->>CM: Pod List
+        CM->>CM: Select Random Pod
+        CM->>K8s: Terminate Pod
+        CM->>Metrics: Record Metrics
+    else Unsafe Conditions
+        CM->>CM: Skip Experiment
+    end
+```
 
 ```java
 @Service
@@ -365,28 +374,24 @@ public class AdvancedChaosExperiments {
 
 ### Gremlin Configuration and Integration
 
-```yaml
-gremlin:
-  api_key: "${GREMLIN_API_KEY}"
-  team_id: "${GREMLIN_TEAM_ID}"
-  base_url: "https://api.gremlin.com/v1"
-  timeout: 30s
-  
-experiments:
-  default_blast_radius: 1
-  default_duration: 300 # 5 minutes
-  safety_checks:
-    - cpu_usage_threshold: 80
-    - memory_usage_threshold: 85
-    - error_rate_threshold: 5.0
+```mermaid
+graph LR
+    A[Chaos Service] --> B[Gremlin API]
+    B --> C[Resource Attacks]
+    B --> D[Network Attacks]
+    B --> E[State Attacks]
     
-scheduling:
-  business_hours_only: true
-  blackout_periods:
-    - start: "2023-12-24T00:00:00Z"
-      end: "2023-12-26T23:59:59Z"
-    - start: "2023-12-31T00:00:00Z"
-      end: "2024-01-01T23:59:59Z"
+    C --> C1[CPU Stress]
+    C --> C2[Memory Pressure]
+    C --> C3[Disk Fill]
+    
+    D --> D1[Latency]
+    D --> D2[Packet Loss]
+    D --> D3[Bandwidth]
+    
+    E --> E1[Process Kill]
+    E --> E2[Time Travel]
+    E --> E3[Blackhole]
 ```
 
 ```java
@@ -650,98 +655,28 @@ public class GremlinApiClient {
 
 ### Experiment Design Framework
 
-```java
-@Component
-public class ChaosExperimentDesigner {
+```mermaid
+graph TD
+    A[Experiment Design] --> B[Hypothesis Design]
+    A --> C[Safety Controls]
+    A --> D[Monitoring Plan]
+    A --> E[Rollback Strategy]
     
-    public ChaosExperimentPlan designExperiment(ExperimentRequest request) {
-        // Validate the experiment request
-        validateExperimentRequest(request);
-        
-        // Design the hypothesis
-        ExperimentHypothesis hypothesis = designHypothesis(request);
-        
-        // Define steady state metrics
-        List<SteadyStateMetric> steadyStateMetrics = defineSteadyStateMetrics(request);
-        
-        // Plan the chaos action
-        ChaosAction chaosAction = planChaosAction(request);
-        
-        // Design safety controls
-        SafetyControls safetyControls = designSafetyControls(request);
-        
-        // Plan monitoring and observability
-        MonitoringPlan monitoringPlan = planMonitoring(request);
-        
-        // Define rollback strategy
-        RollbackStrategy rollbackStrategy = defineRollbackStrategy(request);
-        
-        return ChaosExperimentPlan.builder()
-            .name(request.getName())
-            .description(request.getDescription())
-            .hypothesis(hypothesis)
-            .steadyStateMetrics(steadyStateMetrics)
-            .chaosAction(chaosAction)
-            .safetyControls(safetyControls)
-            .monitoringPlan(monitoringPlan)
-            .rollbackStrategy(rollbackStrategy)
-            .estimatedDuration(request.getDuration())
-            .blastRadius(request.getBlastRadius())
-            .build();
-    }
+    B --> B1[Steady State]
+    B --> B2[Expected Behavior]
+    B --> B3[Success Criteria]
     
-    private ExperimentHypothesis designHypothesis(ExperimentRequest request) {
-        return ExperimentHypothesis.builder()
-            .description(generateHypothesisDescription(request))
-            .steadyStateDefinition(defineSteadyState(request))
-            .expectedBehavior(defineExpectedBehavior(request))
-            .successCriteria(defineSuccessCriteria(request))
-            .failureCriteria(defineFailureCriteria(request))
-            .build();
-    }
+    C --> C1[Circuit Breakers]
+    C --> C2[Resource Monitors]
+    C --> C3[Dependency Checks]
     
-    private SafetyControls designSafetyControls(ExperimentRequest request) {
-        SafetyControls.Builder builder = SafetyControls.builder();
-        
-        // Add circuit breakers
-        builder.addCircuitBreaker(CircuitBreaker.builder()
-            .metric("error_rate")
-            .threshold(5.0)
-            .action(SafetyAction.HALT_EXPERIMENT)
-            .build());
-        
-        builder.addCircuitBreaker(CircuitBreaker.builder()
-            .metric("response_time_p99")
-            .threshold(5000.0)
-            .action(SafetyAction.HALT_EXPERIMENT)
-            .build());
-        
-        // Add resource monitors
-        builder.addResourceMonitor(ResourceMonitor.builder()
-            .resource("cpu_usage")
-            .threshold(85.0)
-            .action(SafetyAction.REDUCE_BLAST_RADIUS)
-            .build());
-        
-        builder.addResourceMonitor(ResourceMonitor.builder()
-            .resource("memory_usage")
-            .threshold(90.0)
-            .action(SafetyAction.HALT_EXPERIMENT)
-            .build());
-        
-        // Add dependency health checks
-        request.getDependencies().forEach(dependency -> {
-            builder.addDependencyCheck(DependencyCheck.builder()
-                .dependency(dependency)
-                .healthEndpoint(dependency + "/health")
-                .timeoutMs(5000)
-                .action(SafetyAction.HALT_EXPERIMENT)
-                .build());
-        });
-        
-        return builder.build();
-    }
-}
+    D --> D1[Metrics Collection]
+    D --> D2[Alert Thresholds]
+    D --> D3[Impact Analysis]
+    
+    E --> E1[Automatic Rollback]
+    E --> E2[Manual Intervention]
+    E --> E3[Recovery Steps]
 ```
 
 ### Safety Service Implementation

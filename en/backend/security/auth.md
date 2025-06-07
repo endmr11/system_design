@@ -8,6 +8,23 @@ Modern applications require sophisticated authentication and authorization mecha
 
 Setting up a complete OAuth2 Authorization Server with Spring Security:
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Auth Server
+    participant Resource Server
+    
+    Client->>Auth Server: Authorization Request
+    Auth Server->>Client: Redirect to Login
+    Client->>Auth Server: User Credentials
+    Auth Server->>Auth Server: Validate Credentials
+    Auth Server->>Client: Authorization Code
+    Client->>Auth Server: Token Request (Code)
+    Auth Server->>Client: Access Token + Refresh Token
+    Client->>Resource Server: API Request (Access Token)
+    Resource Server->>Client: Protected Resource
+```
+
 ```xml
 <dependency>
     <groupId>org.springframework.security</groupId>
@@ -253,6 +270,23 @@ public class ResourceServerConfig {
 
 ### JWT Token Structure and Validation
 
+```mermaid
+graph TD
+    A[JWT Token] --> B[Header]
+    A --> C[Payload]
+    A --> D[Signature]
+    
+    B --> B1[alg: HS256]
+    B --> B2[typ: JWT]
+    
+    C --> C1[sub: user123]
+    C --> C2[exp: 1516239022]
+    C --> C3[roles: [ADMIN,USER]]
+    
+    D --> D1[HMACSHA256]
+    D --> D2[Base64Url]
+```
+
 ```java
 @Component
 public class JwtTokenProvider {
@@ -440,6 +474,24 @@ public class RefreshTokenService {
 ## Method-Level Security
 
 ### @PreAuthorize and @PostAuthorize
+
+```mermaid
+graph TD
+    A[User] --> B{Role Check}
+    B -->|Admin| C[Full Access]
+    B -->|User| D[Limited Access]
+    B -->|Guest| E[Read Only]
+    
+    C --> F[Create]
+    C --> G[Read]
+    C --> H[Update]
+    C --> I[Delete]
+    
+    D --> G
+    D --> H
+    
+    E --> G
+```
 
 ```java
 @RestController

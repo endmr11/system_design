@@ -8,6 +8,29 @@
 - **Yük dengeleme**
 - **Devre kesici**
 
+```mermaid
+graph TD
+    A[Client] --> B[API Gateway]
+    B --> C[Routing]
+    B --> D[Security]
+    B --> E[Monitoring]
+    
+    C --> C1[Path-based]
+    C --> C2[Service Discovery]
+    C --> C3[Load Balancing]
+    C --> C4[Circuit Breaking]
+    
+    D --> D1[Authentication]
+    D --> D2[Authorization]
+    D --> D3[SSL/TLS]
+    D --> D4[API Key Management]
+    
+    E --> E1[Request/Response Logging]
+    E --> E2[Metrics Collection]
+    E --> E3[Performance Monitoring]
+    E --> E4[Error Tracking]
+```
+
 ### Güvenlik
 - **Kimlik doğrulama**
 - **Yetkilendirme**
@@ -167,6 +190,41 @@ public class ApiGatewayConfig {
             request.getRemoteAddress().getAddress().getHostAddress() : "unknown";
     }
 }
+```
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Gateway as API Gateway
+    participant Auth as Auth Service
+    participant Rate as Rate Limiter
+    participant Circuit as Circuit Breaker
+    participant Service as Backend Service
+
+    Client->>Gateway: Request
+    Gateway->>Auth: Validate Token/API Key
+    Auth-->>Gateway: Auth Result
+    
+    alt Authentication Failed
+        Gateway-->>Client: 401 Unauthorized
+    else Authentication Success
+        Gateway->>Rate: Check Rate Limit
+        Rate-->>Gateway: Rate Limit Result
+        
+        alt Rate Limit Exceeded
+            Gateway-->>Client: 429 Too Many Requests
+        else Rate Limit OK
+            Gateway->>Circuit: Check Circuit State
+            
+            alt Circuit Open
+                Gateway-->>Client: Fallback Response
+            else Circuit Closed
+                Gateway->>Service: Forward Request
+                Service-->>Gateway: Service Response
+                Gateway-->>Client: Response
+            end
+        end
+    end
 ```
 
 ### Özel Kimlik Doğrulama Filtresi
@@ -653,6 +711,33 @@ public class ServiceHealthIndicator implements HealthIndicator {
         private String message;
     }
 }
+```
+
+```mermaid
+graph TD
+    A[Health Check Request] --> B[API Gateway]
+    B --> C[Service Health Check]
+    
+    C --> D[User Service]
+    C --> E[Order Service]
+    C --> F[Payment Service]
+    C --> G[Notification Service]
+    
+    D --> H{Health Status}
+    E --> H
+    F --> H
+    G --> H
+    
+    H -->|All Healthy| I[200 OK]
+    H -->|Some Unhealthy| J[503 Service Unavailable]
+    
+    subgraph Health Details
+        K[Service Status]
+        L[Response Time]
+        M[Error Messages]
+    end
+    
+    H --> Health Details
 ```
 
 Bu uygulama, Spring Cloud Gateway'i üretim ortamında güvenli ve ölçeklenebilir bir şekilde kullanmak için gerekli tüm bileşenleri içerir.

@@ -8,6 +8,32 @@
 - Promise ve Accept mesajları
 - Çoğunluk oylama (quorum-based voting)
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Proposer
+    participant Acceptor1
+    participant Acceptor2
+    participant Acceptor3
+    participant Learner
+
+    Client->>Proposer: Değer Önerisi
+    Proposer->>Acceptor1: Prepare(n)
+    Proposer->>Acceptor2: Prepare(n)
+    Proposer->>Acceptor3: Prepare(n)
+    Acceptor1-->>Proposer: Promise(n, v)
+    Acceptor2-->>Proposer: Promise(n, v)
+    Acceptor3-->>Proposer: Promise(n, v)
+    Proposer->>Acceptor1: Accept(n, v)
+    Proposer->>Acceptor2: Accept(n, v)
+    Proposer->>Acceptor3: Accept(n, v)
+    Acceptor1-->>Proposer: Accepted(n, v)
+    Acceptor2-->>Proposer: Accepted(n, v)
+    Acceptor3-->>Proposer: Accepted(n, v)
+    Proposer->>Learner: Learn(v)
+    Learner-->>Client: Sonuç
+```
+
 ### Protokol Aşamaları
 
 #### 1. Hazırlık Aşaması (Prepare Phase)
@@ -258,6 +284,36 @@ public class ConfigurationNode {
 - Heartbeat mekanizması
 - Zaman aşımı yönetimi
 - Log tutarlılık kontrolü
+
+```mermaid
+stateDiagram-v2
+    [*] --> Follower
+    Follower --> Candidate: Election Timeout
+    Candidate --> Leader: Majority Votes
+    Candidate --> Follower: New Term
+    Leader --> Follower: Higher Term
+    Leader --> [*]: Term End
+    Follower --> [*]: Term End
+    Candidate --> [*]: Term End
+
+    state Leader {
+        [*] --> Heartbeat
+        Heartbeat --> AppendEntries
+        AppendEntries --> Heartbeat
+    }
+
+    state Follower {
+        [*] --> WaitHeartbeat
+        WaitHeartbeat --> VoteRequest
+        VoteRequest --> WaitHeartbeat
+    }
+
+    state Candidate {
+        [*] --> RequestVotes
+        RequestVotes --> WaitVotes
+        WaitVotes --> [*]
+    }
+```
 
 #### Log Çoğaltma (Log Replication)
 - Sadece ekleme yapılan log

@@ -20,6 +20,41 @@ graph TD
     GraphQL -- Resolver --> DB
 ```
 
+## REST API Yaşam Döngüsü
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API[REST API]
+    participant Service
+    participant DB[(Database)]
+    
+    Client->>API: HTTP İsteği
+    API->>API: Doğrulama
+    API->>Service: İş Mantığı
+    Service->>DB: Veri İşleme
+    DB-->>Service: Sonuç
+    Service-->>API: Yanıt
+    API-->>Client: HTTP Yanıtı
+```
+
+## gRPC Akış Tipleri
+
+```mermaid
+graph LR
+    subgraph "gRPC Akış Tipleri"
+        Unary[Unary RPC]
+        ServerStream[Server Streaming]
+        ClientStream[Client Streaming]
+        BiStream[Bidirectional Streaming]
+    end
+    
+    Unary --> |Tek İstek/Tek Yanıt| Client
+    ServerStream --> |Tek İstek/Çoklu Yanıt| Client
+    ClientStream --> |Çoklu İstek/Tek Yanıt| Client
+    BiStream --> |Çoklu İstek/Çoklu Yanıt| Client
+```
+
 ## Spring Boot ile REST API Geliştirme
 
 ### Spring WebMVC
@@ -223,4 +258,59 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
 - Devre kesici deseni
 - Yük dengeleme
 - Sağlık kontrolleri
+
+## GraphQL Sorgu Akışı
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant GraphQL[GraphQL API]
+    participant Resolver
+    participant DB[(Database)]
+    
+    Client->>GraphQL: GraphQL Sorgusu
+    GraphQL->>GraphQL: Şema Doğrulama
+    GraphQL->>Resolver: Alan Çözümleme
+    Resolver->>DB: Veri Sorgulama
+    DB-->>Resolver: Sonuç
+    Resolver-->>GraphQL: Veri Dönüşümü
+    GraphQL-->>Client: JSON Yanıtı
+```
+
+## WebSocket Bağlantı Yaşam Döngüsü
+
+```mermaid
+stateDiagram-v2
+    [*] --> BağlantıKuruluyor
+    BağlantıKuruluyor --> Bağlı: Başarılı
+    BağlantıKuruluyor --> Hata: Başarısız
+    Bağlı --> MesajGönderiliyor: İstemci Mesajı
+    MesajGönderiliyor --> Bağlı: Yanıt
+    Bağlı --> BağlantıKesiliyor: Timeout/Hata
+    BağlantıKesiliyor --> [*]
+    Hata --> [*]
+```
+
+## Performans Optimizasyonu Akışı
+
+```mermaid
+graph TD
+    subgraph "REST API Optimizasyonu"
+        A[HTTP/2] --> B[Sıkıştırma]
+        B --> C[ETag Önbellek]
+        C --> D[Sayfalama]
+    end
+    
+    subgraph "gRPC Optimizasyonu"
+        E[Bağlantı Havuzu] --> F[Akış]
+        F --> G[Sıkıştırma]
+        G --> H[Keep-alive]
+    end
+    
+    subgraph "Ortak Optimizasyonlar"
+        I[İstek Toplu İşleme] --> J[Bağlantı Yeniden Kullanımı]
+        J --> K[Devre Kesici]
+        K --> L[Yük Dengeleme]
+    end
+```
 

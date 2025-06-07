@@ -87,6 +87,115 @@
 | **Performance**    | Medium                | High                  | Very High            |
 | **Use Case**       | General-purpose APIs  | Flexible data querying | High-speed systems   |
 
+## Architecture Diagrams
+
+### General Comparison
+```mermaid
+graph TD
+    subgraph "API Types Comparison"
+        A[Client] --> B[REST API]
+        A --> C[GraphQL API]
+        A --> D[gRPC API]
+        
+        B --> E[Multiple Endpoints]
+        B --> F[Resource Based]
+        B --> G[HTTP/1.1]
+        
+        C --> H[Single Endpoint]
+        C --> I[Query Based]
+        C --> J[HTTP/1.1]
+        
+        D --> K[Multiple Services]
+        D --> L[Method Based]
+        D --> M[HTTP/2]
+    end
+```
+
+### REST Architecture
+```mermaid
+graph TD
+    subgraph "REST Architecture"
+        A[Client] --> B[REST API Gateway]
+        B --> C[Resource 1]
+        B --> D[Resource 2]
+        B --> E[Resource 3]
+        
+        C --> F[Database]
+        D --> F
+        E --> F
+        
+        style A fill:#f9f,stroke:#333,stroke-width:2px
+        style B fill:#bbf,stroke:#333,stroke-width:2px
+        style F fill:#bfb,stroke:#333,stroke-width:2px
+    end
+```
+
+### GraphQL Architecture
+```mermaid
+graph TD
+    subgraph "GraphQL Architecture"
+        A[Client] --> B[GraphQL Server]
+        B --> C[Resolver 1]
+        B --> D[Resolver 2]
+        B --> E[Resolver 3]
+        
+        C --> F[Database]
+        D --> F
+        E --> F
+        
+        style A fill:#f9f,stroke:#333,stroke-width:2px
+        style B fill:#bbf,stroke:#333,stroke-width:2px
+        style F fill:#bfb,stroke:#333,stroke-width:2px
+    end
+```
+
+### gRPC Architecture
+```mermaid
+graph TD
+    subgraph "gRPC Architecture"
+        A[Client] --> B[gRPC Server]
+        B --> C[Service 1]
+        B --> D[Service 2]
+        B --> E[Service 3]
+        
+        C --> F[Database]
+        D --> F
+        E --> F
+        
+        style A fill:#f9f,stroke:#333,stroke-width:2px
+        style B fill:#bbf,stroke:#333,stroke-width:2px
+        style F fill:#bfb,stroke:#333,stroke-width:2px
+    end
+```
+
+### Data Flow Comparison
+```mermaid
+sequenceDiagram
+    participant Client
+    participant REST
+    participant GraphQL
+    participant gRPC
+    participant DB
+
+    %% REST Flow
+    Client->>REST: GET /users/1
+    REST->>DB: Query User
+    DB-->>REST: User Data
+    REST-->>Client: Full User Object
+
+    %% GraphQL Flow
+    Client->>GraphQL: Query { user(id: 1) { name email } }
+    GraphQL->>DB: Query User
+    DB-->>GraphQL: User Data
+    GraphQL-->>Client: Only Requested Fields
+
+    %% gRPC Flow
+    Client->>gRPC: GetUser(1)
+    gRPC->>DB: Query User
+    DB-->>gRPC: User Data
+    gRPC-->>Client: Binary Response
+```
+
 ## Spring Boot Implementation Comparison
 
 ### REST API Implementation

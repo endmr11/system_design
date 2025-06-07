@@ -80,19 +80,41 @@ graph TD
 ## Database Design Patterns
 
 ### Domain-Driven Design
-- Aggregate boundaries
-- Entity vs value objects
-- Repository per aggregate
+```mermaid
+graph TD
+    A[Aggregate Root] --> B[Entity 1]
+    A --> C[Entity 2]
+    B --> D[Value Object 1]
+    C --> E[Value Object 2]
+    F[Repository] --> A
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 ### Event Sourcing
-- Event store as single source of truth
-- Projection views
-- Replay capability
+```mermaid
+graph LR
+    A[Command] --> B[Event Store]
+    B --> C[Event Stream]
+    C --> D[Projection 1]
+    C --> E[Projection 2]
+    C --> F[Projection 3]
+    style B fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### CQRS
-- Command Query Responsibility Segregation
-- Separate read/write models
-- Eventual consistency
+```mermaid
+graph TD
+    A[Command] --> B[Command Handler]
+    B --> C[Write Model]
+    C --> D[Event Store]
+    D --> E[Event Handler]
+    E --> F[Read Model]
+    G[Query] --> H[Query Handler]
+    H --> F
+    style C fill:#f96,stroke:#333,stroke-width:2px
+    style F fill:#9f6,stroke:#333,stroke-width:2px
+```
 
 ### Database per Service
 - Microservices pattern
@@ -121,10 +143,19 @@ graph TD
 - Partial indices for storage optimization
 
 ### B-tree Implementation
-- Balanced tree structure
-- O(log n) search complexity
-- Range queries support
-- Write performance trade-offs
+```mermaid
+graph TD
+    A[Root Node] --> B[Child 1]
+    A --> C[Child 2]
+    A --> D[Child 3]
+    B --> E[Leaf 1]
+    B --> F[Leaf 2]
+    C --> G[Leaf 3]
+    C --> H[Leaf 4]
+    D --> I[Leaf 5]
+    D --> J[Leaf 6]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ## Normalization and Denormalization - Spring Boot Context
 
@@ -175,20 +206,40 @@ graph TD
 ## Distributed Database Patterns
 
 ### Sharding Strategies
-- **Horizontal partitioning**
-- **Consistent hashing**
-- **Range-based sharding**
-- **Directory-based sharding**
+```mermaid
+graph TD
+    A[Router] --> B[Shard 1]
+    A --> C[Shard 2]
+    A --> D[Shard 3]
+    B --> E[Data Partition 1]
+    C --> F[Data Partition 2]
+    D --> G[Data Partition 3]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### Replication
-- **Master-slave**: Single write node, multiple read replicas
-- **Multi-master**: Multiple write nodes, conflict resolution
-- **Eventual consistency**: Updates propagate asynchronously
+```mermaid
+graph TD
+    A[Master] --> B[Slave 1]
+    A --> C[Slave 2]
+    A --> D[Slave 3]
+    B --> E[Read Replica 1]
+    C --> F[Read Replica 2]
+    D --> G[Read Replica 3]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### CAP Theorem
-- **Consistency**: All nodes see same data simultaneously
-- **Availability**: System remains operational
-- **Partition tolerance**: System continues despite network failures
+```mermaid
+graph TD
+    A[CAP Theorem] --> B[Consistency]
+    A --> C[Availability]
+    A --> D[Partition Tolerance]
+    B --> E[All nodes see same data]
+    C --> F[System remains operational]
+    D --> G[System continues despite network failures]
+    style A fill:#f96,stroke:#333,stroke-width:2px
+```
 
 ### Database Federation
 - Cross-database queries

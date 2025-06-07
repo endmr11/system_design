@@ -2,6 +2,71 @@
 
 Event Sourcing, sistem durumunun geçmiş tüm olaylar (event'ler) olarak kaydedilmesi yaklaşımıdır. Bu bölümde Event Sourcing'in Spring Boot ile detaylı implementasyonunu inceleyeceğiz.
 
+## Event Sourcing Mimarisi
+
+```mermaid
+graph TD
+    A[Client] --> B[Command]
+    B --> C[Aggregate Root]
+    C --> D[Event Store]
+    D --> E[Event Bus]
+    E --> F[Projections]
+    F --> G[Read Model]
+    
+    subgraph "Write Model"
+        C
+        D
+    end
+    
+    subgraph "Read Model"
+        F
+        G
+    end
+```
+
+## Event Store Veri Modeli
+
+```mermaid
+erDiagram
+    EventEntity {
+        Long id PK
+        String aggregateId
+        String aggregateType
+        String eventType
+        String eventData
+        Long version
+        Instant timestamp
+        String metadata
+    }
+    
+    AggregateSnapshot {
+        Long id PK
+        String aggregateId
+        String aggregateType
+        Long version
+        String snapshotData
+        Instant timestamp
+    }
+```
+
+## Event Akışı
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Aggregate
+    participant EventStore
+    participant EventBus
+    participant Projection
+    
+    Client->>Aggregate: Command
+    Aggregate->>Aggregate: Apply Business Logic
+    Aggregate->>EventStore: Save Events
+    EventStore->>EventBus: Publish Events
+    EventBus->>Projection: Handle Events
+    Projection->>Projection: Update Read Model
+```
+
 ## Event Sourcing Temelleri
 
 ### Temel Bileşenler

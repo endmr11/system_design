@@ -7,6 +7,29 @@
 - Kaskad kesintileri önler
 - Sistem kaynaklarını korur
 
+```mermaid
+stateDiagram-v2
+    [*] --> CLOSED
+    CLOSED --> OPEN: Hata Eşiği Aşıldı
+    OPEN --> HALF_OPEN: Bekleme Süresi Doldu
+    HALF_OPEN --> CLOSED: Test Başarılı
+    HALF_OPEN --> OPEN: Test Başarısız
+    CLOSED --> CLOSED: Normal İşlem
+    OPEN --> OPEN: Fallback Dönüş
+```
+
+```mermaid
+graph TB
+    subgraph "Bulkhead Pattern"
+        A[Client] --> B[Thread Pool 1]
+        A --> C[Thread Pool 2]
+        A --> D[Thread Pool 3]
+        B --> E[Service 1]
+        C --> F[Service 2]
+        D --> G[Service 3]
+    end
+```
+
 ### Circuit Breaker Durumları
 
 #### CLOSED (Kapalı)

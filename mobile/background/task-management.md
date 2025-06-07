@@ -64,7 +64,7 @@ class BackgroundSyncService : Service() {
 }
 ```
 
-## Best Practices
+## En İyi Uygulamalar
 
 ### 1. Batarya Optimizasyonu
 - İşlem süresini minimize edin
@@ -72,15 +72,15 @@ class BackgroundSyncService : Service() {
 - Gereksiz işlemleri önleyin
 
 ### 2. Platform Sınırlamaları
-- iOS: 30 saniye execution time limit
-- Android: Doze mode ve App Standby dikkate alın
+- iOS: 30 saniye çalışma süresi limiti
+- Android: Doze modu ve App Standby'yi dikkate alın
 
-### 3. Error Handling
+### 3. Hata Yönetimi
 ```swift
 func performBackgroundWork(completion: @escaping (Bool) -> Void) {
     let task = URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error {
-            print("Background task failed: \(error)")
+            print("Arkaplan görevi başarısız oldu: \(error)")
             completion(false)
             return
         }

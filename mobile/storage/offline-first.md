@@ -6,6 +6,71 @@ title: Offline-First Tasarım
 
 Offline-first yaklaşım, modern mobil uygulamalarda kullanıcı deneyiminin sürekliliğini sağlamak için geliştirilen bir tasarım felsefesidir. Bu yaklaşımda ağ bağlantısı opsiyonel kabul edilir ve uygulama öncelikle local veri ile çalışacak şekilde tasarlanır.
 
+## Mimari Genel Bakış
+
+```mermaid
+graph TB
+    subgraph "Offline-First Architecture"
+        A[Client App] --> B[Local Storage]
+        A --> C[Network Layer]
+        B --> D[Sync Manager]
+        C --> D
+        D --> E[Remote Server]
+        
+        subgraph "Local Storage"
+            B1[SQLite/Realm] --> B2[File System]
+            B1 --> B3[Key-Value Store]
+        end
+        
+        subgraph "Sync Manager"
+            D1[Queue Manager] --> D2[Conflict Resolver]
+            D2 --> D3[State Manager]
+        end
+    end
+```
+
+## Veri Senkronizasyon Akışı
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App
+    participant LocalDB
+    participant SyncQueue
+    participant RemoteServer
+    
+    User->>App: Veri Değişikliği
+    App->>LocalDB: Local Kayıt
+    App->>SyncQueue: Senkronizasyon Kuyruğuna Ekle
+    
+    loop Senkronizasyon Döngüsü
+        SyncQueue->>RemoteServer: Değişiklikleri Gönder
+        RemoteServer-->>SyncQueue: Başarılı Yanıt
+        SyncQueue->>LocalDB: Senkronizasyon Durumunu Güncelle
+    end
+    
+    Note over App,RemoteServer: Bağlantı Yoksa<br/>Değişiklikler Kuyrukta Bekler
+```
+
+## Çok Seviyeli Önbellek Sistemi
+
+```mermaid
+graph LR
+    subgraph "Multi-Level Cache"
+        A[L1: Memory Cache] --> B[L2: Local Storage]
+        B --> C[L3: Remote API]
+        
+        style A fill:#f9f,stroke:#333,stroke-width:2px
+        style B fill:#bbf,stroke:#333,stroke-width:2px
+        style C fill:#bfb,stroke:#333,stroke-width:2px
+    end
+    
+    D[Client App] --> A
+    A --> D
+    B --> D
+    C --> D
+```
+
 ## Temel Prensipler
 
 ### Local-First Data Management

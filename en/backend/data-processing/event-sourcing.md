@@ -2,6 +2,71 @@
 
 Event Sourcing is an architectural pattern where state changes are stored as a sequence of immutable events. Instead of storing just the current state, all changes (events) that led to the current state are persisted, enabling complete audit trails and temporal queries.
 
+## Event Sourcing Architecture
+
+```mermaid
+graph TD
+    A[Client] --> B[Command]
+    B --> C[Aggregate Root]
+    C --> D[Event Store]
+    D --> E[Event Bus]
+    E --> F[Projections]
+    F --> G[Read Model]
+    
+    subgraph "Write Model"
+        C
+        D
+    end
+    
+    subgraph "Read Model"
+        F
+        G
+    end
+```
+
+## Event Store Data Model
+
+```mermaid
+erDiagram
+    EventEntity {
+        Long id PK
+        String aggregateId
+        String aggregateType
+        String eventType
+        String eventData
+        Long version
+        Instant timestamp
+        String metadata
+    }
+    
+    AggregateSnapshot {
+        Long id PK
+        String aggregateId
+        String aggregateType
+        Long version
+        String snapshotData
+        Instant timestamp
+    }
+```
+
+## Event Flow
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Aggregate
+    participant EventStore
+    participant EventBus
+    participant Projection
+    
+    Client->>Aggregate: Command
+    Aggregate->>Aggregate: Apply Business Logic
+    Aggregate->>EventStore: Save Events
+    EventStore->>EventBus: Publish Events
+    EventBus->>Projection: Handle Events
+    Projection->>Projection: Update Read Model
+```
+
 ## Core Concepts
 
 ### Event Store

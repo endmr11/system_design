@@ -4,6 +4,69 @@
 
 Containers are lightweight, portable, and self-sufficient packages that include everything needed to run an application: code, runtime, system tools, libraries, and settings. Docker is the most popular containerization platform that enables developers to package applications into containers.
 
+### Docker Architecture
+
+```mermaid
+graph TB
+    Client[Docker Client] -->|Commands| Daemon[Docker Daemon]
+    Daemon -->|Management| Containers[Containers]
+    Daemon -->|Build| Images[Images]
+    Daemon -->|Storage| Registry[Docker Registry]
+    
+    subgraph Container
+        App[Application]
+        Lib[Libraries]
+        Config[Configuration]
+    end
+    
+    subgraph Image
+        Layers[Image Layers]
+        Base[Base Image]
+    end
+```
+
+### Container Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Created
+    Created --> Running: docker start
+    Running --> Paused: docker pause
+    Paused --> Running: docker unpause
+    Running --> Stopped: docker stop
+    Stopped --> Running: docker start
+    Stopped --> [*]: docker rm
+    Running --> [*]: docker rm -f
+```
+
+### Multi-Service Architecture
+
+```mermaid
+graph TB
+    Client[Client] -->|HTTP/HTTPS| Nginx[Nginx Proxy]
+    Nginx -->|Load Balance| App1[App Instance 1]
+    Nginx -->|Load Balance| App2[App Instance 2]
+    Nginx -->|Load Balance| App3[App Instance 3]
+    
+    App1 -->|Read/Write| DB[(Database)]
+    App2 -->|Read/Write| DB
+    App3 -->|Read/Write| DB
+    
+    App1 -->|Cache| Redis[(Redis Cache)]
+    App2 -->|Cache| Redis
+    App3 -->|Cache| Redis
+    
+    subgraph Monitoring
+        Prometheus[Prometheus]
+        Grafana[Grafana]
+    end
+    
+    App1 -->|Metrics| Prometheus
+    App2 -->|Metrics| Prometheus
+    App3 -->|Metrics| Prometheus
+    Prometheus -->|Visualization| Grafana
+```
+
 ## Docker Fundamentals
 
 ### Docker Architecture

@@ -8,17 +8,53 @@
 - **Token distribution**
 - **Overflow handling**
 
+```mermaid
+graph TD
+    A[Token Bucket] --> B[Token Addition]
+    A --> C[Token Consumption]
+    B --> D[Fixed Rate Token Addition]
+    B --> E[Capacity Check]
+    C --> F[Token Available?]
+    F -->|Yes| G[Process Request]
+    F -->|No| H[Reject Request]
+    E -->|Full| I[Token Loss]
+    E -->|Empty| J[Add Token]
+```
+
 ### Leaky Bucket
 - **Constant rate processing**
 - **Queue management**
 - **Overflow handling**
 - **Rate smoothing**
 
+```mermaid
+graph TD
+    A[Leaky Bucket] --> B[Request Queue]
+    A --> C[Fixed Rate Processing]
+    B --> D[Queue Full?]
+    D -->|Yes| E[Reject Request]
+    D -->|No| F[Add to Queue]
+    C --> G[Process at Fixed Rate]
+    G --> H[Processed Request]
+```
+
 ### Fixed Window
 - **Time-based limits**
 - **Request counting**
 - **Reset intervals**
 - **Simple implementation**
+
+```mermaid
+graph TD
+    A[Fixed Window] --> B[Time Window]
+    A --> C[Request Counter]
+    B --> D[Window Start]
+    B --> E[Window End]
+    C --> F[Limit Check]
+    F -->|Exceeded| G[Reject Request]
+    F -->|Within Limit| H[Process Request]
+    E --> I[Reset Counter]
+```
 
 ## Throttling Mechanisms
 
@@ -55,6 +91,22 @@
 - Burst handling
 
 ## Spring Boot Rate Limiting Implementation
+
+```mermaid
+graph TD
+    A[Spring Boot Application] --> B[Rate Limiting Interceptor]
+    B --> C[Rate Limit Configuration Service]
+    B --> D[Token Bucket Limiter]
+    B --> E[Sliding Window Limiter]
+    C --> F[Redis Configuration]
+    D --> F
+    E --> F
+    B --> G[Rate Limiting Aspect]
+    G --> D
+    G --> E
+    H[Controller] --> G
+    I[Custom Annotations] --> G
+```
 
 ### Redis-Based Token Bucket Implementation
 ```java

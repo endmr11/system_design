@@ -46,6 +46,23 @@ graph LR
     style WriteBehind fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
+### Cache Pattern Açıklamaları
+
+1. **Cache-Aside (Lazy Loading)**
+   - Uygulama cache'i manuel olarak yönetir
+   - Cache miss durumunda otomatik data loading
+   - Selective caching imkanı
+
+2. **Write-Through**
+   - Cache ve database'e eşzamanlı yazma
+   - Veri tutarlılığı garanti edilir
+   - Her yazma işlemi için iki operasyon gerekir
+
+3. **Write-Behind (Write-Back)**
+   - Cache'e hemen yazma, database'e asenkron yazma
+   - Yüksek performans sağlar
+   - Veri kaybı riski vardır
+
 ## Distributed Cache Architecture
 
 ```mermaid
@@ -393,121 +410,77 @@ public class WriteBehindCacheService {
 
 ## Multi-Level Caching
 
-### L1 (Local) + L2 (Distributed) Cache
-```java
-@Service
-public class MultiLevelCacheService {
+```mermaid
+graph TB
+    Client[Client Request] --> L1[L1 Cache<br/>Local Memory]
+    L1 -->|Cache Miss| L2[L2 Cache<br/>Redis/Hazelcast]
+    L2 -->|Cache Miss| DB[(Database)]
     
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-    
-    // L1 Cache - Local in-memory cache
-    private final ConcurrentHashMap<String, CacheItem> localCache = new ConcurrentHashMap<>();
-    
-    public User getUser(Long userId) {
-        String key = "user:" + userId;
-        
-        // L1 Cache kontrol
-        CacheItem item = localCache.get(key);
-        if (item != null && !item.isExpired()) {
-            return (User) item.getValue();
-        }
-        
-        // L2 Cache kontrol (Redis)
-        User user = (User) redisTemplate.opsForValue().get(key);
-        if (user != null) {
-            localCache.put(key, new CacheItem(user, Duration.ofMinutes(5)));
-            return user;
-        }
-        
-        // Database'den getir
-        user = userRepository.findById(userId).orElse(null);
-        if (user != null) {
-            // Her iki cache'e de ekle
-            redisTemplate.opsForValue().set(key, user, Duration.ofMinutes(30));
-            localCache.put(key, new CacheItem(user, Duration.ofMinutes(5)));
-        }
-        
-        return user;
-    }
-    
-    @Scheduled(fixedDelay = 60000) // 1 dakikada bir
-    public void cleanupLocalCache() {
-        localCache.entrySet().removeIf(entry -> entry.getValue().isExpired());
-    }
-    
-    private static class CacheItem {
-        private final Object value;
-        private final Instant expiry;
-        
-        public CacheItem(Object value, Duration ttl) {
-            this.value = value;
-            this.expiry = Instant.now().plus(ttl);
-        }
-        
-        public Object getValue() { return value; }
-        public boolean isExpired() { return Instant.now().isAfter(expiry); }
-    }
-}
+    style Client fill:#f9f,stroke:#333,stroke-width:2px
+    style L1 fill:#bbf,stroke:#333,stroke-width:2px
+    style L2 fill:#dfd,stroke:#333,stroke-width:2px
+    style DB fill:#fdd,stroke:#333,stroke-width:2px
 ```
+
+### Multi-Level Cache Özellikleri
+
+1. **L1 Cache (Local Memory)**
+   - En hızlı erişim süresi
+   - Uygulama instance'ına özel
+   - Sınırlı bellek kapasitesi
+
+2. **L2 Cache (Distributed)**
+   - Cluster-wide paylaşım
+   - Daha yüksek kapasite
+   - Network latency etkisi
+
+3. **Database**
+   - Son çare olarak kullanılır
+   - Tam veri tutarlılığı
+   - En yavaş erişim süresi
 
 ## Cache Invalidation Strategies
 
-### Event-Based Invalidation
-```java
-@Component
-public class CacheInvalidationHandler {
+```mermaid
+graph LR
+    subgraph EventBased
+        EB1[Data Change] --> EB2[Event Publisher]
+        EB2 --> EB3[Event Listener]
+        EB3 --> EB4[Cache Invalidation]
+    end
     
-    @Autowired
-    private CacheManager cacheManager;
+    subgraph TimeBased
+        TB1[Cache Entry] --> TB2{TTL Expired?}
+        TB2 -->|Yes| TB3[Remove from Cache]
+        TB2 -->|No| TB4[Keep in Cache]
+    end
     
-    @EventListener
-    public void handleUserUpdateEvent(UserUpdateEvent event) {
-        Cache userCache = cacheManager.getCache("users");
-        if (userCache != null) {
-            userCache.evict(event.getUserId());
-            log.info("Evicted user {} from cache", event.getUserId());
-        }
-    }
+    subgraph Manual
+        M1[Admin Action] --> M2[Cache Clear]
+        M2 --> M3[Selective Invalidation]
+    end
     
-    @EventListener
-    public void handleProductCategoryUpdateEvent(ProductCategoryUpdateEvent event) {
-        Cache productCache = cacheManager.getCache("products");
-        if (productCache != null) {
-            // Category'deki tüm ürünleri invalidate et
-            event.getProductIds().forEach(productCache::evict);
-        }
-    }
-}
+    style EventBased fill:#f9f,stroke:#333,stroke-width:2px
+    style TimeBased fill:#bbf,stroke:#333,stroke-width:2px
+    style Manual fill:#dfd,stroke:#333,stroke-width:2px
 ```
 
-### Time-Based Invalidation
-```java
-@Service
-public class TimeBasedCacheService {
-    
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-    
-    public void cacheWithTTL(String key, Object value, Duration ttl) {
-        redisTemplate.opsForValue().set(key, value, ttl);
-    }
-    
-    public void cacheWithExpiry(String key, Object value, Instant expiryTime) {
-        Duration ttl = Duration.between(Instant.now(), expiryTime);
-        redisTemplate.opsForValue().set(key, value, ttl);
-    }
-    
-    @Scheduled(cron = "0 0 2 * * *") // Her gece 02:00'da
-    public void clearDailyCache() {
-        Set<String> keys = redisTemplate.keys("daily:*");
-        if (!keys.isEmpty()) {
-            redisTemplate.delete(keys);
-            log.info("Cleared {} daily cache entries", keys.size());
-        }
-    }
-}
-```
+### Cache Invalidation Stratejileri
+
+1. **Event-Based Invalidation**
+   - Veri değişikliğinde otomatik tetiklenme
+   - Event-driven mimari ile entegrasyon
+   - Seçici cache temizleme
+
+2. **Time-Based Invalidation**
+   - TTL (Time-To-Live) bazlı temizleme
+   - Otomatik cache yenileme
+   - Basit ve etkili yönetim
+
+3. **Manual Invalidation**
+   - Admin kontrolü
+   - Acil durum müdahalesi
+   - Seçici cache yönetimi
 
 ## CDN Integration
 

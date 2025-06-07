@@ -6,6 +6,32 @@ Consensus algorithms are fundamental protocols that enable multiple nodes in a d
 
 Paxos is a family of protocols for solving consensus in an asynchronous network of unreliable processors. It ensures that a single value is chosen among proposed values, even when some participants fail.
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant Proposer
+    participant Acceptor1
+    participant Acceptor2
+    participant Acceptor3
+    participant Learner
+
+    Client->>Proposer: Propose Value
+    Proposer->>Acceptor1: Prepare(n)
+    Proposer->>Acceptor2: Prepare(n)
+    Proposer->>Acceptor3: Prepare(n)
+    Acceptor1-->>Proposer: Promise(n, v)
+    Acceptor2-->>Proposer: Promise(n, v)
+    Acceptor3-->>Proposer: Promise(n, v)
+    Proposer->>Acceptor1: Accept(n, v)
+    Proposer->>Acceptor2: Accept(n, v)
+    Proposer->>Acceptor3: Accept(n, v)
+    Acceptor1-->>Proposer: Accepted(n, v)
+    Acceptor2-->>Proposer: Accepted(n, v)
+    Acceptor3-->>Proposer: Accepted(n, v)
+    Proposer->>Learner: Learn(v)
+    Learner-->>Client: Result
+```
+
 ### Paxos Phases
 1. **Prepare Phase**: Proposer sends prepare requests with proposal numbers
 2. **Promise Phase**: Acceptors respond with promises and previously accepted values
@@ -429,6 +455,36 @@ Raft is a consensus algorithm designed to be more understandable than Paxos whil
 1. **Leader Election**: Elects a single leader to manage log replication
 2. **Log Replication**: Leader receives client requests and replicates to followers
 3. **Safety**: Ensures that committed entries are durable and consistent
+
+```mermaid
+stateDiagram-v2
+    [*] --> Follower
+    Follower --> Candidate: Election Timeout
+    Candidate --> Leader: Majority Votes
+    Candidate --> Follower: New Term
+    Leader --> Follower: Higher Term
+    Leader --> [*]: Term End
+    Follower --> [*]: Term End
+    Candidate --> [*]: Term End
+
+    state Leader {
+        [*] --> Heartbeat
+        Heartbeat --> AppendEntries
+        AppendEntries --> Heartbeat
+    }
+
+    state Follower {
+        [*] --> WaitHeartbeat
+        WaitHeartbeat --> VoteRequest
+        VoteRequest --> WaitHeartbeat
+    }
+
+    state Candidate {
+        [*] --> RequestVotes
+        RequestVotes --> WaitVotes
+        WaitVotes --> [*]
+    }
+```
 
 ### Spring Boot Raft Implementation
 

@@ -1,9 +1,9 @@
 # Canvas & Metal/OpenGL ES vs. Native UI
 
-## Canvas Tabanlı Custom Drawing
+## Canvas Tabanlı Özel Çizim
 
 ### Android Canvas API
-Android Canvas sistemi, 2D grafik çizimi için güçlü ve esnek bir framework sağlar. Hardware acceleration ile birlikte yüksek performanslı custom UI bileşenleri oluşturmaya olanak tanır.
+Android Canvas sistemi, 2D grafik çizimi için güçlü ve esnek bir framework sağlar. Donanım hızlandırma ile birlikte yüksek performanslı özel UI bileşenleri oluşturmaya olanak tanır.
 
 #### Advanced Canvas Techniques
 ```kotlin
@@ -432,9 +432,9 @@ class Particle {
 }
 ```
 
-## Metal ve OpenGL ES ile Low-Level Graphics
+## Metal ve OpenGL ES ile Düşük Seviyeli Grafikler
 
-### Metal Shaders ve Advanced Rendering
+### Metal Shaders ve Gelişmiş Render İşlemleri
 ```swift
 import Metal
 import MetalKit
@@ -650,28 +650,28 @@ kernel void postProcessCompute(
 }
 ```
 
-## Native UI vs Custom Graphics Performance
+## Native UI vs Özel Grafikler Performansı
 
-## Native UI vs Custom Graphics Comparison
+## Native UI vs Özel Grafikler Karşılaştırması
 
-### Performance Characteristics
+### Performans Özellikleri
 ```
-Performance Metrics Comparison:
+Performans Metrikleri Karşılaştırması:
 ┌─────────────────────┬─────────────┬──────────────┬─────────────┐
-│ Aspect              │ Native UI   │ Canvas API   │ Metal/GL    │
+│ Yön                 │ Native UI   │ Canvas API   │ Metal/GL    │
 ├─────────────────────┼─────────────┼──────────────┼─────────────┤
-│ Setup Overhead      │ Low         │ Medium       │ High        │
-│ Rendering Speed     │ Fast        │ Medium       │ Very Fast   │
-│ Memory Usage        │ Optimized   │ High         │ Variable    │
-│ Flexibility         │ Limited     │ High         │ Very High   │
-│ Platform Integration│ Excellent   │ Good         │ Limited     │
-│ Learning Curve      │ Easy        │ Medium       │ Hard        │
+│ Kurulum Yükü        │ Düşük       │ Orta         │ Yüksek      │
+│ Render Hızı         │ Hızlı       │ Orta         │ Çok Hızlı   │
+│ Bellek Kullanımı    │ Optimize    │ Yüksek       │ Değişken    │
+│ Esneklik            │ Sınırlı     │ Yüksek       │ Çok Yüksek  │
+│ Platform Entegrasyon│ Mükemmel    │ İyi          │ Sınırlı     │
+│ Öğrenme Eğrisi      │ Kolay       │ Orta         │ Zor         │
 └─────────────────────┴─────────────┴──────────────┴─────────────┘
 ```
 
-## Android Canvas API Advanced Techniques
+## Android Canvas API Gelişmiş Teknikler
 
-### Custom ViewGroup with Hardware Acceleration
+### Donanım Hızlandırmalı Özel ViewGroup
 ```kotlin
 class PerformanceCanvasView @JvmOverloads constructor(
     context: Context,
@@ -860,9 +860,9 @@ class TransformationCanvas : View {
 }
 ```
 
-## iOS Core Graphics Advanced Implementation
+## iOS Core Graphics Gelişmiş Uygulaması
 
-### Custom Core Graphics Drawing
+### Özel Core Graphics Çizimi
 ```swift
 import UIKit
 import CoreGraphics
@@ -1092,9 +1092,9 @@ extension MetalUIKitView: MTKViewDelegate {
 }
 ```
 
-## Performance Benchmarking & Analysis
+## Performans Ölçümü ve Analizi
 
-### Canvas vs Native UI Benchmark
+### Canvas vs Native UI Karşılaştırması
 ```kotlin
 class PerformanceBenchmark {
     private val renderTimes = mutableListOf<Long>()
@@ -1196,44 +1196,44 @@ class PerformanceBenchmark {
 }
 ```
 
-## Best Practices Summary
+## En İyi Uygulamalar Özeti
 
-### When to Use Canvas API
+### Canvas API Ne Zaman Kullanılmalı
 ```kotlin
 /*
-✅ Use Canvas when:
-- Complex custom drawings
-- Particle systems
-- Games and animations
-- Data visualizations
-- Custom shapes and paths
-- Performance-critical graphics
+✅ Canvas şu durumlarda kullanılmalı:
+- Karmaşık özel çizimler
+- Parçacık sistemleri
+- Oyunlar ve animasyonlar
+- Veri görselleştirmeleri
+- Özel şekiller ve yollar
+- Performans kritik grafikler
 
-❌ Avoid Canvas for:
-- Simple UI layouts
-- Standard UI components
-- Text-heavy interfaces
-- Forms and inputs
-- List/grid layouts
+❌ Canvas şu durumlarda kullanılmamalı:
+- Basit UI düzenleri
+- Standart UI bileşenleri
+- Metin ağırlıklı arayüzler
+- Formlar ve girişler
+- Liste/ızgara düzenleri
 */
 ```
 
-### When to Use Native UI
+### Native UI Ne Zaman Kullanılmalı
 ```kotlin
 /*
-✅ Use Native UI when:
-- Standard UI patterns
-- Platform consistency needed
-- Accessibility requirements
-- Form-based interfaces
-- Quick development needed
-- Platform animations
+✅ Native UI şu durumlarda kullanılmalı:
+- Standart UI desenleri
+- Platform tutarlılığı gerektiğinde
+- Erişilebilirlik gereksinimleri
+- Form tabanlı arayüzler
+- Hızlı geliştirme gerektiğinde
+- Platform animasyonları
 
-❌ Avoid Native UI for:
-- Complex custom graphics
-- Game-like interfaces
-- Heavy animation requirements
-- Pixel-perfect control needed
-- Performance-critical rendering
+❌ Native UI şu durumlarda kullanılmamalı:
+- Karmaşık özel grafikler
+- Oyun benzeri arayüzler
+- Ağır animasyon gereksinimleri
+- Piksel hassasiyeti gerektiğinde
+- Performans kritik render işlemleri
 */
 ```

@@ -28,7 +28,24 @@ In cross-platform development, React Native Metro bundler with component isolati
 
 ### Modular Architecture Implementation Strategies
 
-In the feature-based modules approach, each business capability (login, profile, shopping) is organized as a separate module. In the layer-based modules approach, UI, Domain, and Data layers are structured as separate modules. The hybrid approach adopts a combination of feature and layer approaches, providing optimal flexibility.
+```mermaid
+graph TD
+    A[Modular Architecture] --> B[Feature-Based Modules]
+    A --> C[Layer-Based Modules]
+    A --> D[Hybrid Approach]
+    
+    B --> B1[Login Module]
+    B --> B2[Profile Module]
+    B --> B3[Shopping Module]
+    
+    C --> C1[UI Layer]
+    C --> C2[Domain Layer]
+    C --> C3[Data Layer]
+    
+    D --> D1[Feature Modules]
+    D --> D2[Shared Modules]
+    D --> D3[Core Modules]
+```
 
 Shared modules (common utilities, design system, networking), domain modules (business logic and use cases), data modules (repository implementations and data sources), presentation modules (UI components and state management), core modules (platform-specific implementations), and test modules (unit and integration test suites) constitute the fundamental building blocks of comprehensive modular architecture.
 
@@ -37,6 +54,27 @@ This strategic organization enhances the development team's parallel working cap
 ## MVVM Pattern and Modern State Management
 
 ### MVVM (Model-View-ViewModel) Architecture Deep Dive
+
+```mermaid
+graph TD
+    A[MVVM Pattern] --> B[Model]
+    A --> C[View]
+    A --> D[ViewModel]
+    
+    B --> B1[Data Layer]
+    B --> B2[Business Logic]
+    
+    C --> C1[UI Components]
+    C --> C2[User Interaction]
+    
+    D --> D1[State Management]
+    D --> D2[Data Binding]
+    
+    C -->|Updates| D
+    D -->|Notifies| C
+    D -->|Fetches| B
+    B -->|Provides| D
+```
 
 Although the Model-View-ViewModel pattern was developed by Microsoft for WPF and Silverlight, it has seen widespread adoption in the mobile development ecosystem. The conceptual structure of this pattern consists of three main components: Model (data and business logic layer), View (UI components and user interaction handling), and ViewModel (UI state management layer serving as a bridge between View and Model).
 
@@ -87,6 +125,18 @@ Event debouncing and throttling, state caching, lazy loading, and background pro
 ## Unidirectional Data Flow and State Immutability
 
 ### Unidirectional Data Flow Architecture Principles
+
+```mermaid
+graph LR
+    A[User Action] --> B[Intent/Event]
+    B --> C[State Reducer/Handler]
+    C --> D[New State]
+    D --> E[View Update]
+    E --> F[UI Changes]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 The unidirectional data flow principle is the fundamental concept of guaranteeing predictable behavior of application state through single-directional organization of data flow. This architectural principle significantly reduces state management complexity in complex mobile applications while dramatically enhancing debugging capability.
 

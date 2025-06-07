@@ -20,6 +20,41 @@ graph TD
     GraphQL -- Resolver --> DB
 ```
 
+## REST API Lifecycle
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API[REST API]
+    participant Service
+    participant DB[(Database)]
+    
+    Client->>API: HTTP Request
+    API->>API: Validation
+    API->>Service: Business Logic
+    Service->>DB: Data Processing
+    DB-->>Service: Result
+    Service-->>API: Response
+    API-->>Client: HTTP Response
+```
+
+## gRPC Stream Types
+
+```mermaid
+graph LR
+    subgraph "gRPC Stream Types"
+        Unary[Unary RPC]
+        ServerStream[Server Streaming]
+        ClientStream[Client Streaming]
+        BiStream[Bidirectional Streaming]
+    end
+    
+    Unary --> |Single Request/Single Response| Client
+    ServerStream --> |Single Request/Multiple Responses| Client
+    ClientStream --> |Multiple Requests/Single Response| Client
+    BiStream --> |Multiple Requests/Multiple Responses| Client
+```
+
 ## REST API Development with Spring Boot
 
 ### Spring WebMVC
@@ -223,3 +258,58 @@ public class UserGrpcService extends UserServiceGrpc.UserServiceImplBase {
 - Circuit breaker pattern
 - Load balancing
 - Health checks
+
+## GraphQL Query Flow
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant GraphQL[GraphQL API]
+    participant Resolver
+    participant DB[(Database)]
+    
+    Client->>GraphQL: GraphQL Query
+    GraphQL->>GraphQL: Schema Validation
+    GraphQL->>Resolver: Field Resolution
+    Resolver->>DB: Data Query
+    DB-->>Resolver: Result
+    Resolver-->>GraphQL: Data Transformation
+    GraphQL-->>Client: JSON Response
+```
+
+## WebSocket Connection Lifecycle
+
+```mermaid
+stateDiagram-v2
+    [*] --> Connecting
+    Connecting --> Connected: Success
+    Connecting --> Error: Failed
+    Connected --> SendingMessage: Client Message
+    SendingMessage --> Connected: Response
+    Connected --> Disconnecting: Timeout/Error
+    Disconnecting --> [*]
+    Error --> [*]
+```
+
+## Performance Optimization Flow
+
+```mermaid
+graph TD
+    subgraph "REST API Optimization"
+        A[HTTP/2] --> B[Compression]
+        B --> C[ETag Cache]
+        C --> D[Pagination]
+    end
+    
+    subgraph "gRPC Optimization"
+        E[Connection Pool] --> F[Streaming]
+        F --> G[Compression]
+        G --> H[Keep-alive]
+    end
+    
+    subgraph "Common Optimizations"
+        I[Request Batching] --> J[Connection Reuse]
+        J --> K[Circuit Breaker]
+        K --> L[Load Balancing]
+    end
+```

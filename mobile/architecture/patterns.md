@@ -28,6 +28,25 @@ Cross-platform development'da React Native Metro bundler ile component isolation
 
 ### Modüler Architecture Implementation Strategies
 
+```mermaid
+graph TD
+    A[Modüler Mimari] --> B[Feature-Based Modules]
+    A --> C[Layer-Based Modules]
+    A --> D[Hybrid Approach]
+    
+    B --> B1[Login Module]
+    B --> B2[Profile Module]
+    B --> B3[Shopping Module]
+    
+    C --> C1[UI Layer]
+    C --> C2[Domain Layer]
+    C --> C3[Data Layer]
+    
+    D --> D1[Feature Modules]
+    D --> D2[Shared Modules]
+    D --> D3[Core Modules]
+```
+
 Feature-based modules approach'da her business capability (login, profile, shopping) ayrı module olarak organize edilir. Layer-based modules yaklaşımında UI, Domain ve Data katmanları separate modules halinde structure edilir. Hybrid approach ise feature ve layer combination'ını adopt ederek optimal flexibility sağlar.
 
 Shared modules (common utilities, design system, networking), domain modules (business logic ve use cases), data modules (repository implementations ve data sources), presentation modules (UI components ve state management), core modules (platform-specific implementations) ve test modules (unit ve integration test suites) comprehensive modular architecture'ın temel building blocks'larını oluşturur.
@@ -37,6 +56,27 @@ Bu stratejik organization, development team'in parallel working capability'sini 
 ## MVVM Pattern ve Modern State Management
 
 ### MVVM (Model-View-ViewModel) Architecture Deep Dive
+
+```mermaid
+graph TD
+    A[MVVM Pattern] --> B[Model]
+    A --> C[View]
+    A --> D[ViewModel]
+    
+    B --> B1[Data Layer]
+    B --> B2[Business Logic]
+    
+    C --> C1[UI Components]
+    C --> C2[User Interaction]
+    
+    D --> D1[State Management]
+    D --> D2[Data Binding]
+    
+    C -->|Updates| D
+    D -->|Notifies| C
+    D -->|Fetches| B
+    B -->|Provides| D
+```
 
 Model-View-ViewModel pattern, Microsoft tarafından WPF ve Silverlight için geliştirilmiş olmasına rağmen, mobile development ecosystem'inde widespread adoption görmüştür. Bu pattern'in conceptual yapısı, Model (data ve business logic layer), View (UI components ve user interaction handling) ve ViewModel (View ile Model arasında bridge görevi gören UI state management layer) olmak üzere üç ana component'den oluşur.
 
@@ -64,6 +104,29 @@ Loading states için asenkron operations management ve state persistence için l
 
 ### Redux Pattern ve Centralized State Architecture
 
+```mermaid
+graph TD
+    A[Redux Store] --> B[State]
+    A --> C[Reducers]
+    A --> D[Actions]
+    A --> E[Middleware]
+    
+    B --> B1[Application State]
+    
+    C --> C1[Pure Functions]
+    C --> C2[State Updates]
+    
+    D --> D1[Action Creators]
+    D --> D2[Action Types]
+    
+    E --> E1[Async Operations]
+    E --> E2[Side Effects]
+    
+    D -->|Dispatched| E
+    E -->|Processed| C
+    C -->|Updates| B
+```
+
 Redux pattern, centralized state management philosophy ile single store içinde entire application state'in maintenance'ını advocate eder. Pure functions (reducers) ile state transitions ve time-travel debugging capabilities, Redux'un distinctive features'larını represent eder.
 
 Flutter'da flutter_redux package, React Native'de native Redux implementation, Android'de Redux-style architecture (AAC ViewModel + Repository pattern) ve iOS'de SwiftUI + Combine ile Redux-like patterns comprehensive cross-platform Redux adoption enable eder.
@@ -73,6 +136,28 @@ Middleware ecosystem, asynchronous operations handling, comprehensive logging ca
 Reducer composition complex state management için reducer splitting enable ederken, state normalization optimized state structure provide eder. Redux persist ile state hydration ve error boundaries ile global error handling, production-ready Redux implementation'ın critical aspects'larını constitute eder.
 
 ### BLoC (Business Logic Component) Flutter-Specific Excellence
+
+```mermaid
+graph TD
+    A[BLoC Pattern] --> B[Events]
+    A --> C[States]
+    A --> D[Bloc]
+    
+    B --> B1[User Interactions]
+    B --> B2[System Events]
+    
+    C --> C1[Initial State]
+    C --> C2[Loading State]
+    C --> C3[Success State]
+    C --> C4[Error State]
+    
+    D --> D1[Event Processing]
+    D --> D2[State Management]
+    D --> D3[Business Logic]
+    
+    B -->|Transformed by| D
+    D -->|Emits| C
+```
 
 Business Logic Component pattern, Flutter ecosystem'ine özel geliştirilmiş stream-based state management approach'dür. Bu pattern'in fundamental concept'i, reactive programming paradigms ile efficient state management achieve etmektir.
 
@@ -87,6 +172,18 @@ Event debouncing ve throttling, state caching, lazy loading ve background proces
 ## Unidirectional Data Flow ve State Immutability
 
 ### Unidirectional Data Flow Architecture Principles
+
+```mermaid
+graph LR
+    A[User Action] --> B[Intent/Event]
+    B --> C[State Reducer/Handler]
+    C --> D[New State]
+    D --> E[View Update]
+    E --> F[UI Changes]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 Unidirectional data flow prensibi, veri akışının tek yönlü organization'ı ile application state'in predictable behavior'ının guarantee edilmesi fundamental concept'idir. Bu architectural principle, complex mobile applications'da state management complexity'sini significantly reduce ederken, debugging capability'sini dramatically enhance eder.
 

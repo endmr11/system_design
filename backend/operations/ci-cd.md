@@ -8,6 +8,25 @@ DevOps kültürünün en önemli bileşenlerinden biri olan CI/CD, geliştirme v
 
 CI/CD, yazılım geliştirme yaşam döngüsünü otomatikleştiren ve hızlandıran kritik pratiklerdir.
 
+```mermaid
+graph LR
+    A[Kod Değişikliği] --> B[CI Pipeline]
+    B --> C[Build]
+    B --> D[Test]
+    B --> E[Code Quality]
+    B --> F[Security Scan]
+    B --> G[Artifact Creation]
+    G --> H[CD Pipeline]
+    H --> I[Staging Deployment]
+    I --> J[Integration Tests]
+    J --> K[Production Deployment]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#bbf,stroke:#333,stroke-width:2px
+    style K fill:#bfb,stroke:#333,stroke-width:2px
+```
+
 ### Continuous Integration (CI)
 
 **Amaç ve Faydalar:**
@@ -31,6 +50,36 @@ CI/CD, yazılım geliştirme yaşam döngüsünü otomatikleştiren ve hızland�
 - **Canary Deployment**: Gradual rollout ve risk minimization
 - **Rolling Deployment**: Progressive instance updates
 - **Feature Flags**: Runtime'da feature control
+
+```mermaid
+graph TB
+    subgraph "Blue-Green Deployment"
+        A[Blue Environment] --> B[Active]
+        C[Green Environment] --> D[Inactive]
+        B --> E[Switch Traffic]
+        E --> F[New Active]
+    end
+    
+    subgraph "Canary Deployment"
+        G[Current Version] --> H[Canary Version]
+        H --> I[10% Traffic]
+        I --> J[Monitor Metrics]
+        J --> K[Full Rollout]
+    end
+    
+    subgraph "Rolling Update"
+        L[Version 1] --> M[Version 1.1]
+        M --> N[Version 1.2]
+        N --> O[Version 2]
+    end
+    
+    style A fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px
+    style G fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#fbb,stroke:#333,stroke-width:2px
+    style L fill:#bbf,stroke:#333,stroke-width:2px
+    style O fill:#bfb,stroke:#333,stroke-width:2px
+```
 
 ## GitLab CI/CD ile Spring Boot Pipeline
 

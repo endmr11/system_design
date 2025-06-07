@@ -10,6 +10,24 @@ Dağıtık sistemlerde Strong ve Eventual Consistency dışında çeşitli tutar
 - Vector clock kullanımı
 - Çakışmasız Çoğaltılmış Veri Tipleri (CRDTs)
 
+```mermaid
+sequenceDiagram
+    participant Client1
+    participant Node1
+    participant Node2
+    participant Node3
+    
+    Client1->>Node1: Write A
+    Node1->>Node1: Update Vector Clock
+    Node1->>Node2: Sync A
+    Node1->>Node3: Sync A
+    Client1->>Node1: Write B (caused by A)
+    Node1->>Node1: Update Vector Clock
+    Node1->>Node2: Sync B
+    Node1->>Node3: Sync B
+    Note over Node2,Node3: B will be delivered only after A
+```
+
 ### Spring Boot ile Nedensel Tutarlılık Uygulaması
 
 #### Vector Clock Servisi
@@ -302,6 +320,19 @@ public class GSetCRDT<T> {
 - Bellek modeli uyumu
 - Atomik işlemler
 
+```mermaid
+graph TD
+    A[Client Request] --> B[Sequential Queue]
+    B --> C[Single Thread Executor]
+    C --> D[Operation Processing]
+    D --> E[Memory Store]
+    E --> F[Response]
+    
+    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#bfb,stroke:#333,stroke-width:2px
+```
+
 ### Spring Boot ile Sıralı Tutarlılık Uygulaması
 
 #### Sıralı İşlem Yöneticisi
@@ -475,6 +506,23 @@ public class MemoryModelConsistencyManager {
 - Oturum tabanlı tutarlılık
 - Yapışkan oturumlar (sticky sessions)
 - İstemci tarafı önbellekleme
+
+```mermaid
+graph LR
+    A[Client] --> B[Load Balancer]
+    B --> C[Node 1]
+    B --> D[Node 2]
+    B --> E[Node 3]
+    
+    C --> F[Session Cache]
+    D --> G[Session Cache]
+    E --> H[Session Cache]
+    
+    style B fill:#f96,stroke:#333,stroke-width:2px
+    style F fill:#9cf,stroke:#333,stroke-width:2px
+    style G fill:#9cf,stroke:#333,stroke-width:2px
+    style H fill:#9cf,stroke:#333,stroke-width:2px
+```
 
 ### Spring Boot ile Read Your Writes Uygulaması
 
@@ -684,6 +732,19 @@ public class ConsistentReadController {
 - Versiyon tabanlı tutarlılık
 - Zaman damgası sıralaması
 - Çakışma çözümü
+
+```mermaid
+graph TD
+    A[Client Read] --> B{Version Check}
+    B -->|Newer Version| C[Update Client State]
+    B -->|Older Version| D[Return Cached Value]
+    C --> E[Return New Value]
+    D --> F[Return Old Value]
+    
+    style B fill:#f96,stroke:#333,stroke-width:2px
+    style C fill:#9cf,stroke:#333,stroke-width:2px
+    style D fill:#f9f,stroke:#333,stroke-width:2px
+```
 
 ### Spring Boot ile Monotonik Okuma Uygulaması
 

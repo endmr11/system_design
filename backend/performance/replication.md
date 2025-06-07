@@ -307,6 +307,26 @@ public @interface WriteOperation {
 
 ## Load Balanced Slave Selection
 
+```mermaid
+graph TD
+    A[Application] -->|Read Request| B[Load Balancer]
+    B -->|Round Robin| C[Slave 1]
+    B -->|Round Robin| D[Slave 2]
+    B -->|Round Robin| E[Slave 3]
+    C -->|Health Check| F[Health Monitor]
+    D -->|Health Check| F
+    E -->|Health Check| F
+    F -->|Metrics| G[Prometheus]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#dfd,stroke:#333,stroke-width:2px
+    style F fill:#fdb,stroke:#333,stroke-width:2px
+    style G fill:#ddf,stroke:#333,stroke-width:2px
+```
+
 ### 1. Round Robin Selector
 
 ```java
@@ -443,6 +463,25 @@ public class SlaveHealthMonitor {
 ```
 
 ## Replication Lag Handling
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Master as Master DB
+    participant Slave as Slave DB
+    participant Redis as Redis Cache
+    
+    App->>Master: Write Operation
+    Master-->>App: Write Confirmed
+    App->>Redis: Store Timestamp
+    App->>Slave: Read Request
+    Slave-->>App: Data (if lag < threshold)
+    App->>Master: Read Request (if lag > threshold)
+    Master-->>App: Latest Data
+    
+    Note over App,Master: Read-After-Write Consistency
+    Note over Slave,Redis: Replication Lag Check
+```
 
 ### 1. Read-After-Write Consistency
 
@@ -638,6 +677,24 @@ networks:
 ```
 
 ## Monitoring ve Metrics
+
+```mermaid
+graph TD
+    A[Replication Metrics] -->|Collect| B[Master Metrics]
+    A -->|Collect| C[Slave Metrics]
+    B -->|Lag| D[Prometheus]
+    C -->|Health| D
+    B -->|Connections| D
+    D -->|Alert Rules| E[Alert Manager]
+    E -->|Notification| F[Email/Slack]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#ddf,stroke:#333,stroke-width:2px
+    style E fill:#fdb,stroke:#333,stroke-width:2px
+    style F fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 ### 1. Replication Health Metrics
 

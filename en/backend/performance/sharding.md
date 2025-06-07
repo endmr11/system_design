@@ -581,21 +581,71 @@ volumes:
   redis_data:
 ```
 
+## Resharding Strategy
+
+```mermaid
+graph TB
+    subgraph ReshardingProcess
+        R1[Start] --> R2[Add New Shard]
+        R2 --> R3[Data Migration]
+        R3 --> R4[Data Validation]
+        R4 --> R5[Traffic Routing]
+        R5 --> R6[Remove Old Shard]
+    end
+    
+    subgraph ZeroDowntime
+        Z1[Live System] --> Z2[New Shard]
+        Z2 --> Z3[Parallel Write]
+        Z3 --> Z4[Data Synchronization]
+        Z4 --> Z5[Traffic Switch]
+    end
+    
+    style ReshardingProcess fill:#f9f,stroke:#333,stroke-width:2px
+    style ZeroDowntime fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+## Monitoring and Health Checks
+
+```mermaid
+graph LR
+    subgraph Monitoring
+        M1[Metrics Collection] --> M2[Performance Metrics]
+        M1 --> M3[Health Checks]
+        M1 --> M4[Data Skew Detection]
+    end
+    
+    subgraph Alerts
+        A1[Threshold Breach] --> A2[Alert Generation]
+        A2 --> A3[Notification]
+        A3 --> A4[Action Trigger]
+    end
+    
+    style Monitoring fill:#f9f,stroke:#333,stroke-width:2px
+    style Alerts fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ## Best Practices
 
-### 1. Shard Key Selection
-- Choose keys that ensure uniform distribution
-- Prefer immutable fields
-- Minimize cross-shard queries
-
-### 2. Resharding Strategy
-- Plan gradual migration
-- Use zero-downtime migration techniques
-- Prepare rollback plans
-
-### 3. Monitoring
-- Collect shard-level metrics
-- Monitor cross-shard query performance
-- Detect data skew
+```mermaid
+graph TB
+    subgraph ShardKeySelection
+        S1[Uniform Distribution] --> S2[Immutable Fields]
+        S2 --> S3[Minimize Cross-Shard]
+    end
+    
+    subgraph Monitoring
+        M1[Shard Metrics] --> M2[Query Performance]
+        M2 --> M3[Data Skew]
+    end
+    
+    subgraph Resharding
+        R1[Gradual Migration] --> R2[Zero-Downtime]
+        R2 --> R3[Rollback Plan]
+    end
+    
+    style ShardKeySelection fill:#f9f,stroke:#333,stroke-width:2px
+    style Monitoring fill:#bbf,stroke:#333,stroke-width:2px
+    style Resharding fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 Sharding is an inevitable requirement in large-scale systems, but it adds complexity. With the right strategy and implementation, it can significantly improve system performance.

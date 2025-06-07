@@ -19,6 +19,72 @@ The CAP Theorem, proposed by Eric Brewer, states that in distributed systems, yo
 - Handles network splits and communication failures
 - Essential for distributed systems
 
+## CAP Theorem Diagrams
+
+### CAP Triangle
+```mermaid
+graph TD
+    A[CAP Theorem] --> B[Consistency]
+    A --> C[Availability]
+    A --> D[Partition Tolerance]
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### CP vs AP Systems
+```mermaid
+graph LR
+    A[Distributed System] --> B[CP Systems]
+    A --> C[AP Systems]
+    
+    B --> D[MongoDB]
+    B --> E[PostgreSQL]
+    B --> F[etcd]
+    
+    C --> G[Cassandra]
+    C --> H[DynamoDB]
+    C --> I[Redis Cluster]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### Network Partition Scenario
+```mermaid
+graph TD
+    A[Client] --> B[Node 1]
+    A --> C[Node 2]
+    A --> D[Node 3]
+    
+    B -.->|Network Partition| C
+    B -.->|Network Partition| D
+    C -.->|Network Partition| D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+### Consistency vs Availability Trade-off
+```mermaid
+graph LR
+    A[Write Request] --> B{Network Partition?}
+    B -->|Yes| C[CP System]
+    B -->|Yes| D[AP System]
+    B -->|No| E[Normal Operation]
+    
+    C --> F[Block/Reject]
+    D --> G[Accept/Inconsistent]
+    E --> H[Process Normally]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:4px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ## CP Systems (Consistency + Partition Tolerance)
 
 CP systems prioritize consistency and partition tolerance over availability. During network partitions, they may become unavailable to maintain consistency.

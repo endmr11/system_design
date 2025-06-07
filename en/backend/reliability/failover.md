@@ -2,6 +2,45 @@
 
 ## Failover Strategies
 
+```mermaid
+graph TD
+    subgraph "Active-Passive Failover"
+        A[Primary Server] -->|Active| B[Load Balancer]
+        C[Backup Server] -->|Passive| B
+        B -->|Traffic| D[Clients]
+    end
+
+    subgraph "Active-Active Failover"
+        E[Server 1] -->|Active| F[Load Balancer]
+        G[Server 2] -->|Active| F
+        F -->|Traffic Distribution| H[Clients]
+    end
+```
+
+```mermaid
+graph TD
+    subgraph "Multi-Level Cache Failover"
+        A[Client] -->|Level 1| B[Local Cache]
+        B -->|Cache Miss| C[Redis Cache]
+        C -->|Cache Miss| D[Database]
+        D -->|Data| C
+        C -->|Data| B
+        B -->|Data| A
+    end
+```
+
+```mermaid
+graph TD
+    subgraph "Service-to-Service Failover"
+        A[Client] -->|Request| B[Circuit Breaker]
+        B -->|Success| C[Primary Service]
+        B -->|Failure| D[Backup Service]
+        C -->|Response| A
+        D -->|Response| A
+        E[Health Check] -->|Status| B
+    end
+```
+
 ### Database Failover
 
 #### Multi-DataSource Configuration with Spring Boot

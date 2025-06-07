@@ -4,6 +4,87 @@ CQRS is an architectural pattern that separates read and write operations into d
 
 ## Core Concepts
 
+### General Architecture Diagram
+
+```mermaid
+graph TB
+    Client[Client] --> |Command| CommandBus[Command Bus]
+    Client --> |Query| QueryBus[Query Bus]
+    
+    CommandBus --> |Process| CommandHandler[Command Handlers]
+    QueryBus --> |Process| QueryHandler[Query Handlers]
+    
+    CommandHandler --> |Write| CommandDB[(Command Database)]
+    QueryHandler --> |Read| QueryDB[(Query Database)]
+    
+    CommandHandler --> |Publish Event| EventBus[Event Bus]
+    EventBus --> |Update| ReadModel[Read Model Updater]
+    ReadModel --> |Update| QueryDB
+    
+    subgraph "Command Side"
+        CommandBus
+        CommandHandler
+        CommandDB
+    end
+    
+    subgraph "Query Side"
+        QueryBus
+        QueryHandler
+        QueryDB
+    end
+    
+    subgraph "Event-Based Synchronization"
+        EventBus
+        ReadModel
+    end
+```
+
+### Command and Query Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant Client
+    participant CB as Command Bus
+    participant CH as Command Handler
+    participant CDB as Command DB
+    participant EB as Event Bus
+    participant RM as Read Model
+    participant QDB as Query DB
+    participant QH as Query Handler
+    participant QB as Query Bus
+
+    Client->>CB: Send Command
+    CB->>CH: Process Command
+    CH->>CDB: Update State
+    CH->>EB: Publish Event
+    EB->>RM: Handle Event
+    RM->>QDB: Update Read Model
+    
+    Client->>QB: Send Query
+    QB->>QH: Process Query
+    QH->>QDB: Read Data
+    QH->>Client: Return Result
+```
+
+### Event-Based Read Model Update Diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> CommandProcessing
+    CommandProcessing --> EventPublishing: Success
+    CommandProcessing --> Error: Failure
+    
+    EventPublishing --> ReadModelUpdate
+    ReadModelUpdate --> Success: Update Complete
+    ReadModelUpdate --> Retry: Error
+    
+    Retry --> ReadModelUpdate: At Intervals
+    Retry --> Error: Max Retries
+    
+    Success --> [*]
+    Error --> [*]
+```
+
 ### Command Side Configuration
 Database configuration for command operations:
 

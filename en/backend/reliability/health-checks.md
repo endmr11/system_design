@@ -4,6 +4,60 @@
 
 Health checks and heartbeats are essential monitoring mechanisms that ensure system components are functioning correctly. They enable early detection of issues, automated recovery, and informed load balancing decisions.
 
+```mermaid
+graph TD
+    A[Health Check] --> B[Liveness Probe]
+    A --> C[Readiness Probe]
+    A --> D[Startup Probe]
+    
+    B --> B1[Application Lifecycle]
+    B --> B2[Deadlock Detection]
+    B --> B3[Memory Leak Detection]
+    
+    C --> C1[Dependency Health]
+    C --> C2[Resource Availability]
+    C --> C3[Service Initialization]
+    
+    D --> D1[Initial Startup]
+    D --> D2[Configuration]
+    D --> D3[Resource Allocation]
+```
+
+```mermaid
+sequenceDiagram
+    participant K as Kubernetes
+    participant A as Application
+    participant D as Database
+    participant R as Redis
+    
+    K->>A: Liveness Probe
+    A-->>K: 200 OK
+    
+    K->>A: Readiness Probe
+    A->>D: Check Connection
+    A->>R: Check Connection
+    D-->>A: Connection OK
+    R-->>A: Connection OK
+    A-->>K: 200 OK
+```
+
+```mermaid
+graph LR
+    A[Application] --> B[Health Service]
+    B --> C[Database Health]
+    B --> D[Redis Health]
+    B --> E[External Service Health]
+    
+    C --> F[Connection Pool]
+    C --> G[Query Performance]
+    
+    D --> H[Connection Status]
+    D --> I[Memory Usage]
+    
+    E --> J[API Response]
+    E --> K[Circuit Breaker]
+```
+
 ## Spring Boot Actuator Health Checks
 
 ### Basic Health Check Configuration

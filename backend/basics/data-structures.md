@@ -52,16 +52,28 @@ graph TD
 ## Algoritmalar (Gerçek Dünya Uygulamaları)
 
 ### Arama Algoritmaları
-- Sıralı veri kümelerinde **ikili arama**
-- Mikroservis bağımlılık çözümlemede **DFS/BFS**
-- Rota planlamada **A***
-- Elasticsearch'te tam metin arama
+```mermaid
+graph TD
+    A[Başlangıç] --> B{Veri Sıralı mı?}
+    B -->|Evet| C[İkili Arama]
+    B -->|Hayır| D[Doğrusal Arama]
+    C --> E[Sonuç Bulundu]
+    D --> E
+    C --> F[Sonuç Bulunamadı]
+    D --> F
+```
 
 ### Sıralama Algoritmaları
-- Java Collections'da **TimSort**
-- Büyük veri kümeleri için **harici sıralama**
-- Büyük veri işleme için **dağıtık sıralama**
-- Quick sort ve merge sort karşılaştırmaları
+```mermaid
+graph TD
+    A[Veri Seti] --> B{Veri Boyutu}
+    B -->|Küçük| C[Quick Sort]
+    B -->|Orta| D[Merge Sort]
+    B -->|Büyük| E[External Sort]
+    C --> F[Sıralı Veri]
+    D --> F
+    E --> F
+```
 
 ### Önbellekleme Algoritmaları
 - **LRU/LFU tahliye politikaları**
@@ -102,11 +114,18 @@ graph TD
 - Ağ gecikmesi dikkate alınması
 
 ## Dağıtık Sistem Desenleri
-
-### Uzlaşma Algoritmaları
-- **Raft**: Lider tabanlı uzlaşma, log çoğaltma
-- **Paxos**: Bizans hata toleransı, karmaşık ama sağlam
-- **ZAB**: ZooKeeper Atomic Broadcast, tam sıralama
+```mermaid
+graph TD
+    A[Dağıtık Sistem] --> B[Uzlaşma]
+    A --> C[Lider Seçimi]
+    A --> D[Kilitleme]
+    A --> E[Tutarlılık]
+    B --> F[Raft]
+    B --> G[Paxos]
+    C --> H[ZooKeeper]
+    D --> I[Redis Lock]
+    E --> J[CRDT]
+```
 
 ### Lider Seçimi
 - **ZooKeeper** tabanlı lider seçimi
@@ -160,7 +179,7 @@ graph TD
 
 ### Mesaj Kuyruğu
 - **Asenkron işleme** desenleri
-- **Geri basınç yönetimi** mekanizmaları
+- **Backpressure yönetimi** mekanizmaları
 - Mesaj sıralama garantileri
 - Dead letter queue yönetimi
 

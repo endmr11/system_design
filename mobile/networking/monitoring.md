@@ -5,96 +5,96 @@ Mobil uygulamalarda ağ performansını izleme ve analiz etme teknikleri.
 ## Gerçek Zamanlı İzleme
 
 ### Performans Metrikleri
-- **Response Time Tracking**:
-  - Request/response latency measurement
-  - Percentile-based analysis (P50, P95, P99)
-  - Historical trend monitoring
-- **Bandwidth Usage**:
-  - Data transfer volume tracking
-  - Upload/download speed monitoring
-  - Data usage optimization insights
-- **Error Rates**:
-  - HTTP error code distribution
-  - Network failure categorization
-  - Error rate trending
+- **Yanıt Süresi Takibi**:
+  - İstek/yanıt gecikme süresi ölçümü
+  - Yüzdelik bazlı analiz (P50, P95, P99)
+  - Geçmiş trend izleme
+- **Bant Genişliği Kullanımı**:
+  - Veri transfer hacmi takibi
+  - Yükleme/indirme hızı izleme
+  - Veri kullanımı optimizasyon içgörüleri
+- **Hata Oranları**:
+  - HTTP hata kodu dağılımı
+  - Ağ hatası kategorizasyonu
+  - Hata oranı trend analizi
 
 ### Ağ Kalitesi Değerlendirmesi
-- **Connection Type Detection**:
-  - WiFi vs cellular identification
-  - Connection speed classification
-  - Network quality scoring
-- **Signal Strength Monitoring**:
-  - RSSI measurement
-  - Network carrier information
-  - Coverage area analysis
-- **Network Switching Events**:
-  - Handover detection
-  - Connection stability tracking
-  - Performance impact assessment
+- **Bağlantı Tipi Tespiti**:
+  - WiFi ve hücresel ağ tanımlama
+  - Bağlantı hızı sınıflandırması
+  - Ağ kalitesi puanlaması
+- **Sinyal Gücü İzleme**:
+  - RSSI ölçümü
+  - Ağ operatör bilgisi
+  - Kapsama alanı analizi
+- **Ağ Geçiş Olayları**:
+  - El değiştirme tespiti
+  - Bağlantı kararlılığı takibi
+  - Performans etki değerlendirmesi
 
 ## Analitik Entegrasyonu
 
 ### Kullanıcı Davranışı Analitiği
-- **Network Usage Patterns**:
-  - Peak usage times identification
-  - Feature usage correlation
-  - Geographic usage distribution
-- **Feature Adoption Tracking**:
-  - Network-dependent feature usage
-  - Performance impact on adoption
-  - User retention correlation
-- **Error Impact Analysis**:
-  - User drop-off after network errors
-  - Error recovery success rates
-  - Customer satisfaction correlation
+- **Ağ Kullanım Desenleri**:
+  - Yoğun kullanım zamanlarının belirlenmesi
+  - Özellik kullanımı korelasyonu
+  - Coğrafi kullanım dağılımı
+- **Özellik Benimseme Takibi**:
+  - Ağ bağımlı özellik kullanımı
+  - Benimseme üzerindeki performans etkisi
+  - Kullanıcı tutma korelasyonu
+- **Hata Etki Analizi**:
+  - Ağ hataları sonrası kullanıcı kaybı
+  - Hata kurtarma başarı oranları
+  - Müşteri memnuniyeti korelasyonu
 
 ### Performans Analitiği
-- **Load Time Tracking**:
-  - Page/screen load performance
-  - Resource loading times
-  - User interaction delays
-- **Resource Utilization**:
-  - Network stack efficiency
-  - Connection pool usage
-  - Cache hit rates
-- **Battery Impact Assessment**:
-  - Network activity power consumption
-  - Radio usage optimization
-  - Background sync efficiency
+- **Yükleme Süresi Takibi**:
+  - Sayfa/ekran yükleme performansı
+  - Kaynak yükleme süreleri
+  - Kullanıcı etkileşim gecikmeleri
+- **Kaynak Kullanımı**:
+  - Ağ yığını verimliliği
+  - Bağlantı havuzu kullanımı
+  - Önbellek isabet oranları
+- **Pil Etkisi Değerlendirmesi**:
+  - Ağ aktivitesi güç tüketimi
+  - Radyo kullanımı optimizasyonu
+  - Arka plan senkronizasyon verimliliği
 
-## Debugging Tools
+## Hata Ayıklama Araçları
 
 ### Ağ İncelemesi
-- **Charles Proxy Integration**:
-  - HTTP/HTTPS traffic analysis
-  - Request/response inspection
-  - SSL decryption for debugging
-- **Wireshark Analysis**:
-  - Packet-level network analysis
-  - Protocol debugging
-  - Network troubleshooting
-- **Custom Logging**:
-  - Application-level network logging
-  - Debug information collection
-  - Error context preservation
+- **Charles Proxy Entegrasyonu**:
+  - HTTP/HTTPS trafik analizi
+  - İstek/yanıt incelemesi
+  - Hata ayıklama için SSL şifre çözme
+- **Wireshark Analizi**:
+  - Paket seviyesinde ağ analizi
+  - Protokol hata ayıklama
+  - Ağ sorun giderme
+- **Özel Günlük Tutma**:
+  - Uygulama seviyesinde ağ günlüğü
+  - Hata ayıklama bilgisi toplama
+  - Hata bağlamı koruma
 
 ### Performans Profilleme
-- **CPU Usage Analysis**:
-  - Network processing overhead
-  - Threading efficiency
-  - Background task impact
-- **Memory Consumption**:
-  - Network buffer usage
-  - Cache memory allocation
-  - Memory leak detection
-- **Network Stack Analysis**:
-  - Connection lifecycle tracking
-  - Protocol efficiency assessment
-  - Resource optimization opportunities
+- **CPU Kullanım Analizi**:
+  - Ağ işleme yükü
+  - İş parçacığı verimliliği
+  - Arka plan görevi etkisi
+- **Bellek Tüketimi**:
+  - Ağ tamponu kullanımı
+  - Önbellek bellek tahsisi
+  - Bellek sızıntısı tespiti
+- **Ağ Yığını Analizi**:
+  - Bağlantı yaşam döngüsü takibi
+  - Protokol verimliliği değerlendirmesi
+  - Kaynak optimizasyon fırsatları
 
-## Monitoring Implementation
+## İzleme Uygulaması
 
-### Platform-Spesifik İzleme
+### Platform Özel İzleme
 
 #### Android Ağ İzleme
 ```kotlin
@@ -111,12 +111,12 @@ class NetworkMonitor {
     
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            // Network became available
+            // Ağ kullanılabilir hale geldi
             trackNetworkEvent("network_available")
         }
         
         override fun onLost(network: Network) {
-            // Network lost
+            // Ağ bağlantısı kesildi
             trackNetworkEvent("network_lost")
         }
         
@@ -166,24 +166,24 @@ class NetworkMonitor: ObservableObject {
 }
 ```
 
-### Custom Analytics Implementation
+### Özel Analitik Uygulaması
 ```dart
-// Flutter Network Analytics
+// Flutter Ağ Analitiği
 class NetworkAnalytics {
   static final Map<String, List<int>> _responseTimes = {};
   static final Map<String, int> _errorCounts = {};
   
   static void trackRequest(String endpoint, int responseTime, bool success) {
-    // Track response time
+    // Yanıt süresini takip et
     _responseTimes.putIfAbsent(endpoint, () => []);
     _responseTimes[endpoint]!.add(responseTime);
     
-    // Track errors
+    // Hataları takip et
     if (!success) {
       _errorCounts[endpoint] = (_errorCounts[endpoint] ?? 0) + 1;
     }
     
-    // Send to analytics service
+    // Analitik servisine gönder
     _sendAnalytics(endpoint, responseTime, success);
   }
   
@@ -207,34 +207,34 @@ class NetworkAnalytics {
 }
 ```
 
-## Advanced Monitoring Techniques
+## Gelişmiş İzleme Teknikleri
 
-### Real-Time Alerting
-- **Performance Threshold Monitoring**:
-  - Response time alerts
-  - Error rate spikes
-  - Bandwidth usage limits
-- **Automated Incident Response**:
-  - Alert escalation
-  - Performance degradation detection
-  - Recovery time tracking
+### Gerçek Zamanlı Uyarılar
+- **Performans Eşik İzleme**:
+  - Yanıt süresi uyarıları
+  - Hata oranı artışları
+  - Bant genişliği kullanım limitleri
+- **Otomatik Olay Yanıtı**:
+  - Uyarı eskalasyonu
+  - Performans düşüşü tespiti
+  - Kurtarma süresi takibi
 
-### A/B Testing for Network Performance
-- **Performance Experiment Design**:
-  - Different retry strategies testing
-  - Compression algorithm comparison
-  - Caching strategy evaluation
-- **Statistical Analysis**:
-  - Performance impact measurement
-  - User experience correlation
-  - Business metric correlation
+### Ağ Performansı için A/B Testi
+- **Performans Deney Tasarımı**:
+  - Farklı yeniden deneme stratejileri testi
+  - Sıkıştırma algoritması karşılaştırması
+  - Önbellek stratejisi değerlendirmesi
+- **İstatistiksel Analiz**:
+  - Performans etki ölçümü
+  - Kullanıcı deneyimi korelasyonu
+  - İş metrikleri korelasyonu
 
-### Predictive Analytics
-- **Performance Forecasting**:
-  - Traffic pattern prediction
-  - Resource usage forecasting
-  - Capacity planning insights
-- **Anomaly Detection**:
-  - Unusual traffic patterns
-  - Performance regression detection
-  - Security threat identification
+### Öngörücü Analitik
+- **Performans Tahmini**:
+  - Trafik deseni tahmini
+  - Kaynak kullanımı tahmini
+  - Kapasite planlama içgörüleri
+- **Anomali Tespiti**:
+  - Olağandışı trafik desenleri
+  - Performans gerilemesi tespiti
+  - Güvenlik tehdidi tanımlama

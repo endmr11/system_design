@@ -4,6 +4,71 @@
 
 Offline-first design is a development methodology that prioritizes functionality even when network connectivity is unreliable or absent. This approach ensures mobile applications remain responsive and useful regardless of connection status.
 
+## Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Offline-First Architecture"
+        A[Client App] --> B[Local Storage]
+        A --> C[Network Layer]
+        B --> D[Sync Manager]
+        C --> D
+        D --> E[Remote Server]
+        
+        subgraph "Local Storage"
+            B1[SQLite/Realm] --> B2[File System]
+            B1 --> B3[Key-Value Store]
+        end
+        
+        subgraph "Sync Manager"
+            D1[Queue Manager] --> D2[Conflict Resolver]
+            D2 --> D3[State Manager]
+        end
+    end
+```
+
+## Data Synchronization Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant App
+    participant LocalDB
+    participant SyncQueue
+    participant RemoteServer
+    
+    User->>App: Data Change
+    App->>LocalDB: Local Save
+    App->>SyncQueue: Add to Sync Queue
+    
+    loop Sync Cycle
+        SyncQueue->>RemoteServer: Send Changes
+        RemoteServer-->>SyncQueue: Success Response
+        SyncQueue->>LocalDB: Update Sync Status
+    end
+    
+    Note over App,RemoteServer: If Offline<br/>Changes Wait in Queue
+```
+
+## Multi-Level Cache System
+
+```mermaid
+graph LR
+    subgraph "Multi-Level Cache"
+        A[L1: Memory Cache] --> B[L2: Local Storage]
+        B --> C[L3: Remote API]
+        
+        style A fill:#f9f,stroke:#333,stroke-width:2px
+        style B fill:#bbf,stroke:#333,stroke-width:2px
+        style C fill:#bfb,stroke:#333,stroke-width:2px
+    end
+    
+    D[Client App] --> A
+    A --> D
+    B --> D
+    C --> D
+```
+
 ## Core Principles
 
 ### 1. Local-First Data Storage

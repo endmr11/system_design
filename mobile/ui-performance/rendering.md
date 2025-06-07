@@ -2,15 +2,15 @@
 
 ## 5.1. Lazy Loading & View Recycling (RecyclerView, UITableView)
 
-### Lazy Loading Fundamentals
-- **Core Principle**: Load content only when needed ile memory ve performance optimization
-- **Benefits**: Faster initial loading, reduced memory footprint, improved user experience
-- **Implementation Challenges**: Placeholder management, loading state handling, error recovery
+### Lazy Loading Temelleri
+- **Ana Prensip**: İçeriği sadece gerektiğinde yükleyerek bellek ve performans optimizasyonu
+- **Faydaları**: Daha hızlı başlangıç yüklemesi, daha az bellek kullanımı, geliştirilmiş kullanıcı deneyimi
+- **Uygulama Zorlukları**: Yer tutucu yönetimi, yükleme durumu işleme, hata kurtarma
 
-### View Recycling Architecture
+### View Recycling Mimarisi
 
-#### Android RecyclerView Optimization
-- **ViewHolder Pattern**:
+#### Android RecyclerView Optimizasyonu
+- **ViewHolder Deseni**:
   ```kotlin
   class UserViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
       fun bind(user: User) {
@@ -25,9 +25,9 @@
       }
   }
   ```
-- **Advanced RecyclerView Features**:
+- **Gelişmiş RecyclerView Özellikleri**:
   ```kotlin
-  // DiffUtil Implementation
+  // DiffUtil Uygulaması
   class UserDiffCallback : DiffUtil.ItemCallback<User>() {
       override fun areItemsTheSame(oldItem: User, newItem: User) = 
           oldItem.id == newItem.id
@@ -36,7 +36,7 @@
           oldItem == newItem
   }
 
-  // ListAdapter Implementation
+  // ListAdapter Uygulaması
   class UserAdapter : ListAdapter<User, UserViewHolder>(UserDiffCallback()) {
       override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
           val binding = ItemUserBinding.inflate(
@@ -50,9 +50,9 @@
       }
   }
   ```
-- **Layout Manager Optimization**:
+- **Layout Manager Optimizasyonu**:
   ```kotlin
-  // Custom LayoutManager Example
+  // Özel LayoutManager Örneği
   class StaggeredGridLayoutManager(
       private val spanCount: Int,
       private val orientation: Int
@@ -64,15 +64,15 @@
           )
 
       override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
-          // Custom layout logic
+          // Özel düzen mantığı
       }
   }
   ```
 
-#### iOS Table/Collection View Optimization
-- **Cell Reuse Mechanisms**:
+#### iOS Table/Collection View Optimizasyonu
+- **Hücre Yeniden Kullanım Mekanizmaları**:
   ```swift
-  // Modern UICollectionView Implementation
+  // Modern UICollectionView Uygulaması
   class UserCollectionViewController: UIViewController {
       private var dataSource: UICollectionViewDiffableDataSource<Section, User>!
       
@@ -93,9 +93,9 @@
       }
   }
   ```
-- **Modern iOS List Performance**:
+- **Modern iOS Liste Performansı**:
   ```swift
-  // Compositional Layout Example
+  // Compositional Layout Örneği
   func createLayout() -> UICollectionViewLayout {
       let itemSize = NSCollectionLayoutSize(
           widthDimension: .fractionalWidth(1.0),
@@ -117,10 +117,10 @@
   }
   ```
 
-#### Flutter List Performance
-- **Efficient List Widgets**:
+#### Flutter Liste Performansı
+- **Verimli Liste Widget'ları**:
   ```dart
-  // Custom ScrollView with Slivers
+  // Sliver'lar ile Özel ScrollView
   class CustomScrollViewExample extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
@@ -130,13 +130,13 @@
             floating: true,
             expandedHeight: 200.0,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text('Custom Scroll View'),
+              title: Text('Özel Scroll View'),
             ),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => ListTile(
-                title: Text('Item $index'),
+                title: Text('Öğe $index'),
               ),
               childCount: 100,
             ),
@@ -147,12 +147,12 @@
   }
   ```
 
-### Image Lazy Loading Strategies
+### Görüntü Lazy Loading Stratejileri
 
-#### Progressive Image Loading
-- **Placeholder Strategies**:
+#### Aşamalı Görüntü Yükleme
+- **Yer Tutucu Stratejileri**:
   ```kotlin
-  // Android Glide Implementation
+  // Android Glide Uygulaması
   Glide.with(context)
       .load(imageUrl)
       .placeholder(R.drawable.placeholder)
@@ -161,7 +161,7 @@
       .into(imageView)
   ```
   ```swift
-  // iOS Kingfisher Implementation
+  // iOS Kingfisher Uygulaması
   imageView.kf.setImage(
       with: URL(string: imageUrl),
       placeholder: UIImage(named: "placeholder"),
@@ -172,10 +172,10 @@
   )
   ```
 
-### Data Lazy Loading
+### Veri Lazy Loading
 
-#### Pagination Integration
-- **Android Implementation**:
+#### Sayfalama Entegrasyonu
+- **Android Uygulaması**:
   ```kotlin
   class UserPagingSource : PagingSource<Int, User>() {
       override suspend fun load(params: LoadParams<Int>): LoadResult<Int, User> {
@@ -197,12 +197,12 @@
 
 ## 5.2. Render Thread vs. Main Thread Ayrımı
 
-### Threading Architecture for UI Performance
+### UI Performansı için Threading Mimarisi
 
-#### Main Thread (UI Thread) Responsibilities
-- **User Interaction Handling**:
+#### Main Thread (UI Thread) Sorumlulukları
+- **Kullanıcı Etkileşimi İşleme**:
   ```kotlin
-  // Android Touch Event Handling
+  // Android Dokunma Olayı İşleme
   class CustomView @JvmOverloads constructor(
       context: Context,
       attrs: AttributeSet? = null
@@ -211,15 +211,15 @@
       override fun onTouchEvent(event: MotionEvent): Boolean {
           when (event.action) {
               MotionEvent.ACTION_DOWN -> {
-                  // Handle touch down
+                  // Dokunma başlangıcını işle
                   return true
               }
               MotionEvent.ACTION_MOVE -> {
-                  // Handle touch move
+                  // Dokunma hareketini işle
                   return true
               }
               MotionEvent.ACTION_UP -> {
-                  // Handle touch up
+                  // Dokunma bitişini işle
                   return true
               }
           }
@@ -228,10 +228,10 @@
   }
   ```
 
-#### Render Thread Concepts
-- **Android Render Thread Example**:
+#### Render Thread Kavramları
+- **Android Render Thread Örneği**:
   ```kotlin
-  // Custom View with Hardware Acceleration
+  // Donanım Hızlandırmalı Özel View
   class CustomRenderView @JvmOverloads constructor(
       context: Context,
       attrs: AttributeSet? = null
@@ -243,15 +243,15 @@
       
       override fun onDraw(canvas: Canvas) {
           super.onDraw(canvas)
-          // Complex drawing operations
+          // Karmaşık çizim işlemleri
       }
   }
   ```
 
-### Android Threading Model
+### Android Threading Modeli
 
-#### Main Thread vs Background Threads
-- **Coroutines Implementation**:
+#### Main Thread vs Arka Plan Thread'leri
+- **Coroutines Uygulaması**:
   ```kotlin
   class UserRepository @Inject constructor(
       private val api: UserApi,
@@ -264,25 +264,25 @@
               }
               emit(users)
           } catch (e: Exception) {
-              // Handle error
+              // Hatayı işle
           }
       }
   }
   ```
 
-### iOS Threading Model
+### iOS Threading Modeli
 
 #### Grand Central Dispatch (GCD)
-- **Queue Management**:
+- **Kuyruk Yönetimi**:
   ```swift
   class ImageProcessor {
       func processImage(_ image: UIImage, completion: @escaping (UIImage?) -> Void) {
           DispatchQueue.global(qos: .userInitiated).async {
-              // Process image on background thread
+              // Arka planda görüntü işleme
               let processedImage = self.applyFilters(to: image)
               
               DispatchQueue.main.async {
-                  // Update UI on main thread
+                  // Ana thread'de UI güncelleme
                   completion(processedImage)
               }
           }
@@ -290,34 +290,34 @@
   }
   ```
 
-### Flutter Threading Architecture
+### Flutter Threading Mimarisi
 
-#### Isolates and Engine Threads
-- **Isolate Implementation**:
+#### Isolate'lar ve Engine Thread'leri
+- **Isolate Uygulaması**:
   ```dart
   Future<void> computeHeavyTask() async {
     final result = await compute(complexCalculation, data);
     setState(() {
-      // Update UI with result
+      // Sonuçla UI'ı güncelle
     });
   }
 
   int complexCalculation(Map<String, dynamic> data) {
-    // Heavy computation
+    // Ağır hesaplama
     return result;
   }
   ```
 
 ## 5.3. Asenkron Görüntü ve Veri Yükleme
 
-### Image Loading Architecture
+### Görüntü Yükleme Mimarisi
 
-#### Platform-Specific Image Loading
+#### Platform-Spesifik Görüntü Yükleme
 
-##### Android Image Loading Solutions
-- **Glide Advanced Features**:
+##### Android Görüntü Yükleme Çözümleri
+- **Glide Gelişmiş Özellikleri**:
   ```kotlin
-  // Custom Glide Module
+  // Özel Glide Modülü
   @GlideModule
   class CustomGlideModule : AppGlideModule() {
       override fun applyOptions(context: Context, builder: GlideBuilder) {
@@ -330,10 +330,10 @@
   }
   ```
 
-##### iOS Image Loading Solutions
-- **Kingfisher Advanced Features**:
+##### iOS Görüntü Yükleme Çözümleri
+- **Kingfisher Gelişmiş Özellikleri**:
   ```swift
-  // Custom Image Processor
+  // Özel Görüntü İşleyici
   struct CustomImageProcessor: ImageProcessor {
       let identifier = "com.custom.processor"
       
@@ -348,12 +348,12 @@
   }
   ```
 
-### Data Loading Patterns
+### Veri Yükleme Desenleri
 
-#### Real-Time Data Updates
-- **WebSocket Implementation**:
+#### Gerçek Zamanlı Veri Güncellemeleri
+- **WebSocket Uygulaması**:
   ```kotlin
-  // Android WebSocket Client
+  // Android WebSocket İstemcisi
   class WebSocketClient {
       private val client = OkHttpClient.Builder()
           .pingInterval(30, TimeUnit.SECONDS)
@@ -363,11 +363,11 @@
           Request.Builder().url("wss://api.example.com/ws").build(),
           object : WebSocketListener() {
               override fun onMessage(webSocket: WebSocket, text: String) {
-                  // Handle incoming message
+                  // Gelen mesajı işle
               }
               
               override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                  // Handle failure
+                  // Hatayı işle
               }
           }
       )
@@ -376,12 +376,12 @@
 
 ## 5.4. Raster vs. Vector Drawables
 
-### Graphics Format Fundamentals
+### Grafik Format Temelleri
 
-#### Raster Graphics in Mobile Development
-- **Bitmap Optimization**:
+#### Mobil Geliştirmede Raster Grafikler
+- **Bitmap Optimizasyonu**:
   ```kotlin
-  // Android Bitmap Optimization
+  // Android Bitmap Optimizasyonu
   fun optimizeBitmap(bitmap: Bitmap): Bitmap {
       return Bitmap.createScaledBitmap(
           bitmap,
@@ -392,10 +392,10 @@
   }
   ```
 
-### Vector Graphics Implementation
+### Vector Grafik Uygulaması
 
 #### Android Vector Drawables
-- **Animated Vector Drawable**:
+- **Animasyonlu Vector Drawable**:
   ```xml
   <!-- res/drawable/animated_vector.xml -->
   <animated-vector
@@ -407,10 +407,10 @@
   </animated-vector>
   ```
 
-#### iOS Vector Assets
-- **Custom SF Symbol**:
+#### iOS Vector Varlıkları
+- **Özel SF Symbol**:
   ```swift
-  // Custom SF Symbol Configuration
+  // Özel SF Symbol Yapılandırması
   let config = UIImage.SymbolConfiguration(
       pointSize: 24,
       weight: .medium,
@@ -422,12 +422,12 @@
   )
   ```
 
-### Performance Considerations
+### Performans Değerlendirmeleri
 
-#### Memory Usage Patterns
-- **Bitmap Memory Management**:
+#### Bellek Kullanım Desenleri
+- **Bitmap Bellek Yönetimi**:
   ```kotlin
-  // Android Bitmap Memory Management
+  // Android Bitmap Bellek Yönetimi
   class BitmapManager {
       private val cache = LruCache<String, Bitmap>(calculateCacheSize())
       
@@ -444,12 +444,12 @@
   }
   ```
 
-### Implementation Best Practices
+### Uygulama En İyi Uygulamaları
 
-#### Asset Organization
-- **Android Resource Organization**:
+#### Varlık Organizasyonu
+- **Android Kaynak Organizasyonu**:
   ```kotlin
-  // Resource Naming Convention
+  // Kaynak İsimlendirme Kuralı
   object ResourceNaming {
       const val PREFIX_ICON = "ic_"
       const val PREFIX_IMAGE = "img_"
@@ -458,10 +458,10 @@
   }
   ```
 
-#### Runtime Optimization
-- **Image Loading Optimization**:
+#### Çalışma Zamanı Optimizasyonu
+- **Görüntü Yükleme Optimizasyonu**:
   ```kotlin
-  // Android Image Loading Optimization
+  // Android Görüntü Yükleme Optimizasyonu
   class OptimizedImageLoader {
       fun loadImage(url: String, imageView: ImageView) {
           Glide.with(imageView.context)
@@ -476,12 +476,12 @@
   }
   ```
 
-### Platform-Specific Recommendations
+### Platform-Spesifik Öneriler
 
-#### Android Best Practices
-- **Vector Drawable Optimization**:
+#### Android En İyi Uygulamaları
+- **Vector Drawable Optimizasyonu**:
   ```kotlin
-  // Vector Drawable Tinting
+  // Vector Drawable Renklendirme
   class VectorDrawableHelper {
       fun tintDrawable(
           context: Context,
@@ -490,15 +490,15 @@
       ): Drawable {
           return ContextCompat.getDrawable(context, drawableId)?.apply {
               setTint(color)
-          } ?: throw IllegalArgumentException("Drawable not found")
+          } ?: throw IllegalArgumentException("Drawable bulunamadı")
       }
   }
   ```
 
-#### iOS Best Practices
-- **PDF Vector Optimization**:
+#### iOS En İyi Uygulamaları
+- **PDF Vector Optimizasyonu**:
   ```swift
-  // PDF Vector Rendering
+  // PDF Vector Renderlama
   class PDFVectorRenderer {
       func renderPDF(named name: String, size: CGSize) -> UIImage? {
           guard let pdfURL = Bundle.main.url(forResource: name, withExtension: "pdf"),
@@ -519,9 +519,9 @@
   ```
 
 #### Flutter Cross-Platform
-- **SVG Asset Loading**:
+- **SVG Varlık Yükleme**:
   ```dart
-  // Flutter SVG Loading
+  // Flutter SVG Yükleme
   class SVGAssetLoader {
     static Widget loadSVG(String assetName, {double? width, double? height}) {
       return SvgPicture.asset(
@@ -536,10 +536,10 @@
 
 ## Performans İzleme ve Optimizasyon
 
-### UI Performance Metrics
-- **Frame Rate Monitoring**:
+### UI Performans Metrikleri
+- **Kare Hızı İzleme**:
   ```kotlin
-  // Android Frame Rate Monitoring
+  // Android Kare Hızı İzleme
   class FrameRateMonitor {
       private var frameCount = 0
       private var lastTime = System.currentTimeMillis()
@@ -559,20 +559,20 @@
   }
   ```
 
-### Memory Optimization
-- **View Hierarchy Optimization**:
+### Bellek Optimizasyonu
+- **View Hiyerarşisi Optimizasyonu**:
   ```kotlin
-  // Android View Hierarchy Optimization
+  // Android View Hiyerarşisi Optimizasyonu
   class ViewOptimizer {
       fun optimizeViewHierarchy(view: View) {
           when (view) {
               is ViewGroup -> {
-                  // Flatten nested layouts
+                  // İç içe düzenleri düzleştir
                   if (view.childCount == 1 && view is LinearLayout) {
                       val child = view.getChildAt(0)
                       if (child is LinearLayout && 
                           view.orientation == child.orientation) {
-                          // Consider flattening
+                          // Düzleştirmeyi düşün
                       }
                   }
               }
@@ -581,10 +581,10 @@
   }
   ```
 
-### Best Practices Summary
-1. **View Recycling**: Always use RecyclerView/UITableView for lists
-2. **Image Optimization**: Implement progressive loading and caching
-3. **Thread Management**: Keep UI operations on main thread, heavy work on background
-4. **Vector Graphics**: Prefer vector drawables for scalable assets
-5. **Memory Management**: Monitor and optimize bitmap usage
-6. **Performance Monitoring**: Implement frame rate and memory monitoring
+### En İyi Uygulamalar Özeti
+1. **View Recycling**: Listeler için her zaman RecyclerView/UITableView kullanın
+2. **Görüntü Optimizasyonu**: Aşamalı yükleme ve önbellekleme uygulayın
+3. **Thread Yönetimi**: UI işlemlerini ana thread'de, ağır işleri arka planda tutun
+4. **Vector Grafikler**: Ölçeklenebilir varlıklar için vector drawable'ları tercih edin
+5. **Bellek Yönetimi**: Bitmap kullanımını izleyin ve optimize edin
+6. **Performans İzleme**: Kare hızı ve bellek izleme uygulayın

@@ -5,43 +5,43 @@ Mobil uygulamalarda ağ trafiğini optimize etmek ve kullanıcı deneyimini iyil
 ## İstek Birleştirme Stratejileri
 
 ### Kavramsal Çerçeve
-- **Purpose**: Multiple small requests'i tek network call'da birleştirme
-- **Benefits**: 
-  - Reduced network overhead
-  - Battery optimization
-  - Server load reduction
-  - Improved network efficiency
-  - Better user experience
-- **Trade-offs**: 
-  - Latency vs efficiency
-  - Complexity vs simplicity
-  - Memory usage vs performance
-  - Real-time requirements vs batching benefits
+- **Amaç**: Birden fazla küçük isteği tek bir ağ çağrısında birleştirme
+- **Faydalar**: 
+  - Ağ yükünün azaltılması
+  - Batarya optimizasyonu
+  - Sunucu yükünün azaltılması
+  - Ağ verimliliğinin artırılması
+  - Daha iyi kullanıcı deneyimi
+- **Ödünleşimler**: 
+  - Gecikme vs verimlilik
+  - Karmaşıklık vs basitlik
+  - Bellek kullanımı vs performans
+  - Gerçek zamanlı gereksinimler vs birleştirme faydaları
 
 ### Uygulama Teknikleri
 
 #### Zamana Dayalı Birleştirme
-- **Fixed Time Windows**: 
-  - Every 5 seconds'da accumulated requests'i send etme
-  - Configurable window sizes based on use case
-  - Priority-based window adjustment
-- **Adaptive Time Windows**: 
-  - Network conditions'a göre window size adjustment
-  - Battery level consideration
-  - User activity patterns
-- **Implementation Patterns**:
+- **Sabit Zaman Pencereleri**: 
+  - Her 5 saniyede birikmiş istekleri gönderme
+  - Kullanım durumuna göre yapılandırılabilir pencere boyutları
+  - Öncelik tabanlı pencere ayarlaması
+- **Uyarlanabilir Zaman Pencereleri**: 
+  - Ağ koşullarına göre pencere boyutu ayarlaması
+  - Batarya seviyesi dikkate alma
+  - Kullanıcı aktivite kalıpları
+- **Uygulama Desenleri**:
   - **Android**: 
-    - Handler.postDelayed() ile scheduled batching
-    - WorkManager integration for background batching
-    - JobScheduler for system-optimized scheduling
+    - Handler.postDelayed() ile zamanlanmış birleştirme
+    - Arka plan birleştirme için WorkManager entegrasyonu
+    - Sistem optimizasyonlu zamanlama için JobScheduler
   - **iOS**: 
-    - Timer.scheduledTimer() ile periodic execution
-    - BackgroundTasks framework integration
-    - Combine framework for reactive batching
+    - Timer.scheduledTimer() ile periyodik çalıştırma
+    - BackgroundTasks framework entegrasyonu
+    - Reaktif birleştirme için Combine framework
   - **Flutter**: 
-    - Timer.periodic() ile cross-platform batching
-    - Isolate-based background processing
-    - Stream-based batching implementation
+    - Timer.periodic() ile çapraz platform birleştirme
+    - İzole tabanlı arka plan işleme
+    - Akış tabanlı birleştirme uygulaması
 
 ```kotlin
 // Android Time-Based Batching Implementation
@@ -138,35 +138,35 @@ class RequestBatcher<T> {
 }
 ```
 
-#### Size-Based Batching
-- **Request Count Limits**: 
-  - Maximum 50 requests per batch
-  - Dynamic limit adjustment based on payload size
-  - Priority-based request inclusion
-- **Payload Size Limits**: 
-  - Maximum 1MB per batch request
-  - Compression-aware size limits
-  - Network type consideration
-- **Memory Considerations**: 
-  - Buffer overflow prevention
-  - Memory pressure monitoring
-  - Automatic batch splitting
+#### Boyut Tabanlı Birleştirme
+- **İstek Sayısı Limitleri**: 
+  - Toplu başına maksimum 50 istek
+  - Yük boyutuna göre dinamik limit ayarlaması
+  - Öncelik tabanlı istek dahil etme
+- **Yük Boyutu Limitleri**: 
+  - Toplu istek başına maksimum 1MB
+  - Sıkıştırma farkında boyut limitleri
+  - Ağ tipi dikkate alma
+- **Bellek Hususları**: 
+  - Tampon taşması önleme
+  - Bellek basıncı izleme
+  - Otomatik toplu bölme
 
-### Platform-Spesifik Birleştirme Çözümleri
+### Platform Özel Birleştirme Çözümleri
 
-#### Firebase Analytics Batching
-- **Automatic Batching**: 
-  - Events are queued and sent in batches
-  - Network availability awareness
-  - Battery optimization integration
-- **Custom Event Batching**:
-  - Manual batch creation için custom implementation
-  - Business logic integration ile intelligent batching
+#### Firebase Analytics Birleştirme
+- **Otomatik Birleştirme**: 
+  - Olaylar kuyruğa alınır ve toplu olarak gönderilir
+  - Ağ kullanılabilirliği farkındalığı
+  - Batarya optimizasyonu entegrasyonu
+- **Özel Olay Birleştirme**:
+  - Manuel toplu oluşturma için özel uygulama
+  - İş mantığı entegrasyonu ile akıllı birleştirme
 
-#### GraphQL Batching
-- **Query Batching**: Multiple GraphQL queries'i single HTTP request'te
-- **DataLoader Pattern**: N+1 query problem'ini solve etme
-- **Implementation**: Apollo Client ile automatic request batching
+#### GraphQL Birleştirme
+- **Sorgu Birleştirme**: Birden fazla GraphQL sorgusunu tek HTTP isteğinde
+- **DataLoader Deseni**: N+1 sorgu problemini çözme
+- **Uygulama**: Apollo Client ile otomatik istek birleştirme
 
 ```dart
 // Flutter GraphQL Batching
@@ -232,13 +232,13 @@ class QueryRequest {
 ## Debouncing Mekanizmaları
 
 ### Arama Girişi Debouncing
-- **Problem**: Her keystroke'da API call expensive ve unnecessary
-- **Solution**: Wait for pause in typing before triggering search
-- **Implementation Examples**:
-  - **Android**: RxJava `debounce()` operator ile observable streams
-  - **iOS**: Combine `debounce()` ile publisher transformation
-  - **Flutter**: Timer cancellation ile manual debouncing
-  - **React Native**: Lodash debounce ile utility-based approach
+- **Problem**: Her tuş vuruşunda API çağrısı maliyetli ve gereksiz
+- **Çözüm**: Aramayı tetiklemeden önce yazma duraklamasını bekleme
+- **Uygulama Örnekleri**:
+  - **Android**: RxJava `debounce()` operatörü ile gözlemlenebilir akışlar
+  - **iOS**: Combine `debounce()` ile yayıncı dönüşümü
+  - **Flutter**: Zamanlayıcı iptali ile manuel debouncing
+  - **React Native**: Lodash debounce ile yardımcı program tabanlı yaklaşım
 
 ```kotlin
 // Android RxJava Debouncing
@@ -317,14 +317,14 @@ class SearchDebouncer: ObservableObject {
 ```
 
 ### Gelişmiş Debouncing Desenleri
-- **Leading Edge Debouncing**: First call immediate, subsequent calls debounced
-- **Trailing Edge Debouncing**: Only last call after quiet period
-- **Throttling vs Debouncing**: Rate limiting vs delay-based filtering
+- **Ön Uç Debouncing**: İlk çağrı anında, sonraki çağrılar debounced
+- **Arka Uç Debouncing**: Sessizlik periyodundan sonra sadece son çağrı
+- **Kısıtlama vs Debouncing**: Hız sınırlama vs gecikme tabanlı filtreleme
 
 ### Kullanıcı Etkileşimi Debouncing
-- **Button Press Protection**: Prevent double-clicks ile duplicate actions
-- **Form Submission**: Prevent multiple form submissions
-- **Navigation Actions**: Prevent rapid navigation transitions
+- **Düğme Basma Koruması**: Çift tıklama ile yinelenen eylemleri önleme
+- **Form Gönderimi**: Çoklu form gönderimlerini önleme
+- **Gezinme Eylemleri**: Hızlı gezinme geçişlerini önleme
 
 ```dart
 // Flutter Custom Debouncer
@@ -382,17 +382,17 @@ class _SearchWidgetState extends State<SearchWidget> {
 ## Akıllı İstek Optimizasyonu
 
 ### İstek Tekrarı Önleme
-- **In-Flight Request Tracking**: Same API calls'ı deduplicate etme
-- **Cache-First Strategies**: Check cache before making network requests
-- **Request Coalescing**: Similar requests'i single request'e merge etme
+- **Devam Eden İstek Takibi**: Aynı API çağrılarını tekrarlamama
+- **Önbellek Öncelikli Stratejiler**: Ağ isteklerinden önce önbelleği kontrol etme
+- **İstek Birleştirme**: Benzer istekleri tek bir isteğe birleştirme
 
 ### Öncelik Tabanlı Kuyruk
-- **High Priority**: User-initiated actions
-- **Medium Priority**: Background data refresh
-- **Low Priority**: Analytics, metrics, non-critical updates
-- **Implementation**: Custom queue management ile request prioritization
+- **Yüksek Öncelik**: Kullanıcı başlatılan eylemler
+- **Orta Öncelik**: Arka plan veri yenileme
+- **Düşük Öncelik**: Analitik, metrikler, kritik olmayan güncellemeler
+- **Uygulama**: İstek önceliklendirme ile özel kuyruk yönetimi
 
 ## Performans İzleme
-- **Request Batching Metrics**: Batch size distribution, success rates
-- **Debouncing Effectiveness**: Reduced request count, user satisfaction
-- **Network Efficiency**: Bandwidth savings, response time improvements
+- **İstek Birleştirme Metrikleri**: Toplu boyut dağılımı, başarı oranları
+- **Debouncing Etkinliği**: Azaltılmış istek sayısı, kullanıcı memnuniyeti
+- **Ağ Verimliliği**: Bant genişliği tasarrufu, yanıt süresi iyileştirmeleri

@@ -6,6 +6,25 @@ Service Mesh, mikroservis mimarisinde servisler arası iletişimi yönetmek içi
 
 ### Sidecar Proxy Deseni
 
+```mermaid
+graph LR
+    Client[Client] --> |HTTP| Gateway[API Gateway]
+    Gateway --> |HTTP| ServiceA[Service A]
+    Gateway --> |HTTP| ServiceB[Service B]
+    
+    subgraph Service A Pod
+        ServiceA --> |Local| ProxyA[Envoy Proxy]
+    end
+    
+    subgraph Service B Pod
+        ServiceB --> |Local| ProxyB[Envoy Proxy]
+    end
+    
+    ProxyA <--> |mTLS| ProxyB
+    ProxyA --> |Metrics| Telemetry[Telemetry]
+    ProxyB --> |Metrics| Telemetry
+```
+
 **Envoy Proxy Yapılandırması:**
 
 ```yaml
@@ -121,6 +140,27 @@ spec:
 ```
 
 ### Trafik Yönetimi
+
+```mermaid
+graph TD
+    Client[Client] --> |Request| Gateway[API Gateway]
+    Gateway --> |Routing Rules| Router[Istio Router]
+    
+    Router --> |90% Traffic| V1[Version 1]
+    Router --> |10% Traffic| V2[Version 2]
+    
+    Router --> |Canary Header| V2
+    Router --> |Premium Users| V2
+    
+    V1 --> |Health Check| Health[Health Check]
+    V2 --> |Health Check| Health
+    
+    V1 --> |Metrics| Metrics[Prometheus]
+    V2 --> |Metrics| Metrics
+    
+    Metrics --> |Analysis| Flagger[Flagger]
+    Flagger --> |Rollback| Router
+```
 
 **VirtualService Yapılandırması:**
 
@@ -244,6 +284,28 @@ spec:
 ```
 
 ### Güvenlik Özellikleri
+
+```mermaid
+graph TD
+    Client[Client] --> |Request| Gateway[API Gateway]
+    Gateway --> |JWT Token| Auth[Authentication]
+    
+    Auth --> |Valid Token| Policy[Authorization Policy]
+    Auth --> |Invalid Token| Reject[Reject Request]
+    
+    Policy --> |User Role| ServiceA[Service A]
+    Policy --> |Admin Role| ServiceB[Service B]
+    
+    ServiceA --> |mTLS| ServiceB
+    ServiceA --> |Metrics| Telemetry[Telemetry]
+    ServiceB --> |Metrics| Telemetry
+    
+    subgraph Security
+        Auth
+        Policy
+        Reject
+    end
+```
 
 **PeerAuthentication Yapılandırması:**
 

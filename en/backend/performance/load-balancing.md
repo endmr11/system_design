@@ -426,6 +426,26 @@ public class DatabaseHealthIndicator {
 
 ### 1. Session Persistence Strategies
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant LB as Load Balancer
+    participant Redis
+    participant Server1
+    participant Server2
+
+    Client->>LB: Request with Session ID
+    LB->>Redis: Check Session
+    Redis-->>LB: Session Data
+    alt Session Exists
+        LB->>Server1: Route to Original Server
+    else No Session
+        LB->>Server2: Route to New Server
+        Server2->>Redis: Store Session
+    end
+    Server1-->>Client: Response
+```
+
 ```java
 @Configuration
 @EnableRedisHttpSession
@@ -450,6 +470,16 @@ public class SessionConfig {
 ```
 
 ### 2. Circuit Breaker Pattern Integration
+
+```mermaid
+stateDiagram-v2
+    [*] --> Closed
+    Closed --> Open: Failure threshold exceeded
+    Open --> HalfOpen: Timeout
+    HalfOpen --> Closed: Success
+    HalfOpen --> Open: Failure
+    Closed --> [*]: Success
+```
 
 ```java
 @Component
@@ -479,6 +509,31 @@ public class LoadBalancerCircuitBreaker {
 ```
 
 ### 3. Monitoring and Metrics
+
+```mermaid
+graph TB
+    subgraph Metrics Collection
+        MC1[Request Counter] --> DB[(Metrics DB)]
+        MC2[Response Timer] --> DB
+        MC3[Health Checks] --> DB
+    end
+    
+    subgraph Visualization
+        DB --> V1[Dashboard]
+        DB --> V2[Alerts]
+        DB --> V3[Reports]
+    end
+    
+    subgraph Actions
+        V2 --> A1[Auto Scaling]
+        V2 --> A2[Load Balancer Config]
+        V2 --> A3[Circuit Breaker]
+    end
+    
+    style Metrics Collection fill:#f9f,stroke:#333,stroke-width:2px
+    style Visualization fill:#bbf,stroke:#333,stroke-width:2px
+    style Actions fill:#dfd,stroke:#333,stroke-width:2px
+```
 
 ```java
 @Component

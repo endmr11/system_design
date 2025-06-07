@@ -225,6 +225,38 @@ notificationToken = results.observe { changes in
 
 ## Performance Considerations
 
+### Database Architecture Overview
+```mermaid
+graph TD
+    A[Mobile App] --> B[Database Layer]
+    B --> C[SQL Solutions]
+    B --> D[NoSQL Solutions]
+    B --> E[Key-Value Stores]
+    
+    C --> C1[Room/SQLite]
+    C --> C2[Core Data]
+    C --> C3[Cross-Platform SQLite]
+    
+    D --> D1[Realm]
+    D --> D2[Firebase Local]
+    
+    E --> E1[SharedPreferences]
+    E --> E2[UserDefaults]
+    E --> E3[MMKV/Hive]
+```
+
+### Performance Optimization Flow
+```mermaid
+flowchart LR
+    A[Query] --> B{Index Available?}
+    B -->|Yes| C[Use Index]
+    B -->|No| D[Full Table Scan]
+    C --> E[Result Set]
+    D --> E
+    E --> F[Memory Cache]
+    F --> G[UI Update]
+```
+
 ### Indexing Strategies
 - Primary index optimization
 - Composite index design

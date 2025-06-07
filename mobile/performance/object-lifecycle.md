@@ -2,6 +2,20 @@
 
 Mobil uygulamalarda nesne yaşam döngüsü yönetimi, bellek sızıntılarını önlemek ve performansı optimize etmek için kritik öneme sahiptir.
 
+```mermaid
+graph TD
+    A[Nesne Oluşturma] --> B[Nesne Kullanımı]
+    B --> C{Referans Yönetimi}
+    C -->|Güçlü Referans| D[Bellek Tutma]
+    C -->|Zayıf Referans| E[Otomatik Temizleme]
+    D --> F{Yaşam Döngüsü}
+    F -->|Aktif| G[Normal Kullanım]
+    F -->|Pasif| H[Bellek Temizliği]
+    G --> I[Nesne Yıkımı]
+    H --> I
+    E --> I
+```
+
 ## Singleton ve Scoped Nesneler
 
 ### Akıllı Singleton Yönetimi
@@ -723,6 +737,23 @@ struct CachedObject<T>: CachedObjectProtocol {
 
 ## Bellek Baskısı Yönetimi
 
+```mermaid
+graph TD
+    A[Bellek Baskısı Algılama] --> B{Baskı Seviyesi}
+    B -->|Düşük| C[Hafif Temizlik]
+    B -->|Orta| D[Orta Temizlik]
+    B -->|Yüksek| E[Agressif Temizlik]
+    C --> F[Önemsiz Önbellek Temizliği]
+    D --> G[Kritik Olmayan Nesneleri Temizle]
+    E --> H[Tüm Önbelleği Temizle]
+    F --> I[Bellek Durumu Kontrolü]
+    G --> I
+    H --> I
+    I --> J{Bellek Yeterli mi?}
+    J -->|Evet| K[Normal Çalışmaya Devam]
+    J -->|Hayır| A
+```
+
 ### Flutter Bellek Yönetimi
 
 ```dart
@@ -1064,6 +1095,28 @@ abstract class MemoryPressureObserver {
 ## En İyi Uygulamalar ve Optimizasyon
 
 ### Nesne Havuzu Deseni
+
+```mermaid
+graph TD
+    A[Nesne İsteği] --> B{Havuzda Nesne Var mı?}
+    B -->|Evet| C[Havuzdan Nesne Al]
+    B -->|Hayır| D{Yeni Nesne Oluştur}
+    D -->|Havuz Dolu| E[En Eski Nesneyi Temizle]
+    D -->|Havuz Boş| F[Yeni Nesne Oluştur]
+    C --> G[Nesne Kullanımı]
+    E --> F
+    F --> G
+    G --> H{Nesne Kullanımı Bitti mi?}
+    H -->|Evet| I[Nesneyi Havuza Geri Döndür]
+    H -->|Hayır| G
+    I --> J{Nesne Temiz mi?}
+    J -->|Evet| K[Havuza Ekle]
+    J -->|Hayır| L[Nesneyi Temizle]
+    L --> K
+    K --> A
+```
+
+### Nesne Havuzu Uygulaması
 
 ```java
 // Android - Nesne Havuzu Uygulaması
