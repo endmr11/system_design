@@ -61,7 +61,7 @@ sequenceDiagram
     API-->>Client: HTTP Response
 ```
 
-## 1. Temel Kavramlar ✅
+### 1. Temel Kavramlar ✅
 
 Bu bölümde backend sistem tasarımının temel yapı taşlarını öğreneceksiniz:
 

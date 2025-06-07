@@ -6,6 +6,11 @@ export default withMermaid(defineConfig({
   description: "Comprehensive System Design Documentation",
   base: '/system_design/',
 
+  head: [
+    ['link', { rel: 'icon', type: 'image/x-icon', href: '/system_design/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/system_design/favicon.png' }],
+  ],
+
   markdown: {
     mermaid: true
   },
@@ -616,6 +621,7 @@ export default withMermaid(defineConfig({
           message: "Eren Demir tarafından oluşturulmuştur.",
           copyright: "Telif Hakkı © " + new Date().getFullYear(),
         },
+        logo: '/logo.png',
       },
     },
     en: {
@@ -1225,6 +1231,7 @@ export default withMermaid(defineConfig({
           message: "Created by Eren Demir.",
           copyright: "Copyright © " + new Date().getFullYear(),
         },
+        logo: '/logo.png',
       },
     },
   },
@@ -1248,5 +1255,7 @@ export default withMermaid(defineConfig({
     search: {
       provider: "local",
     },
+
+    logo: '/logo.png',
   },
 })) 

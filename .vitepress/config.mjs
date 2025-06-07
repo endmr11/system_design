@@ -1,8 +1,19 @@
 import { defineConfig } from "vitepress";
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: "System Design",
   description: "Comprehensive System Design Documentation",
+  base: '/system_design/',
+
+  head: [
+    ['link', { rel: 'icon', type: 'image/x-icon', href: '/system_design/favicon.ico' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/system_design/favicon.png' }],
+  ],
+
+  markdown: {
+    mermaid: true
+  },
 
   // Internationalization configuration
   locales: {
@@ -613,6 +624,7 @@ export default defineConfig({
           message: "Eren Demir tarafından oluşturulmuştur.",
           copyright: "Telif Hakkı © " + new Date().getFullYear(),
         },
+        logo: '/logo.png',
       },
     },
     en: {
@@ -1222,6 +1234,7 @@ export default defineConfig({
           message: "Created by Eren Demir.",
           copyright: "Copyright © " + new Date().getFullYear(),
         },
+        logo: '/logo.png',
       },
     },
   },
@@ -1236,7 +1249,7 @@ export default defineConfig({
         icon: "linkedin",
         link: "https://www.linkedin.com/in/endmr11/",
       },
-      {
+      { 
         icon: "youtube",
         link: "https://www.youtube.com/@erendemirr",
       },
@@ -1245,5 +1258,7 @@ export default defineConfig({
     search: {
       provider: "local",
     },
+
+    logo: '/logo.png',
   },
-});
+}))
