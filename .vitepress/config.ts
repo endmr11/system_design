@@ -12,10 +12,6 @@ export default withMermaid(defineConfig({
     ['meta', { 'http-equiv': 'Permissions-Policy', content: 'browsing-topics=()' }],
   ],
 
-  markdown: {
-    mermaid: true
-  },
-
   // Internationalization configuration
   locales: {
     root: {

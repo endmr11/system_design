@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:build": "vitepress build && npm run copy-assets",
+    "docs:preview": "vitepress preview",
+    "copy-assets": "cp .vitepress/public/favicon.ico .vitepress/dist/ && cp .vitepress/public/logo.png .vitepress/dist/"
   },
   "keywords": [
     "system-design",
