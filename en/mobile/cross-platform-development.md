@@ -4,26 +4,26 @@
 
 ```mermaid
 graph TD
-    Native[Native (iOS/Android)]
-    RN[React Native]
-    Flutter[Flutter]
-    Xamarin[Xamarin]
-    Ionic[Ionic]
-    Shared[Shared Code]
-    UI[UI Layer]
-    Logic[Business Logic]
-    Platform[Platform API]
+  Native[Native (iOS/Android)]
+  RN[React Native]
+  Flutter[Flutter]
+  Xamarin[Xamarin]
+  Ionic[Ionic]
+  Shared[Shared Code]
+  UI[UI Layer]
+  Logic[Business Logic]
+  Platform[Platform API]
 
-    Shared --> RN
-    Shared --> Flutter
-    Shared --> Xamarin
-    Shared --> Ionic
-    RN --> UI
-    Flutter --> UI
-    Xamarin --> UI
-    Ionic --> UI
-    UI --> Platform
-    Native --> Platform
+  Shared --> RN
+  Shared --> Flutter
+  Shared --> Xamarin
+  Shared --> Ionic
+  RN --> UI
+  Flutter --> UI
+  Xamarin --> UI
+  Ionic --> UI
+  UI --> Platform
+  Native --> Platform
 ```
 
 ## Overview
