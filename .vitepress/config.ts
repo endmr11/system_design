@@ -8,8 +8,7 @@ export default withMermaid(defineConfig({
 
   head: [
     ['link', { rel: 'icon', type: 'image/x-icon', href: '/system_design/favicon.ico' }],
-    ['link', { rel: 'icon', type: 'image/png', href: '/system_design/logo.png' }],
-    ['meta', { 'http-equiv': 'Permissions-Policy', content: 'browsing-topics=()' }],
+    ['link', { rel: 'icon', type: 'image/png', href: 'logo.png' }],
   ],
 
   // Internationalization configuration
@@ -618,7 +617,7 @@ export default withMermaid(defineConfig({
           message: "Eren Demir tarafından oluşturulmuştur.",
           copyright: "Telif Hakkı © " + new Date().getFullYear(),
         },
-        logo: '/system_design/logo.png',
+        logo: '/logo.png',
       },
     },
     en: {
@@ -1228,7 +1227,7 @@ export default withMermaid(defineConfig({
           message: "Created by Eren Demir.",
           copyright: "Copyright © " + new Date().getFullYear(),
         },
-        logo: '/system_design/logo.png',
+        logo: 'logo.png',
       },
     },
   },
@@ -1253,6 +1252,6 @@ export default withMermaid(defineConfig({
       provider: "local",
     },
 
-    logo: '/system_design/logo.png',
+    logo: 'logo.png',
   },
 })) 
