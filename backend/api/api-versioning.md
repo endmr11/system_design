@@ -27,17 +27,20 @@
 - **Dezavantaj**: Caching zorlukları
 
 ```mermaid
-flowchart TD
-    A[API Versiyonlama Yöntemleri] --> B[URL Tabanlı]
+graph TD
+    A[API Versioning Methods] --> B[URL Tabanlı]
     A --> C[Header Tabanlı]
-    A --> D[Query Parametre Tabanlı]
-    B --> B1[/api/v1/resource]
-    B --> B2[/api/v2/resource]
-    C --> C1[Accept Header]
-    C --> C2[Content-Type Header]
-    C --> C3[Custom API-Version Header]
-    D --> D1[?version=2]
-    D --> D2[?api-version=2023-01-01]
+    A --> D[Query Parametre Based]
+    
+    B --> B1["/api/v1/resource"]
+    B --> B2["/api/v2/resource"]
+    
+    C --> C1["Accept Header"]
+    C --> C2["Content-Type Header"]
+    C --> C3["Custom API-Version Header"]
+    
+    D --> D1["?version=2"]
+    D --> D2["?api-version=2023-01-01"]
 ```
 
 ```mermaid

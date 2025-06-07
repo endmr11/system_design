@@ -731,13 +731,15 @@ graph TD
     H -->|All Healthy| I[200 OK]
     H -->|Some Unhealthy| J[503 Service Unavailable]
     
-    subgraph Health Details
-        K[Service Status]
-        L[Response Time]
-        M[Error Messages]
+    subgraph Health_Details
+        K[Service_Status]
+        L[Response_Time]
+        M[Error_Messages]
     end
     
-    H --> Health Details
+    H --> K
+    H --> L
+    H --> M
 ```
 
 Bu uygulama, Spring Cloud Gateway'i üretim ortamında güvenli ve ölçeklenebilir bir şekilde kullanmak için gerekli tüm bileşenleri içerir.
