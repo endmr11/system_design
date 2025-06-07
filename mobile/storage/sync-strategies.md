@@ -192,9 +192,9 @@ Distributed sistemlerde causal ordering için vector clock kullanımı.
 
 ```mermaid
 graph TD
-    A[Node A] -->|Vector Clock: [A:1, B:0]| B[Node B]
-    B -->|Vector Clock: [A:1, B:1]| C[Node C]
-    C -->|Vector Clock: [A:1, B:1, C:1]| A
+    A[Node A] -->|"Vector Clock: [A:1, B:0]"| B[Node B]
+    B -->|"Vector Clock: [A:1, B:1]"| C[Node C]
+    C -->|"Vector Clock: [A:1, B:1, C:1]"| A
     A -->|Conflict Resolution| D[Final State]
 ```
 

@@ -5,15 +5,15 @@
 
 ```mermaid
 graph TD
-    Native[Native (iOS/Android)]
-    RN[React Native]
-    Flutter[Flutter]
-    Xamarin[Xamarin]
-    Ionic[Ionic]
-    Shared[Paylaşılan Kod]
-    UI[UI Katmanı]
-    Logic[İş Mantığı]
-    Platform[Platform API]
+    Native["Native (iOS/Android)"]
+    RN["React Native"]
+    Flutter["Flutter"]
+    Xamarin["Xamarin"]
+    Ionic["Ionic"]
+    Shared["Paylaşılan Kod"]
+    UI["UI Katmanı"]
+    Logic["İş Mantığı"]
+    Platform["Platform API"]
 
     Shared --> RN
     Shared --> Flutter
@@ -24,6 +24,8 @@ graph TD
     Xamarin --> UI
     Ionic --> UI
     UI --> Platform
+```
+
 ## Framework Karşılaştırma Matrisi
 
 ### Özellik Karşılaştırması

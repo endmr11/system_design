@@ -32,15 +32,15 @@ graph TD
     A --> C[Header Based]
     A --> D[Query Parameter Based]
     
-    B --> B1[/api/v1/resource]
-    B --> B2[/api/v2/resource]
+    B --> B1["/api/v1/resource"]
+    B --> B2["/api/v2/resource"]
     
-    C --> C1[Accept Header]
-    C --> C2[Content-Type Header]
-    C --> C3[Custom API-Version Header]
+    C --> C1["Accept Header"]
+    C --> C2["Content-Type Header"]
+    C --> C3["Custom API-Version Header"]
     
-    D --> D1[?version=2]
-    D --> D2[?api-version=2023-01-01]
+    D --> D1["?version=2"]
+    D --> D2["?api-version=2023-01-01"]
 ```
 
 ```mermaid

@@ -24,7 +24,7 @@ Asynchronous processing and message queues are fundamental building blocks of mo
 ```mermaid
 graph TD
     A[Client Request] --> B[Spring Boot Application]
-    B --> C{@Async Method}
+    B --> C[Async Method]
     C --> D[Thread Pool]
     D --> E[Background Task]
     E --> F[Task Completion]

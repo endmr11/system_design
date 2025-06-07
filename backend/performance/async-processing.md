@@ -24,7 +24,7 @@ Asenkron işlemler ve message queue'lar, modern backend sistemlerinin temel taş
 ```mermaid
 graph TD
     A[Client Request] --> B[Spring Boot Application]
-    B --> C{@Async Method}
+    B --> C[@Async Method]
     C --> D[Thread Pool]
     D --> E[Background Task]
     E --> F[Task Completion]

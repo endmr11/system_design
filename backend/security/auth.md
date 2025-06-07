@@ -333,7 +333,7 @@ graph TD
     
     C --> C1[sub: user123]
     C --> C2[exp: 1516239022]
-    C --> C3[roles: [ADMIN,USER]]
+    C --> C3[roles: ADMIN, USER]
     
     D --> D1[HMACSHA256]
     D --> D2[Base64Url]
