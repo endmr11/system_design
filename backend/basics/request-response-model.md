@@ -1,270 +1,270 @@
-# İstek/Yanıt Döngüsü (Request–Response Model)
+# Request-Response Model (İstek-Yanıt Modeli)
 
-## Spring Boot'ta Request-Response Lifecycle
+## Spring Boot'ta Request-Response Yaşam Döngüsü
 
 ### DispatcherServlet
 Spring MVC'nin kalbi, gelen HTTP isteklerini ilgili controller'lara yönlendirir.
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant DispatcherServlet
-    participant HandlerMapping
-    participant Controller
-    participant Service
-    participant Repository
+    participant Client as İstemci
+    participant DispatcherServlet as DispatcherServlet
+    participant HandlerMapping as Handler Mapping
+    participant Controller as Controller
+    participant Service as Servis
+    participant Repository as Repository
     
-    Client->>DispatcherServlet: HTTP Request
-    DispatcherServlet->>HandlerMapping: Find Handler
-    HandlerMapping-->>DispatcherServlet: Handler Found
-    DispatcherServlet->>Controller: Process Request
-    Controller->>Service: Business Logic
-    Service->>Repository: Data Access
-    Repository-->>Service: Data
-    Service-->>Controller: Processed Data
-    Controller-->>DispatcherServlet: Response
-    DispatcherServlet-->>Client: HTTP Response
+    Client->>DispatcherServlet: HTTP İsteği
+    DispatcherServlet->>HandlerMapping: Handler Bul
+    HandlerMapping-->>DispatcherServlet: Handler Bulundu
+    DispatcherServlet->>Controller: İsteği İşle
+    Controller->>Service: İş Mantığı
+    Service->>Repository: Veri Erişimi
+    Repository-->>Service: Veri
+    Service-->>Controller: İşlenmiş Veri
+    Controller-->>DispatcherServlet: Yanıt
+    DispatcherServlet-->>Client: HTTP Yanıtı
 ```
 
 ### Handler Mapping
-URL pattern'lerini (`@RequestMapping`, `@GetMapping`) controller method'larına map eder.
+URL kalıplarını (`@RequestMapping`, `@GetMapping`) controller metodlarına eşler.
 
-### Controller Layer
-- `@RestController` ile RESTful endpoint'ler
+### Controller Katmanı
+- `@RestController` ile RESTful uç noktalar
 - `@RequestBody`/`@ResponseBody` ile JSON serialization/deserialization
 
-### Service Layer
-- `@Service` annotation ile business logic
+### Servis Katmanı
+- `@Service` annotation ile iş mantığı
 - `@Transactional` ile transaction yönetimi
 
-### Repository Layer
-- Spring Data JPA ile ORM mapping
+### Repository Katmanı
+- Spring Data JPA ile ORM eşleme
 - `@Repository` ile veri erişim katmanı
 
-## Mikroservislerde Inter-Service Communication
+## Mikroservislerde Servisler Arası İletişim
 
-### Synchronous Communication
-- **OpenFeign client** ile service-to-service HTTP calls
-- **Load balancing** için Ribbon/Spring Cloud LoadBalancer
+### Senkron İletişim
+- **OpenFeign client** ile service-to-service HTTP çağrıları
+- **Yük dengeleme** için Ribbon/Spring Cloud LoadBalancer
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant API Gateway
-    participant Load Balancer
-    participant Service A
-    participant Service B
+    participant Client as İstemci
+    participant API Gateway as API Gateway
+    participant Load Balancer as Yük Dengeleyici
+    participant Service A as Servis A
+    participant Service B as Servis B
     
-    Client->>API Gateway: Request
-    API Gateway->>Load Balancer: Route Request
-    Load Balancer->>Service A: Forward Request
-    Service A->>Service B: Feign Client Call
-    Service B-->>Service A: Response
-    Service A-->>Load Balancer: Response
-    Load Balancer-->>API Gateway: Response
-    API Gateway-->>Client: Final Response
+    Client->>API Gateway: İstek
+    API Gateway->>Load Balancer: İsteği Yönlendir
+    Load Balancer->>Service A: İsteği İlet
+    Service A->>Service B: Feign Client Çağrısı
+    Service B-->>Service A: Yanıt
+    Service A-->>Load Balancer: Yanıt
+    Load Balancer-->>API Gateway: Yanıt
+    API Gateway-->>Client: Son Yanıt
 ```
 
-### Asynchronous Communication
-- **Spring Cloud Stream** ile message-driven architecture
+### Asenkron İletişim
+- **Spring Cloud Stream** ile mesaj odaklı mimari
 - **RabbitMQ/Apache Kafka** entegrasyonu
 
 ```mermaid
 sequenceDiagram
-    participant Producer
-    participant Message Broker
-    participant Consumer 1
-    participant Consumer 2
+    participant Producer as Üretici
+    participant Message Broker as Mesaj Aracısı
+    participant Consumer 1 as Tüketici 1
+    participant Consumer 2 as Tüketici 2
     
-    Producer->>Message Broker: Publish Event
-    Message Broker->>Consumer 1: Deliver Event
-    Message Broker->>Consumer 2: Deliver Event
-    Consumer 1-->>Message Broker: Acknowledge
-    Consumer 2-->>Message Broker: Acknowledge
+    Producer->>Message Broker: Olay Yayınla
+    Message Broker->>Consumer 1: Olay İlet
+    Message Broker->>Consumer 2: Olay İlet
+    Consumer 1-->>Message Broker: Onay
+    Consumer 2-->>Message Broker: Onay
 ```
 
-### Event-Driven Architecture
-- **Domain events** ile loose coupling
-- **Eventual consistency** için event sourcing pattern
+### Olay Odaklı Mimari
+- **Domain olayları** ile gevşek bağlantı
+- **Eventual consistency** için event sourcing kalıbı
 
-### Timeout & Retry
-- `@Retryable` annotation ile automatic retry
-- **Circuit breaker pattern** ile fault tolerance
+### Timeout ve Yeniden Deneme
+- `@Retryable` annotation ile otomatik yeniden deneme
+- **Circuit breaker kalıbı** ile hata toleransı
 
-## Performance Considerations
+## Performans Değerlendirmeleri
 
-### Connection Pooling
-- **HikariCP** ile database connection pooling
-- **Apache HttpClient** ile HTTP connection pooling
+### Bağlantı Havuzu
+- **HikariCP** ile veritabanı bağlantı havuzu
+- **Apache HttpClient** ile HTTP bağlantı havuzu
 
-### Caching
+### Önbellekleme
 - **Spring Cache abstraction** (`@Cacheable`) ile Redis/Hazelcast entegrasyonu
 
-### Async Processing
-- `@Async` annotation ile non-blocking operations
-- **CompletableFuture** ile async programming
+### Asenkron İşleme
+- `@Async` annotation ile engellenmeyen işlemler
+- **CompletableFuture** ile asenkron programlama
 
-## API Gateway Pattern
+## API Gateway Kalıbı
 
 ### Spring Cloud Gateway
-- Route definitions
-- Predicates
-- Filters
+- Rota tanımları
+- Koşullar
+- Filtreler
 
 ```mermaid
 graph TD
-    Client[Client] -->|Request| Gateway[API Gateway]
-    Gateway -->|Route| Auth[Authentication]
-    Gateway -->|Route| RateLimit[Rate Limiting]
-    Gateway -->|Route| CircuitBreaker[Circuit Breaker]
-    Gateway -->|Route| Transform[Request/Response Transform]
+    Client[İstemci] -->|İstek| Gateway[API Gateway]
+    Gateway -->|Rota| Auth[Kimlik Doğrulama]
+    Gateway -->|Rota| RateLimit[Hız Sınırlama]
+    Gateway -->|Rota| CircuitBreaker[Circuit Breaker]
+    Gateway -->|Rota| Transform[İstek/Yanıt Dönüşümü]
     
-    Auth -->|Valid| Service1[Service 1]
-    RateLimit -->|Allowed| Service2[Service 2]
-    CircuitBreaker -->|Open| Service3[Service 3]
-    Transform -->|Modified| Service4[Service 4]
+    Auth -->|Geçerli| Service1[Servis 1]
+    RateLimit -->|İzinli| Service2[Servis 2]
+    CircuitBreaker -->|Açık| Service3[Servis 3]
+    Transform -->|Değiştirilmiş| Service4[Servis 4]
     
-    Service1 -->|Response| Gateway
-    Service2 -->|Response| Gateway
-    Service3 -->|Response| Gateway
-    Service4 -->|Response| Gateway
+    Service1 -->|Yanıt| Gateway
+    Service2 -->|Yanıt| Gateway
+    Service3 -->|Yanıt| Gateway
+    Service4 -->|Yanıt| Gateway
     
-    Gateway -->|Final Response| Client
+    Gateway -->|Son Yanıt| Client
 ```
 
-### Rate Limiting
-- Redis-based rate limiting
-- Token bucket algorithm
+### Hız Sınırlama
+- Redis tabanlı hız sınırlama
+- Token bucket algoritması
 
 ### Circuit Breaking
-- Resilience4j integration
-- Fallback mechanisms
+- Resilience4j entegrasyonu
+- Fallback mekanizmaları
 
-### Request/Response Transformation
-- Header manipulation
-- Body transformation
+### İstek/Yanıt Dönüşümü
+- Header manipülasyonu
+- Body dönüşümü
 
-### Security
-- JWT validation
-- OAuth2 integration
-- API key management
+### Güvenlik
+- JWT doğrulama
+- OAuth2 entegrasyonu
+- API anahtarı yönetimi
 
-## Load Balancing Strategies
+## Yük Dengeleme Stratejileri
 
-### Client-side Load Balancing
+### İstemci Tarafı Yük Dengeleme
 - Spring Cloud LoadBalancer
 - Ribbon
 
 ```mermaid
 graph TD
-    Client[Client] -->|Request| LoadBalancer[Load Balancer]
-    LoadBalancer -->|Route 1| Service1[Service Instance 1]
-    LoadBalancer -->|Route 2| Service2[Service Instance 2]
-    LoadBalancer -->|Route 3| Service3[Service Instance 3]
+    Client[İstemci] -->|İstek| LoadBalancer[Yük Dengeleyici]
+    LoadBalancer -->|Rota 1| Service1[Servis Örneği 1]
+    LoadBalancer -->|Rota 2| Service2[Servis Örneği 2]
+    LoadBalancer -->|Rota 3| Service3[Servis Örneği 3]
     
-    Service1 -->|Response| LoadBalancer
-    Service2 -->|Response| LoadBalancer
-    Service3 -->|Response| LoadBalancer
+    Service1 -->|Yanıt| LoadBalancer
+    Service2 -->|Yanıt| LoadBalancer
+    Service3 -->|Yanıt| LoadBalancer
     
-    LoadBalancer -->|Final Response| Client
+    LoadBalancer -->|Son Yanıt| Client
     
-    subgraph Load Balancing Algorithms
+    subgraph Load Balancing Algorithms[Yük Dengeleme Algoritmaları]
         RoundRobin[Round Robin]
-        Weighted[Weighted Round Robin]
-        LeastConn[Least Connections]
+        Weighted[Ağırlıklı Round Robin]
+        LeastConn[En Az Bağlantı]
     end
 ```
 
-### Server-side Load Balancing
+### Sunucu Tarafı Yük Dengeleme
 - Nginx
 - HAProxy
 - AWS ALB
 
-### Health Checks
+### Sağlık Kontrolleri
 - Spring Boot Actuator
-- Custom health indicators
+- Özel sağlık göstergeleri
 
-### Service Discovery Integration
+### Servis Keşfi Entegrasyonu
 - Eureka
 - Consul
-- Kubernetes service discovery
+- Kubernetes servis keşfi
 
-## Request Lifecycle Örneği
+## İstek Yaşam Döngüsü Örneği
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant Gateway
-    participant Service1
-    participant Service2
-    participant Database
+    participant Client as İstemci
+    participant Gateway as Gateway
+    participant Service1 as Servis1
+    participant Service2 as Servis2
+    participant Database as Veritabanı
     
-    Client->>Gateway: HTTP Request
-    Gateway->>Service1: Route Request
-    Service1->>Service2: Service Call
-    Service2->>Database: Query
-    Database-->>Service2: Result
-    Service2-->>Service1: Response
-    Service1-->>Gateway: Response
-    Gateway-->>Client: HTTP Response
+    Client->>Gateway: HTTP İsteği
+    Gateway->>Service1: İsteği Yönlendir
+    Service1->>Service2: Servis Çağrısı
+    Service2->>Database: Sorgu
+    Database-->>Service2: Sonuç
+    Service2-->>Service1: Yanıt
+    Service1-->>Gateway: Yanıt
+    Gateway-->>Client: HTTP Yanıtı
 ```
 
-## Performance Optimization
+## Performans Optimizasyonu
 
-### Request Optimization
-- Keep-alive connections
+### İstek Optimizasyonu
+- Keep-alive bağlantıları
 - HTTP/2 multiplexing
-- Request batching
-- Compression (gzip)
+- İstek gruplandırma
+- Sıkıştırma (gzip)
 
 ```mermaid
 sequenceDiagram
-    participant Client
-    participant Server
+    participant Client as İstemci
+    participant Server as Sunucu
     
-    Client->>Server: Initial Connection
-    Server-->>Client: Connection Established
+    Client->>Server: İlk Bağlantı
+    Server-->>Client: Bağlantı Kuruldu
     
-    loop Keep-alive Connection
-        Client->>Server: Request 1
-        Server-->>Client: Response 1
-        Client->>Server: Request 2
-        Server-->>Client: Response 2
-        Client->>Server: Request 3
-        Server-->>Client: Response 3
+    loop Keep-alive Bağlantısı
+        Client->>Server: İstek 1
+        Server-->>Client: Yanıt 1
+        Client->>Server: İstek 2
+        Server-->>Client: Yanıt 2
+        Client->>Server: İstek 3
+        Server-->>Client: Yanıt 3
     end
     
-    Note over Client,Server: Connection remains open for multiple requests
+    Note over Client,Server: Bağlantı birden fazla istek için açık kalır
 ```
 
-### Response Optimization
-- Response caching
-- Pagination
-- Field filtering
-- Data compression
+### Yanıt Optimizasyonu
+- Yanıt önbellekleme
+- Sayfalama
+- Alan filtreleme
+- Veri sıkıştırma
 
-### Error Handling
-- Circuit breaker pattern
-- Retry mechanisms
-- Graceful degradation
-- Fallback responses
+### Hata Yönetimi
+- Circuit breaker kalıbı
+- Yeniden deneme mekanizmaları
+- Zarif bozulma
+- Fallback yanıtları
 
-## Monitoring & Observability
+## İzleme ve Gözlemlenebilirlik
 
-### Request Tracing
-- Distributed tracing
-- Correlation IDs
-- Request timing
-- Error tracking
+### İstek İzleme
+- Dağıtık izleme
+- Korelasyon ID'leri
+- İstek zamanlaması
+- Hata takibi
 
-### Metrics Collection
-- Request count
-- Response time
-- Error rate
-- Throughput
+### Metrik Toplama
+- İstek sayısı
+- Yanıt süresi
+- Hata oranı
+- İş hacmi
 
-### Logging Strategy
-- Structured logging
-- Log aggregation
-- Request/response logging
-- Security events
+### Günlükleme Stratejisi
+- Yapılandırılmış günlükleme
+- Günlük toplama
+- İstek/yanıt günlükleme
+- Güvenlik olayları
