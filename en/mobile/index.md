@@ -87,6 +87,7 @@ Detailed analysis of architectural patterns, state management solutions, and com
 - [Component-Based Design](/en/mobile/architecture/component-based)
 - [Dependency Injection and IoC](/en/mobile/architecture/dependency-injection)
 - [Modular Architecture Structures](/en/mobile/architecture/modular-architecture)
+- [Iron Architecture - Flutter State Management](/en/mobile/iron-architecture)
 
 ### Chapter 2: Data Storage & Synchronization
 Local data storage solutions, data synchronization, and implementation of offline-first strategies.

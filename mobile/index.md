@@ -86,6 +86,7 @@ sequenceDiagram
 - [Component Tabanlı Tasarım](/mobile/architecture/component-based)
 - [Dependency Injection ve IoC](/mobile/architecture/dependency-injection)
 - [Modüler Mimari Yapıları](/mobile/architecture/modular-architecture)
+- [Iron Mimarisi - Flutter Durum Yönetimi](/mobile/iron-architecture)
 
 ### 2. Veri Saklama & Senkronizasyon
 - [Local Database Seçenekleri](/mobile/storage/local-databases)
