@@ -91,14 +91,6 @@ That's it! 🎉 Basic setup is complete. Now, are you ready to see the real powe
 
 ---
 
-## 📚 API Reference
-
-Detailed API documentation can be generated using the `dart doc` command. Ensure all public APIs have comprehensive DartDoc comments.
-
-You can find the generated documentation in the `doc/api` directory after running the command.
-
----
-
 ## 🛠️ Advanced Examples
 
 Check out the `example/` directory for more advanced use cases, including:

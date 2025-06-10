@@ -91,14 +91,6 @@ Hepsi bu kadar! 🎉 Temel kurulum tamam. Şimdi gerçek gücü görmeye hazır 
 
 ---
 
-## 📚 API Referansı
-
-Detaylı API dökümantasyonunu `dart doc` komutuyla oluşturabilirsiniz. Tüm public API'lerin kapsamlı DartDoc açıklamalarına sahip olduğundan emin olun.
-
-Oluşan dökümantasyonu `doc/api` klasöründe bulabilirsiniz.
-
----
-
 ## 🛠️ Gelişmiş Örnekler
 
 Daha gelişmiş kullanım senaryoları için `example/` klasörüne göz atın:
