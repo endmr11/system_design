@@ -4,6 +4,24 @@
 
 Transport Layer Security (TLS) ve Mutual TLS (mTLS), ağ iletişiminde veri bütünlüğü ve gizliliği sağlayan kritik güvenlik protokolleridir. Spring Boot ile HTTPS yapılandırması ve sertifika tabanlı kimlik doğrulama uygulamaları güvenli iletişim altyapısını oluşturur.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Public API şifreleme | TLS | Sertifika yenileme otomatik olmalı |
+| Servisler arası güven | mTLS | CA ve rotation yönetimi gerekir |
+| Internal network | TLS yine gerekli olabilir | Network güvenilir varsayılmamalı |
+| Legacy client | Sınırlı protocol/cipher desteği | Güvenlik geriye çekilmemeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi trafik dinlenmeye, değiştirilmeye veya impersonation'a karşı korunuyor?
+- Çözüm: Certificate source, renewal, trust store, cipher policy ve hostname validation net mi?
+- Trade-off: mTLS güçlü kimlik sağlar; sertifika dağıtımı ve debug karmaşıklığı ekler.
+- Hata durumu: Expired cert, wrong SAN, broken chain, clock skew ve weak cipher ele alınmalı.
+- Ölçüm: Cert expiry, handshake error, TLS version, mTLS deny ve renewal success izlenmeli.
+- Güvenlik/maliyet: Sertifika private key korunmalı; TLS termination noktası veri görünürlüğünü belirler.
+
 ## HTTPS Yapılandırması (Spring Boot)
 
 ### 1. SSL Sertifika Yönetimi

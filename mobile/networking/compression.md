@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda bant genişliği tasarrufu ve performans optimizasyonu için kritik sıkıştırma teknikleri.
 
+## Hızlı Karar
+
+| Veri Tipi | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| JSON/text response | Gzip/Brotli | CPU maliyeti ölçülmeli |
+| Görsel | WebP/AVIF uygunluğu | Eski cihaz desteği |
+| Zaten sıkıştırılmış veri | Tekrar sıkıştırma yapma | Kazanç yok, CPU kaybı var |
+| Büyük upload | Chunk + compression | Retry ve resume gerekir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Darboğaz bant genişliği mi, latency mi, CPU mu?
+- Çözüm: Content negotiation, fallback, cache headers ve image variant stratejisi net mi?
+- Trade-off: Daha küçük payload ağ/batarya kazandırır; encode/decode CPU maliyeti ekler.
+- Hata durumu: Unsupported format, corrupted payload, wrong content-type ve decode crash ele alınmalı.
+- Ölçüm: Payload size, transfer time, decode time, cache hit ve data usage izlenmeli.
+- Güvenlik/maliyet: Compression bomb riskine karşı boyut limitleri olmalı; image variant storage maliyeti üretir.
+
 ## Mobil için Sıkıştırma Temelleri
 - **Bant Genişliği Tasarrufu**: Azaltılmış veri transferi ile daha hızlı yükleme
 - **Pil Optimizasyonu**: Daha az radyo aktivitesi ile geliştirilmiş pil ömrü

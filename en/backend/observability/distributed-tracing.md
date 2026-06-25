@@ -4,6 +4,24 @@
 
 Distributed tracing extends beyond basic tracing by providing comprehensive request tracking across multiple services, enabling correlation of related operations, and maintaining context throughout complex distributed workflows. This approach is essential for understanding user journeys, debugging cross-service issues, and monitoring business processes.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Follow a request across logs | Correlation ID | It should be created at the gateway and propagated everywhere |
+| End-to-end latency analysis | Distributed trace | Sampling and span standards are required |
+| Business process correlation | Business correlation ID | Do not mix it with PII |
+| Async message tracking | Trace context propagation | Broker header support must be verified |
+
+## Production Checklist
+
+- Problem: Which service, event, or user journey makes requests hard to find?
+- Solution: Are correlation ID generation, header name, async propagation, and log format standardized?
+- Trade-off: Correlation reduces debugging time; it requires header, log, and trace discipline.
+- Failure mode: Breaking the chain by creating new IDs, losing async context, and proxy header stripping should be handled.
+- Measurement: Track correlation coverage, missing trace ID rate, async propagation success, and investigation time.
+- Security/cost: Correlation IDs must not be guessable authorization tokens; long retention creates log cost.
+
 ## System Architecture
 
 ```mermaid

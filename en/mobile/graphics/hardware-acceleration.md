@@ -2,6 +2,24 @@
 
 Hardware acceleration leverages specialized processors (GPU, NPU, DSP) to offload computationally intensive tasks from the CPU, resulting in better performance and energy efficiency for mobile applications.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Simple UI | Framework acceleration | Do not write extra GPU code |
+| Large bitmap/effect | GPU pipeline | Memory bandwidth limit |
+| Custom render engine | Metal/OpenGL/Vulkan | Expertise and testing cost |
+| ML/compute work | NPU/GPU delegate | Fallback is required |
+
+## Production Checklist
+
+- Problem: Which work can the CPU not handle?
+- Solution: Are GPU path, fallback, memory budget, shader compilation, and device support clear?
+- Trade-off: GPU improves speed; it adds debugging, battery, and compatibility cost.
+- Failure mode: Driver bugs, shader compile jank, GPU memory pressure, and fallback crashes should be handled.
+- Measurement: Track GPU time, frame time, memory bandwidth, thermal state, and battery drain.
+- Security/cost: Hardware differences may require feature flags; low-end device coverage is costly.
+
 ## GPU Acceleration Fundamentals
 
 ### Graphics Processing Pipeline

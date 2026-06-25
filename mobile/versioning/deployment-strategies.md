@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda dağıtım stratejileri, uygulamaların uygulama mağazaları, kurumsal dağıtım ve alternatif dağıtım kanalları üzerinden son kullanıcılara ulaştırılması sürecinin tamamını kapsar ve güvenilirlik, performans ve kullanıcı memnuniyetini sağlamayı hedefler.
 
+## Hızlı Karar
+
+| Durum | Strateji | Dikkat |
+| --- | --- | --- |
+| Düşük riskli release | Kademeli rollout | Crash metric takip edilmeli |
+| Kritik bug fix | Hızlı review + hotfix | Store gecikmesi olabilir |
+| Enterprise dağıtım | MDM/internal channel | Sertifika/provisioning yönetimi |
+| Riskli özellik | Feature flag + staged rollout | Kill switch şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: Release hangi riski taşıyor ve rollback nasıl yapılacak?
+- Çözüm: Rollout %, monitoring, halt rule, store metadata ve support planı net mi?
+- Trade-off: Kademeli dağıtım riski azaltır; tam yayılım daha uzun sürer.
+- Hata durumu: Bad binary, store rejection, staged rollout regression ve rollback unavailable ele alınmalı.
+- Ölçüm: Adoption, crash-free sessions, ANR, review time, rollback/halt count izlenmeli.
+- Güvenlik/maliyet: Signing key/provisioning korunmalı; çok kanal release operasyon maliyeti getirir.
+
 ## Dağıtım Mimarisi
 
 ### Dağıtım Ortamları

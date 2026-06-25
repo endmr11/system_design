@@ -2,6 +2,24 @@
 
 Modern software deployment methodologies have evolved sophisticated techniques to maximize risk mitigation and continuous delivery capabilities. Blue/Green and Canary deployment strategies have become industry standards as proven approaches that enable safe deployments in production environments with minimal downtime and comprehensive rollback capabilities.
 
+## Quick Decision
+
+| Situation | Strategy | Watch Out |
+| --- | --- | --- |
+| Immediate rollback is required | Blue/Green | Running two environments costs more |
+| Risk should be reduced gradually | Canary | Good metrics and automatic stop rules are needed |
+| Traffic is low and blast radius is limited | Rolling deploy | Rollback can be slower |
+| Schema change is involved | Expand/contract migration | Backward compatibility is required |
+
+## Production Checklist
+
+- Problem: Which risk does the deployment reduce: downtime, bug spread, migration failure, or rollback time?
+- Solution: Are health checks, smoke tests, metric gates, rollback, and database migration order clear?
+- Trade-off: Safer rollout requires more infrastructure, observability, and automation.
+- Failure mode: Bad releases, partial rollouts, schema mismatch, stale cache, and rollback failure should be rehearsed.
+- Measurement: Track deployment duration, change failure rate, rollback time, error-budget burn, and canary metric delta.
+- Security/cost: Auth and secret changes in the new version need separate verification; blue/green can nearly double capacity cost.
+
 ## Blue/Green Deployment Methodology Deep Dive
 
 Blue/Green deployment strategy realizes parallel maintenance of identical production environments through sophisticated infrastructure orchestration. The fundamental principle of this approach centers on providing instantaneous switching capabilities between the active production environment (Blue) and the staged new version environment (Green). This methodology guarantees zero-downtime deployments while creating robust safety nets for immediate rollback capabilities.

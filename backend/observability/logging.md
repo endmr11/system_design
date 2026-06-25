@@ -2,6 +2,24 @@
 
 Gözlemlenebilirliğin temel bileşenlerinden biri olan logging, sistemin durumunu, hataları ve olayları izlememizi sağlar.
 
+## Hızlı Karar
+
+| İhtiyaç | Logla | Dikkat |
+| --- | --- | --- |
+| Hata kök nedeni | Structured error log | Stack trace ve context birlikte olmalı |
+| Kullanıcı isteği takibi | Correlation/request id | PII loglanmamalı |
+| Audit gereksinimi | Ayrı audit log | Değiştirilemezlik ve erişim kontrolü gerekir |
+| Performans analizi | Metric/trace daha uygun olabilir | Log hacmi pahalıdır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Bu log hangi soruyu cevaplayacak?
+- Çözüm: Log level, event name, correlation id, tenant/user scope ve retention net mi?
+- Trade-off: Daha fazla log debug kolaylığı sağlar; storage, arama ve gizlilik maliyeti ekler.
+- Hata durumu: PII sızıntısı, log storm, eksik correlation id ve sampling hatası ele alınmalı.
+- Ölçüm: Log ingestion volume, error log rate, query latency, dropped log ve storage cost izlenmeli.
+- Güvenlik/maliyet: Secret, token ve kişisel veri maskelenmeli; debug log production'da sınırlı tutulmalı.
+
 ## Logging Framework - Spring Boot ile Yapılandırılmış Logging
 
 ### SLF4J + Logback Entegrasyonu

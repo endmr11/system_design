@@ -2,6 +2,24 @@
 
 Tracking and analyzing user behavior in mobile apps is crucial for improving user experience and optimizing application performance.
 
+## Quick Decision
+
+| Need | Track | Watch Out |
+| --- | --- | --- |
+| Funnel analysis | Screen/action event | Event names must be stable |
+| Retention | Session and cohort | Consent may be required |
+| UX issues | Drop-off and rage tap | Do not record PII |
+| Debugging | Correlation ID | Do not mix with user identity |
+
+## Production Checklist
+
+- Problem: Which product decision will behavior data support?
+- Solution: Are event taxonomy, consent, sampling, retention, and owner clear?
+- Trade-off: Behavior data gives product insight; it adds privacy and cost responsibility.
+- Failure mode: Event drift, duplicate events, PII leaks, and metric mismatch should be handled.
+- Measurement: Track event volume, missing event rate, funnel conversion, retention, and opt-out rate.
+- Security/cost: Collect minimum data; user behavior data should be treated as sensitive.
+
 ## Key Metrics
 
 - **User Interactions**

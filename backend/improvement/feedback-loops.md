@@ -2,6 +2,24 @@
 
 Modern yazılım geliştirme süreçlerinde feedback döngüleri ve telemetri analizi, sürekli iyileştirme kültürünün temel taşlarını oluşturur. Bu yaklaşım, hem kullanıcı deneyimini hem de sistem performansını optimize etmek için veri odaklı karar verme mekanizmalarını hayata geçirir ve organizasyonların değişen gereksinimlere hızla adapte olmasını sağlar.
 
+## Hızlı Karar
+
+| İhtiyaç | Veri Kaynağı | Dikkat |
+| --- | --- | --- |
+| Kullanıcı memnuniyeti | NPS/CSAT/CES, destek kayıtları | Sayı tek başına neden söylemez |
+| Ürün davranışı | Event analytics, funnel | Gizlilik ve consent gerekir |
+| Sistem sağlığı | Metrics, logs, traces | Sinyal gürültüye dönüşmemeli |
+| Deney doğrulama | A/B test | Örneklem ve guardrail metrikleri şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi karar feedback olmadan yanlış veriliyor?
+- Çözüm: Sinyal sahibi, toplama noktası, saklama süresi ve aksiyon süreci belli mi?
+- Trade-off: Daha fazla telemetri görünürlük sağlar; maliyet, gizlilik ve analiz yükü ekler.
+- Hata durumu: Yanlış event, örneklem bias'ı, PII sızıntısı ve dashboard körlüğü ele alınmalı.
+- Ölçüm: Signal freshness, event loss, dashboard usage, alert precision ve experiment impact izlenmeli.
+- Güvenlik/maliyet: Kullanıcı davranışı verisi minimum toplanmalı; yüksek kardinaliteli event/log maliyeti hızla büyür.
+
 ## Kullanıcı Geri Bildirim Sistemlerinin Derinlemesine Analizi
 
 Kullanıcı geri bildirimlerinin sistematik olarak toplanması ve analiz edilmesi, ürün geliştirme süreçlerinin kalp atışını oluşturur. Bu kapsamlı yaklaşım, kullanıcı davranış analizini heatmap teknolojileri ile görselleştirerek, kullanıcıların uygulama içindeki etkileşim patterns'lerini detaylı şekilde ortaya çıkarır. Hotjar, Crazy Egg ve FullStory gibi advanced analytics platform'ları, scroll depth, click patterns, form abandonment rates ve user journey mapping gibi critical insight'ları sağlayarak product team'lerinin informed decision'lar almasını mümkün kılar.

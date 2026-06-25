@@ -2,6 +2,24 @@
 
 Deployment strategies for mobile applications encompass the entire process of delivering applications to end users through app stores, enterprise distribution, and alternative distribution channels while ensuring reliability, performance, and user satisfaction.
 
+## Quick Decision
+
+| Situation | Strategy | Watch Out |
+| --- | --- | --- |
+| Low-risk release | Gradual rollout | Crash metrics must be watched |
+| Critical bug fix | Fast review + hotfix | Store delay may happen |
+| Enterprise distribution | MDM/internal channel | Certificate/provisioning management |
+| Risky feature | Feature flag + staged rollout | Kill switch is required |
+
+## Production Checklist
+
+- Problem: Which risk does the release carry, and how will rollback work?
+- Solution: Are rollout %, monitoring, halt rule, store metadata, and support plan clear?
+- Trade-off: Gradual rollout reduces risk; full rollout takes longer.
+- Failure mode: Bad binary, store rejection, staged rollout regression, and unavailable rollback should be handled.
+- Measurement: Track adoption, crash-free sessions, ANR, review time, and rollback/halt count.
+- Security/cost: Signing keys/provisioning must be protected; multi-channel release adds operations cost.
+
 ## Deployment Architecture
 
 ### Deployment Environments

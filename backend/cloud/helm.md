@@ -1,5 +1,25 @@
 # Helm Charts
 
+Helm, Kubernetes manifestlerini tekrar kullanılabilir ve environment bazlı yönetilebilir paketlere dönüştürür. Değerli olduğu yer aynı uygulamanın farklı ortamlarda tutarlı kurulmasıdır; tek YAML dosyasını gizlemek için kullanıldığında gereksiz soyutlama olur.
+
+## Hızlı Karar
+
+| İhtiyaç | Helm Kullan | Dikkat |
+| --- | --- | --- |
+| Dev/stage/prod değerleri farklı | Evet | Values dosyaları drift üretmemeli |
+| Aynı chart birçok tenant'a kurulacak | Evet | Template karmaşıklığı sınırlanmalı |
+| Tek servis, tek ortam, az YAML | Gerekmez | Düz manifest daha okunur olabilir |
+| Rollback ve release geçmişi gerekli | Evet | Hook ve migration davranışı test edilmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Helm hangi tekrar veya environment farkını sadeleştiriyor?
+- Çözüm: Chart version, app version, values şeması, secret yaklaşımı ve rollback yolu net mi?
+- Trade-off: Paketleme ve reuse artar; template debug ve değer kalıtımı karmaşıklaşır.
+- Hata durumu: Yanlış values, başarısız hook, yarım release, migration rollback ve immutable field hataları planlanmalı.
+- Ölçüm: Release success rate, rollback sayısı, deployment duration, template diff ve chart drift izlenmeli.
+- Güvenlik/maliyet: Secret değerleri chart'a gömülmemeli; aşırı parametrelenmiş chart bakım maliyetini artırır.
+
 ## Giriş
 
 Helm, Kubernetes uygulamalarını paketlemek, dağıtmak ve yönetmek için kullanılan bir paket yöneticisidir. "Kubernetes için apt/yum" olarak tanımlanabilir. Helm Charts, Kubernetes kaynaklarını şablon olarak tanımlamanıza ve parametrize etmenize olanak tanır.

@@ -6,6 +6,24 @@ Comprehensive performance monitoring and analytics systems for mobile applicatio
 
 Performance analytics provide deep insights into how mobile applications perform in real-world conditions, enabling data-driven optimization decisions and proactive performance management.
 
+## Quick Decision
+
+| Area | Metric | Watch Out |
+| --- | --- | --- |
+| Startup | Cold/warm start | Segment by device |
+| UI smoothness | Frame time/jank | Averages mislead |
+| Network | Endpoint latency/error | Separate offline cases |
+| Resources | Memory/battery | Measure long sessions |
+
+## Production Checklist
+
+- Problem: Which performance metric causes user loss?
+- Solution: Are metric definition, device segmentation, release tag, sampling, and alert owner clear?
+- Trade-off: Broad telemetry gives visibility; it adds SDK, battery, and privacy cost.
+- Failure mode: High cardinality, wrong device segment, missing release tag, and sampling bias should be handled.
+- Measurement: Track p95 startup, jank rate, memory peak, battery drain, network latency, and crash-free sessions.
+- Security/cost: Performance events must not carry PII; high-volume telemetry is expensive.
+
 ## Core Performance Metrics
 
 ### 1. **Application Performance**

@@ -4,6 +4,24 @@
 
 Background task management is a critical component of mobile applications that ensures seamless user experience by performing operations when the app is not in the foreground. Modern mobile operating systems impose strict limitations on background execution to preserve battery life and system performance.
 
+## Quick Decision
+
+| Job Type | Approach | Watch Out |
+| --- | --- | --- |
+| Deferrable sync | WorkManager/BGTask | Follow OS scheduling |
+| User-visible download | Foreground service | Notification and permission are needed |
+| Short cleanup | App lifecycle task | Duration is not guaranteed |
+| Critical immediate work | Server-side processing | Do not trust mobile background execution |
+
+## Production Checklist
+
+- Problem: Does this work truly need to run in the device background?
+- Solution: Are constraints, retry, idempotency, timeout, and user-visible state clear?
+- Trade-off: Background work improves experience; it is limited by battery and OS constraints.
+- Failure mode: Task kills, duplicate execution, missed schedules, and unavailable network should be handled.
+- Measurement: Track task success, retry count, execution time, battery impact, and queue age.
+- Security/cost: Background jobs should not carry sensitive data unnecessarily; moving work server-side can be cheaper.
+
 ## Platform-Specific Implementation
 
 ### Android Background Tasks

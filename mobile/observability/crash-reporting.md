@@ -4,6 +4,24 @@
 
 Mobil uygulamalarda çökme raporlama, uygulamanızın kararlılığını izlemek ve kullanıcı deneyimini iyileştirmek için kritik öneme sahiptir. Bu dokümantasyon modern crash reporting sistemlerinin implementasyonunu kapsar.
 
+## Hızlı Karar
+
+| Sinyal | Aksiyon | Dikkat |
+| --- | --- | --- |
+| Yeni release crash artışı | Rollback/hotfix | Sürüm ve cihaz kırılımı bak |
+| Tek cihaz ailesi etkileniyor | Device-specific analiz | OS/vendor farkı olabilir |
+| Native crash | Symbolication şart | dSYM/mapping dosyaları korunmalı |
+| Non-fatal hata artıyor | Önceliklendir | Gürültü üretmesin |
+
+## Üretim Kontrol Listesi
+
+- Problem: Crash hangi kullanıcı akışını ve sürümü etkiliyor?
+- Çözüm: Symbolication, release tag, user/session context, privacy mask ve alert threshold net mi?
+- Trade-off: Daha fazla context çözümü hızlandırır; gizlilik ve veri hacmi maliyeti ekler.
+- Hata durumu: Missing symbols, PII leak, duplicate grouping ve alert fatigue ele alınmalı.
+- Ölçüm: Crash-free sessions, affected users, regression rate, time-to-detect ve time-to-fix izlenmeli.
+- Güvenlik/maliyet: Crash payload'larında token/PII olmamalı; retention ve sampling maliyeti yönetilmeli.
+
 ## Platform-Specific Crash Reporting
 
 ### iOS Crash Reporting

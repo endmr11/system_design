@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda lokasyon servisleri, kullanıcı deneyimini zenginleştiren önemli bir bileşendir. Bu bölümde, lokasyon tabanlı servislerin güvenli, verimli ve kullanıcı dostu şekilde nasıl implement edileceği ele alınacaktır.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Yaklaşık konum yeterli | Balanced/low accuracy | Daha az batarya tüketir |
+| Arka plan takip | Geofence/significant change | İzin ve açıklama kritik |
+| Navigasyon | High accuracy foreground | Batarya maliyeti yüksek |
+| Konum bazlı içerik | Cached last location | Stale konum kontrol edilmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Özellik hangi hassasiyet ve süre boyunca konum istiyor?
+- Çözüm: Permission flow, accuracy, update interval, background mode ve fallback net mi?
+- Trade-off: Hassas konum daha iyi deneyim sağlar; batarya ve gizlilik maliyeti büyür.
+- Hata durumu: Permission denied, stale location, GPS unavailable ve background restriction ele alınmalı.
+- Ölçüm: Permission opt-in, location latency, battery drain, update frequency ve error rate izlenmeli.
+- Güvenlik/maliyet: Konum PII kabul edilmeli; retention ve paylaşım minimum tutulmalı.
+
 ## Temel Kavramlar
 
 ### 1. Lokasyon Hassasiyeti

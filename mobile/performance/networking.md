@@ -1,5 +1,25 @@
 # Ağ Katmanları & Veri Transferi
 
+Mobil performansta ağ katmanı yalnızca hız değil; batarya, veri kullanımı, offline davranış ve hata toparlama meselesidir. Önce ölç, sonra batching/cache/compression ekle.
+
+## Hızlı Karar
+
+| Semptom | İlk Bakılacak Yer | Dikkat |
+| --- | --- | --- |
+| Yavaş ekran | Endpoint p95 latency | UI ve backend ayrılmalı |
+| Fazla veri | Compression/pagination | Decode CPU maliyeti |
+| Çok istek | Batch/debounce/cache | Kritik aksiyon gecikmesin |
+| Zayıf bağlantı | Retry/offline queue | Idempotency şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: Ağ darboğazı latency, payload, bağlantı kararsızlığı veya backend hatası mı?
+- Çözüm: Timeout, retry, cancellation, cache, compression ve offline state net mi?
+- Trade-off: Daha akıllı ağ katmanı daha fazla state ve test maliyeti getirir.
+- Hata durumu: Retry storm, duplicate write, timeout, partial response ve token expiry ele alınmalı.
+- Ölçüm: Network latency, error rate, payload size, retry count, cancellation rate ve data usage izlenmeli.
+- Güvenlik/maliyet: TLS ve auth kontrolleri performans için atlanmamalı; gereksiz veri transferi kullanıcı maliyetidir.
+
 ## 4.1. Batching & Debouncing
 
 ### Request Batching Strategies

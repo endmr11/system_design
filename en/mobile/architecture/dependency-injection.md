@@ -2,6 +2,24 @@
 
 In modern mobile application architecture, Dependency Injection (DI) represents a fundamental design pattern that implements loose coupling and high cohesion principles. This approach enables the creation of testable, maintainable, and scalable code structures by injecting dependencies from external sources rather than creating them internally.
 
+## Quick Decision
+
+| Situation | Use DI | Watch Out |
+| --- | --- | --- |
+| Dependency changes in tests | Yes | Interfaces only when needed |
+| App-wide service | Container/provider | Lifecycle must be clear |
+| One class, one use | Constructor is enough | Do not add a framework |
+| Platform service/mock needed | DI helps | Scope must not be mixed |
+
+## Production Checklist
+
+- Problem: Which test or dependency-management issue does DI solve?
+- Solution: Are scope, lifecycle, lazy/eager creation, and override strategy clear?
+- Trade-off: DI improves testability; it adds container complexity and runtime error risk.
+- Failure mode: Circular dependencies, memory leaks, wrong scope, and hidden dependencies should be handled.
+- Measurement: Track startup time, object count, memory retention, and test setup time.
+- Security/cost: Secret/config dependencies should not be exposed with broad scope; unnecessary DI frameworks create maintenance cost.
+
 ## Fundamentals of Dependency Injection Pattern
 
 Dependency Injection builds upon SOLID principles, particularly supporting the Dependency Inversion Principle through practical implementation techniques. In traditional approaches, a class directly instantiates its required dependencies; in the DI pattern, these dependencies are provided externally.

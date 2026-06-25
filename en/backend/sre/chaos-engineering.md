@@ -2,6 +2,24 @@
 
 Chaos Engineering is the discipline of experimenting on a system to build confidence in the system's capability to withstand turbulent conditions in production.
 
+## Quick Decision
+
+| Situation | Experiment | Watch Out |
+| --- | --- | --- |
+| Failover is not trusted | Region/instance kill | Blast radius must be limited |
+| Dependency is fragile | Latency/error injection | User impact must be measured |
+| Retry/backpressure is suspicious | Traffic spike experiment | Downstream must be protected |
+| New system | Start with staging/game day | Production experiments should not be rushed |
+
+## Production Checklist
+
+- Problem: Which resilience assumption are we validating?
+- Solution: Are hypothesis, blast radius, abort condition, observation metrics, and rollback clear?
+- Trade-off: Experiments carry risk; without them, real incidents teach at higher cost.
+- Failure mode: Uncontrolled impact, missing alerts, wrong hypothesis, and no post-experiment action should be handled.
+- Measurement: Track error-budget burn, recovery time, alert correctness, customer impact, and action completion.
+- Security/cost: Experiments must be authorized and recorded; breaking resources can create cost and data risk.
+
 ## 1. Chaos Engineering Principles
 
 ### Core Principles

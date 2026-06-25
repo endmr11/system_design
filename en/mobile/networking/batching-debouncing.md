@@ -1,5 +1,25 @@
 # Request Batching & Debouncing Strategies
 
+Batching and debouncing reduce mobile network chatter, but they should not hide slow backend behavior or delay critical user actions.
+
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| User creates rapid input | Debounce | Too much delay is felt |
+| Many tiny requests exist | Batch | Error splitting is needed |
+| Same data is requested repeatedly | Request coalescing | Cache key must be correct |
+| Critical immediate action | Do not debounce | User trust suffers |
+
+## Production Checklist
+
+- Problem: Are there truly too many network calls, or is the backend slow?
+- Solution: Are batch window, max size, cancellation, partial failure, and retry clear?
+- Trade-off: Fewer requests reduce battery and cost; latency and error handling get more complex.
+- Failure mode: Lost requests, duplicate sends, partial batch failures, and stale results should be handled.
+- Measurement: Track request count, batch size, debounce delay, cancellation rate, and p95 latency.
+- Security/cost: Requests from different users/tenants must not be mixed in the same batch.
+
 ## Request Batching
 
 ### Basic Batching Implementation

@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda akıcı kullanıcı deneyimi sağlamak için hedeflenen frame rate (genellikle 60 FPS) sürdürülmelidir. Bu bölümde FPS optimizasyonu teknikleri ve akıcı kullanıcı deneyimi sağlama yöntemleri ele alınacaktır.
 
+## Hızlı Karar
+
+| Semptom | Önce Bak | Dikkat |
+| --- | --- | --- |
+| Scroll jank | Main thread work | Görünür item maliyeti azalt |
+| Animasyon takılıyor | Frame time | Debug build yanıltır |
+| 120Hz cihazda düşüş | 8.33ms budget | Animasyon basitleştirilebilir |
+| İlk etkileşim yavaş | Startup/render blocking | Lazy yükleme gerekebilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi ekranda hangi frame budget aşılıyor?
+- Çözüm: Profiling cihazı, baseline, threshold, animation scope ve fallback net mi?
+- Trade-off: Zengin animasyon ve dinamik layout daha fazla CPU/GPU/batarya ister.
+- Hata durumu: Main-thread blocking, GC pause, overdraw ve image decode spike ele alınmalı.
+- Ölçüm: FPS, p95 frame time, jank rate, dropped frames ve battery impact izlenmeli.
+- Güvenlik/maliyet: Performans için erişilebilirlik kapatılmamalı; düşük cihaz testi maliyetli ama gereklidir.
+
 ## FPS ve Frame Rate Temelleri
 
 ### 60 FPS Hedefi

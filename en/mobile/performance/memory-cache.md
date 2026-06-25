@@ -2,6 +2,24 @@
 
 In-memory caching is one of the most critical performance optimization techniques in mobile applications, providing fast data access while considering device resource constraints.
 
+## Quick Decision
+
+| Situation | Use Memory Cache | Watch Out |
+| --- | --- | --- |
+| Small frequently read data | Yes | LRU/LFU may be enough |
+| Large bitmaps/lists | Limited | Memory pressure must be monitored |
+| Sensitive data | Avoid or keep short-lived | Dump/log risk |
+| Offline persistence | No, disk is needed | Lost after app kill |
+
+## Production Checklist
+
+- Problem: Which latency issue does memory cache solve?
+- Solution: Are max size, eviction, memory warning handling, key, and lifecycle clear?
+- Trade-off: More cache is faster; more memory increases crash and OS kill risk.
+- Failure mode: Memory leaks, stale objects, unbounded maps, and bitmap OOM should be handled.
+- Measurement: Track hit ratio, memory footprint, eviction count, GC pressure, and OOM/crash rate.
+- Security/cost: Tokens/PII should not be kept in memory unnecessarily; low-RAM devices need separate testing.
+
 ## Memory Cache Fundamentals
 
 ### Mobile Memory Constraints

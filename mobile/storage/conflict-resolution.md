@@ -6,6 +6,24 @@ title: Conflict Resolution
 
 Mobil uygulamalarda çoklu cihaz kullanımı, offline düzenleme ve eşzamanlı veri değişiklikleri nedeniyle ortaya çıkan veri çakışmalarının çözümlenmesi kritik önem taşır. Bu bölümde, basit timestamp-based çözümlerden karmaşık CRDT implementasyonlarına kadar çeşitli conflict resolution stratejileri ele alınmaktadır.
 
+## Hızlı Karar
+
+| Durum | Strateji | Dikkat |
+| --- | --- | --- |
+| Düşük riskli alan | Last-write-wins | Veri kaybı kabul edilmeli |
+| Kullanıcı içeriği | Manual merge | UX açık olmalı |
+| Sayaç/set gibi veri | CRDT | Karmaşıklık artar |
+| Kritik finansal veri | Sunucu otoritesi | Offline write sınırlanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Çakışmada hangi veri kaybı kabul edilemez?
+- Çözüm: Conflict detection, merge rule, user prompt, audit ve retry net mi?
+- Trade-off: Otomatik çözüm hızlıdır; yanlış merge güven kaybettirir.
+- Hata durumu: Clock skew, duplicate sync, lost update ve merge loop ele alınmalı.
+- Ölçüm: Conflict rate, auto-merge success, manual resolution time ve data loss report izlenmeli.
+- Güvenlik/maliyet: Kullanıcılar başkasının verisini merge ekranında görmemeli; CRDT storage maliyeti artırabilir.
+
 ## Conflict Scenarios
 
 ### Tipik Çakışma Senaryoları

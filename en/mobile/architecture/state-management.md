@@ -2,6 +2,24 @@
 
 In modern mobile applications, state management is a critical factor that directly affects the quality of user experience and application performance. In this section, we will deeply analyze industry-proven state management approaches and examine optimal implementation of each in specific use cases.
 
+## Quick Decision
+
+| Situation | State Approach | Watch Out |
+| --- | --- | --- |
+| Temporary screen-local state | Local state | Do not move it to global store |
+| Shared across screens | Scoped/global store | Ownership must be clear |
+| Complex event flow | Reducer/MVI | Boilerplate can grow |
+| Offline sync state | Persistent state | Migration and conflict handling are needed |
+
+## Production Checklist
+
+- Problem: Where is state produced, where is it consumed, and how long does it live?
+- Solution: Are source of truth, update path, persistence, error/loading state, and reset behavior clear?
+- Trade-off: Global state simplifies sharing; it adds coupling and stale-state risk.
+- Failure mode: Race conditions, lost updates, memory leaks, duplicate events, and invalid cache should be handled.
+- Measurement: Track re-render count, frame time, state restore success, and crash-free sessions.
+- Security/cost: Tokens/PII should not be kept in state unnecessarily; persistent state creates storage cost and migration debt.
+
 ## MVVM (Model-View-ViewModel) Comprehensive Analysis
 
 ### Architectural Foundation of MVVM Pattern

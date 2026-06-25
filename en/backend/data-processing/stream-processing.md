@@ -2,6 +2,24 @@
 
 Stream Processing is an architectural approach that continuously processes data streams in real-time. Unlike traditional batch processing, this approach processes data as it arrives and produces immediate results.
 
+## Quick Decision
+
+| Situation | Use Stream Processing | Watch Out |
+| --- | --- | --- |
+| Decisions are needed within seconds | Yes | Event time and late data must be managed |
+| Hourly/daily reporting is enough | No, batch is enough | Operations stay cheaper |
+| Continuous anomaly/fraud detection | Yes | State store and exactly-once expectations must be clear |
+| Simple queue consumption | Not necessary | A worker model may be enough |
+
+## Production Checklist
+
+- Problem: How does real-time output change business value?
+- Solution: Are partition key, ordering, windowing, checkpointing, replay, and backpressure strategy clear?
+- Trade-off: You gain low-latency insight; you add state management, operations, and debugging complexity.
+- Failure mode: Late events, duplicate events, consumer lag, poison messages, and state corruption should be handled.
+- Measurement: Track end-to-end lag, throughput, consumer lag, dropped events, checkpoint time, and processing error rate.
+- Security/cost: Streams can duplicate sensitive data; high volume increases broker, storage, and observability cost.
+
 ## Core Concepts
 
 ### Event Stream

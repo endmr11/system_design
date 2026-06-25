@@ -2,6 +2,24 @@
 
 In distributed systems, consistency models define how data behaves across multiple nodes and when changes become visible to different parts of the system. The choice between strong and eventual consistency significantly impacts system performance, availability, and user experience.
 
+## Quick Decision
+
+| Data / Workflow | Consistency | Why |
+| --- | --- | --- |
+| Money, inventory, permissions, quota | Strong consistency | Incorrect results create direct harm |
+| Feed, likes, counters, recommendations | Eventual consistency | Short delay is acceptable |
+| User must see their own write immediately | Read-your-writes | Preserves trust |
+| Multi-region read-heavy system | Eventual + conflict policy | Availability and latency dominate |
+
+## Production Checklist
+
+- Problem: Which wrong or stale data can the user not tolerate?
+- Solution: Are transaction boundaries, replication method, conflict resolution, and retry behavior clear?
+- Trade-off: Strong consistency increases correctness; it costs latency and availability.
+- Failure mode: Replication lag, stale reads, duplicate events, lost updates, and split-brain scenarios should be handled.
+- Measurement: Track lag, conflict rate, retry count, transaction abort rate, and user-visible stale data.
+- Security/cost: Authorization and financial data should not be eventual; strong guarantees require lock, quorum, or coordination cost.
+
 ## Strong Consistency
 
 ### Definition and Characteristics

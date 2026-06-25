@@ -4,6 +4,24 @@
 
 A/B testing infrastructure enables data-driven decision making by running controlled experiments on mobile applications. This documentation covers comprehensive A/B testing implementation across Android, iOS, React Native, and Flutter platforms with statistical analysis and automated decision making.
 
+## Quick Decision
+
+| Situation | Run Experiment | Watch Out |
+| --- | --- | --- |
+| Product impact is uncertain | Yes | Success metric must be chosen first |
+| Security/payment flow | Very carefully | Guardrail metrics are required |
+| Small user count | Wait or use qualitative test | Statistical power may be insufficient |
+| Only a bug fix | A/B not needed | Rollout/feature flag is enough |
+
+## Production Checklist
+
+- Problem: Which decision will the experiment change?
+- Solution: Are hypothesis, segment, success metric, guardrail, duration, and stop rule clear?
+- Trade-off: A/B tests provide evidence; they add complexity, waiting time, and analysis cost.
+- Failure mode: Sample pollution, novelty effect, SRM, metric gaming, and wrong segments should be handled.
+- Measurement: Track conversion, retention, crash rate, latency, sample ratio, and confidence interval.
+- Security/cost: Experiments must follow privacy and consent rules; excessive events increase cost.
+
 ## Firebase A/B Testing
 
 ### Android Implementation

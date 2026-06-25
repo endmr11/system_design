@@ -4,6 +4,24 @@
 
 Battery optimization is a critical aspect of mobile application development that directly impacts user experience and app retention. Modern mobile operating systems implement sophisticated power management systems, and applications must work within these constraints while providing optimal functionality.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Frequent network calls | Batch and cache | Data freshness is affected |
+| Continuous background work | Platform scheduler | Do not fight OS limits |
+| Heavy CPU work | Debounce/throttle/isolate | Thermal impact must be measured |
+| Location tracking | Low accuracy or geofence | Permission and battery cost are high |
+
+## Production Checklist
+
+- Problem: Which feature increases battery usage?
+- Solution: Are job frequency, network batching, background limits, and fallback behavior clear?
+- Trade-off: Lower battery usage usually means less freshness or less real-time behavior.
+- Failure mode: Wake-lock leaks, runaway retries, background kills, and thermal throttling should be handled.
+- Measurement: Track battery drain, wakeup count, network bytes, CPU time, and background execution time.
+- Security/cost: User permission and transparency must be preserved; excessive background work hurts retention.
+
 ## Battery Management Architecture
 
 ## Platform-Specific Battery Optimization

@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda ağ performansını izleme ve analiz etme teknikleri.
 
+## Hızlı Karar
+
+| Sinyal | Ölç | Dikkat |
+| --- | --- | --- |
+| Yavaş ekran | Endpoint latency | p95/p99 takip et |
+| Sık hata | Error code + network type | Offline ile backend hatasını ayır |
+| Veri tüketimi yüksek | Payload size | Kullanıcı maliyeti |
+| Retry artıyor | Retry count/backoff | Retry storm riski |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi ağ davranışı kullanıcı deneyimini bozuyor?
+- Çözüm: Metric name, tag sınırı, sampling, privacy ve dashboard owner net mi?
+- Trade-off: Daha fazla telemetry görünürlük sağlar; gizlilik ve maliyet getirir.
+- Hata durumu: PII logging, high cardinality, missing offline context ve sampling bias ele alınmalı.
+- Ölçüm: Latency, error rate, timeout, payload size, retry count ve network type dağılımı izlenmeli.
+- Güvenlik/maliyet: URL query veya token loglanmamalı; yüksek kardinalite analytics maliyetini artırır.
+
 ## Gerçek Zamanlı İzleme
 
 ### Performans Metrikleri

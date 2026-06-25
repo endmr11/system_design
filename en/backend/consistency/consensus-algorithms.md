@@ -2,6 +2,24 @@
 
 Consensus algorithms are fundamental protocols that enable multiple nodes in a distributed system to agree on a single value or decision, even in the presence of failures. They are crucial for maintaining consistency and coordinating actions across distributed systems.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Leader election and configuration | Raft-based etcd/Consul | Losing quorum stops writes |
+| Strong coordination | Existing coordination store | Do not write your own algorithm |
+| High-throughput event stream | Consensus for every event may not fit | Kafka partition ordering can be more practical |
+| Global lock | Question the need first | Lock contention slows the system |
+
+## Production Checklist
+
+- Problem: Is shared agreement really required, or are idempotency and ordering enough?
+- Solution: Are quorum size, election timeout, log compaction, snapshot, and recovery path clear?
+- Trade-off: Consensus gives correctness; it adds latency, availability, and operational complexity.
+- Failure mode: Leader failover, network partitions, slow followers, log divergence, and full disks should be rehearsed.
+- Measurement: Track election count, commit latency, quorum health, follower lag, and snapshot duration.
+- Security/cost: Coordination-store access must be tightly protected; frequent coordination increases CPU, disk, and network cost.
+
 ## Paxos Algorithm
 
 Paxos is a family of protocols for solving consensus in an asynchronous network of unreliable processors. It ensures that a single value is chosen among proposed values, even when some participants fail.

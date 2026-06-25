@@ -4,6 +4,24 @@
 
 Mobil uygulamalarda güvenli kimlik doğrulama, kullanıcı verilerini korumak ve uygulamanızın güvenilirliğini sağlamak için kritik öneme sahiptir. Bu dokümantasyon modern kimlik doğrulama kalıplarını ve en iyi uygulamaları kapsar.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Web/mobile OAuth | Authorization Code + PKCE | Implicit flow kullanma |
+| Oturum sürdürme | Refresh token rotation | Secure storage şart |
+| Step-up güvenlik | Biometric veya re-auth | Biyometri kimlik değil kilit açmadır |
+| Kurumsal login | OIDC/SAML broker | Logout ve token revoke net olmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kullanıcı kimliği, cihaz güveni ve oturum süresi nasıl doğrulanıyor?
+- Çözüm: PKCE, token storage, refresh, revoke, logout ve error state net mi?
+- Trade-off: Güvenli oturum akışı daha fazla ekran ve edge case getirir.
+- Hata durumu: Refresh loop, account switch bug, stolen token ve clock skew ele alınmalı.
+- Ölçüm: Login success, refresh failure, logout completion, auth error ve suspicious session izlenmeli.
+- Güvenlik/maliyet: Tokenlar plain storage'da tutulmamalı; auth SDK güncelliği takip edilmeli.
+
 ## OAuth 2.0 ve OpenID Connect
 
 ### iOS Implementation

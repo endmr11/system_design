@@ -2,6 +2,24 @@
 
 Service Mesh, mikroservis mimarisinde servisler arası iletişimi yönetmek için kullanılan bir altyapı katmanıdır. Bu bölümde Istio ve Spring Boot entegrasyonunu detaylı olarak inceleyeceğiz.
 
+## Hızlı Karar
+
+| Durum | Mesh Kullan | Dikkat |
+| --- | --- | --- |
+| Çok sayıda servis ve ortak trafik politikası | Evet | Operasyon ekibi hazır olmalı |
+| mTLS, traffic split, retry standardı gerekiyor | Evet | Yanlış policy geniş etki yaratır |
+| Az servis, basit trafik | Hayır | Gateway/library yeterli olabilir |
+| Debug zaten zor | Dikkatli | Sidecar katmanı görünürlüğü artırırken karmaşıklık ekler |
+
+## Üretim Kontrol Listesi
+
+- Problem: Mesh hangi tekrar eden iletişim problemini merkezi çözüyor?
+- Çözüm: mTLS, authorization policy, retry, timeout, traffic split ve observability standardı net mi?
+- Trade-off: Ortak politika ve görünürlük kazanılır; sidecar resource, latency ve operasyon maliyeti eklenir.
+- Hata durumu: Misconfigured policy, sidecar crash, control-plane outage ve retry amplification ele alınmalı.
+- Ölçüm: Sidecar CPU/memory, request latency, policy deny rate, mTLS error ve control-plane health izlenmeli.
+- Güvenlik/maliyet: Mesh güvenliği kolaylaştırır ama yanlış wildcard policy risktir; her sidecar kapasite maliyeti üretir.
+
 ## Istio Servis Mesh
 
 ### Sidecar Proxy Deseni

@@ -1,5 +1,25 @@
 # 5.4. GraphQL vs REST vs gRPC Karşılaştırması
 
+API protokolü seçimi, istemci ihtiyacı, veri şekli, operasyon kabiliyeti ve hata ayıklama kolaylığı arasında verilen bir trade-off'tur. Çoğu ürün için varsayılan REST yeterlidir; GraphQL ve gRPC gerçek bir basınç veya sözleşme ihtiyacı olduğunda anlamlı hale gelir.
+
+## Hızlı Karar
+
+| İhtiyaç | Tercih | Dikkat |
+| --- | --- | --- |
+| Genel amaçlı public API | REST | Versiyonlama ve tutarlı hata modeli şart |
+| Mobilde değişken veri ihtiyacı | GraphQL | Query maliyeti ve authorization karmaşıklaşır |
+| Servisler arası düşük gecikme | gRPC | Tarayıcı/debug deneyimi REST kadar kolay değildir |
+| Basit CRUD ve cache dostu endpoint | REST | Fazla endpoint yönetimi oluşabilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Asıl sorun fazla veri mi, çok istek mi, gecikme mi, yoksa sözleşme belirsizliği mi?
+- Çözüm: Protokol seçimi istemci, gateway, observability ve test araçlarıyla uyumlu mu?
+- Trade-off: GraphQL esneklik sağlar; gRPC performans sağlar; REST operasyonel sadelik sağlar.
+- Hata durumu: Hata modeli, timeout, retry ve idempotency davranışı protokole göre açık yazılmalı.
+- Ölçüm: Payload boyutu, round-trip sayısı, p95 latency, resolver süresi, serialization maliyeti ve cache hit oranı izlenmeli.
+- Güvenlik/maliyet: GraphQL query depth/complexity limiti ister; gRPC schema yönetimi ister; her protokol ek operasyon maliyeti getirir.
+
 ## REST API
 
 ### Temel Prensipler

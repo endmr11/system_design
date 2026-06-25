@@ -1,5 +1,25 @@
 # Advanced Network Patterns
 
+Advanced network patterns should be used only when polling is not enough. On mobile, every persistent connection adds battery, network-switching, and lifecycle cost.
+
+## Quick Decision
+
+| Need | Pattern | Watch Out |
+| --- | --- | --- |
+| Bidirectional live communication | WebSocket | Reconnect and auth refresh are needed |
+| One-way updates | SSE or push | Background restrictions apply |
+| Infrequent refresh | Polling + cache | Persistent connection is unnecessary |
+| Critical delivery | Ack + queue | Offline replay is required |
+
+## Production Checklist
+
+- Problem: Which user latency or inconsistency does this pattern solve?
+- Solution: Are connection lifecycle, retry/backoff, auth refresh, offline queue, and fallback clear?
+- Trade-off: A more live experience creates more battery and server-state cost.
+- Failure mode: Reconnect storms, duplicate messages, stale tokens, and network switches should be handled.
+- Measurement: Track connection count, message latency, reconnect rate, delivery success, and battery impact.
+- Security/cost: Channel authorization must hold per message; open connections create infrastructure cost.
+
 ## WebSocket Implementation
 
 ```mermaid

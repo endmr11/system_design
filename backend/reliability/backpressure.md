@@ -4,6 +4,24 @@
 
 Backpressure control, sistem kapasitesini aşan isteklerin güvenli bir şekilde yönetilmesi için kritik bir mekanizmadır. Yüksek trafikli durumlarda sistemin çökmesini önleyerek performans ve güvenilirliği korur.
 
+## Hızlı Karar
+
+| Durum | Backpressure | Dikkat |
+| --- | --- | --- |
+| Downstream kapasitesi sınırlı | Rate limit / queue limit | Limit kullanıcıya açık dönmeli |
+| Queue sürekli büyüyor | Reject veya shed load | Sonsuz queue sistemi öldürür |
+| Trafik kısa burst yapıyor | Token bucket | Burst kapasitesi ölçülmeli |
+| Kritik olmayan iş yükü | Drop/defer | Öncelik politikası gerekir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi kaynak doygunluğa ulaşıyor: thread, DB, queue, CPU veya dış servis?
+- Çözüm: Limit, queue size, timeout, retry ve `429/503` davranışı net mi?
+- Trade-off: İstek reddetmek kötü görünür; sistemi çökertmek daha kötüdür.
+- Hata durumu: Retry storm, queue overflow, thread starvation ve unfair tenant usage ele alınmalı.
+- Ölçüm: Queue depth, reject rate, saturation, retry count ve p99 latency izlenmeli.
+- Güvenlik/maliyet: Limitler tenant bazlı olmalı; sınırsız kapasite artırımı maliyeti gizler.
+
 ```mermaid
 graph TD
     A[İstemci İstekleri] --> B[Rate Limiting]

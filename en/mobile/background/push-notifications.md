@@ -4,6 +4,24 @@
 
 Push notifications are a critical component of modern mobile applications, enabling real-time communication with users even when the app is not active. They provide a way to re-engage users, deliver timely information, and maintain app relevance.
 
+## Quick Decision
+
+| Need | Notification Type | Watch Out |
+| --- | --- | --- |
+| User action is needed | Alert notification | Spam increases opt-out |
+| Silent data refresh | Silent push | OS does not guarantee delivery |
+| Critical security alert | High priority | Abuse must be prevented |
+| Bulk campaign | Segment + rate limit | Time zone and consent matter |
+
+## Production Checklist
+
+- Problem: What value does the notification create for the user?
+- Solution: Are consent, token lifecycle, segmentation, retry, and deep-link behavior clear?
+- Trade-off: Notifications increase engagement; overuse damages trust and permission.
+- Failure mode: Expired tokens, duplicate pushes, wrong segment, provider outage, and deep-link failure should be handled.
+- Measurement: Track opt-in rate, delivery rate, open rate, unsubscribe rate, and provider errors.
+- Security/cost: Notification content should not contain sensitive data; bulk sends create provider cost.
+
 ```mermaid
 graph LR
     A[Mobile App] --> B[APNs/FCM]

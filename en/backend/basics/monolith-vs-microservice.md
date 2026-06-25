@@ -1,5 +1,25 @@
 # Monolith vs. Microservice Architecture
 
+The monolith vs microservice decision is an organizational, deployment, data-ownership, and operational-maturity decision before it is a technology decision. For most systems, a good modular monolith is cheaper and more reliable than premature microservices.
+
+## Quick Decision
+
+| Situation | Prefer | Why |
+| --- | --- | --- |
+| Small team, unclear domain | Modular monolith | Fast learning and low operational load |
+| Clear bounded context that needs independent deploys | Microservice | Team and scale boundaries are separate |
+| One problematic area inside a large monolith | Strangler fig | Gradual extraction instead of risky rewrite |
+| Only wanting technology variety | Stay monolithic | Operational cost rises without enough value |
+
+## Production Checklist
+
+- Problem: Does moving to microservices solve a real scale, team, or deployment problem?
+- Solution: Is the service boundary defined together with data ownership and API contract?
+- Trade-off: Microservices give independence; they add network, observability, deployment, and data consistency cost.
+- Failure mode: Downstream outages, partial failure, duplicate events, and distributed transaction scenarios must be considered.
+- Measurement: Track deploy frequency, lead time, incident rate, service latency, and cross-service call count.
+- Security/cost: More services mean more secrets, IAM, network policy, logs, and tracing cost.
+
 ## Architecture Comparison
 
 ```mermaid

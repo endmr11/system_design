@@ -1,5 +1,25 @@
 # Network Testing & Quality Assurance
 
+Mobile network tests should not be only happy-path API mocks. Weak connectivity, timeouts, offline behavior, retry, auth expiry, and corrupted data should be tested deliberately.
+
+## Quick Decision
+
+| Risk | Test | Watch Out |
+| --- | --- | --- |
+| Timeout and retry | Network condition test | Jitter and backoff should be verified |
+| Offline flow | Airplane mode test | Queue and sync must be checked |
+| API contract change | Contract test | Old mobile versions must be protected |
+| Security | TLS/pinning/auth test | Test secrets must not be real |
+
+## Production Checklist
+
+- Problem: Which network failure is currently found only after release?
+- Solution: Are mock, integration, device network profile, contract, and regression scope clear?
+- Trade-off: Network tests give confidence; they must stay simple to avoid flakiness.
+- Failure mode: Flaky mocks, real backend dependency, expired fixtures, and environment drift should be handled.
+- Measurement: Track network test pass rate, flaky rate, contract failure, retry coverage, and device coverage.
+- Security/cost: Test recordings must not contain tokens/PII; device farm and network proxy cost should be planned.
+
 ## Automated Testing
 
 ### Unit Tests

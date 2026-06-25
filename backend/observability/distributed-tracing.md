@@ -2,6 +2,24 @@
 
 Mikroservis mimarisinde isteklerin servisler arasında takibi ve korelasyon yönetimi için gelişmiş teknikler.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Request'i loglar arasında takip et | Correlation ID | Gateway'de üretilip tüm servislere taşınmalı |
+| Uçtan uca latency analizi | Distributed trace | Sampling ve span standardı gerekir |
+| İş süreci korelasyonu | Business correlation id | PII ile karıştırılmamalı |
+| Async mesaj takibi | Trace context propagation | Broker header desteği doğrulanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kaybolan istek hangi servis, event veya kullanıcı yolunda bulunamıyor?
+- Çözüm: Correlation id üretimi, header adı, async propagation ve log formatı standart mı?
+- Trade-off: Korelasyon debug süresini azaltır; header, log ve trace disiplinine ihtiyaç duyar.
+- Hata durumu: Yeni ID üretip zinciri koparma, async context kaybı ve proxy header silmesi ele alınmalı.
+- Ölçüm: Correlation coverage, missing trace id rate, async propagation success ve investigation time izlenmeli.
+- Güvenlik/maliyet: Correlation id tahmin edilebilir yetki token'ı olmamalı; uzun saklama log maliyeti üretir.
+
 ## Sistem Mimarisi
 
 ```mermaid

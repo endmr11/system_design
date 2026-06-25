@@ -4,6 +4,24 @@
 
 Location services are a critical component of modern mobile applications, enabling geolocation-based features, navigation, tracking, and location-aware content delivery. However, location tracking in background mode requires careful consideration of battery life, user privacy, and platform-specific limitations.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Approximate location is enough | Balanced/low accuracy | Uses less battery |
+| Background tracking | Geofence/significant change | Permission and explanation are critical |
+| Navigation | High accuracy foreground | Battery cost is high |
+| Location-based content | Cached last location | Stale location must be checked |
+
+## Production Checklist
+
+- Problem: Which accuracy and duration does the feature require?
+- Solution: Are permission flow, accuracy, update interval, background mode, and fallback clear?
+- Trade-off: Accurate location improves experience; it increases battery and privacy cost.
+- Failure mode: Permission denied, stale location, GPS unavailable, and background restrictions should be handled.
+- Measurement: Track permission opt-in, location latency, battery drain, update frequency, and error rate.
+- Security/cost: Treat location as PII; keep retention and sharing minimal.
+
 ## Platform-Specific Implementation
 
 ### Android Location Services

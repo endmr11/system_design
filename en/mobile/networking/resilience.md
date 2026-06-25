@@ -2,6 +2,24 @@
 
 Critical techniques for providing resilience against network interruptions and instability in mobile applications.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Temporary failure | Exponential backoff | Add jitter |
+| User can retry | Manual retry | Show state clearly |
+| Write operation | Idempotency key | Prevent duplicate actions |
+| Offline operation | Queue + sync | Conflict strategy is needed |
+
+## Production Checklist
+
+- Problem: How does the network failure interrupt the user flow?
+- Solution: Are timeout, retry count, backoff, cancellation, idempotency, and offline state clear?
+- Trade-off: Retry improves resilience; too much retry creates battery and backend load.
+- Failure mode: Retry storms, duplicate writes, stale offline queues, and token expiry should be handled.
+- Measurement: Track retry count, timeout rate, offline duration, queue age, and success-after-retry.
+- Security/cost: Offline queues should be encrypted if they store sensitive data; unnecessary retry is expensive.
+
 ## Network Resilience Fundamentals
 - **Mobile Network Challenges**: Intermittent connectivity, varying signal strength, network switching
 - **User Experience Goals**: Seamless operation despite network issues

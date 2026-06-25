@@ -2,6 +2,24 @@
 
 Service Discovery, mikroservis mimarisinde servislerin birbirini dinamik olarak bulabilmesi için kritik bir bileşendir. Bu bölümde Spring Cloud Netflix Eureka ve alternatif çözümlerin detaylı implementasyonunu inceleyeceğiz.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Kubernetes içinde servisler | Kubernetes Service/DNS | Ayrı registry gerekmeyebilir |
+| VM/bare-metal mikroservis | Consul/Eureka | Health check doğruluğu kritik |
+| Multi-region discovery | Region-aware registry | Yanlış region latency artırır |
+| Az sayıda statik servis | Statik config yeterli olabilir | YAGNI kontrolü yap |
+
+## Üretim Kontrol Listesi
+
+- Problem: Servis adresleri gerçekten dinamik mi, yoksa sabit config yeterli mi?
+- Çözüm: Registration, health check, deregistration, TTL ve client-side cache davranışı net mi?
+- Trade-off: Discovery esneklik sağlar; stale endpoint ve registry bağımlılığı ekler.
+- Hata durumu: Registry outage, stale DNS, unhealthy instance routing ve split-brain registry ele alınmalı.
+- Ölçüm: Registration count, lookup latency, health check failure, stale route ve registry error rate izlenmeli.
+- Güvenlik/maliyet: Registry sadece güvenilir servisleri kabul etmeli; yanlış discovery tüm trafiği etkiler.
+
 ```mermaid
 graph TB
     subgraph "Service Registry"

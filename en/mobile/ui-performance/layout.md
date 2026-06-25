@@ -2,6 +2,24 @@
 
 Layout performance is crucial for maintaining smooth user interactions in mobile applications. This section covers layout optimization techniques, constraint optimization, and responsive design patterns that minimize layout calculations and improve rendering performance.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Too many nested layouts | Flatten layout | Do not destroy readability |
+| List item is slow | Fixed/predictable size | Dynamic height is costly |
+| Responsive screen | Use constraints carefully | Constraint chains should not grow |
+| Frequent state changes | Narrow recomposition/layout scope | Do not refresh the whole screen |
+
+## Production Checklist
+
+- Problem: Which screen spends how many ms in layout?
+- Solution: Are view hierarchy, constraint count, invalidation scope, and placeholder sizes clear?
+- Trade-off: Flexible layout improves maintenance; it can increase measurement cost.
+- Failure mode: Layout thrashing, text overflow, infinite constraints, and orientation bugs should be handled.
+- Measurement: Track layout time, measure count, re-layout frequency, frame time, and jank rate.
+- Security/cost: Dynamic font/accessibility sizes must be supported; layout test matrix adds device cost.
+
 ## Constraint Layout Optimization
 
 ### Android Layout Performance

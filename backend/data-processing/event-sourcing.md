@@ -2,6 +2,24 @@
 
 Event Sourcing, sistem durumunun geçmiş tüm olaylar (event'ler) olarak kaydedilmesi yaklaşımıdır. Bu bölümde Event Sourcing'in Spring Boot ile detaylı implementasyonunu inceleyeceğiz.
 
+## Hızlı Karar
+
+| Durum | Event Sourcing Kullan | Dikkat |
+| --- | --- | --- |
+| Tam audit ve zaman yolculuğu gerekiyor | Evet | Event schema evrimi zorlaşır |
+| Domain olayları işin merkezinde | Evet | Aggregate sınırları net olmalı |
+| Sadece son durum yeterli | Hayır | Basit tablo daha ucuzdur |
+| Analitik için olay toplama | Ayrı event log yeterli olabilir | Domain state ile karıştırma |
+
+## Üretim Kontrol Listesi
+
+- Problem: Geçmiş olayları saklamak hangi iş veya denetim ihtiyacını çözüyor?
+- Çözüm: Event schema, versioning, snapshot, replay ve projection stratejisi net mi?
+- Trade-off: Audit ve rebuild kabiliyeti kazanılır; storage, migration ve replay karmaşıklığı eklenir.
+- Hata durumu: Poison event, duplicate event, failed replay, schema mismatch ve projection drift ele alınmalı.
+- Ölçüm: Append latency, replay time, event store growth, projection lag ve handler error rate izlenmeli.
+- Güvenlik/maliyet: Event'ler silinmesi zor tarihçe oluşturur; PII, retention ve encryption baştan tasarlanmalı.
+
 ## Event Sourcing Mimarisi
 
 ```mermaid

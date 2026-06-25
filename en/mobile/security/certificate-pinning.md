@@ -2,6 +2,24 @@
 
 Certificate pinning is a critical security technique that prevents man-in-the-middle (MITM) attacks by validating that the server's certificate matches a known good certificate or public key. This section covers comprehensive certificate pinning strategies for mobile applications.
 
+## Quick Decision
+
+| Situation | Use Pinning | Watch Out |
+| --- | --- | --- |
+| Highly sensitive API | Yes | Backup pin is required |
+| Certificates change often | Public key pin | Rotation plan is needed |
+| Development environment | Separate pin/config | Production pin must not be weakened |
+| Low-risk public content | TLS may be enough | Run a YAGNI check |
+
+## Production Checklist
+
+- Problem: Which MITM risk does pinning reduce?
+- Solution: Are pin type, backup pin, rotation, kill switch, and error UX clear?
+- Trade-off: MITM risk drops; a wrong pin can break all networking.
+- Failure mode: Expired certs, pin mismatch, captive portals, and clock skew should be handled.
+- Measurement: Track pin failures, TLS errors, affected versions, and endpoint availability.
+- Security/cost: Pin bypass must not ship to production even for debug; rotation needs operational cost.
+
 ## Understanding Certificate Pinning
 
 Certificate pinning works by embedding expected certificate information in the mobile application and validating server certificates against this known good information during SSL/TLS handshake.

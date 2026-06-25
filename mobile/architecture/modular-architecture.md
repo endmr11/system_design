@@ -2,6 +2,24 @@
 
 Modern enterprise mobil uygulamalarda modüler mimari, ölçeklenebilirlik, sürdürülebilirlik ve takım verimliliği açısından kritik öneme sahip bir mimari yaklaşımdır. Bu yaklaşım, büyük ölçekli uygulamaları yönetilebilir, bağımsız modüllere ayırarak paralel geliştirme, izole test etme ve aşamalı dağıtımı mümkün kılar.
 
+## Hızlı Karar
+
+| Durum | Modül Sınırı | Dikkat |
+| --- | --- | --- |
+| Ekipler farklı feature'larda çalışıyor | Feature module | Bağımlılık yönü korunmalı |
+| Domain ortak kullanılıyor | Core/domain module | Shared module çöplüğe dönmesin |
+| Build süresi yüksek | Build module split | Fazla modül de yavaşlatır |
+| Küçük uygulama | Basit katman yeterli | Erken modülerlik maliyetlidir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Modül ayrımı ekip, build veya domain karmaşıklığını azaltıyor mu?
+- Çözüm: Dependency direction, public API, navigation boundary ve ownership net mi?
+- Trade-off: Modüller paralel geliştirme sağlar; dependency graph ve release koordinasyonu ekler.
+- Hata durumu: Cyclic dependency, shared module bloat, duplicate model ve hidden coupling ele alınmalı.
+- Ölçüm: Build time, module dependency count, change blast radius ve test duration izlenmeli.
+- Güvenlik/maliyet: Hassas feature modülleri erişim sınırı gerektirir; modül sayısı CI maliyetini artırabilir.
+
 ## Modüler Mimari İlkeleri
 
 Modüler mimari temelde, endişelerin ayrılması ilkesine dayanan ve yüksek uyum, düşük bağlantı hedeflerini başaran bir sistem tasarım felsefesidir. Bu yaklaşım, karmaşık sistemleri iyi tanımlanmış sınırlara sahip daha küçük, odaklanmış bileşenlere ayırır.
@@ -623,4 +641,3 @@ class ModuleIntegrationTest {
 ```
 
 Modüler mimari deseninin kapsamlı uygulaması, büyük ölçekli mobil uygulamalarda sürdürülebilirlik, ölçeklenebilirlik ve takım verimliliğini dramatik olarak iyileştirir. Bu sistematik yaklaşım, karmaşık sistemlerin yönetilebilir bileşenlere ayrılmasını sağlarken, yüksek kaliteli yazılım teslimatını kolaylaştırır.
-

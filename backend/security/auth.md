@@ -4,6 +4,24 @@
 
 Kimlik doğrulama (Authentication) ve yetkilendirme (Authorization), güvenli uygulamaların temel taşlarıdır. Spring Security ile OAuth2, JWT ve method-level security implementasyonları kapsamlı güvenlik çözümleri sunar.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Kullanıcı kimliği | OAuth2/OIDC | Token lifetime ve refresh akışı net olmalı |
+| Servisler arası çağrı | mTLS veya client credentials | Secret rotation gerekir |
+| İnce yetki kontrolü | RBAC/ABAC + method security | Object-level auth unutulmamalı |
+| Mobil/web client | Authorization code + PKCE | Implicit flow kullanma |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kim olduğunu bilmek mi, ne yapabileceğini sınırlamak mı gerekiyor?
+- Çözüm: Token claim, scope, role, session, revocation ve audit standardı net mi?
+- Trade-off: Kısa token güvenliği artırır; refresh ve kullanıcı deneyimi karmaşıklaşır.
+- Hata durumu: Expired token, stolen token, privilege escalation ve confused deputy ele alınmalı.
+- Ölçüm: Login failure, token refresh rate, authorization deny rate ve suspicious session izlenmeli.
+- Güvenlik/maliyet: Yetki kontrolü backend'de zorunlu olmalı; merkezi auth servisi kritik dependency'dir.
+
 ## OAuth2 Implementation (Spring Boot)
 
 ### 1. Authorization Server

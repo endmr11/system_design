@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda ağ trafiğini optimize etmek ve kullanıcı deneyimini iyileştirmek için kritik teknikler.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Kullanıcı hızlı input üretiyor | Debounce | Fazla gecikme hissedilir |
+| Çok küçük istek var | Batch | Hata ayrıştırması gerekir |
+| Aynı veri tekrar isteniyor | Request coalescing | Cache key doğru olmalı |
+| Kritik anlık aksiyon | Debounce etme | Kullanıcı güveni bozulur |
+
+## Üretim Kontrol Listesi
+
+- Problem: Ağ çağrısı gerçekten fazla mı, yoksa backend yavaş mı?
+- Çözüm: Batch window, max size, cancellation, partial failure ve retry net mi?
+- Trade-off: Daha az istek batarya ve maliyeti azaltır; latency ve hata yönetimi karmaşıklaşır.
+- Hata durumu: Lost request, duplicate send, partial batch failure ve stale result ele alınmalı.
+- Ölçüm: Request count, batch size, debounce delay, cancellation rate ve p95 latency izlenmeli.
+- Güvenlik/maliyet: Farklı kullanıcı/tenant istekleri aynı batch'te karıştırılmamalı.
+
 ## İstek Birleştirme Stratejileri
 
 ### Kavramsal Çerçeve

@@ -2,6 +2,24 @@
 
 Service Mesh is an infrastructure layer used to manage service-to-service communication in microservice architecture. In this section, we will examine Istio and Spring Boot integration in detail.
 
+## Quick Decision
+
+| Situation | Use Mesh | Watch Out |
+| --- | --- | --- |
+| Many services and shared traffic policy | Yes | Operations team must be ready |
+| Need mTLS, traffic split, retry standard | Yes | Bad policies have wide impact |
+| Few services, simple traffic | No | Gateway/library may be enough |
+| Debugging is already hard | Be careful | Sidecars add visibility and complexity |
+
+## Production Checklist
+
+- Problem: Which repeated communication problem does the mesh centralize?
+- Solution: Are mTLS, authorization policy, retry, timeout, traffic split, and observability standards clear?
+- Trade-off: You gain shared policy and visibility; you add sidecar resource, latency, and operational cost.
+- Failure mode: Misconfigured policies, sidecar crashes, control-plane outages, and retry amplification should be handled.
+- Measurement: Track sidecar CPU/memory, request latency, policy deny rate, mTLS errors, and control-plane health.
+- Security/cost: Mesh simplifies security but wildcard policies are risky; every sidecar creates capacity cost.
+
 ## Istio Service Mesh
 
 ### Sidecar Proxy Pattern

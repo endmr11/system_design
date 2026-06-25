@@ -2,6 +2,24 @@
 
 Dağıtık izleme, mikroservis mimarisinde isteklerin servisler arasında nasıl ilerlediğini takip etmek için kullanılır.
 
+## Hızlı Karar
+
+| İhtiyaç | Trace Kullan | Dikkat |
+| --- | --- | --- |
+| Servis zinciri latency analizi | Evet | Context propagation standardı gerekir |
+| Tek servis içi basit hata | Log/metrik yeterli olabilir | Trace maliyeti gereksiz olabilir |
+| Kritik iş akışı takibi | Evet | Business span isimleri anlamlı olmalı |
+| Yüksek trafik | Sampling | Önemli hatalar örneklem dışında kalmamalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Trace hangi servis bağımlılığını veya kullanıcı yolunu görünür kılacak?
+- Çözüm: Trace id, span naming, baggage, sampling ve error tagging standardı net mi?
+- Trade-off: Trace ilişkiyi gösterir; sampling, storage ve instrumentation maliyeti getirir.
+- Hata durumu: Broken context, missing span, clock skew ve oversampling ele alınmalı.
+- Ölçüm: Trace coverage, span count, sampling rate, ingestion cost ve dependency latency izlenmeli.
+- Güvenlik/maliyet: Baggage içine hassas veri koyma; her span depolama ve network maliyeti üretir.
+
 ## Dağıtık İzleme Kavramları
 
 ### Temel Kavramlar

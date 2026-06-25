@@ -2,6 +2,24 @@
 
 CQRS, yazma (Komut) ve okuma (Sorgu) işlemlerini ayrı modellerde yönetme desenidir. Bu bölümde Spring Boot ile CQRS'in detaylı uygulamasını inceleyeceğiz.
 
+## Hızlı Karar
+
+| Durum | CQRS Kullan | Dikkat |
+| --- | --- | --- |
+| Okuma ve yazma modeli belirgin farklı | Evet | İki modelin senkronizasyonu gerekir |
+| Yüksek okuma trafiği, karmaşık sorgular | Evet | Projection gecikmesi kullanıcıya anlatılmalı |
+| Basit CRUD ekranı | Hayır | Ek handler/model bakım borcu olur |
+| Audit ve event geçmişi önemli | Event Sourcing ile birlikte değerlendir | Operasyon karmaşıklığı artar |
+
+## Üretim Kontrol Listesi
+
+- Problem: Ayrı okuma/yazma modeli gerçek bir karmaşıklığı azaltıyor mu?
+- Çözüm: Command validation, query model güncelleme, projection rebuild ve idempotency net mi?
+- Trade-off: Okuma ve yazma bağımsız optimize edilir; eventual consistency ve çift model maliyeti eklenir.
+- Hata durumu: Projection lag, duplicate command, failed handler ve read model drift senaryoları ele alınmalı.
+- Ölçüm: Command latency, query latency, projection lag, handler error rate ve rebuild süresi izlenmeli.
+- Güvenlik/maliyet: Read model hassas veriyi çoğaltabilir; ekstra storage ve worker maliyeti planlanmalı.
+
 ## CQRS Mimarisi
 
 ### Genel Mimari Diyagramı

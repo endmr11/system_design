@@ -2,6 +2,24 @@
 
 Capacity Planning is essential for ensuring systems can handle current and future load demands while optimizing costs and maintaining performance standards.
 
+## Quick Decision
+
+| Signal | Action | Watch Out |
+| --- | --- | --- |
+| Usage trend is rising | Forecast + scale plan | Separate peak and seasonal effects |
+| Saturation is near | Add capacity or optimize | Root cause must be measured |
+| Resources are idle | Rightsizing | Preserve burst needs |
+| New campaign/launch | Load test + pre-scale | Include downstream capacity |
+
+## Production Checklist
+
+- Problem: Which resource will run out, and when?
+- Solution: Are forecast, headroom, autoscaling, load test, and rollback plan clear?
+- Trade-off: Too much capacity costs money; too little creates outages.
+- Failure mode: Hot partitions, autoscaling lag, quota limits, and dependency saturation should be handled.
+- Measurement: Track utilization, saturation, request rate, queue depth, forecast error, and unit cost.
+- Security/cost: Capacity increases must not weaken security limits; reservation/commitment decisions need care.
+
 ## 1. Capacity Planning Fundamentals
 
 ### Capacity Planning Process

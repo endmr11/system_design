@@ -2,6 +2,24 @@
 
 Microservice communication patterns are critical for building scalable and resilient distributed systems. This section covers comprehensive Spring Boot implementations for both synchronous (REST/gRPC) and asynchronous (Event-Driven) communication models.
 
+## Quick Decision
+
+| Situation | Communication | Watch Out |
+| --- | --- | --- |
+| User expects an immediate response | Synchronous REST/gRPC | Timeout and circuit breaker are required |
+| Work is long-running or retryable | Async event/queue | Idempotency is required |
+| Services change together often | Reconsider the boundary | Microservices may be premature |
+| Data consistency is critical | Synchronous or saga | Partial failure must be designed explicitly |
+
+## Production Checklist
+
+- Problem: Does the service split create real independence, or only add a network call?
+- Solution: Are timeout, retry, idempotency, schema versioning, and correlation IDs standardized?
+- Trade-off: Synchronous flow looks simple but creates chain latency; async flow is resilient but harder to debug.
+- Failure mode: Downstream outage, duplicate messages, poison events, timeouts, and retry storms should be handled.
+- Measurement: Track dependency latency, error rate, queue lag, retry count, and trace completeness.
+- Security/cost: Service-to-service auth/mTLS is needed; every call creates log, trace, and network cost.
+
 ## Communication Models
 
 ### Synchronous Communication

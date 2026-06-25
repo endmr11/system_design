@@ -2,6 +2,24 @@
 
 Multi-region deployment, modern uygulamaların farklı coğrafi bölgelerde barındırılmasıyla kullanıcıya en yakın noktadan hizmet vermeyi ve küresel ölçekte yüksek erişilebilirlik sağlamayı amaçlayan kritik bir sistem tasarımı yaklaşımıdır. Bu yaklaşım, hem kullanıcı deneyimini önemli ölçüde iyileştirirken hem de sistem güvenilirliğini maksimum seviyeye çıkarır.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Felaket kurtarma temel ihtiyaç | Active-passive | Failover tatbikatı yapılmalı |
+| Global düşük latency | Active-active | Veri tutarlılığı ve conflict çözümü zorlaşır |
+| Tek region yeterli trafik | Multi-region ertele | Maliyet ve operasyon borcu yüksek |
+| Regülasyon region şartı koyuyor | Region partitioning | Kullanıcı ve veri routing'i kesin olmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Multi-region hangi hedefi sağlıyor: latency, availability, compliance veya DR?
+- Çözüm: Traffic routing, data replication, failover, failback ve region isolation net mi?
+- Trade-off: Erişilebilirlik ve latency iyileşir; consistency, test ve operasyon maliyeti artar.
+- Hata durumu: Region outage, split-brain, stale DNS, replication lag ve partial dependency outage çalışılmalı.
+- Ölçüm: Region latency, failover time, replication lag, error budget burn ve cross-region cost izlenmeli.
+- Güvenlik/maliyet: Regionlar arası erişim IAM ve encryption ile sınırlandırılmalı; veri transferi faturası hızla büyür.
+
 ## Çoklu Bölge Deployment'ının Temelleri
 
 Çoklu bölge deployment stratejisi, uygulamanızın farklı coğrafi lokasyonlarda çalışan instance'larını koordine ederek küresel bir hizmet ağı oluşturur. Bu approach'un temelinde, kullanıcıların fiziksel olarak en yakın sunuculara erişebilmesi ve böylece ağ gecikmesinin (latency) minimize edilmesi yatar. Aynı zamanda, herhangi bir bölgede yaşanabilecek teknik sorunlar veya doğal afetler durumunda sistemin kesintisiz çalışmaya devam edebilmesi için kritik bir güvenlik ağı sağlar.

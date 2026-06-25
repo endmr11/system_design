@@ -2,6 +2,24 @@
 
 Modern applications require sophisticated authentication and authorization mechanisms to protect resources and ensure proper access control. This chapter covers OAuth2 implementation, JWT token management, method-level security, and Spring Security configuration with comprehensive Spring Boot examples.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| User identity | OAuth2/OIDC | Token lifetime and refresh flow must be clear |
+| Service-to-service call | mTLS or client credentials | Secret rotation is required |
+| Fine-grained permission | RBAC/ABAC + method security | Object-level auth must not be forgotten |
+| Mobile/web client | Authorization code + PKCE | Do not use implicit flow |
+
+## Production Checklist
+
+- Problem: Do you need to know who the caller is, or limit what they can do?
+- Solution: Are token claims, scopes, roles, sessions, revocation, and audit standards clear?
+- Trade-off: Short tokens improve security; refresh and user experience get more complex.
+- Failure mode: Expired tokens, stolen tokens, privilege escalation, and confused deputy should be handled.
+- Measurement: Track login failures, token refresh rate, authorization deny rate, and suspicious sessions.
+- Security/cost: Authorization must be enforced in the backend; central auth service is a critical dependency.
+
 ## OAuth2 Implementation with Spring Boot
 
 ### OAuth2 Authorization Server Configuration

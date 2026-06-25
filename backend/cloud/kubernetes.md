@@ -1,5 +1,25 @@
 # Kubernetes Temelleri
 
+Kubernetes, container'ları dağıtık bir kontrol düzlemiyle çalıştırma ve iyileştirme aracıdır. Küçük sistemler için fazla gelebilir; ama çoklu servis, autoscaling, rolling deploy ve self-healing ihtiyacı gerçekse operasyon standardı sağlar.
+
+## Hızlı Karar
+
+| İhtiyaç | Kubernetes Özelliği | Dikkat |
+| --- | --- | --- |
+| Servisi ayakta tutma | Deployment, ReplicaSet, probes | Yanlış probe kesinti yaratır |
+| İç/dış erişim | Service, Ingress | Ağ politikası ve TLS net olmalı |
+| Konfigürasyon yönetimi | ConfigMap, Secret | Secret encryption ayrıca düşünülmeli |
+| Otomatik ölçekleme | HPA/VPA | Metrik seçimi yanlışsa thrashing olur |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kubernetes hangi operasyon yükünü azaltıyor, hangi yeni yükü ekliyor?
+- Çözüm: Request/limit, probe, rollout, rollback, namespace ve RBAC standardı var mı?
+- Trade-off: Self-healing ve ölçekleme kazanılır; cluster yönetimi, YAML karmaşıklığı ve öğrenme maliyeti eklenir.
+- Hata durumu: CrashLoopBackOff, ImagePullBackOff, node pressure, DNS hatası ve config rollout senaryoları çalışılmalı.
+- Ölçüm: Pod restart, CPU/memory saturation, HPA event, deployment duration, ingress latency ve cluster cost izlenmeli.
+- Güvenlik/maliyet: Least privilege RBAC, network policy ve secret yönetimi şarttır; gereksiz replica ve over-request doğrudan maliyettir.
+
 ## Giriş
 
 Kubernetes, konteynerleri organize etmek, ölçeklendirmek ve yönetmek için kullanılan açık kaynaklı bir container orkestrasyon platformudur. Google tarafından geliştirilen Kubernetes, modern uygulama dağıtımının temel taşlarından biridir.

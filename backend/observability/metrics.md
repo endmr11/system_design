@@ -2,6 +2,24 @@
 
 Uygulama performansını ve sistem sağlığını izlemek için metriklerin toplanması ve görselleştirilmesi kritiktir.
 
+## Hızlı Karar
+
+| İhtiyaç | Metrik | Dikkat |
+| --- | --- | --- |
+| Kullanıcı deneyimi | Latency, error rate | Ortalama değil p95/p99 önemli |
+| Sistem kapasitesi | CPU, memory, saturation | Limit ve request birlikte okunmalı |
+| İş sağlığı | Business KPI | Teknik alarm yerine ürün sinyali olabilir |
+| Yüksek detay | Label/cardinality kontrolü | Kardinalite maliyeti patlatır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Metrik hangi karar veya alarmı besliyor?
+- Çözüm: SLI, threshold, owner, dashboard ve alert action net mi?
+- Trade-off: Fazla metrik görünürlük sağlar; gürültü ve depolama maliyeti ekler.
+- Hata durumu: Yanlış label, yüksek kardinalite, eksik scrape ve alert fatigue ele alınmalı.
+- Ölçüm: Scrape success, cardinality, alert precision, dashboard usage ve metric storage cost izlenmeli.
+- Güvenlik/maliyet: Label içine kullanıcı verisi koyma; uzun retention ve yüksek çözünürlük maliyeti artırır.
+
 ## Spring Boot Actuator Metrics
 
 ### Micrometer Entegrasyonu

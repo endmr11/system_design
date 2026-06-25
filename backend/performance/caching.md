@@ -2,6 +2,24 @@
 
 Caching, sistemlerin performansını dramtik olarak artıran en etkili optimizasyon tekniklerinden biridir. Verileri geçici olarak hızlı erişilebilir konumlarda saklayarak, pahalı hesaplama ve I/O işlemlerini minimize eder. Spring Boot, çok katmanlı caching stratejileri için kapsamlı destek sunar.
 
+## Hızlı Karar
+
+| Durum | Cache Kullan | Dikkat |
+| --- | --- | --- |
+| Veri sık okunuyor, az değişiyor | Evet | TTL ve invalidation net olmalı |
+| Hesaplama pahalı | Evet | Cache key doğru tasarlanmalı |
+| Veri yetkiye göre değişiyor | Dikkatli | Kullanıcılar arası sızıntı riski |
+| Yazma sonrası kesin doğruluk | Sınırlı | Stale read kabul edilmeyebilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Cache hangi pahalı işlemi azaltıyor?
+- Çözüm: Key, TTL, invalidation, warmup ve fallback davranışı net mi?
+- Trade-off: Latency düşer; tutarsızlık, memory ve operasyon maliyeti eklenir.
+- Hata durumu: Cache stampede, hot key, stale data, eviction storm ve Redis outage ele alınmalı.
+- Ölçüm: Hit ratio, miss latency, eviction count, memory usage ve backend load izlenmeli.
+- Güvenlik/maliyet: Yetkili veri cache'lenirken tenant/user ayrımı şarttır; büyük cache bellek maliyeti üretir.
+
 ## Cache Architecture Overview
 
 ```mermaid

@@ -2,6 +2,24 @@
 
 Authentication is the cornerstone of mobile application security. Modern mobile apps require sophisticated authentication mechanisms that balance security, user experience, and platform capabilities. This section covers comprehensive authentication strategies from basic patterns to advanced enterprise-grade implementations.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Web/mobile OAuth | Authorization Code + PKCE | Do not use implicit flow |
+| Session continuity | Refresh token rotation | Secure storage is required |
+| Step-up security | Biometric or re-auth | Biometrics unlock, they do not identify alone |
+| Enterprise login | OIDC/SAML broker | Logout and token revoke must be clear |
+
+## Production Checklist
+
+- Problem: How are user identity, device trust, and session duration verified?
+- Solution: Are PKCE, token storage, refresh, revoke, logout, and error state clear?
+- Trade-off: Secure session flow creates more screens and edge cases.
+- Failure mode: Refresh loops, account-switch bugs, stolen tokens, and clock skew should be handled.
+- Measurement: Track login success, refresh failure, logout completion, auth errors, and suspicious sessions.
+- Security/cost: Tokens must not be stored in plain storage; auth SDK freshness should be tracked.
+
 ## Authentication Architecture Overview
 
 Mobile authentication operates across multiple layers:

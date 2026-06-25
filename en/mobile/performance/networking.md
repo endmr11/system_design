@@ -1,5 +1,25 @@
 # Network Layers & Data Transfer
 
+In mobile performance, networking is not only about speed; it also affects battery, data usage, offline behavior, and failure recovery. Measure first, then add batching/cache/compression.
+
+## Quick Decision
+
+| Symptom | Look First | Watch Out |
+| --- | --- | --- |
+| Slow screen | Endpoint p95 latency | Separate UI and backend cost |
+| Too much data | Compression/pagination | Decode CPU cost |
+| Too many requests | Batch/debounce/cache | Do not delay critical actions |
+| Weak connectivity | Retry/offline queue | Idempotency is required |
+
+## Production Checklist
+
+- Problem: Is the network bottleneck latency, payload, connection instability, or backend failure?
+- Solution: Are timeout, retry, cancellation, cache, compression, and offline state clear?
+- Trade-off: A smarter network layer adds more state and testing cost.
+- Failure mode: Retry storms, duplicate writes, timeouts, partial responses, and token expiry should be handled.
+- Measurement: Track network latency, error rate, payload size, retry count, cancellation rate, and data usage.
+- Security/cost: TLS and auth controls must not be bypassed for performance; unnecessary transfer costs users money.
+
 ## 4.1. Batching & Debouncing
 
 ### Request Batching Strategies

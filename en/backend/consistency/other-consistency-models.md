@@ -2,6 +2,24 @@
 
 In distributed systems, beyond Strong and Eventual Consistency, various consistency models offer different trade-offs between performance and consistency guarantees. These models provide partial ordering guarantees and are suitable for specific use cases.
 
+## Quick Decision
+
+| Need | Model | Watch Out |
+| --- | --- | --- |
+| User immediately sees their own write | Read-your-writes | Requires session routing or version token |
+| Reads do not go backward over time | Monotonic reads | Replica selection must be consistent |
+| Cause-effect relationship is preserved | Causal consistency | Vector clock/metadata cost appears |
+| Everyone observes the same order | Sequential consistency | Coordination cost increases |
+
+## Production Checklist
+
+- Problem: Which inconsistency would the user notice and lose trust over?
+- Solution: Are session affinity, version tokens, vector clocks, or conflict policy clear?
+- Trade-off: Fine-grained consistency models may be cheaper than strong consistency; they add metadata and routing complexity.
+- Failure mode: Replica switches, stale sessions, clock skew, conflict merges, and cache bypass should be considered.
+- Measurement: Track stale read rate, conflict count, session stickiness success, and replica lag.
+- Security/cost: Consistency metadata must not leak sensitive user relationships; sticky routing can hurt capacity balance.
+
 ## Causal Consistency
 
 ### Definition and Characteristics

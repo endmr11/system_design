@@ -320,8 +320,16 @@ export default withMermaid(defineConfig({
               text: "1. Uygulama Mimarileri & Durum Yönetimi",
               items: [
                 {
+                  text: "Bölüm Özeti",
+                  link: "/mobile/architecture/",
+                },
+                {
                   text: "Mimari Desenler",
                   link: "/mobile/architecture/patterns",
+                },
+                {
+                  text: "Clean Architecture",
+                  link: "/mobile/architecture/clean-architecture",
                 },
                 {
                   text: "Durum Yönetimi Stratejileri",
@@ -344,6 +352,10 @@ export default withMermaid(defineConfig({
             {
               text: "2. Veri Saklama & Senkronizasyon",
               items: [
+                {
+                  text: "Bölüm Özeti",
+                  link: "/mobile/storage/",
+                },
                 {
                   text: "Yerel Veritabanı Seçenekleri",
                   link: "/mobile/storage/local-databases",
@@ -930,8 +942,16 @@ export default withMermaid(defineConfig({
               text: "1. Application Architectures & State Management",
               items: [
                 {
+                  text: "Chapter Overview",
+                  link: "/en/mobile/architecture/",
+                },
+                {
                   text: "Architectural Patterns",
                   link: "/en/mobile/architecture/patterns",
+                },
+                {
+                  text: "Clean Architecture",
+                  link: "/en/mobile/architecture/clean-architecture",
                 },
                 {
                   text: "State Management Strategies",
@@ -954,6 +974,10 @@ export default withMermaid(defineConfig({
             {
               text: "2. Data Storage & Synchronization",
               items: [
+                {
+                  text: "Chapter Overview",
+                  link: "/en/mobile/storage/",
+                },
                 {
                   text: "Local Database Options",
                   link: "/en/mobile/storage/local-databases",
@@ -1267,4 +1291,4 @@ export default withMermaid(defineConfig({
 
     logo: 'logo.png',
   },
-})) 
+}))

@@ -2,6 +2,24 @@
 
 Transport layer security is crucial for protecting data in transit. This chapter covers HTTPS configuration, SSL certificate management, mutual TLS (mTLS) implementation, and certificate rotation strategies in Spring Boot applications.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Public API encryption | TLS | Certificate renewal should be automatic |
+| Service-to-service trust | mTLS | CA and rotation management are needed |
+| Internal network | TLS may still be required | Do not assume the network is trusted |
+| Legacy client | Limited protocol/cipher support | Do not weaken security too far |
+
+## Production Checklist
+
+- Problem: Which traffic is protected from eavesdropping, tampering, or impersonation?
+- Solution: Are certificate source, renewal, trust store, cipher policy, and hostname validation clear?
+- Trade-off: mTLS provides strong identity; it adds certificate distribution and debugging complexity.
+- Failure mode: Expired certs, wrong SAN, broken chains, clock skew, and weak ciphers should be handled.
+- Measurement: Track cert expiry, handshake errors, TLS version, mTLS denies, and renewal success.
+- Security/cost: Certificate private keys must be protected; TLS termination point determines data visibility.
+
 ## HTTPS Configuration in Spring Boot
 
 ### SSL Certificate Management and KeyStore Setup

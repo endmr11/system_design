@@ -1,5 +1,25 @@
 # Ağ Testi & Kalite Güvencesi
 
+Mobil ağ testleri yalnızca happy path API mock'ları olmamalıdır. Zayıf bağlantı, timeout, offline, retry, auth expiry ve veri bozulması bilinçli test edilmelidir.
+
+## Hızlı Karar
+
+| Risk | Test | Dikkat |
+| --- | --- | --- |
+| Timeout ve retry | Network condition test | Jitter ve backoff doğrulanmalı |
+| Offline akış | Airplane mode test | Queue ve sync kontrol edilmeli |
+| API contract değişimi | Contract test | Mobil eski sürüm korunmalı |
+| Güvenlik | TLS/pinning/auth test | Test secret'ları gerçek olmamalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi ağ hatası release sonrası yakalanıyor?
+- Çözüm: Mock, integration, device network profile, contract ve regression kapsamı net mi?
+- Trade-off: Ağ testleri güven verir; flaky olmaması için sade tutulmalıdır.
+- Hata durumu: Flaky mock, real backend dependency, expired fixture ve environment drift ele alınmalı.
+- Ölçüm: Network test pass rate, flaky rate, contract failure, retry coverage ve device coverage izlenmeli.
+- Güvenlik/maliyet: Test kayıtlarında token/PII olmamalı; device farm ve network proxy maliyeti planlanmalı.
+
 ## Otomatik Testler
 
 ### Birim Testleri

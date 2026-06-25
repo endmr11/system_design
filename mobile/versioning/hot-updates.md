@@ -2,6 +2,24 @@
 
 Anlık güncellemeler (hot update) ve kod gönderme (code push) işlevleri, mobil uygulamaların JavaScript kodunu, varlıklarını ve yapılandırmalarını kullanıcıların uygulama mağazasından yeni bir sürüm indirmesine gerek kalmadan güncelleyebilmesini sağlar. Bu yetenek özellikle React Native ve hibrit uygulamalar için çok değerlidir.
 
+## Hızlı Karar
+
+| Durum | Hot Update Kullan | Dikkat |
+| --- | --- | --- |
+| JS/asset bug fix | Evet | Native API değişmemeli |
+| Güvenlik açığı | Dikkatli | Store policy ve review riski |
+| Native davranış değişimi | Hayır | App store release gerekir |
+| Küçük config değişimi | Remote config daha iyi | Code push fazla olabilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Store release beklemeden hangi hata düzelecek?
+- Çözüm: Bundle compatibility, signature, rollout, rollback ve version targeting net mi?
+- Trade-off: Hızlı düzeltme sağlar; policy, test ve binary uyumluluk riski getirir.
+- Hata durumu: Bad bundle, incompatible native module, failed download ve rollback loop ele alınmalı.
+- Ölçüm: Update adoption, crash delta, download failure, rollback count ve affected version izlenmeli.
+- Güvenlik/maliyet: Update imzalanmalı ve doğrulanmalı; hot update store kurallarını aşmak için kullanılmamalı.
+
 ## Mimari Genel Bakış
 
 ### Güncelleme Türleri

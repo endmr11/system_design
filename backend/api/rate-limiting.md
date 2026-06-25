@@ -1,5 +1,25 @@
 # 5.2. Hız Sınırlama & Kısıtlama
 
+Hız sınırlama, sistemi kötüye kullanım, istemci hatası ve ani trafik artışına karşı koruyan geri basınç mekanizmasıdır. İyi bir limit yalnızca isteği reddetmez; istemciye ne zaman tekrar deneyeceğini, operasyona da hangi kaynağın baskı altında olduğunu gösterir.
+
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Not |
+| --- | --- | --- |
+| Kısa süreli burst'e izin ver | Token bucket | Kullanıcı deneyimi daha yumuşak olur |
+| Sabit çıkış hızı iste | Leaky bucket | Kuyruk gecikmesi izlenmelidir |
+| Basit sayaç yeterli | Fixed window | Pencere sınırında ani çift kullanım olabilir |
+| Dağıtık servis kümesi | Redis veya gateway tabanlı limit | Lokal sayaçlar node sayısıyla çarpılır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Limit kullanıcıyı mı, IP'yi mi, tenant'ı mı, API key'i mi koruyor?
+- Çözüm: Limit anahtarı, süre penceresi, burst kapasitesi ve `Retry-After` cevabı net mi?
+- Trade-off: Sıkı limit kaynakları korur; fazla sıkı limit gerçek kullanıcıyı cezalandırır.
+- Hata durumu: Limit aşımı `429 Too Many Requests` dönmeli ve loglarda kimlik, rota, kalan kota görünmeli.
+- Ölçüm: Rejected request rate, allowed request rate, Redis latency, queue depth ve downstream error rate izlenmeli.
+- Güvenlik/maliyet: Rate limit WAF yerine geçmez; yüksek kardinaliteli anahtarlar Redis bellek maliyetini artırır.
+
 ## Hız Sınırlama Stratejileri
 
 ### Token Bucket

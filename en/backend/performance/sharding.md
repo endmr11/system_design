@@ -2,6 +2,24 @@
 
 Database sharding and partitioning are critical techniques used to optimize data management in large-scale applications. These approaches improve database performance, provide scalability, and enhance system resilience.
 
+## Quick Decision
+
+| Situation | Use Sharding | Watch Out |
+| --- | --- | --- |
+| One DB is at capacity limit | Yes | Shard key is a long-lived decision |
+| Only a few slow queries | Optimize index/query first | Sharding is too expensive |
+| Tenant-level isolation | Tenant shard | Large tenants can create skew |
+| Time-based large data | Partitioning | Retention gets easier |
+
+## Production Checklist
+
+- Problem: Which capacity or isolation limit does sharding solve?
+- Solution: Are shard key, routing, resharding, transaction boundary, and backup strategy clear?
+- Trade-off: Capacity increases; cross-shard queries, transactions, and operations get more complex.
+- Failure mode: Hot shards, bad keys, resharding failure, partial outage, and inconsistent backups should be handled.
+- Measurement: Track per-shard load, skew, cross-shard query count, routing errors, and migration duration.
+- Security/cost: Tenant isolation must be backed by access control; shard count increases operations and storage cost.
+
 ## Sharding Overview
 
 ```mermaid

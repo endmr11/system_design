@@ -1,6 +1,26 @@
 <!-- filepath: /Users/eren/Desktop/system_design/mobile/cross-platform-development.md -->
 # Çapraz Platform Mobil Geliştirme
 
+Çapraz platform seçimi, tek kod tabanı ile native kalite arasındaki dengeyi belirler. Karar framework popülerliğiyle değil, ekip yetkinliği, ürün tipi, performans ihtiyacı ve platforma özel entegrasyonlarla verilmelidir.
+
+## Hızlı Karar
+
+| Durum | Tercih | Dikkat |
+| --- | --- | --- |
+| Hızlı MVP ve ortak UI | Flutter / React Native | Native köprü maliyeti |
+| Platform deneyimi kritik | Native | İki ekip/kod tabanı maliyeti |
+| Mevcut web ekibi güçlü | React Native | Performans profili ölçülmeli |
+| Yoğun animasyon/özel çizim | Flutter veya native | Paket ekosistemi kontrol edilmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Ortak kod hangi maliyeti düşürüyor, hangi platform farkını büyütüyor?
+- Çözüm: Navigation, state, native module, build pipeline ve release süreci net mi?
+- Trade-off: Paylaşılan kod hız sağlar; platform edge case'leri debug maliyeti getirir.
+- Hata durumu: Bridge bottleneck, plugin breakage, platform-specific crash ve store review farkları ele alınmalı.
+- Ölçüm: Startup time, frame time, crash-free sessions, binary size ve release lead time izlenmeli.
+- Güvenlik/maliyet: Üçüncü parti plugin'ler supply-chain riskidir; iki platform test maliyeti yine kalır.
+
 ## Framework Karşılaştırma Diyagramı
 
 ```mermaid

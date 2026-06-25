@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda API güvenliği, mobil istemciler ile arka uç servisler arasındaki iletişimin korunmasını içerir. Bu; API uç noktalarının güvenliğini sağlamak, uygun kimlik doğrulama mekanizmalarını uygulamak, yaygın saldırılara karşı koruma sağlamak ve iletim sırasında veri bütünlüğünü garanti altına almak anlamına gelir.
 
+## Hızlı Karar
+
+| Tehdit | Kontrol | Dikkat |
+| --- | --- | --- |
+| Token çalınması | Kısa ömür + secure storage | Loglara düşmemeli |
+| MITM | TLS + pinning | Rotation planı gerekir |
+| Yetkisiz nesne erişimi | Backend object-level auth | Client kontrolüne güvenme |
+| Abuse | Rate limit + device/app attestation | Gerçek kullanıcıyı engelleme |
+
+## Üretim Kontrol Listesi
+
+- Problem: Mobil client hangi API ve hangi hassas veriye erişiyor?
+- Çözüm: Auth, TLS, token refresh, error response, rate limit ve logging standardı net mi?
+- Trade-off: Daha güçlü güvenlik UX ve entegrasyon maliyeti getirir; veri sızıntısı daha pahalıdır.
+- Hata durumu: Expired token loop, replay, broken authorization ve verbose error ele alınmalı.
+- Ölçüm: 401/403 oranı, refresh failure, pinning error, suspicious request ve API abuse izlenmeli.
+- Güvenlik/maliyet: Client gizli kabul edilmez; secret ve yetki kuralı sunucu tarafında korunmalıdır.
+
 ## API Güvenlik Mimarisi
 
 ## Kimlik Doğrulama ve Yetkilendirme

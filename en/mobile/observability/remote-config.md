@@ -2,6 +2,24 @@
 
 Remote configuration and dynamic feature management is a powerful tool that allows you to control your application's behavior and features from the server side. This technology has become an indispensable part of modern mobile applications.
 
+## Quick Decision
+
+| Need | Use Remote Config | Watch Out |
+| --- | --- | --- |
+| Feature rollout | Yes | Default value must be safe |
+| Kill switch | Yes | Must work while offline |
+| Security decision | No | Client config can be manipulated |
+| Frequently changing UI text | Be careful | Cache and localization get complex |
+
+## Production Checklist
+
+- Problem: Which risk does config reduce without waiting for app update?
+- Solution: Are default, fetch interval, validation, targeting, and rollback clear?
+- Trade-off: It adds flexibility; it also adds config drift and unexpected behavior risk.
+- Failure mode: Bad config, stale config, wrong segment, and offline defaults should be handled.
+- Measurement: Track fetch success, config version, activation rate, rollback count, and error delta.
+- Security/cost: Do not put secrets or authorization rules in remote config; many segments create analysis cost.
+
 ## Core Features
 
 - **Dynamic Feature Management**: Ability to toggle application features from the server

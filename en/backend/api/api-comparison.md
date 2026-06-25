@@ -1,5 +1,25 @@
 # 5.4. GraphQL vs REST vs gRPC Comparison
 
+API protocol selection is a trade-off between client needs, data shape, operational capability, and debugging simplicity. REST is enough for most products by default; GraphQL and gRPC become valuable when there is real pressure around data flexibility, latency, or contract strength.
+
+## Quick Decision
+
+| Need | Prefer | Watch Out |
+| --- | --- | --- |
+| General-purpose public API | REST | Versioning and consistent errors are required |
+| Variable mobile data needs | GraphQL | Query cost and authorization get more complex |
+| Low-latency service-to-service calls | gRPC | Browser and debugging experience is not as simple as REST |
+| Simple CRUD and cache-friendly endpoints | REST | Endpoint sprawl can appear over time |
+
+## Production Checklist
+
+- Problem: Is the real issue over-fetching, too many round trips, latency, or unclear contracts?
+- Solution: Does the protocol fit clients, gateway, observability, and test tooling?
+- Trade-off: GraphQL gives flexibility; gRPC gives performance; REST gives operational simplicity.
+- Failure mode: Error model, timeout, retry, and idempotency behavior must be explicit per protocol.
+- Measurement: Track payload size, round-trip count, p95 latency, resolver time, serialization cost, and cache hit rate.
+- Security/cost: GraphQL needs query depth/complexity limits; gRPC needs schema management; every protocol adds operational cost.
+
 ## REST API
 
 ### Core Principles

@@ -2,6 +2,24 @@
 
 Uzaktan yapılandırma ve dinamik özellik yönetimi, uygulamanızın davranışını ve özelliklerini sunucu tarafından kontrol etmenizi sağlayan güçlü bir araçtır. Bu teknoloji, modern mobil uygulamaların vazgeçilmez bir parçası haline gelmiştir.
 
+## Hızlı Karar
+
+| İhtiyaç | Remote Config Kullan | Dikkat |
+| --- | --- | --- |
+| Feature rollout | Evet | Default değer güvenli olmalı |
+| Kill switch | Evet | Offline durumda da çalışmalı |
+| Güvenlik kararı | Hayır | Client config manipüle edilebilir |
+| Sık değişen UI metni | Dikkatli | Cache ve localization karmaşıklaşır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Config app update beklemeden hangi riski azaltıyor?
+- Çözüm: Default, fetch interval, validation, targeting ve rollback net mi?
+- Trade-off: Esneklik sağlar; config drift ve beklenmeyen davranış riski ekler.
+- Hata durumu: Bad config, stale config, wrong segment ve offline default ele alınmalı.
+- Ölçüm: Fetch success, config version, activation rate, rollback count ve error delta izlenmeli.
+- Güvenlik/maliyet: Secret veya yetki kuralı remote config'e konmamalı; çok segment analiz maliyeti yaratır.
+
 ## Temel Özellikler
 
 - **Dinamik Özellik Yönetimi**: Uygulama özelliklerini sunucu tarafından açıp kapatabilme

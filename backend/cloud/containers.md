@@ -1,5 +1,25 @@
 # Containers (Docker)
 
+Container, uygulamayı aynı imajla build, test ve deploy edilebilir hale getiren paketleme sınırıdır. Docker kullanmanın amacı makine bağımlılığını azaltmaktır; yanlış kullanılırsa sadece daha taşınabilir bir karmaşa üretir.
+
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Tekrarlanabilir deploy | Multi-stage Dockerfile | Build ve runtime image ayrılmalı |
+| Küçük ve güvenli imaj | Minimal base image, non-root user | Debug araçları eksik olabilir |
+| Lokal çoklu servis geliştirme | Docker Compose | Prod orkestrasyon yerine geçmez |
+| Hızlı startup | Layer cache ve Spring Boot layering | Büyük image cold start'ı uzatır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Container hangi ortam farkını veya deploy sorununu çözüyor?
+- Çözüm: Image tag, health check, resource limit, secret injection ve shutdown davranışı tanımlı mı?
+- Trade-off: Container taşınabilirlik sağlar; image güvenliği ve registry yönetimi ek iş getirir.
+- Hata durumu: OOMKill, crash loop, port conflict, disk dolması ve signal handling test edilmeli.
+- Ölçüm: Image size, startup time, memory/CPU limit kullanımı, restart count ve vulnerability count izlenmeli.
+- Güvenlik/maliyet: Root user, gereksiz paket ve sabit secret yasaklanmalı; büyük image registry ve network maliyeti üretir.
+
 ## Giriş
 
 Containerlar, uygulamaların ve bağımlılıklarının izole edilmiş ortamlarda çalıştırılması için kullanılan hafif sanallaştırma teknolojisidir. Docker, bu teknolojinin en yaygın kullanılan implementasyonudur.

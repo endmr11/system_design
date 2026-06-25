@@ -2,6 +2,24 @@
 
 Modern mobil uygulamalarda animasyon ve grafik işleme, kullanıcı deneyiminin en kritik bileşenlerinden biridir. Bu bölüm, enterprise seviyesinde grafik performansı, declarative UI framework'leri ve hardware acceleration konularını derinlemesine inceler.
 
+## Hızlı Karar
+
+| İhtiyaç | Başlangıç Noktası | Dikkat |
+| --- | --- | --- |
+| Standart ekran animasyonu | Declarative animation | State değişimi kontrol edilmeli |
+| Özel çizim | Canvas/native drawing | CPU/GPU maliyeti ölçülmeli |
+| Çok yoğun grafik | Metal/OpenGL/GPU | Karmaşıklık ve cihaz farkı artar |
+| Takılma/jank | Frame profiling | Debug build yanıltır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi ekran veya animasyon kullanıcı deneyimini bozuyor?
+- Çözüm: Frame budget, state update, layout pass ve GPU/CPU sınırı net mi?
+- Trade-off: Daha zengin görsel deneyim performans, batarya ve bakım maliyeti getirir.
+- Hata durumu: Dropped frame, overdraw, memory pressure, shader compile ve layout thrashing ele alınmalı.
+- Ölçüm: FPS, frame time, jank rate, GPU time, memory peak ve battery impact izlenmeli.
+- Güvenlik/maliyet: Görsel asset ve animasyonlar binary boyutunu artırır; düşük cihaz profili unutulmamalı.
+
 ## Bölüm İçeriği
 
 ### [Declarative Animations](/mobile/graphics/declarative-animations)

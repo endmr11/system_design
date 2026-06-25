@@ -4,6 +4,24 @@
 
 Release management for mobile applications involves coordinating app store deployments, managing release cycles, automating distribution pipelines, and ensuring smooth rollouts across Android and iOS platforms. This documentation covers comprehensive release management strategies with CI/CD integration and automated testing.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Regular release | Release train | Emergency hotfix path should be separate |
+| Risky change | Staged rollout | Halt criteria must be clear |
+| Mandatory update | Minimum version gate | User impact is high |
+| Multi-platform release | Shared release checklist | Store differences must be considered |
+
+## Production Checklist
+
+- Problem: Which quality or coordination risk does the release process reduce?
+- Solution: Are versioning, changelog, signing, test gate, rollout, and support communication clear?
+- Trade-off: More controlled release builds trust; it adds speed and operations cost.
+- Failure mode: Wrong build, missing symbols, signing failure, store rejection, and bad rollout should be handled.
+- Measurement: Track release lead time, adoption, crash-free sessions, rollback count, and support ticket delta.
+- Security/cost: Signing key access must be strict; release artifacts should stay traceable.
+
 ## Release Pipeline Architecture
 
 ### CI/CD Pipeline Configuration

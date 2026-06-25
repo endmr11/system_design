@@ -1,5 +1,25 @@
 # Temel Veritabanı Kavramları
 
+Veritabanı seçimi yalnızca SQL mi NoSQL mi sorusu değildir; veri modeli, sorgu şekli, tutarlılık beklentisi, operasyon yükü ve maliyet birlikte değerlendirilir. En iyi veritabanı, sistemin en kritik erişim desenini en sade şekilde taşıyandır.
+
+## Hızlı Karar
+
+| İhtiyaç | Başlangıç Seçimi | Dikkat |
+| --- | --- | --- |
+| Güçlü transaction ve ilişkisel model | PostgreSQL / MySQL | Şema evrimi ve indeks bakımı |
+| Esnek doküman yapısı | MongoDB benzeri doküman DB | Query disiplinini kaybetme riski |
+| Düşük gecikmeli geçici veri | Redis | Bellek maliyeti ve persistence beklentisi |
+| Büyük hacimli arama | Elasticsearch/OpenSearch | Kaynak tüketimi ve eventual consistency |
+
+## Üretim Kontrol Listesi
+
+- Problem: Veri hangi sorgular için optimize ediliyor, hangi sorgular bilinçli olarak pahalı kalacak?
+- Çözüm: Primary key, index, transaction sınırı, migration ve backup stratejisi net mi?
+- Trade-off: Normalizasyon tutarlılığı artırır; denormalizasyon okuma hızını artırır ama senkronizasyon borcu ekler.
+- Hata durumu: Lock wait, slow query, connection pool exhaustion, replication lag ve migration rollback planı olmalı.
+- Ölçüm: Query latency, index hit ratio, connection pool kullanımı, disk I/O, replication lag ve storage büyümesi izlenmeli.
+- Güvenlik/maliyet: PII alanları, encryption, erişim rolleri ve retention politikası baştan tasarlanmalı; indeks ve replika sayısı maliyeti büyütür.
+
 ## Veritabanı Mimarisi Diyagramı
 
 ```mermaid
@@ -17,7 +37,7 @@ graph TD
     SQLApp -.-> NoSQLDB
     NoSQLApp -.-> SQLDB
 ```
-# Temel Veritabanı Konseptleri
+## Temel Veritabanı Konseptleri
 
 ## SQL Veritabanları (Spring Boot ile)
 

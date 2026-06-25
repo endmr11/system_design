@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda güvenli ağ iletişimi ve veri koruması için kritik güvenlik teknikleri.
 
+## Hızlı Karar
+
+| Tehdit | Kontrol | Dikkat |
+| --- | --- | --- |
+| Trafik dinleme | TLS 1.2/1.3 | Eski cihaz desteği ölçülmeli |
+| MITM | Certificate pinning | Rotation planı şart |
+| Token sızıntısı | Kısa ömür + secure storage | Loglara düşmemeli |
+| Public Wi-Fi | Strict transport security | HTTP fallback olmamalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Ağda hangi veri ve kimlik bilgisi korunuyor?
+- Çözüm: TLS policy, pinning, token refresh, error handling ve logging standardı net mi?
+- Trade-off: Pinning güvenliği artırır; sertifika değişiminde uygulamayı kırabilir.
+- Hata durumu: Expired cert, pin mismatch, captive portal ve token replay ele alınmalı.
+- Ölçüm: TLS error, pin failure, auth retry, network security exception ve suspicious endpoint izlenmeli.
+- Güvenlik/maliyet: Gizli veri URL/query içinde taşınmamalı; güvenlik hatası fallback ile aşılmamalı.
+
 ## Taşıma Katmanı Güvenliği (TLS)
 
 ### TLS Yapılandırması

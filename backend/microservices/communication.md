@@ -2,6 +2,24 @@
 
 Mikroservis mimarisinde servisler arası iletişim kritik bir konudur. Bu bölümde senkron (REST/gRPC) ve asenkron (Olay Tabanlı) iletişim modellerinin Spring Boot ile uygulamasını detaylı olarak inceleyeceğiz.
 
+## Hızlı Karar
+
+| Durum | İletişim | Dikkat |
+| --- | --- | --- |
+| Kullanıcı cevabı hemen bekliyor | Senkron REST/gRPC | Timeout ve circuit breaker şart |
+| İş uzun veya tekrar denenebilir | Asenkron event/queue | Idempotency gerekir |
+| Servisler sık birlikte değişiyor | Sınırı yeniden düşün | Mikroservis erken olabilir |
+| Veri tutarlılığı kritik | Senkron veya saga | Partial failure açık tasarlanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Servis ayrımı gerçek bağımsızlık sağlıyor mu, yoksa network çağrısı ekliyor mu?
+- Çözüm: Timeout, retry, idempotency, schema versioning ve correlation id standart mı?
+- Trade-off: Senkron akış basit görünür ama zincir latency yaratır; asenkron akış dayanıklı ama debug zordur.
+- Hata durumu: Downstream outage, duplicate message, poison event, timeout ve retry storm ele alınmalı.
+- Ölçüm: Dependency latency, error rate, queue lag, retry count ve trace completeness izlenmeli.
+- Güvenlik/maliyet: Servisler arası auth/mTLS gerekir; her çağrı log, trace ve ağ maliyeti üretir.
+
 ## İletişim Modelleri
 
 ### Senkron İletişim

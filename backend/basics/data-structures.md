@@ -1,5 +1,25 @@
 # Temel Veri Yapıları ve Algoritmalar - Sistem Tasarımı Bağlamı
 
+Veri yapısı ve algoritma seçimi, sistem tasarımında soyut bir mülakat konusu değil; latency, bellek, tutarlılık ve maliyet kararının temelidir. Yanlış yapı, doğru mimariyi bile yavaşlatabilir.
+
+## Hızlı Karar
+
+| İhtiyaç | Başlangıç Seçimi | Dikkat |
+| --- | --- | --- |
+| Anahtar ile hızlı erişim | Hash map / key-value store | Bellek ve hash collision riski |
+| Sıralı arama veya range query | B-tree / LSM tree | Yazma maliyeti ve compaction |
+| En yeni/en sık kullanılan veri | LRU/LFU cache | Yanlış eviction kullanıcı deneyimini bozar |
+| Düğümler arası ilişki | Graph modeli | Traversal maliyeti hızla büyüyebilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Veri erişim deseni okuma ağırlıklı mı, yazma ağırlıklı mı, range query mi?
+- Çözüm: Seçilen yapı beklenen veri hacmi, concurrency ve dağıtık çalışma şekline uyuyor mu?
+- Trade-off: Daha hızlı erişim çoğu zaman daha fazla bellek veya daha karmaşık invalidation ister.
+- Hata durumu: Hot key, memory leak, hash collision ve O(n) tarama üretimde görünür hale getirilmeli.
+- Ölçüm: p95/p99 latency, memory footprint, cache hit ratio, lock contention ve GC baskısı izlenmeli.
+- Güvenlik/maliyet: Kullanıcı kontrollü input algoritmik karmaşıklık saldırısı yaratabilir; bellek tüketimi doğrudan altyapı maliyetidir.
+
 ## Veri Yapıları Diyagramı
 
 ```mermaid

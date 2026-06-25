@@ -2,6 +2,24 @@
 
 In modern enterprise mobile applications, modular architecture represents a critical architectural approach for scalability, maintainability, and team productivity. This approach makes parallel development, isolated testing, and incremental deployment possible by decomposing large-scale applications into manageable, independent modules.
 
+## Quick Decision
+
+| Situation | Module Boundary | Watch Out |
+| --- | --- | --- |
+| Teams work on different features | Feature module | Dependency direction must be preserved |
+| Domain is shared | Core/domain module | Shared module must not become a junk drawer |
+| Build time is high | Build module split | Too many modules can also slow builds |
+| Small app | Simple layers are enough | Premature modularity is costly |
+
+## Production Checklist
+
+- Problem: Does the module split reduce team, build, or domain complexity?
+- Solution: Are dependency direction, public API, navigation boundary, and ownership clear?
+- Trade-off: Modules enable parallel development; they add dependency graph and release coordination.
+- Failure mode: Cyclic dependencies, shared module bloat, duplicate models, and hidden coupling should be handled.
+- Measurement: Track build time, module dependency count, change blast radius, and test duration.
+- Security/cost: Sensitive feature modules need access boundaries; module count can increase CI cost.
+
 ## Modular Architecture Principles
 
 Modular architecture is fundamentally a system design philosophy based on the separation of concerns principle that achieves high cohesion and low coupling objectives. This approach breaks down complex systems into smaller, focused components with well-defined boundaries.

@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda sürüm yönetimi, kullanıcıya kesintisiz deneyim sunmak ve uygulamanın yaşam döngüsünü etkili şekilde yönetmek için kritik öneme sahiptir. Bu dokümantasyon, modern sürüm yönetimi stratejilerini ve CI/CD entegrasyonunu kapsar.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Düzenli release | Release train | Acil hotfix yolu ayrı olmalı |
+| Riskli değişiklik | Staged rollout | Halt criteria net olmalı |
+| Zorunlu güncelleme | Minimum version gate | Kullanıcı etkisi yüksek |
+| Çok platform | Ortak release checklist | Store farkları hesaba katılmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Release süreci hangi kalite veya koordinasyon riskini azaltıyor?
+- Çözüm: Versioning, changelog, signing, test gate, rollout ve support iletişimi net mi?
+- Trade-off: Daha kontrollü release güven verir; hız ve operasyon maliyeti getirir.
+- Hata durumu: Wrong build, missing symbols, signing failure, store rejection ve bad rollout ele alınmalı.
+- Ölçüm: Release lead time, adoption, crash-free sessions, rollback count ve support ticket delta izlenmeli.
+- Güvenlik/maliyet: Signing key erişimi sıkı olmalı; release artefact'leri izlenebilir tutulmalı.
+
 ## Semantic Versioning
 
 ### Versiyon Numaralandırma

@@ -2,6 +2,24 @@
 
 Modern mobile applications require sophisticated animation and graphics processing to deliver exceptional user experiences. This section covers enterprise-level graphics performance, declarative UI frameworks, and hardware acceleration techniques.
 
+## Quick Decision
+
+| Need | Start Here | Watch Out |
+| --- | --- | --- |
+| Standard screen animation | Declarative animation | State changes must be controlled |
+| Custom drawing | Canvas/native drawing | CPU/GPU cost must be measured |
+| Heavy graphics | Metal/OpenGL/GPU | Complexity and device differences increase |
+| Jank/stutter | Frame profiling | Debug builds mislead |
+
+## Production Checklist
+
+- Problem: Which screen or animation hurts user experience?
+- Solution: Are frame budget, state updates, layout passes, and GPU/CPU boundary clear?
+- Trade-off: Richer visuals add performance, battery, and maintenance cost.
+- Failure mode: Dropped frames, overdraw, memory pressure, shader compilation, and layout thrashing should be handled.
+- Measurement: Track FPS, frame time, jank rate, GPU time, memory peak, and battery impact.
+- Security/cost: Visual assets and animations increase binary size; low-end device profiles must not be forgotten.
+
 ## Section Overview
 
 ### [Declarative Animations](/en/mobile/graphics/declarative-animations)

@@ -2,6 +2,24 @@
 
 Modern software deployment methodology'leri, risk mitigation ve continuous delivery capability'lerini maximize etmek için sophisticated technique'ler geliştirilmiştir. Blue/Green ve Canary deployment stratejileri, production environment'da minimal downtime ile safe deployment'ları enable eden proven approach'lar olarak industry standard'ı haline gelmiştir.
 
+## Hızlı Karar
+
+| Durum | Strateji | Dikkat |
+| --- | --- | --- |
+| Anında rollback gerekiyor | Blue/Green | Çift ortam maliyeti vardır |
+| Risk kademeli azaltılacak | Canary | Doğru metrik ve otomatik durdurma gerekir |
+| Trafik düşük, etki sınırlı | Rolling deploy | Rollback daha yavaş olabilir |
+| Şema değişikliği var | Expand/contract migration | Geriye uyumluluk şarttır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Deployment hangi riski azaltıyor: downtime, bug yayılımı, migration hatası veya rollback süresi?
+- Çözüm: Health check, smoke test, metric gate, rollback ve database migration sırası net mi?
+- Trade-off: Daha güvenli rollout daha fazla altyapı, gözlem ve otomasyon ister.
+- Hata durumu: Bad release, partial rollout, schema mismatch, stale cache ve rollback failure senaryoları çalışılmalı.
+- Ölçüm: Deployment duration, change failure rate, rollback time, error budget burn ve canary metric farkı izlenmeli.
+- Güvenlik/maliyet: Yeni sürümde auth/secret değişikliği ayrıca doğrulanmalı; blue/green kapasite maliyetini ikiye yaklaştırabilir.
+
 ## Blue/Green Deployment Metodolojisinin Derinlemesine İncelemesi
 
 Blue/Green deployment strategy'si, identical production environment'ların paralel maintainance'ını through sophisticated infrastructure orchestration realize eder. Bu approach'un fundamental principle'ı, active production environment (Blue) ile staged new version environment (Green) arasında instantaneous switching capability'si sağlamaktır. Bu methodology, zero-downtime deployment'ı guarantee ederken, immediate rollback capability'si için robust safety net oluşturur.

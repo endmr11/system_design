@@ -2,6 +2,24 @@
 
 Modern dijital dünyada veri lokalizasyonu ve GDPR uyumluluğu, global ölçekte faaliyet gösteren teknoloji şirketleri için kritik öneme sahip compliance ve teknik gereksinimlerdir. Bu alanlar, hem yasal zorunlulukları hem de kullanıcı güvenini korumak için stratejik yaklaşım gerektiren karmaşık konulardır.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Kişisel veri belirli ülkede kalmalı | Bölgesel veri yerleşimi | Backup ve loglar da kapsama girer |
+| Global ürün, yerel mevzuat | Region-aware routing | Yanlış region seçimi ihlal doğurur |
+| Analitik için anonim veri | Pseudonymization/anonymization | Re-identification riski kalabilir |
+| Cross-border transfer | Hukuki güvence + teknik kontrol | Sadece teknik çözüm yeterli değildir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi veri, hangi kullanıcı, hangi ülke veya regülasyon nedeniyle sınırlandırılıyor?
+- Çözüm: Data classification, residency rule, encryption, access log ve deletion akışı net mi?
+- Trade-off: Lokalizasyon uyumluluk sağlar; veri kopyalama, failover ve analitik kabiliyetini zorlaştırır.
+- Hata durumu: Yanlış region'a yazma, loglarda PII, backup sızıntısı ve silme isteğinin eksik uygulanması ele alınmalı.
+- Ölçüm: Region bazlı veri akışı, policy violation, deletion SLA, audit event ve access anomaly izlenmeli.
+- Güvenlik/maliyet: Hukuki gereklilikler teknik mimariyi belirler; her region ek storage, operasyon ve denetim maliyeti getirir.
+
 ## Data Localization Kavramı ve Yasal Çerçeve
 
 Data localization, kişisel verilerin yasal olarak belirlenen coğrafi sınırlar içinde işlenmesi ve saklanması zorunluluğunu ifade eder. Bu konsept, ulusal güvenlik, ekonomik bağımsızlık ve vatandaş hakları koruma gibi temel gerekçelerle çeşitli ülkeler tarafından yasalaştırılmıştır. Türkiye'de KVKK (Kişisel Verilerin Korunması Kanunu), Rusya'da Federal Data Localization Law, Çin'de Cybersecurity Law bu alanda öncü düzenlemelerdir.

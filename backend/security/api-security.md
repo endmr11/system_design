@@ -4,6 +4,24 @@
 
 API güvenliği, web uygulamalarının en kritik bileşenlerinden biridir. Derinlemesine savunma (defense in depth) stratejisi ile istek bütünlüğü, kimlik doğrulama, oran sınırlama ve girdi doğrulama gibi çok katmanlı güvenlik yaklaşımları uygulanır.
 
+## Hızlı Karar
+
+| Tehdit | Kontrol | Dikkat |
+| --- | --- | --- |
+| Yetkisiz erişim | AuthN/AuthZ | Gateway tek başına yeterli değildir |
+| İstek manipülasyonu | HMAC/signature | Replay koruması gerekir |
+| Abuse ve scraping | Rate limit/WAF | Gerçek kullanıcı cezalandırılmamalı |
+| Injection ve kötü input | Validation + encoding | Tüm trust boundary'lerde uygulanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: API hangi aktöre, hangi veriye, hangi yetkiyle açılıyor?
+- Çözüm: Auth, input validation, rate limit, audit ve error response standardı net mi?
+- Trade-off: Güvenlik kontrolleri latency ve entegrasyon maliyeti ekler; veri kaybı daha pahalıdır.
+- Hata durumu: Token theft, replay attack, broken object-level authorization ve verbose error ele alınmalı.
+- Ölçüm: 401/403/429 oranı, suspicious IP, failed signature, WAF hit ve auth latency izlenmeli.
+- Güvenlik/maliyet: Hassas hata detayı dönme; WAF/log maliyetini saldırı trafiği büyütebilir.
+
 ## İstek Bütünlüğü & Kimlik Doğrulama
 
 ### 1. HMAC Uygulaması

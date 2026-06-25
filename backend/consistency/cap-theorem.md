@@ -1,5 +1,25 @@
 # 4.2. CAP Teoremi
 
+CAP teoremi, ağ bölünmesi olduğunda aynı anda hem tam tutarlılık hem tam erişilebilirlik vaat edemeyeceğini hatırlatır. Gerçek karar "CP mi AP mi" etiketi değil; hangi istek türünün bölünme anında nasıl davranacağıdır.
+
+## Hızlı Karar
+
+| Durum | Eğilim | Dikkat |
+| --- | --- | --- |
+| Finansal kayıt, yetki, konfigürasyon | CP | Bazı istekleri reddetmek kabul edilir |
+| Feed, analitik, katalog okuma | AP | Eski veri politikası açık olmalı |
+| Multi-region aktif/aktif | AP veya hibrit | Conflict resolution şarttır |
+| Tek bölge ilişkisel sistem | CAP ana sorun olmayabilir | Replication ve failover daha pratik sorudur |
+
+## Üretim Kontrol Listesi
+
+- Problem: Network partition anında kullanıcıya hata mı, eski veri mi, yoksa bekleme mi gösterilecek?
+- Çözüm: Quorum, timeout, failover, read preference ve conflict policy tanımlı mı?
+- Trade-off: CP doğruluğu korur ama availability düşebilir; AP erişilebilirliği korur ama geçici tutarsızlık üretir.
+- Hata durumu: Split-brain, minority partition, stale cache, write conflict ve failback senaryoları test edilmeli.
+- Ölçüm: Partition event, quorum failure, replication lag, conflict count ve error budget etkisi izlenmeli.
+- Güvenlik/maliyet: Auth/secret gibi güvenlik verilerinde AP davranışı risklidir; multi-region quorum latency ve ağ maliyeti ekler.
+
 ## Tanım
 Dağıtık sistemlerde aynı anda sadece iki özellik sağlanabilir:
 

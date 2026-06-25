@@ -2,6 +2,24 @@
 
 Mobil cihazlarda sınırlı bellek kaynaklarının verimli kullanılması, uygulamanın performansı ve kullanıcı deneyimi açısından kritik öneme sahiptir. Bu bölümde bellek sızıntılarını önleme, etkin bellek yönetimi ve optimize edilmiş veri yapıları ele alınacaktır.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Büyük görseller | Resize/cache limit | OOM riski |
+| Ekran lifecycle objeleri | Dispose/cancel | Retained callback leak yaratır |
+| Liste verisi büyük | Paging/windowing | Tüm listeyi belleğe alma |
+| State büyüyor | Normalize/clear state | Stale state temizlenmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Bellek artışı hangi akıştan sonra geri düşmüyor?
+- Çözüm: Ownership, cache limit, image policy, lifecycle cleanup ve leak detection net mi?
+- Trade-off: Daha fazla cache hız sağlar; bellek baskısı crash üretir.
+- Hata durumu: Activity leak, retained closure, bitmap OOM, unbounded list ve listener leak ele alınmalı.
+- Ölçüm: Memory peak, retained objects, OOM rate, GC pressure ve session length izlenmeli.
+- Güvenlik/maliyet: Hassas veri taşıyan objeler temizlenmeli; düşük RAM cihaz testleri şarttır.
+
 ## Bellek Yönetimi Temelleri
 
 ### Memory Leaks'i Önleme

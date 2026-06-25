@@ -1,5 +1,25 @@
 # Cross-Platform Mobile Development Guide
 
+Cross-platform choice balances a shared codebase against native quality. The decision should be driven by team skill, product type, performance needs, and platform-specific integrations, not framework popularity.
+
+## Quick Decision
+
+| Situation | Prefer | Watch Out |
+| --- | --- | --- |
+| Fast MVP and shared UI | Flutter / React Native | Native bridge cost |
+| Platform experience is critical | Native | Two teams/codebases cost more |
+| Existing web team is strong | React Native | Performance profile must be measured |
+| Heavy animation/custom drawing | Flutter or native | Package ecosystem should be checked |
+
+## Production Checklist
+
+- Problem: Which cost does shared code reduce, and which platform difference does it amplify?
+- Solution: Are navigation, state, native modules, build pipeline, and release process clear?
+- Trade-off: Shared code improves speed; platform edge cases add debugging cost.
+- Failure mode: Bridge bottlenecks, plugin breakage, platform-specific crashes, and store review differences should be handled.
+- Measurement: Track startup time, frame time, crash-free sessions, binary size, and release lead time.
+- Security/cost: Third-party plugins are supply-chain risk; two-platform testing cost still remains.
+
 ## Framework Comparison Diagram
 
 ```mermaid

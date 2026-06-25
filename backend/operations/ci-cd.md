@@ -4,6 +4,24 @@ Continuous Integration ve Continuous Deployment (CI/CD) yaklaşımı, modern yaz
 
 DevOps kültürünün en önemli bileşenlerinden biri olan CI/CD, geliştirme ve operasyon ekipleri arasındaki siloları kırarak, shared responsibility ve collaborative ownership prensiplerini yerleştirir. Bu yaklaşım, time-to-market'i hızlandırırken, quality assurance ve risk management'ı güçlendirir.
 
+## Hızlı Karar
+
+| İhtiyaç | Pipeline Aşaması | Dikkat |
+| --- | --- | --- |
+| Her commit güvenli mi? | Build + unit test + static check | Yavaş pipeline merge'i öldürür |
+| Release riski azaltılsın | Staging + smoke test + canary | Metric gate tanımlı olmalı |
+| Hızlı rollback | Artifact versioning + deploy history | Mutable artifact kullanma |
+| Regülasyon/audit | Approval + immutable log | Manuel onay darboğaza dönüşmemeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Pipeline hangi hatayı production'a çıkmadan yakalayacak?
+- Çözüm: Build, test, scan, deploy, rollback ve secret injection adımları net mi?
+- Trade-off: Daha çok kontrol kaliteyi artırır; pipeline süresi ve bakım maliyeti ekler.
+- Hata durumu: Flaky test, broken artifact, failed migration, secret leak ve partial deploy ele alınmalı.
+- Ölçüm: Lead time, deployment frequency, change failure rate, MTTR ve pipeline failure reason izlenmeli.
+- Güvenlik/maliyet: CI secret'ları minimum yetkili olmalı; gereksiz parallel job ve uzun cache maliyet üretir.
+
 ## CI/CD'nin Temelleri
 
 CI/CD, yazılım geliştirme yaşam döngüsünü otomatikleştiren ve hızlandıran kritik pratiklerdir.

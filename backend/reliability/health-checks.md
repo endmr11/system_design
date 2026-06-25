@@ -4,6 +4,24 @@
 
 Health checks, sistem bileşenlerinin sağlık durumunu sürekli olarak izleyerek sistem güvenilirliğini artıran mekanizmalardır.
 
+## Hızlı Karar
+
+| İhtiyaç | Check | Dikkat |
+| --- | --- | --- |
+| Process ayakta mı? | Liveness | Yanlış restart loop yaratır |
+| Trafik alabilir mi? | Readiness | Dependency check dengeli olmalı |
+| Yavaş açılan uygulama | Startup probe | İlk açılışta false failure önlenir |
+| Servisler arası yaşam sinyali | Heartbeat | Network jitter hesaba katılmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Check hangi kararı verdiriyor: restart, trafik kesme, alarm veya failover?
+- Çözüm: Endpoint, timeout, threshold, dependency kapsamı ve response formatı net mi?
+- Trade-off: Sıkı check hızlı tespit sağlar; false positive kesinti yaratır.
+- Hata durumu: Dependency cascade, slow startup, GC pause ve false unhealthy ele alınmalı.
+- Ölçüm: Probe failure rate, restart count, readiness duration ve false positive oranı izlenmeli.
+- Güvenlik/maliyet: Health endpoint hassas bilgi sızdırmamalı; pahalı check'ler sisteme yük bindirir.
+
 ```mermaid
 graph TD
     A[Health Check] --> B[Liveness Probe]

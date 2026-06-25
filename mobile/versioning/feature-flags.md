@@ -2,6 +2,24 @@
 
 Özellik bayrakları (feature toggles), ekiplerin kod değişikliklerini hemen tüm kullanıcılara sunmadan dağıtmasına olanak tanır. Bu yaklaşım, kademeli dağıtımlar, A/B testleri ve uygulama mağazası güncellemesi gerektirmeden hızlı geri alma (rollback) gibi avantajlar sağlar.
 
+## Hızlı Karar
+
+| İhtiyaç | Flag Tipi | Dikkat |
+| --- | --- | --- |
+| Acil kapatma | Kill switch | Default güvenli olmalı |
+| Kademeli açma | Release flag | Segment doğru olmalı |
+| Deney | Experiment flag | Metric ve süre net olmalı |
+| Kalıcı ayar | Config | Flag borcuna dönüşmesin |
+
+## Üretim Kontrol Listesi
+
+- Problem: Flag hangi release riskini azaltıyor?
+- Çözüm: Owner, default, targeting, TTL, cleanup ve offline behavior net mi?
+- Trade-off: Flag esneklik sağlar; dallanma ve test matrisi maliyeti ekler.
+- Hata durumu: Bad default, stale flag, wrong segment ve config fetch failure ele alınmalı.
+- Ölçüm: Activation rate, error delta, flag age, rollback count ve cleanup completion izlenmeli.
+- Güvenlik/maliyet: Yetki veya secret flag ile korunmaz; eski flag'ler kod borcu yaratır.
+
 ## Feature Flag Mimarisi
 
 ### Bayrak Türleri

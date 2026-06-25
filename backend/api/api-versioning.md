@@ -1,5 +1,25 @@
 # 5.1. API Versioning
 
+API versioning, istemci sözleşmesini bozmadan backend'i değiştirebilme disiplinidir. Amaç her değişikliği yeni versiyon yapmak değil; istemcinin beklediği alanları, hata kodlarını ve davranışı kontrollü şekilde evrimleştirmektir.
+
+## Hızlı Karar
+
+| Durum | Tercih | Neden |
+| --- | --- | --- |
+| Herkese açık veya mobil API | URL veya header versiyonu | Mobil sürümler uzun süre eski kalabilir |
+| İç servisler arası API | Header veya contract-first yaklaşım | Routing ve gateway kuralları sade kalır |
+| Sadece geriye uyumlu alan ekleme | Yeni versiyon açma | Eski istemci etkilenmez |
+| Alan silme, anlam değiştirme, auth kapsamı değiştirme | Yeni major versiyon | Sözleşme kırılır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi istemciler eski versiyonda kalacak ve ne kadar süre desteklenecek?
+- Çözüm: Versiyon seçimi gateway, controller, DTO ve dokümantasyonda aynı kuralla mı yapılıyor?
+- Trade-off: URL versiyonu basittir; header versiyonu daha temizdir ama debug ve cache davranışı daha dikkat ister.
+- Hata durumu: Bilinmeyen versiyon `400`, desteği bitmiş versiyon `410 Gone` veya açık bir deprecation mesajı dönmeli.
+- Ölçüm: Versiyon bazlı trafik, hata oranı, p95 latency ve deprecated endpoint kullanımı izlenmeli.
+- Güvenlik/maliyet: Eski versiyonların auth kontrolleri güncel kalmalı; destek süresi arttıkça test ve bakım maliyeti büyür.
+
 ## Neden Gerekli
 - **Arka uç değişiklikleri istemcileri etkilemeden sürdürülebilirliği sağlamak**
 - **Geriye dönük uyumluluk (backward compatibility)**

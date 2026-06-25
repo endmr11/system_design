@@ -2,6 +2,24 @@
 
 API security in mobile applications involves protecting communication between mobile clients and backend services. This includes securing API endpoints, implementing proper authentication mechanisms, protecting against common attacks, and ensuring data integrity during transmission.
 
+## Quick Decision
+
+| Threat | Control | Watch Out |
+| --- | --- | --- |
+| Token theft | Short lifetime + secure storage | Must not appear in logs |
+| MITM | TLS + pinning | Rotation plan is needed |
+| Unauthorized object access | Backend object-level auth | Do not trust client checks |
+| Abuse | Rate limit + device/app attestation | Do not block real users |
+
+## Production Checklist
+
+- Problem: Which API and sensitive data does the mobile client access?
+- Solution: Are auth, TLS, token refresh, error response, rate limit, and logging standards clear?
+- Trade-off: Stronger security adds UX and integration cost; data leakage is more expensive.
+- Failure mode: Expired token loops, replay, broken authorization, and verbose errors should be handled.
+- Measurement: Track 401/403 rate, refresh failures, pinning errors, suspicious requests, and API abuse.
+- Security/cost: The client is not trusted; secrets and authorization rules must be protected server-side.
+
 ## API Security Architecture
 
 ## Authentication & Authorization

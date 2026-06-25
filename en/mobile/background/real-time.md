@@ -4,6 +4,24 @@
 
 Real-time communication enables instantaneous data exchange between mobile clients and servers, providing users with immediate updates and interactive experiences. This includes chat messaging, live updates, collaborative editing, gaming, and live streaming features.
 
+## Quick Decision
+
+| Need | Technology | Watch Out |
+| --- | --- | --- |
+| Bidirectional instant communication | WebSocket | Reconnect and auth refresh are needed |
+| One-way live update | SSE or push | Limited in mobile background |
+| Infrequent update | Polling/push may be enough | Persistent connection may be unnecessary |
+| Critical delivery | Queue + ack | Offline scenario must be designed |
+
+## Production Checklist
+
+- Problem: Which user outcome does real-time behavior improve?
+- Solution: Are connection lifecycle, reconnect, heartbeat, auth refresh, and backoff clear?
+- Trade-off: Live connections improve experience; they add battery, network, and server-state cost.
+- Failure mode: Connection drops, duplicate events, missed events, stale auth, and reconnect storms should be handled.
+- Measurement: Track connection count, reconnect rate, message latency, delivery success, and battery impact.
+- Security/cost: Channel authorization must hold for every message; persistent connections create infrastructure cost.
+
 ## System Architecture
 
 ```mermaid

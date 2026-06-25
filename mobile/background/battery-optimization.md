@@ -2,6 +2,24 @@
 
 Mobil cihazlarda batarya ömrü kritik bir faktördür. Bu bölümde, uygulamanızın batarya tüketimini minimize etmek için kullanabileceğiniz teknik ve stratejiler ele alınacaktır.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Sık ağ çağrısı | Batch ve cache | Veri tazeliği etkilenir |
+| Sürekli arka plan iş | Platform scheduler | OS kısıtlarını aşmaya çalışma |
+| Yoğun CPU işi | Debounce/throttle/isolate | Termal etki ölçülmeli |
+| Konum takibi | Düşük hassasiyet veya geofence | İzin ve batarya maliyeti yüksek |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi özellik batarya tüketimini artırıyor?
+- Çözüm: İş sıklığı, ağ batch'i, arka plan sınırı ve fallback davranışı net mi?
+- Trade-off: Daha az tüketim genelde daha düşük tazelik veya daha az gerçek zamanlılık demektir.
+- Hata durumu: Wake lock leak, runaway retry, background kill ve thermal throttling ele alınmalı.
+- Ölçüm: Battery drain, wakeup count, network bytes, CPU time ve background execution time izlenmeli.
+- Güvenlik/maliyet: Kullanıcı izni ve şeffaflık korunmalı; fazla arka plan işi retention'ı düşürür.
+
 ## Temel İlkeler
 
 ### 1. CPU Kullanımını Minimize Etme

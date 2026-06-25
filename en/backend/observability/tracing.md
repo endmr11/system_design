@@ -4,6 +4,24 @@
 
 Distributed tracing is a method for monitoring and profiling complex distributed systems, especially microservices-based applications. This approach allows tracking requests as they flow through multiple services, providing insights into performance bottlenecks, latency issues, and system dependencies.
 
+## Quick Decision
+
+| Need | Use Tracing | Watch Out |
+| --- | --- | --- |
+| Analyze service-chain latency | Yes | Context propagation must be standardized |
+| Simple single-service failure | Logs/metrics may be enough | Trace cost may be unnecessary |
+| Track a critical business flow | Yes | Business span names should be meaningful |
+| High traffic | Sampling | Important failures must not disappear from samples |
+
+## Production Checklist
+
+- Problem: Which service dependency or user journey will tracing make visible?
+- Solution: Are trace ID, span naming, baggage, sampling, and error tagging standards clear?
+- Trade-off: Tracing shows relationships; it adds sampling, storage, and instrumentation cost.
+- Failure mode: Broken context, missing spans, clock skew, and oversampling should be handled.
+- Measurement: Track trace coverage, span count, sampling rate, ingestion cost, and dependency latency.
+- Security/cost: Do not put sensitive data in baggage; every span creates storage and network cost.
+
 ## Basic Concepts
 
 ### 1. Core Tracing Concepts

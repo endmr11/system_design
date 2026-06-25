@@ -2,6 +2,24 @@
 
 Disk önbelleği, mobil uygulamalarda kalıcı veri depolama ve ağ trafiğini azaltmak için kritik bir bileşendir.
 
+## Hızlı Karar
+
+| Durum | Disk Cache Kullan | Dikkat |
+| --- | --- | --- |
+| Büyük medya veya response | Evet | Boyut ve eviction sınırı gerekir |
+| Hassas veri | Dikkatli / şifreli | Retention kısa tutulmalı |
+| Sık değişen küçük veri | Memory cache yeterli olabilir | Disk I/O gereksiz |
+| Offline okuma | Evet | Versiyon ve migration düşünülmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Disk cache hangi ağ veya offline maliyetini azaltıyor?
+- Çözüm: Key, max size, eviction, encryption, TTL ve cleanup net mi?
+- Trade-off: Kalıcılık hız sağlar; disk alanı, gizlilik ve migration maliyeti getirir.
+- Hata durumu: Corrupted entry, disk full, stale file, permission error ve cache poisoning ele alınmalı.
+- Ölçüm: Cache size, hit ratio, eviction count, disk I/O time ve cleanup success izlenmeli.
+- Güvenlik/maliyet: Hassas veri şifrelenmeli; büyük cache kullanıcı depolama alanını tüketir.
+
 ## Disk Önbellek Temelleri
 
 ### Depolama Stratejileri

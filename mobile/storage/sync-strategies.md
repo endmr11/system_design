@@ -6,6 +6,24 @@ title: Veri Senkronizasyon Stratejileri
 
 Modern mobil uygulamalarda veri senkronizasyonu, kullanıcı deneyiminin kesintisizliği ve veri bütünlüğünün korunması açısından kritik önem taşır. Bu bölümde, çeşitli senkronizasyon yaklaşımları, protokolleri ve implementasyon stratejileri detaylı olarak ele alınmaktadır.
 
+## Hızlı Karar
+
+| Durum | Sync Stratejisi | Dikkat |
+| --- | --- | --- |
+| Kullanıcı yazmaları offline olabilir | Queue + idempotent sync | Conflict şart |
+| Sadece sunucudan okuma | Pull sync | Cursor/version gerekir |
+| Canlı ortak düzenleme | Real-time sync / CRDT | Karmaşıklık yüksek |
+| Büyük medya | Chunked sync | Resume ve checksum gerekir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi veri ne kadar taze ve tutarlı olmalı?
+- Çözüm: Sync trigger, delta format, conflict policy, retry, idempotency ve auth refresh net mi?
+- Trade-off: Sık sync tazelik sağlar; batarya, veri ve backend maliyeti getirir.
+- Hata durumu: Duplicate operation, partial sync, auth expiry, clock skew ve server/client drift ele alınmalı.
+- Ölçüm: Sync latency, success rate, queue age, conflict count ve data transfer izlenmeli.
+- Güvenlik/maliyet: Sync payload minimum ve şifreli olmalı; büyük delta transferleri maliyetlidir.
+
 ## Senkronizasyon Modelleri
 
 ### Full Synchronization

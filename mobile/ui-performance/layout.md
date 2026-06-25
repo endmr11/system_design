@@ -1,5 +1,25 @@
 # Düzen Performansı
 
+Layout performansı, UI'ın ölçüm ve yerleşim işini frame budget içinde bitirebilmesidir. Sorun çoğu zaman tek bir büyük view değil, sık tekrarlanan küçük layout hesaplarıdır.
+
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Nested layout fazla | Flatten layout | Okunabilirliği tamamen bozma |
+| Liste item yavaş | Sabit/öngörülebilir ölçü | Dynamic height maliyetlidir |
+| Responsive ekran | Constraint dikkatli kullan | Constraint zinciri büyümesin |
+| Sık state değişimi | Recomposition/layout scope daralt | Tüm ekran yenilenmesin |
+
+## Üretim Kontrol Listesi
+
+- Problem: Layout hangi ekranda kaç ms sürüyor?
+- Çözüm: View hierarchy, constraint count, invalidation scope ve placeholder boyutları net mi?
+- Trade-off: Esnek layout bakım kolaylığı sağlar; ölçüm maliyetini artırabilir.
+- Hata durumu: Layout thrashing, text overflow, infinite constraints ve orientation bug ele alınmalı.
+- Ölçüm: Layout time, measure count, re-layout frequency, frame time ve jank rate izlenmeli.
+- Güvenlik/maliyet: Dynamic font/accessibility boyutları desteklenmeli; layout test matrisi cihaz maliyeti getirir.
+
 ## Düzen Optimizasyonu Temelleri
 
 ### Düzen Sürecini Anlama

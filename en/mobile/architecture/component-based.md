@@ -4,6 +4,24 @@
 
 Component-based architecture is a design approach that organizes mobile applications into reusable, testable, and maintainable components. This approach simplifies the development process by breaking complex applications into smaller, manageable parts.
 
+## Quick Decision
+
+| Situation | Component Approach | Watch Out |
+| --- | --- | --- |
+| UI repeats | Reusable component | Do not make it overly generic |
+| Screen is complex | Container/presenter split | State ownership must be clear |
+| Design system exists | Token + component library | Platform differences must remain |
+| Small one-off piece | Keep inline | Early abstraction is debt |
+
+## Production Checklist
+
+- Problem: Does the component reduce repetition, or only create more files?
+- Solution: Are props/state boundary, accessibility, loading/error state, and test strategy clear?
+- Trade-off: Reuse improves speed; wrong abstraction spreads cost to all screens.
+- Failure mode: Prop drilling, stale state, layout overflow, and platform-specific UI differences should be handled.
+- Measurement: Track render count, frame time, component reuse, UI test failures, and crash-free sessions.
+- Security/cost: Generic components should not log sensitive data; component libraries create maintenance cost.
+
 ## Core Concepts
 
 ### What is a Component?

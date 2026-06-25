@@ -2,6 +2,24 @@
 
 Edge computing represents a revolutionary computational paradigm that fundamentally transforms traditional centralized cloud computing by relocating data processing capabilities to the closest possible proximity to end users. This architectural shift emerges from the convergence of IoT proliferation, 5G technology advancement, and the increasing demands of real-time applications, establishing itself as a critical component of the modern technology landscape.
 
+## Quick Decision
+
+| Need | Use Edge | Watch Out |
+| --- | --- | --- |
+| Very low latency | Yes | Edge node capacity is limited |
+| Filter large data before sending to cloud | Yes | Local state and update management are needed |
+| Simple web API | Usually no | Central cloud may be cheaper and simpler |
+| Offline or unreliable connectivity | Yes | Conflict and sync policy are required |
+
+## Production Checklist
+
+- Problem: Does edge solve latency, bandwidth, offline operation, or data-residency pressure?
+- Solution: Are workload placement, cache invalidation, rollout, telemetry, and fallback path clear?
+- Trade-off: You gain latency and bandwidth; you add distributed operations and debugging cost.
+- Failure mode: Offline edge nodes, stale config, partial rollout, clock drift, and local storage corruption should be handled.
+- Measurement: Track edge hit ratio, local latency, origin fallback rate, sync lag, and node health.
+- Security/cost: Edge environments expand the physical and network attack surface; node count increases operational cost.
+
 ## Fundamental Philosophy and Architectural Principles
 
 Edge computing's foundation rests upon the "compute where data is generated" principle, fundamentally challenging traditional cloud computing models. While conventional cloud architectures require data transmission to distant datacenters for processing before returning results, edge computing paradigm positions processing power at maximum proximity to users or data sources. This fundamental shift dramatically reduces network latency while minimizing bandwidth requirements and enabling real-time responsiveness capabilities.

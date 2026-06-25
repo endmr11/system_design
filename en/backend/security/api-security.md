@@ -2,6 +2,24 @@
 
 API security encompasses multiple layers of protection including request integrity validation, rate limiting, and Web Application Firewall (WAF) integration. This chapter covers comprehensive API security implementation in Spring Boot applications.
 
+## Quick Decision
+
+| Threat | Control | Watch Out |
+| --- | --- | --- |
+| Unauthorized access | AuthN/AuthZ | Gateway alone is not enough |
+| Request tampering | HMAC/signature | Replay protection is needed |
+| Abuse and scraping | Rate limit/WAF | Real users should not be punished |
+| Injection and bad input | Validation + encoding | Apply at all trust boundaries |
+
+## Production Checklist
+
+- Problem: Which actor can access which data with which permission?
+- Solution: Are auth, input validation, rate limit, audit, and error response standards clear?
+- Trade-off: Security controls add latency and integration cost; data loss is more expensive.
+- Failure mode: Token theft, replay attacks, broken object-level authorization, and verbose errors should be handled.
+- Measurement: Track 401/403/429 rates, suspicious IPs, failed signatures, WAF hits, and auth latency.
+- Security/cost: Do not return sensitive error detail; attack traffic can increase WAF/log costs.
+
 ## Request Integrity & Authentication
 
 ### HMAC Implementation for API Security

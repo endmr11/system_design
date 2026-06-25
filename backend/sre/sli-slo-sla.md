@@ -2,6 +2,24 @@
 
 Site Reliability Engineering'in temel yapı taşları olan SLI, SLO ve SLA kavramları, sistemlerin güvenilirliğini ölçmek ve yönetmek için kritik önem taşır. Bu metrikler, hem teknik ekipler hem de iş birimlerinin ortak bir dilde konuşmasını sağlar.
 
+## Hızlı Karar
+
+| Kavram | Kullanım | Dikkat |
+| --- | --- | --- |
+| SLI | Kullanıcı deneyimini ölç | Ölçülebilir ve gerçekçi olmalı |
+| SLO | İç hedef belirle | Çok agresif hedef geliştirmeyi kilitler |
+| SLA | Müşteri taahhüdü | Hukuki/finansal sonuç doğurur |
+| Error budget | Risk kararını yönet | Harcanınca release politikası değişmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Güvenilirlik hangi kullanıcı deneyimiyle ölçülüyor?
+- Çözüm: SLI tanımı, SLO hedefi, pencere, veri kaynağı ve owner net mi?
+- Trade-off: Yüksek SLO güven verir; maliyet ve operasyon baskısı yaratır.
+- Hata durumu: Yanlış SLI, eksik veri, dashboard drift ve SLA ihlali ele alınmalı.
+- Ölçüm: Error budget burn, availability, latency, freshness ve correctness izlenmeli.
+- Güvenlik/maliyet: SLA taahhüdü verilmeden ölçüm güvenilir olmalı; daha yüksek SLO genelde daha pahalı mimari ister.
+
 ## SLI (Service Level Indicator)
 
 Service Level Indicator, sistem performansını ölçmek için kullanılan nicel metriklerdir. Bu göstergeler, hizmetin sağlığını objektif olarak değerlendirmemizi sağlar.

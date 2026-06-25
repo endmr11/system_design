@@ -6,6 +6,24 @@ title: Local Database Options
 
 Local data storage in mobile applications is critical for performance, offline functionality, and user experience. This section examines all local persistence options in detail, from SQL-based solutions to NoSQL alternatives, from key-value stores to object databases.
 
+## Quick Decision
+
+| Need | Option | Watch Out |
+| --- | --- | --- |
+| Relational queries | SQLite/Room/Core Data | Migration discipline is needed |
+| Simple settings/non-token data | Key-value store | Not fit for large data |
+| Reactive object graph | Realm-like DB | Vendor and migration risk |
+| Offline sync | Local DB + sync metadata | Conflict fields are needed |
+
+## Production Checklist
+
+- Problem: Which offline or performance need does the local DB solve?
+- Solution: Are schema, index, migration, encryption, backup, and sync metadata clear?
+- Trade-off: Local DB is fast and offline; it adds migration, security, and conflict debt.
+- Failure mode: Corruption, migration failure, full disk, stale indexes, and slow queries should be handled.
+- Measurement: Track query latency, DB size, migration success, corruption rate, and sync lag.
+- Security/cost: Sensitive data must be encrypted; excess local data increases backup and deletion load.
+
 ## SQL-Based Solutions
 
 ### SQLite/Room (Android)

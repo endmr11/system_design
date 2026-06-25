@@ -2,6 +2,24 @@
 
 Biyometrik kimlik doğrulama, kullanıcı kimliğini doğrulamak için benzersiz biyolojik özellikleri kullanır. Modern mobil cihazlar parmak izi, yüz tanıma, iris tarama ve ses tanıma dahil olmak üzere çeşitli biyometrik yöntemleri destekler. Bu bölüm, güvenli biyometrik kimlik doğrulama sistemleri için kapsamlı uygulama stratejilerini içerir.
 
+## Hızlı Karar
+
+| Durum | Biyometri Kullan | Dikkat |
+| --- | --- | --- |
+| Local unlock | Evet | Server auth yerine geçmez |
+| High-risk işlem | Step-up olarak | Fallback ve re-auth gerekir |
+| Cihaz biyometri yok | PIN/password fallback | Güvenlik seviyesi farklı |
+| Hesap değişimi | Yeniden doğrula | Eski kullanıcı state'i kalmasın |
+
+## Üretim Kontrol Listesi
+
+- Problem: Biyometri neyi koruyor: uygulama girişi, token erişimi, işlem onayı?
+- Çözüm: Fallback, lockout, enrollment change, key invalidation ve UX copy net mi?
+- Trade-off: UX hızlanır; platform davranışı ve fallback güvenliği karmaşıklaşır.
+- Hata durumu: Biometric enrollment change, lockout, device unsupported ve replayed local state ele alınmalı.
+- Ölçüm: Biometric success, fallback rate, lockout rate ve auth abandonment izlenmeli.
+- Güvenlik/maliyet: Biyometri sonucu backend güveni değildir; hassas anahtarlar secure enclave/keystore ile korunmalı.
+
 ## Biyometrik Kimlik Doğrulama Mimarisi
 
 ## Platform Uygulamaları

@@ -2,6 +2,24 @@
 
 Incident Management, sistem kesintilerini ve performans sorunlarını hızlıca tespit edip çözmek için standartlaştırılmış süreçlerdir. Etkili incident management, sistem güvenilirliğinin ve kullanıcı memnuniyetinin korunması için kritik önem taşır.
 
+## Hızlı Karar
+
+| Durum | Aksiyon | Dikkat |
+| --- | --- | --- |
+| Kullanıcı etkisi büyük | Incident ilan et | Erken ilan etmek geç kalmaktan iyidir |
+| Sebep bilinmiyor | Komutan + iletişim kanalı | Herkes aynı anda debug yapmamalı |
+| Mitigation bulundu | Önce etkiyi azalt | Root cause sonra derinleşir |
+| Incident bitti | Post-mortem | Aksiyon sahibi atanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi kullanıcı etkisi ve hangi SLO ihlali var?
+- Çözüm: Severity, incident commander, communication, mitigation ve status update cadence net mi?
+- Trade-off: Süreç biraz yavaşlatır; koordinasyonsuz müdahale daha çok zarar verir.
+- Hata durumu: Yanlış severity, sessiz incident, rollback gecikmesi ve aksiyonsuz post-mortem ele alınmalı.
+- Ölçüm: MTTD, MTTA, MTTR, customer impact duration ve repeat incident count izlenmeli.
+- Güvenlik/maliyet: Incident kanalında secret/PII paylaşılmamalı; uzun kesinti doğrudan gelir ve güven maliyeti üretir.
+
 ## Incident Tanımı ve Sınıflandırması
 
 ### Incident Türleri

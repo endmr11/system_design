@@ -1,5 +1,25 @@
 # Core Data Structures and Algorithms - System Design Context
 
+Data structure and algorithm choice is not an abstract interview topic in system design; it drives latency, memory, consistency, and cost. The wrong structure can make an otherwise good architecture slow.
+
+## Quick Decision
+
+| Need | Starting Choice | Watch Out |
+| --- | --- | --- |
+| Fast key lookup | Hash map / key-value store | Memory and hash collision risk |
+| Ordered lookup or range query | B-tree / LSM tree | Write cost and compaction |
+| Newest or most-used data | LRU/LFU cache | Bad eviction harms user experience |
+| Relationships between nodes | Graph model | Traversal cost can grow quickly |
+
+## Production Checklist
+
+- Problem: Is the access pattern read-heavy, write-heavy, or range-query heavy?
+- Solution: Does the chosen structure fit the expected data volume, concurrency, and distributed runtime?
+- Trade-off: Faster access often needs more memory or more complex invalidation.
+- Failure mode: Hot keys, memory leaks, hash collisions, and O(n) scans must be visible in production.
+- Measurement: Track p95/p99 latency, memory footprint, cache hit ratio, lock contention, and GC pressure.
+- Security/cost: User-controlled input can create algorithmic complexity attacks; memory use is direct infrastructure cost.
+
 ## Data Structures Diagram
 
 ```mermaid

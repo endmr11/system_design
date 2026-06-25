@@ -2,6 +2,24 @@
 
 Feature flags (also known as feature toggles) enable teams to deploy code changes without immediately exposing them to users. This approach allows for gradual rollouts, A/B testing, and quick feature rollbacks without requiring app store deployments.
 
+## Quick Decision
+
+| Need | Flag Type | Watch Out |
+| --- | --- | --- |
+| Emergency disable | Kill switch | Default must be safe |
+| Gradual enablement | Release flag | Segment must be correct |
+| Experiment | Experiment flag | Metric and duration must be clear |
+| Persistent setting | Config | Must not become flag debt |
+
+## Production Checklist
+
+- Problem: Which release risk does the flag reduce?
+- Solution: Are owner, default, targeting, TTL, cleanup, and offline behavior clear?
+- Trade-off: Flags add flexibility; they add branching and test matrix cost.
+- Failure mode: Bad defaults, stale flags, wrong segments, and config fetch failure should be handled.
+- Measurement: Track activation rate, error delta, flag age, rollback count, and cleanup completion.
+- Security/cost: Authorization or secrets are not protected by flags; old flags create code debt.
+
 ## Feature Flag Architecture
 
 ### Flag Types

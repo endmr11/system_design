@@ -1,5 +1,25 @@
 # UI/UX Performans Optimizasyonu
 
+Rendering optimizasyonu, kullanıcıya görünen işi zamanında ve tutarlı şekilde çizmektir. Önce gerçek cihazda hangi frame'in neden geciktiğini ölç; sonra lazy loading, recycling veya GPU optimizasyonu ekle.
+
+## Hızlı Karar
+
+| Semptom | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| İlk yükleme yavaş | Lazy loading | Placeholder boyutu sabit olmalı |
+| Liste ağır | View recycling | State sızıntısı olmasın |
+| Görsel yoğun ekran | Image resize/cache | Decode main thread'de olmasın |
+| GPU darboğazı | Overdraw azalt | Görsel kalite etkilenebilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Render gecikmesi layout, draw, image decode veya GPU kaynaklı mı?
+- Çözüm: Baseline, lazy strategy, recycling key, image size ve loading/error state net mi?
+- Trade-off: Lazy loading başlangıcı hızlandırır; skeleton/placeholder yönetimi ekler.
+- Hata durumu: Blank content, wrong recycled state, image flicker ve overdraw ele alınmalı.
+- Ölçüm: Time-to-first-render, frame time, image decode time, memory peak ve jank rate izlenmeli.
+- Güvenlik/maliyet: Placeholder ve lazy içerik erişilebilirliği bozmasın; görsel varyantlar storage/CDN maliyeti getirir.
+
 ## 5.1. Lazy Loading & View Recycling (RecyclerView, UITableView)
 
 ### Lazy Loading Temelleri

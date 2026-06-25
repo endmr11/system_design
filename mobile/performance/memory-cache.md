@@ -1,5 +1,25 @@
 # In-Memory Cache (Bellek Önbelleği)
 
+Memory cache en hızlı okuma yoludur, ama mobilde RAM sınırlıdır ve işletim sistemi bellek baskısında uygulamayı öldürebilir. Bu yüzden cache boyutu dinamik, temizlenebilir ve ölçülebilir olmalıdır.
+
+## Hızlı Karar
+
+| Durum | Memory Cache Kullan | Dikkat |
+| --- | --- | --- |
+| Küçük ve sık okunan veri | Evet | LRU/LFU yeterli olabilir |
+| Büyük bitmap/listeler | Sınırlı | Memory pressure izlenmeli |
+| Hassas veri | Kaçın veya kısa ömürlü tut | Dump/log riski |
+| Offline kalıcılık | Hayır, disk gerekir | App kill sonrası kaybolur |
+
+## Üretim Kontrol Listesi
+
+- Problem: Memory cache hangi latency sorununu çözüyor?
+- Çözüm: Max size, eviction, memory warning handling, key ve lifecycle net mi?
+- Trade-off: Çok cache hızlıdır; çok bellek kullanımı crash ve OS kill riskini artırır.
+- Hata durumu: Memory leak, stale object, unbounded map ve bitmap OOM ele alınmalı.
+- Ölçüm: Hit ratio, memory footprint, eviction count, GC pressure ve OOM/crash oranı izlenmeli.
+- Güvenlik/maliyet: Token/PII memory'de gereksiz tutulmamalı; düşük RAM cihazlar ayrıca test edilmeli.
+
 ## Memory Cache Fundamentals
 
 ### Temel Prensipler

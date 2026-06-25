@@ -1,90 +1,105 @@
 # Backend System Design
 
-Backend system design covers the fundamental principles of building scalable, reliable, and high-performance server-side applications.
+Backend system design is the set of decisions that lets a request travel from the user to data and back reliably. This section is a durable reference for balancing scalable APIs, data consistency, performance, reliability, observability, security, and cost.
 
-## 1. Basic Concepts ✅
+## When To Use This Section
 
-In this section, you'll learn the building blocks of backend system design:
+- When defining the boundaries, data ownership, and API contract of a new backend service.
+- When an existing system shows latency, error-rate, cost, or operational-complexity problems.
+- When comparing trade-offs around monoliths, microservices, event-driven systems, cache, queues, sharding, or multi-region designs.
+- When AI or external resources are limited and you need to quickly recall the core principles.
 
-- **[Monolith vs. Microservice Architecture](./basics/monolith-vs-microservice)** - Comparison of monolithic and microservice architectures
-- **[Request-Response Model](./basics/request-response-model)** - HTTP request-response lifecycle and inter-service communication
-- **[HTTP, REST, gRPC Protocols](./basics/protocols)** - API protocol selection and best practices
-- **[Basic Database Concepts](./basics/database-concepts)** - SQL/NoSQL, indexing, normalization
-- **[Basic Data Structures and Algorithms](./basics/data-structures)** - Algorithm selection in system design context
+## Core Flow
 
-## Content Plan
+```mermaid
+flowchart LR
+    Client[Client] --> Edge[DNS / CDN / WAF]
+    Edge --> Gateway[API Gateway]
+    Gateway --> Auth[AuthN / AuthZ]
+    Gateway --> Service[Backend Service]
+    Service --> Cache[(Cache)]
+    Service --> DB[(Primary Data Store)]
+    Service --> Queue[Message Queue]
+    Queue --> Worker[Worker]
+    Worker --> DB
+    Service --> Telemetry[Logs / Metrics / Traces]
+```
 
-### 2. Performance and Scalability ✅
-- **[Load Balancing](./performance/load-balancing)** - Application & Infrastructure level load balancing
-- **[Caching](./performance/caching)** - Distributed caching, cache patterns, and invalidation
-- **[Database Sharding and Partitioning](./performance/sharding)** - Horizontal/vertical partitioning, consistent hashing
-- **[Database Replication](./performance/replication)** - Master-slave, multi-master replication, read/write splitting
-- **[Asynchronous Processing & Message Queues](./performance/async-processing)** - Async patterns with Kafka, RabbitMQ, Redis
+Every box in this flow is a decision point: a gateway centralizes control but can become a bottleneck; cache reduces latency but adds consistency risk; queues absorb bursts but introduce delay and replay handling.
 
-### 3. Reliability & High Availability ✅
-- **[Failover Mechanisms](./reliability/failover)** - Automated failover, consensus algorithms
-- **[Circuit Breaker and Bulkhead Pattern](./reliability/circuit-breaker)** - Fault tolerance with Resilience4j
-- **[Health Checks & Heartbeats](./reliability/health-checks)** - Spring Boot Actuator and monitoring
-- **[Backpressure Control](./reliability/backpressure)** - Rate limiting and queue management
+## Decision Compass
 
-### 4. Consistency Models ✅
-- **[Strong vs Eventual Consistency](./consistency/strong-vs-eventual)** - Comparison of consistency models
-- **[CAP Theorem](./consistency/cap-theorem)** - Consistency, Availability, Partition tolerance
-- **[Paxos and Raft Consensus Algorithms](./consistency/consensus-algorithms)** - Distributed consensus patterns
-- **[Other Consistency Models](./consistency/other-consistency-models)** - Causal, Sequential, Monotonic consistency
+| Question | Start Here | Typical Trade-off |
+| --- | --- | --- |
+| Is one service enough? | [Monolith vs Microservice](./basics/monolith-vs-microservice) | Simple operations vs independent scaling |
+| How will the API evolve? | [API Versioning](./api/api-versioning) | Backward compatibility vs maintenance load |
+| How do we reduce read pressure? | [Caching](./performance/caching) | Low latency vs invalidation complexity |
+| How do reads and writes scale? | [Sharding](./performance/sharding), [Replication](./performance/replication) | More capacity vs data distribution cost |
+| How do we limit failure spread? | [Circuit Breaker](./reliability/circuit-breaker), [Backpressure](./reliability/backpressure) | Protection vs extra state management |
+| How consistent must the data be? | [Strong vs Eventual Consistency](./consistency/strong-vs-eventual), [CAP](./consistency/cap-theorem) | Correctness perception vs availability |
+| How will the system be observed? | [Logging](./observability/logging), [Metrics](./observability/metrics), [Tracing](./observability/tracing) | Visibility vs data volume and cost |
+| How are access and secrets protected? | [Auth](./security/auth), [Secret Management](./security/secret-management), [TLS/mTLS](./security/tls) | Security vs integration complexity |
 
-### 5. API Design and Gateways ✅
-- **[API Versioning](./api/api-versioning)** - URL, header, query parameter, and annotation-based versioning strategies
-- **[Rate Limiting & Throttling](./api/rate-limiting)** - Redis-based Token Bucket and Sliding Window algorithms
-- **[API Gateway Usage](./api/api-gateway)** - Spring Cloud Gateway with authentication, circuit breakers, and monitoring
-- **[GraphQL vs REST vs gRPC](./api/api-comparison)** - Complete comparison with practical Spring Boot implementations
+## Minimum Design Check
 
-### 6. Microservice Communication ✅
-- **[Communication Patterns](./microservices/communication)** - Synchronous vs Asynchronous communication with Spring Boot
-- **[Service Discovery](./microservices/service-discovery)** - Eureka, Consul, Kubernetes native discovery
-- **[Service Mesh](./microservices/service-mesh)** - Istio integration with Spring Boot applications
+Before calling a backend design complete, clarify these points:
 
-### 7. Data Processing and Streaming ✅
-- **[Event Sourcing](./data-processing/event-sourcing)** - Event sourcing model and immutable event store
-- **[CQRS (Command Query Responsibility Segregation)](./data-processing/cqrs)** - Separating command and query responsibilities
-- **[Stream Processing](./data-processing/stream-processing)** - Real-time data stream processing
+- Problem: Which user or business flow does the system support, and what is the most critical failure mode?
+- Solution: Are the main components, data-owning services, and sync/async boundaries clear?
+- Trade-off: Are rejected alternatives and their reasons explicit?
+- Example: Is there at least one successful request, one failure path, and one retry/idempotency flow?
+- Measurement: Are latency, throughput, error rate, saturation, and cost signals defined?
+- Security: Are authentication, authorization, secrets, TLS, and audit needs covered?
+- Cost: Is the price of cache, queues, data copies, observability, and multi-region choices understood?
 
-### 8. Observability ✅
-- **[Logging (ELK Stack)](./observability/logging)** - Structured logging and ELK Stack integration
-- **[Metrics (Prometheus, Grafana)](./observability/metrics)** - Application and system metrics collection
-- **[Tracing (Jaeger, Zipkin)](./observability/tracing)** - Distributed tracing and performance analysis
-- **[Distributed Tracing](./observability/distributed-tracing)** - Cross-service correlation and user journey tracking
+## Section Map
 
-### 9. Security ✅
-- **[Authentication vs Authorization](./security/auth)** - OAuth2, JWT, method-level security
-- **[TLS/SSL & mTLS](./security/tls)** - Certificate management, HTTPS configuration
-- **[API Security](./security/api-security)** - HMAC, rate limiting, WAF integration
-- **[Secret Management](./security/secret-management)** - HashiCorp Vault, encrypted properties
+### 1. Basic Concepts
 
-### 10. Cloud and Container Orchestration ✅
-- **[Containers (Docker)](./cloud/containers)** - Containerization, Docker best practices, multi-stage builds
-- **[Kubernetes Basics](./cloud/kubernetes)** - Pod, Service, Deployment, ConfigMap, Secret, HPA, RBAC
-- **[Helm Charts](./cloud/helm)** - Kubernetes package management, templating, multi-environment deployment
-- **[Serverless and FaaS](./cloud/serverless)** - AWS Lambda, Azure Functions, Google Cloud Functions, Serverless Framework
+- [Monolith vs Microservice](./basics/monolith-vs-microservice)
+- [Request-Response Model](./basics/request-response-model)
+- [HTTP, REST, gRPC](./basics/protocols)
+- [Database Concepts](./basics/database-concepts)
+- [Data Structures](./basics/data-structures)
 
-### 11. Site Reliability Engineering ✅
-- **[SLI/SLO/SLA Definitions](./sre/sli-slo-sla)** - Service Level Indicators, Objectives, and Agreements
-- **[Incident Management](./sre/incident-management)** - Incident response and management processes
-- **[Chaos Engineering](./sre/chaos-engineering)** - Chaos engineering and resilience testing
-- **[Capacity Planning](./sre/capacity-planning)** - Capacity planning and proactive scaling
+### 2. Performance and Scalability
 
-### 12. Operations and Cost Management ✅
-- **[Infrastructure as Code](./operations/iac)** - CloudFormation, Terraform infrastructure management and automation
-- **[Cost Monitoring & Optimization](./operations/cost-optimization)** - FinOps principles and cost analysis strategies
-- **[CI/CD Workflows](./operations/ci-cd)** - DevOps culture and continuous integration/deployment
+- [Load Balancing](./performance/load-balancing)
+- [Caching](./performance/caching)
+- [Sharding and Partitioning](./performance/sharding)
+- [Replication](./performance/replication)
+- [Async Processing and Message Queues](./performance/async-processing)
 
-### 13. Edge and Geographically Distributed Systems ✅
-- **[Multi-Region Deployment](./edge/multi-region)** - Active-Active and Active-Passive deployment strategies
-- **[Data Localization and GDPR](./edge/data-localization)** - GDPR compliance and data sovereignty requirements
-- **[Edge Computing](./edge/edge-computing)** - Cloudflare Workers, AWS Edge Services, and real-time processing
+### 3. Reliability and Consistency
 
-### 14. Continuous Improvement ✅
-- **[Feedback Loops](./improvement/feedback-loops)** - User and system feedback, A/B testing, and telemetry analysis
-- **[Blue/Green and Canary Deployments](./improvement/deployment-strategies)** - Risk-controlled deployment strategies and automated rollback
-- **[Retrospective & Post-Mortem](./improvement/retrospective)** - Organizational learning and continuous improvement methodologies
+- [Failover](./reliability/failover)
+- [Circuit Breaker and Bulkhead](./reliability/circuit-breaker)
+- [Health Checks](./reliability/health-checks)
+- [Backpressure](./reliability/backpressure)
+- [Consistency Models](./consistency/strong-vs-eventual)
+- [Consensus Algorithms](./consistency/consensus-algorithms)
 
+### 4. API, Microservices, and Data Flow
+
+- [API Gateway](./api/api-gateway)
+- [Rate Limiting](./api/rate-limiting)
+- [GraphQL vs REST vs gRPC](./api/api-comparison)
+- [Microservice Communication](./microservices/communication)
+- [Service Discovery](./microservices/service-discovery)
+- [Event Sourcing](./data-processing/event-sourcing)
+- [CQRS](./data-processing/cqrs)
+- [Stream Processing](./data-processing/stream-processing)
+
+### 5. Operations, Security, and Geography
+
+- [Observability](./observability/logging)
+- [Security](./security/auth)
+- [Cloud and Containers](./cloud/containers)
+- [SRE](./sre/sli-slo-sla)
+- [Operations and Cost](./operations/cost-optimization)
+- [Edge and Multi-Region](./edge/multi-region)
+- [Continuous Improvement](./improvement/feedback-loops)
+
+## Starting Route
+
+If you are new, read [Request-Response Model](./basics/request-response-model), [Protocols](./basics/protocols), [Database Concepts](./basics/database-concepts), [Caching](./performance/caching), [Load Balancing](./performance/load-balancing), [Observability](./observability/logging), and [Security](./security/auth) in order. When designing a system, pull only the decision you need from each section; adding unnecessary technology is maintenance debt, not system design.

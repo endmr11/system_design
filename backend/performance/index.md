@@ -2,6 +2,24 @@
 
 Modern backend sistemlerinin başarısı, yüksek performans ve etkili ölçeklenebilirlik stratejilerine dayanır. Bu bölüm, Spring Boot ekosistemi kullanarak enterprise seviyesinde performans optimizasyonları ve ölçeklenebilirlik çözümleri sunar.
 
+## Hızlı Karar
+
+| Semptom | Önce Bak | Dikkat |
+| --- | --- | --- |
+| Yüksek latency | Profiling, DB query, network hop | Cache eklemeden önce darboğazı ölç |
+| Yüksek CPU | Algorithm, serialization, thread pool | Daha çok instance kök neden olmayabilir |
+| Yüksek DB yükü | Index, cache, read replica | Replica stale read üretir |
+| Ani trafik artışı | Queue, autoscaling, backpressure | Downstream kapasiteyi unutma |
+
+## Üretim Kontrol Listesi
+
+- Problem: Performans sorunu hangi kullanıcı akışında, hangi SLI'ı bozuyor?
+- Çözüm: Ölçüm, hipotez, değişiklik ve karşılaştırma sonucu kayıtlı mı?
+- Trade-off: Her optimizasyon karmaşıklık, maliyet veya tutarlılık bedeli getirir.
+- Hata durumu: Cache stampede, retry storm, DB saturation, thread starvation ve memory leak ele alınmalı.
+- Ölçüm: p95/p99 latency, throughput, error rate, saturation, queue depth ve unit cost izlenmeli.
+- Güvenlik/maliyet: Performans için auth/log/security kapatılmaz; ekstra cache, replica ve instance faturaya yansır.
+
 ```mermaid
 graph TD
     A[Client] -->|Request| B[Load Balancer]

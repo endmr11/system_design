@@ -2,6 +2,24 @@
 
 Load balancing, gelen istekleri birden fazla sunucu arasında dağıtarak sistem performansını ve kullanılabilirliğini artıran kritik bir tekniktir. Spring Boot ekosistemi, hem uygulama seviyesinde hem de altyapı seviyesinde çeşitli load balancing stratejileri sunar.
 
+## Hızlı Karar
+
+| Durum | Strateji | Dikkat |
+| --- | --- | --- |
+| Benzer instance'lar | Round robin / least connections | Health check doğru olmalı |
+| Kullanıcı state'i local | Sticky session | Ölçekleme ve failover zorlaşır |
+| Global trafik | Geo/latency routing | Data residency etkilenebilir |
+| Değişken kapasite | Weighted routing | Ağırlıklar otomasyon ister |
+
+## Üretim Kontrol Listesi
+
+- Problem: Load balancer performans mı, availability mi, routing politikası mı çözüyor?
+- Çözüm: Health check, timeout, retry, connection draining ve failover davranışı net mi?
+- Trade-off: Trafik dağıtımı availability sağlar; yanlış retry ve health check kesinti yaratır.
+- Hata durumu: Unhealthy instance routing, thundering herd, sticky session loss ve LB outage ele alınmalı.
+- Ölçüm: Per-target latency, error rate, active connection, rejected connection ve health state izlenmeli.
+- Güvenlik/maliyet: TLS termination ve WAF konumu net olmalı; cross-zone/cross-region traffic maliyeti artabilir.
+
 ## Load Balancing Overview
 
 ```mermaid

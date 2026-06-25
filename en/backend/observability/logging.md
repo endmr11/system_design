@@ -2,6 +2,24 @@
 
 Logging is one of the fundamental components of observability, allowing us to monitor system state, errors, and events.
 
+## Quick Decision
+
+| Need | Log | Watch Out |
+| --- | --- | --- |
+| Failure root cause | Structured error log | Stack trace and context should be together |
+| User request tracking | Correlation/request ID | PII must not be logged |
+| Audit requirement | Separate audit log | Immutability and access control are needed |
+| Performance analysis | Metric/trace may fit better | Log volume is expensive |
+
+## Production Checklist
+
+- Problem: Which question will this log answer?
+- Solution: Are log level, event name, correlation ID, tenant/user scope, and retention clear?
+- Trade-off: More logs make debugging easier; they add storage, search, and privacy cost.
+- Failure mode: PII leakage, log storms, missing correlation IDs, and sampling mistakes should be handled.
+- Measurement: Track log ingestion volume, error log rate, query latency, dropped logs, and storage cost.
+- Security/cost: Secrets, tokens, and personal data must be masked; debug logs should be limited in production.
+
 ## Logging Framework - Structured Logging with Spring Boot
 
 ### SLF4J + Logback Integration

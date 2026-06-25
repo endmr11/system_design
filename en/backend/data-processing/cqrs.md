@@ -2,6 +2,24 @@
 
 CQRS is an architectural pattern that separates read and write operations into different models. Commands handle write operations (state changes), while queries handle read operations, allowing for independent optimization of each side.
 
+## Quick Decision
+
+| Situation | Use CQRS | Watch Out |
+| --- | --- | --- |
+| Read and write models are clearly different | Yes | The two models must be synchronized |
+| High read traffic, complex queries | Yes | Projection lag must be understood by users |
+| Simple CRUD screen | No | Extra handlers/models become maintenance debt |
+| Audit and event history matter | Consider with Event Sourcing | Operational complexity increases |
+
+## Production Checklist
+
+- Problem: Does separating read/write models reduce real complexity?
+- Solution: Are command validation, query model updates, projection rebuild, and idempotency clear?
+- Trade-off: Reads and writes can be optimized independently; eventual consistency and dual-model cost are added.
+- Failure mode: Projection lag, duplicate commands, failed handlers, and read-model drift should be handled.
+- Measurement: Track command latency, query latency, projection lag, handler error rate, and rebuild duration.
+- Security/cost: Read models can duplicate sensitive data; extra storage and worker cost should be planned.
+
 ## Core Concepts
 
 ### General Architecture Diagram

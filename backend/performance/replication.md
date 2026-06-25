@@ -2,6 +2,24 @@
 
 Database replication, veritabanı sistemlerinin güvenilirliğini, performansını ve ölçeklenebilirliğini artıran temel bir tekniktir. Verilerin birden fazla sunucuda kopyalanması yoluyla high availability, disaster recovery ve read scalability sağlar.
 
+## Hızlı Karar
+
+| İhtiyaç | Replication Modeli | Dikkat |
+| --- | --- | --- |
+| Okuma ölçekleme | Read replica | Stale read riski |
+| Felaket kurtarma | Async cross-region replica | RPO/RTO net olmalı |
+| Güçlü doğruluk | Sync/quorum replication | Yazma latency'si artar |
+| Bakım sırasında kesintisizlik | Failover replica | Failback test edilmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Replication read scaling, HA veya DR hedeflerinden hangisini çözüyor?
+- Çözüm: Read routing, lag threshold, failover, backup ve promotion adımları net mi?
+- Trade-off: Replica availability ve okuma kapasitesi sağlar; lag, conflict ve maliyet ekler.
+- Hata durumu: Replication lag, split-brain, stale read, failed promotion ve data loss ele alınmalı.
+- Ölçüm: Replica lag, replication error, read/write latency, failover time ve storage growth izlenmeli.
+- Güvenlik/maliyet: Replica erişimleri de şifreli ve yetkili olmalı; her replica storage ve compute maliyeti üretir.
+
 ## Master-Slave Configuration
 
 ```mermaid

@@ -1,5 +1,25 @@
 # Helm Charts
 
+Helm turns Kubernetes manifests into reusable packages that can be managed per environment. It is valuable when the same application must be installed consistently across environments; it is unnecessary abstraction when it only hides a single YAML file.
+
+## Quick Decision
+
+| Need | Use Helm | Watch Out |
+| --- | --- | --- |
+| Dev/stage/prod values differ | Yes | Values files should not drift |
+| Same chart installed for many tenants | Yes | Template complexity must stay limited |
+| One service, one environment, little YAML | Not necessary | Plain manifests can be more readable |
+| Rollback and release history required | Yes | Hook and migration behavior must be tested |
+
+## Production Checklist
+
+- Problem: Which repetition or environment difference does Helm simplify?
+- Solution: Are chart version, app version, values schema, secret approach, and rollback path clear?
+- Trade-off: Packaging and reuse improve; template debugging and value inheritance get more complex.
+- Failure mode: Wrong values, failed hooks, partial releases, migration rollback, and immutable field errors need plans.
+- Measurement: Track release success rate, rollback count, deployment duration, template diff, and chart drift.
+- Security/cost: Secrets should not be embedded in charts; over-parameterized charts increase maintenance cost.
+
 ## What is Helm?
 
 Helm is the package manager for Kubernetes. It helps you manage Kubernetes applications through Helm Charts, which are collections of files that describe a related set of Kubernetes resources.

@@ -4,6 +4,24 @@
 
 Bileşen tabanlı mimari, mobil uygulamaları yeniden kullanılabilir, test edilebilir ve sürdürülebilir bileşenler halinde organize eden bir tasarım yaklaşımıdır. Bu yaklaşım, kompleks uygulamaları daha küçük, yönetilebilir parçalara bölerek geliştirme sürecini kolaylaştırır.
 
+## Hızlı Karar
+
+| Durum | Bileşen Yaklaşımı | Dikkat |
+| --- | --- | --- |
+| UI tekrar ediyor | Reusable component | Aşırı generic yapma |
+| Ekran karmaşık | Container/presenter ayrımı | State sahipliği net olmalı |
+| Design system var | Token + component library | Platform farkları korunmalı |
+| Tek kullanım küçük parça | Inline bırak | Erken abstraction borçtur |
+
+## Üretim Kontrol Listesi
+
+- Problem: Bileşen tekrar mı azaltıyor, yoksa sadece dosya mı çoğaltıyor?
+- Çözüm: Props/state sınırı, accessibility, loading/error state ve test stratejisi net mi?
+- Trade-off: Reuse hız sağlar; yanlış abstraction tüm ekranlara maliyet yayar.
+- Hata durumu: Prop drilling, stale state, layout overflow ve platform-specific UI farkları ele alınmalı.
+- Ölçüm: Render count, frame time, component reuse, UI test failure ve crash-free sessions izlenmeli.
+- Güvenlik/maliyet: Hassas veriyi generic component loglamamalı; component library bakım maliyeti üretir.
+
 ## Temel Kavramlar
 
 ### Bileşen Nedir?

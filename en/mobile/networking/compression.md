@@ -2,6 +2,24 @@
 
 Critical compression techniques for bandwidth savings and performance optimization in mobile applications.
 
+## Quick Decision
+
+| Data Type | Approach | Watch Out |
+| --- | --- | --- |
+| JSON/text response | Gzip/Brotli | CPU cost must be measured |
+| Image | WebP/AVIF where supported | Old device support |
+| Already-compressed data | Do not recompress | No gain, CPU loss |
+| Large upload | Chunk + compression | Retry and resume are needed |
+
+## Production Checklist
+
+- Problem: Is the bottleneck bandwidth, latency, or CPU?
+- Solution: Are content negotiation, fallback, cache headers, and image variant strategy clear?
+- Trade-off: Smaller payloads save network/battery; encode/decode CPU cost is added.
+- Failure mode: Unsupported format, corrupted payload, wrong content-type, and decode crashes should be handled.
+- Measurement: Track payload size, transfer time, decode time, cache hit, and data usage.
+- Security/cost: Size limits are needed against compression bombs; image variants create storage cost.
+
 ## Compression Fundamentals for Mobile
 - **Bandwidth Savings**: Reduced data transfer with faster loading
 - **Battery Optimization**: Less radio activity with improved battery life

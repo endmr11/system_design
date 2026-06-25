@@ -6,6 +6,24 @@ title: Offline-First Tasarım
 
 Offline-first yaklaşım, modern mobil uygulamalarda kullanıcı deneyiminin sürekliliğini sağlamak için geliştirilen bir tasarım felsefesidir. Bu yaklaşımda ağ bağlantısı opsiyonel kabul edilir ve uygulama öncelikle local veri ile çalışacak şekilde tasarlanır.
 
+## Hızlı Karar
+
+| Durum | Offline-First Kullan | Dikkat |
+| --- | --- | --- |
+| Kritik akış bağlantısız çalışmalı | Evet | Sync ve conflict gerekir |
+| Sadece içerik okuma | Cache-first yeterli olabilir | Tam local DB gerekmeyebilir |
+| Finansal kesin işlem | Sınırlı | Sunucu onayı şart |
+| Sık seyahat/zayıf ağ | Evet | Kullanıcıya sync durumu göster |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kullanıcı bağlantı yokken ne yapabilmeli?
+- Çözüm: Local source of truth, pending queue, conflict policy, sync status ve retry net mi?
+- Trade-off: Offline deneyim güven verir; state, storage ve conflict karmaşıklığı ekler.
+- Hata durumu: Duplicate write, lost update, stale read, sync loop ve queue corruption ele alınmalı.
+- Ölçüm: Offline usage, sync success, queue age, conflict rate ve user-visible stale data izlenmeli.
+- Güvenlik/maliyet: Offline veri şifrelenmeli; local retention ve silme politikası net olmalı.
+
 ## Mimari Genel Bakış
 
 ```mermaid

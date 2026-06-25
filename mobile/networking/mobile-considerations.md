@@ -1,5 +1,25 @@
 # Mobil-Spesifik Ağ Hususları
 
+Mobil ağ tasarımı masaüstü web gibi düşünülmemelidir. Bağlantı değişir, radyo batarya tüketir, uygulama arka plana düşer ve kullanıcı veri paketini önemser.
+
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Zayıf bağlantı | Offline cache + retry | Kullanıcıya durum göster |
+| Ağ sık değişiyor | Idempotent request | Duplicate sonuç engellenmeli |
+| Veri paketi sınırlı | Compression + pagination | Kalite düşüşü yönetilmeli |
+| Arka planda sync | OS scheduler | Zaman garantisi yok |
+
+## Üretim Kontrol Listesi
+
+- Problem: Mobil ağın hangi özelliği akışı bozuyor?
+- Çözüm: Timeout, retry, cache, offline state, metered network ve cancellation net mi?
+- Trade-off: Daha dayanıklı ağ katmanı daha fazla state ve test maliyeti getirir.
+- Hata durumu: Captive portal, network switch, airplane mode, timeout storm ve partial response ele alınmalı.
+- Ölçüm: Network error rate, retry count, data usage, request cancellation ve offline duration izlenmeli.
+- Güvenlik/maliyet: Public Wi-Fi varsayımıyla TLS zorunlu olmalı; gereksiz transfer kullanıcı maliyetidir.
+
 ## Batarya Optimizasyonu
 
 ### Ağ Verimliliği

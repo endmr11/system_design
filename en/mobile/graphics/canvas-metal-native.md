@@ -2,6 +2,24 @@
 
 This guide covers advanced canvas drawing techniques and native UI rendering optimizations using Metal on iOS and native graphics APIs on Android for high-performance custom UI components.
 
+## Quick Decision
+
+| Situation | Prefer | Watch Out |
+| --- | --- | --- |
+| Standard form/list UI | Native UI | Accessibility comes built in |
+| Custom 2D drawing | Canvas | Invalidation area should be limited |
+| High-performance graphics | Metal/OpenGL | Device and driver differences increase |
+| Simple decorative animation | Framework animation | Custom renderer is unnecessary |
+
+## Production Checklist
+
+- Problem: Which need does native UI not satisfy?
+- Solution: Are render path, invalidation, touch handling, accessibility, and fallback clear?
+- Trade-off: Custom drawing gives freedom; it adds accessibility, testing, and maintenance cost.
+- Failure mode: Overdraw, missed invalidation, memory spikes, GPU fallback, and accessibility loss should be handled.
+- Measurement: Track frame time, draw calls, GPU memory, touch latency, and crash-free sessions.
+- Security/cost: Custom rendering can break screen reader support; low-end device testing cost increases.
+
 ## iOS Metal Integration
 
 ### Metal-backed Custom Views

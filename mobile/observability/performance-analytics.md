@@ -6,6 +6,24 @@ Mobil uygulamalarda kapsamlı performans izleme ve analitik sistemleri, kullanı
 
 Performans analitiği, mobil uygulamaların gerçek dünya koşullarında nasıl performans gösterdiğine dair derin içgörüler sağlar. Bu sayede veri odaklı optimizasyon kararları ve proaktif performans yönetimi mümkün hale gelir.
 
+## Hızlı Karar
+
+| Alan | Metrik | Dikkat |
+| --- | --- | --- |
+| Başlangıç | Cold/warm start | Cihaz segmentiyle bak |
+| UI akıcılığı | Frame time/jank | Ortalama yanıltır |
+| Ağ | Endpoint latency/error | Offline ayrımı gerekir |
+| Kaynak | Memory/battery | Uzun oturum ölçülmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi performans metriği kullanıcı kaybına yol açıyor?
+- Çözüm: Metric definition, device segmentation, release tag, sampling ve alert owner net mi?
+- Trade-off: Geniş telemetry görünürlük sağlar; SDK, pil ve gizlilik maliyeti ekler.
+- Hata durumu: High cardinality, yanlış cihaz segmenti, missing release tag ve sampling bias ele alınmalı.
+- Ölçüm: p95 startup, jank rate, memory peak, battery drain, network latency ve crash-free sessions izlenmeli.
+- Güvenlik/maliyet: Performance event'leri PII taşımamalı; yüksek hacimli telemetry maliyetlidir.
+
 ## Temel Performans Metrikleri
 
 ### 1. **Uygulama Performansı**

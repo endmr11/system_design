@@ -4,6 +4,24 @@
 
 Bu kapsamlı rehber, mobil uygulamalar için performans karşılaştırma, test stratejileri ve izleme tekniklerini kapsar. Platforma özel araçlar, otomatik test framework'leri ve canlı izleme çözümleri içerir.
 
+## Hızlı Karar
+
+| İhtiyaç | Test | Dikkat |
+| --- | --- | --- |
+| Startup yavaş | Cold/warm start benchmark | Gerçek cihaz şart |
+| Kaydırma takılıyor | Frame/jank testi | Debug build yanıltır |
+| Bellek artıyor | Memory/leak profiling | Uzun oturum ölçülmeli |
+| Release güveni | Perf regression gate | Eşikler gerçekçi olmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi performans metriği kullanıcı deneyimini bozuyor?
+- Çözüm: Cihaz matrisi, test senaryosu, baseline ve regression eşiği net mi?
+- Trade-off: Daha fazla cihaz kapsamı güven verir; CI süresi ve cihaz maliyeti artar.
+- Hata durumu: Thermal throttling, flaky measurement, debug artifact ve background noise ele alınmalı.
+- Ölçüm: Startup, frame time, memory peak, network latency, battery drain ve crash/ANR izlenmeli.
+- Güvenlik/maliyet: Test verisi hassas olmamalı; device farm ve uzun benchmark çalışmaları maliyet üretir.
+
 ## Performans Metrikleri & Karşılaştırmalar
 
 ### Temel Performans Göstergeleri

@@ -2,6 +2,24 @@
 
 Incident Management is a critical component of Site Reliability Engineering that ensures rapid detection, response, and resolution of service disruptions.
 
+## Quick Decision
+
+| Situation | Action | Watch Out |
+| --- | --- | --- |
+| User impact is large | Declare incident | Declaring early is better than late |
+| Cause is unknown | Commander + communication channel | Everyone should not debug at once |
+| Mitigation is found | Reduce impact first | Root cause can go deeper later |
+| Incident is over | Post-mortem | Action owner must be assigned |
+
+## Production Checklist
+
+- Problem: Which user impact and which SLO violation exist?
+- Solution: Are severity, incident commander, communication, mitigation, and status-update cadence clear?
+- Trade-off: Process slows slightly; uncoordinated response causes more damage.
+- Failure mode: Wrong severity, silent incidents, delayed rollback, and actionless post-mortems should be handled.
+- Measurement: Track MTTD, MTTA, MTTR, customer impact duration, and repeat incident count.
+- Security/cost: Do not share secrets/PII in incident channels; long outages create direct revenue and trust cost.
+
 ## 1. Incident Classification and Severity Levels
 
 ### Severity Level Framework

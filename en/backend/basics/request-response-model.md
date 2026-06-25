@@ -1,5 +1,25 @@
 # Request-Response Model
 
+The request-response model is the most basic observation unit for latency, error handling, data flow, and user experience in backend systems. A well-designed request path carries timeout, retry, idempotency, auth, and observability decisions together.
+
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| User expects an immediate answer | Synchronous HTTP/gRPC | Timeout and fast failure are required |
+| Work is long-running or retryable | Async queue/event | Idempotency and status tracking are needed |
+| Data depends on another service | Gateway or service call | Chain latency and partial failure grow |
+| Reads are frequent and data changes slowly | Cache | Staleness and invalidation must be defined |
+
+## Production Checklist
+
+- Problem: Is the request on the critical path, in the background, or running while the user waits?
+- Solution: Are controller, service, repository, external call, and response mapping boundaries clear?
+- Trade-off: Synchronous flow is easier to debug; asynchronous flow is more resilient but harder to observe.
+- Failure mode: Timeout, retry, duplicate request, partial failure, and validation error behavior should be standard.
+- Measurement: Track request count, p95/p99 latency, error rate, dependency latency, and trace coverage.
+- Security/cost: Every request produces auth, rate-limit, and log cost; sensitive data must not be logged.
+
 ## Request-Response Lifecycle in Spring Boot
 
 ### DispatcherServlet

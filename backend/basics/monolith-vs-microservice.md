@@ -1,5 +1,25 @@
 # Monolith vs. Microservice Mimari
 
+Monolith ve mikroservis kararı teknoloji tercihinden önce organizasyon, deploy ritmi, veri sahipliği ve operasyon olgunluğu kararıdır. Çoğu sistem için iyi modüler monolit, erken mikroservisten daha ucuz ve daha güvenilirdir.
+
+## Hızlı Karar
+
+| Durum | Tercih | Neden |
+| --- | --- | --- |
+| Küçük ekip, belirsiz domain | Modüler monolit | Hızlı öğrenme ve düşük operasyon yükü |
+| Bağımsız deploy gereken net bounded context | Mikroservis | Takım ve ölçek sınırı ayrışmıştır |
+| Büyük monolith içinde tek parça sorunlu alan | Strangler fig | Riskli büyük rewrite yerine kademeli ayrıştırma |
+| Sadece teknoloji çeşitliliği isteği | Monolith'te kal | Operasyon maliyeti gereksiz artar |
+
+## Üretim Kontrol Listesi
+
+- Problem: Mikroservise geçiş gerçek bir ölçek, takım veya deploy problemi mi çözüyor?
+- Çözüm: Servis sınırı veri sahipliği ve API sözleşmesiyle birlikte tanımlı mı?
+- Trade-off: Mikroservis bağımsızlık verir; network, observability, deployment ve veri tutarlılığı maliyeti ekler.
+- Hata durumu: Downstream servis çökmesi, partial failure, duplicate event ve distributed transaction senaryoları düşünülmeli.
+- Ölçüm: Deploy frekansı, lead time, incident oranı, servis latency'si ve cross-service call sayısı izlenmeli.
+- Güvenlik/maliyet: Servis sayısı arttıkça secret, IAM, ağ politikası, log ve tracing maliyeti de artar.
+
 ## Mimari Karşılaştırması
 
 ```mermaid

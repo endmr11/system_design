@@ -11,6 +11,19 @@
 
 ---
 
+## When To Use It
+
+Iron makes sense when a Flutter app needs shared architecture standards, observability, and repeated infrastructure decisions in one place. For a small prototype, plain Flutter structure may be enough; Iron becomes more valuable as the team and module count grow.
+
+## Production Checklist
+
+- Problem: Which repeated architecture decision does Iron reduce?
+- Solution: Are state, dependencies, logging, error handling, and module boundaries consistent across the team?
+- Trade-off: A ready architecture improves speed; it adds framework coupling and learning cost.
+- Failure mode: Over-abstraction, wrong lifecycle handling, unobservable errors, and module dependency issues should be handled.
+- Measurement: Track crash-free sessions, screen load time, error rate, log coverage, and build time.
+- Security/cost: Package freshness and transitive dependency risk should be tracked.
+
 **Iron Core** gives you a flexible yet disciplined playground where you make the rules. Forge your code like a blacksmith, shape it, and create an unbreakable, scalable, and now **fully observable** work of art! 💪✨
 
 ## 🔥 Philosophy and Advanced Features 🔥

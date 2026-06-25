@@ -5,6 +5,24 @@
 ### Understanding Memory Constraints
 Mobile devices have limited memory resources compared to desktop systems. Efficient memory management is crucial for maintaining smooth performance and preventing application crashes due to out-of-memory errors.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Large images | Resize/cache limit | OOM risk |
+| Screen lifecycle objects | Dispose/cancel | Retained callbacks create leaks |
+| Large list data | Paging/windowing | Do not keep all items in memory |
+| State grows | Normalize/clear state | Stale state should be cleaned |
+
+## Production Checklist
+
+- Problem: After which flow does memory not drop back?
+- Solution: Are ownership, cache limit, image policy, lifecycle cleanup, and leak detection clear?
+- Trade-off: More cache improves speed; memory pressure creates crashes.
+- Failure mode: Activity leaks, retained closures, bitmap OOM, unbounded lists, and listener leaks should be handled.
+- Measurement: Track memory peak, retained objects, OOM rate, GC pressure, and session length.
+- Security/cost: Objects carrying sensitive data should be cleared; low-RAM device tests are required.
+
 ### Memory Management Fundamentals
 - **Heap Memory**: Object allocation and deallocation
 - **Stack Memory**: Local variables and method calls

@@ -1,5 +1,25 @@
 # 4.3. Paxos ve Raft Konsensüs Algoritmaları
 
+Konsensüs algoritmaları, dağıtık sistemde birden fazla node'un aynı sırada aynı karara varmasını sağlar. Uygulama kodunda kendi konsensüsünü yazmak çoğu zaman hatadır; genellikle etcd, Consul, ZooKeeper veya veritabanının sunduğu mekanizma kullanılmalıdır.
+
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Lider seçimi ve konfigürasyon | Raft tabanlı etcd/Consul | Quorum kaybı write'ı durdurur |
+| Güçlü koordinasyon | Hazır coordination store | Kendi algoritmanı yazma |
+| Yüksek throughput event akışı | Consensus her event için uygun olmayabilir | Kafka partition ordering daha pratik olabilir |
+| Global lock | Önce ihtiyacı sorgula | Lock contention sistemi yavaşlatır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Gerçekten ortak karar mı gerekiyor, yoksa idempotency/ordering yeterli mi?
+- Çözüm: Quorum boyutu, election timeout, log compaction, snapshot ve recovery yolu net mi?
+- Trade-off: Konsensüs doğruluk sağlar; latency, availability ve operasyon karmaşıklığı ekler.
+- Hata durumu: Leader failover, network partition, slow follower, log divergence ve disk dolması senaryoları çalışılmalı.
+- Ölçüm: Election count, commit latency, quorum health, follower lag ve snapshot süresi izlenmeli.
+- Güvenlik/maliyet: Coordination store erişimi sıkı korunmalı; çok sık koordinasyon CPU, disk ve ağ maliyetini artırır.
+
 ## Paxos
 
 ### Temel Kavramlar

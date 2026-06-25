@@ -1,5 +1,25 @@
 # Request-Response Model (İstek-Yanıt Modeli)
 
+Request-response modeli, backend sistemlerinde gecikme, hata yönetimi, veri akışı ve kullanıcı deneyiminin en temel izleme birimidir. İyi tasarlanmış bir istek yolu; timeout, retry, idempotency, auth ve observability kararlarını birlikte taşır.
+
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Kullanıcı anında cevap bekliyor | Senkron HTTP/gRPC | Timeout ve hızlı hata dönüşü şart |
+| İş uzun sürüyor veya tekrar denenebilir | Async queue/event | Idempotency ve durum takibi gerekir |
+| Veri başka servise bağlı | Gateway veya service call | Zincir latency'si ve partial failure büyür |
+| Okuma sık, veri az değişiyor | Cache | Staleness ve invalidation tanımlanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: İstek kritik path'te mi, arka planda mı, yoksa kullanıcı beklerken mi çalışıyor?
+- Çözüm: Controller, service, repository, dış çağrı ve response mapping sınırları net mi?
+- Trade-off: Senkron akış basit debug edilir; asenkron akış daha dayanıklı ama daha zor gözlemlenir.
+- Hata durumu: Timeout, retry, duplicate request, partial failure ve validation error davranışı standart olmalı.
+- Ölçüm: Request count, p95/p99 latency, error rate, dependency latency ve trace coverage izlenmeli.
+- Güvenlik/maliyet: Her istek auth, rate limit ve log maliyeti üretir; hassas veri loglanmamalı.
+
 ## Spring Boot'ta Request-Response Yaşam Döngüsü
 
 ### DispatcherServlet

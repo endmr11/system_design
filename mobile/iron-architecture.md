@@ -11,6 +11,19 @@
 
 ---
 
+## Ne Zaman Kullanılır?
+
+Iron, Flutter uygulamasında mimari standart, gözlemlenebilirlik ve tekrar eden altyapı kararlarını tek yerde toplamak istediğinde anlamlıdır. Küçük bir prototipte önce sade Flutter yapısı yeterli olabilir; Iron, ekip büyüdüğünde veya uygulama modülleri çoğaldığında daha çok değer üretir.
+
+## Üretim Kontrol Listesi
+
+- Problem: Iron hangi tekrar eden mimari kararı azaltıyor?
+- Çözüm: State, dependency, logging, error handling ve module sınırları ekipçe aynı mı?
+- Trade-off: Hazır mimari hız sağlar; framework'e bağlılık ve öğrenme maliyeti ekler.
+- Hata durumu: Aşırı soyutlama, yanlış lifecycle yönetimi, gözlemlenemeyen hata ve modül bağımlılığı ele alınmalı.
+- Ölçüm: Crash-free sessions, screen load time, error rate, log coverage ve build time izlenmeli.
+- Güvenlik/maliyet: Paket güncelliği ve transitive dependency riski takip edilmeli.
+
 **Iron Core** size kuralları sizin koyduğunuz esnek ama disiplinli bir oyun alanı sunar. Kodunuzu bir demirci gibi şekillendirin, ölçeklenebilir ve artık tamamen gözlemlenebilir bir sanat eseri oluşturun! 💪✨
 
 ## 🔥 Felsefe ve Gelişmiş Özellikler 🔥

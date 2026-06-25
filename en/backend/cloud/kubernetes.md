@@ -1,5 +1,25 @@
 # Kubernetes Fundamentals
 
+Kubernetes runs and repairs containers through a distributed control plane. It can be too much for small systems; but when multi-service deployment, autoscaling, rolling releases, and self-healing are real needs, it provides an operational standard.
+
+## Quick Decision
+
+| Need | Kubernetes Feature | Watch Out |
+| --- | --- | --- |
+| Keep a service alive | Deployment, ReplicaSet, probes | Bad probes can create outages |
+| Internal/external access | Service, Ingress | Network policy and TLS must be clear |
+| Configuration management | ConfigMap, Secret | Secret encryption needs separate care |
+| Automatic scaling | HPA/VPA | Bad metrics can cause thrashing |
+
+## Production Checklist
+
+- Problem: Which operational load does Kubernetes reduce, and which new load does it add?
+- Solution: Are requests/limits, probes, rollout, rollback, namespace, and RBAC standards defined?
+- Trade-off: You gain self-healing and scaling; you add cluster management, YAML complexity, and learning cost.
+- Failure mode: CrashLoopBackOff, ImagePullBackOff, node pressure, DNS failures, and config rollout scenarios should be rehearsed.
+- Measurement: Track pod restarts, CPU/memory saturation, HPA events, deployment duration, ingress latency, and cluster cost.
+- Security/cost: Least-privilege RBAC, network policy, and secret management are required; unnecessary replicas and over-requesting directly cost money.
+
 ## What is Kubernetes?
 
 Kubernetes (K8s) is an open-source container orchestration platform that automates the deployment, scaling, and management of containerized applications. Originally developed by Google, it's now maintained by the Cloud Native Computing Foundation.

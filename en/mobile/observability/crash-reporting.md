@@ -6,6 +6,24 @@ Comprehensive crash reporting and error tracking systems for mobile applications
 
 Crash reporting systems are essential for maintaining application stability and user experience. They provide real-time insights into application failures, enabling rapid identification and resolution of critical issues.
 
+## Quick Decision
+
+| Signal | Action | Watch Out |
+| --- | --- | --- |
+| Crash increase after release | Rollback/hotfix | Check version and device breakdown |
+| One device family affected | Device-specific analysis | OS/vendor difference may exist |
+| Native crash | Symbolication required | dSYM/mapping files must be preserved |
+| Non-fatal errors increase | Prioritize | Avoid noise |
+
+## Production Checklist
+
+- Problem: Which user flow and version does the crash affect?
+- Solution: Are symbolication, release tag, user/session context, privacy masking, and alert threshold clear?
+- Trade-off: More context speeds fixes; it adds privacy and data-volume cost.
+- Failure mode: Missing symbols, PII leaks, duplicate grouping, and alert fatigue should be handled.
+- Measurement: Track crash-free sessions, affected users, regression rate, time-to-detect, and time-to-fix.
+- Security/cost: Crash payloads must not include tokens/PII; retention and sampling cost should be managed.
+
 ## Core Components
 
 ### 1. **Crash Detection & Collection**

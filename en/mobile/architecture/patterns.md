@@ -2,6 +2,24 @@
 
 Architectural pattern selection in modern mobile application development is one of the most critical decisions determining a project's long-term success. In this section, we will thoroughly examine the major architectural approaches widely used in the industry, explaining the strengths and weaknesses of each through real-world scenarios.
 
+## Quick Decision
+
+| Situation | Pattern | Watch Out |
+| --- | --- | --- |
+| Simple screens | Lightweight MVVM/MVI | Do not create ceremony |
+| Complex domain | Clean Architecture | Layer count must be justified |
+| Legacy codebase | Gradual MVP/MVVM migration | Big rewrites are risky |
+| Heavy state flow | MVI/Redux-like | Boilerplate must be measured |
+
+## Production Checklist
+
+- Problem: Which complexity does the pattern make manageable?
+- Solution: Are layer boundaries, data flow, error handling, and test approach clear?
+- Trade-off: Patterns bring order; misused patterns multiply files and abstractions.
+- Failure mode: Bloated ViewModels, domain leakage, cyclic dependencies, and untestable UI should be handled.
+- Measurement: Track change size, test coverage, screen load time, and crash-free sessions.
+- Security/cost: Auth and sensitive-data flow should stay explicit between layers; too many layers create maintenance cost.
+
 ## Monolithic vs Modular Application Architecture
 
 ### Dynamics of Monolithic Application Approach

@@ -4,6 +4,24 @@
 
 This comprehensive guide covers performance benchmarking, testing strategies, and monitoring techniques for mobile applications. It includes platform-specific tools, automated testing frameworks, and production monitoring solutions.
 
+## Quick Decision
+
+| Need | Test | Watch Out |
+| --- | --- | --- |
+| Startup is slow | Cold/warm start benchmark | Real devices are required |
+| Scrolling janks | Frame/jank test | Debug builds mislead |
+| Memory grows | Memory/leak profiling | Long sessions should be measured |
+| Release confidence | Perf regression gate | Thresholds must be realistic |
+
+## Production Checklist
+
+- Problem: Which performance metric hurts user experience?
+- Solution: Are device matrix, test scenario, baseline, and regression threshold clear?
+- Trade-off: More device coverage gives confidence; CI time and device cost increase.
+- Failure mode: Thermal throttling, flaky measurement, debug artifacts, and background noise should be handled.
+- Measurement: Track startup, frame time, memory peak, network latency, battery drain, and crash/ANR.
+- Security/cost: Test data should not be sensitive; device farms and long benchmark runs create cost.
+
 ## Performance Metrics & Benchmarks
 
 ### Core Performance Indicators

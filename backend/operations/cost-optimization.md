@@ -4,6 +4,24 @@ Modern yazılım geliştirme süreçlerinde maliyet optimizasyonu, hem finansal 
 
 Maliyet optimizasyonu, sadece harcamaları azaltmak değil, aynı zamanda değer yaratma ve verimlilik artışı anlamına gelir. Bu yaklaşım, business value ile operational costs arasında optimal dengeyi bulmayı hedefler. FinOps (Financial Operations) prensipleri doğrultusunda, maliyet bilinci tüm organizasyon seviyelerinde yerleştirilmelidir.
 
+## Hızlı Karar
+
+| Sinyal | İlk Aksiyon | Dikkat |
+| --- | --- | --- |
+| CPU/memory düşük kullanım | Rightsizing | Peak ve burst ihtiyacı korunmalı |
+| Trafik tahmin edilebilir | Reserved/savings plan | Yanlış taahhüt kilitler |
+| Storage hızla büyüyor | Retention + lifecycle policy | Audit gereksinimi bozulmamalı |
+| Log/metric faturası artıyor | Sampling + cardinality azaltma | Kritik sinyal kaybolmamalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Maliyet hangi iş değerine göre fazla görünüyor?
+- Çözüm: Owner, budget, tag standardı, alert ve optimization backlog net mi?
+- Trade-off: Maliyet düşürme performans, güvenilirlik veya debug kabiliyetini azaltabilir.
+- Hata durumu: Over-rightsizing, kapatılan kritik kaynak, eksik yedek ve görünürlük kaybı ele alınmalı.
+- Ölçüm: Unit cost, utilization, idle resource, data transfer, storage growth ve forecast sapması izlenmeli.
+- Güvenlik/maliyet: Public egress, gereksiz replica ve yüksek kardinalite pahalıdır; güvenlik kontrolleri maliyet için kapatılmamalı.
+
 ## Maliyet Yapısının Analizi ve Bileşenleri
 
 Cloud native uygulamalarda maliyet yapısı, geleneksel on-premise sistemlerden farklı dinamiklere sahiptir. Bu farklılıkları anlamak, etkili optimizasyon stratejileri geliştirmek için temeldir.

@@ -2,6 +2,24 @@
 
 The success of modern backend systems relies on high performance and effective scalability strategies. This section provides enterprise-level performance optimizations and scalability solutions using the Spring Boot ecosystem.
 
+## Quick Decision
+
+| Symptom | Look First | Watch Out |
+| --- | --- | --- |
+| High latency | Profiling, DB query, network hop | Measure the bottleneck before adding cache |
+| High CPU | Algorithm, serialization, thread pool | More instances may not fix root cause |
+| High DB load | Index, cache, read replica | Replicas create stale reads |
+| Traffic spikes | Queue, autoscaling, backpressure | Do not forget downstream capacity |
+
+## Production Checklist
+
+- Problem: Which user flow and SLI does the performance issue affect?
+- Solution: Are measurement, hypothesis, change, and comparison result recorded?
+- Trade-off: Every optimization adds complexity, cost, or consistency trade-off.
+- Failure mode: Cache stampede, retry storms, DB saturation, thread starvation, and memory leaks should be handled.
+- Measurement: Track p95/p99 latency, throughput, error rate, saturation, queue depth, and unit cost.
+- Security/cost: Do not disable auth/logging/security for performance; extra cache, replicas, and instances affect the bill.
+
 ```mermaid
 graph TD
     A[Client] -->|Request| B[Load Balancer]

@@ -4,6 +4,24 @@ Infrastructure as Code (IaC), modern yazılım geliştirme süreçlerinin temel 
 
 IaC'nin temel felsefi, "altyapı da kod gibi versiyonlanmalı ve yönetilmelidir" düşüncesidir. Bu sayede altyapı değişiklikleri, uygulama kodu değişiklikleri gibi test edilebilir, gözden geçirilebilir ve güvenli bir şekilde dağıtılabilir. DevOps kültürünün ayrılmaz bir parçası olan IaC, geliştirme ve operasyon ekipleri arasındaki işbirliğini güçlendirir.
 
+## Hızlı Karar
+
+| İhtiyaç | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Tekrarlanabilir ortam | Terraform/CloudFormation/Pulumi | State yönetimi kritik |
+| Küçük tek servis ayarı | Basit manifest yeterli olabilir | Gereksiz modül yazma |
+| Çok ekipli altyapı | Modül + policy | Aşırı soyutlama debug'ı zorlaştırır |
+| Güvenlik standardı | Policy as code | Exception süreci net olmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: IaC hangi manuel hatayı veya drift'i ortadan kaldırıyor?
+- Çözüm: State backend, locking, plan review, rollback ve secret yönetimi net mi?
+- Trade-off: Tekrarlanabilirlik ve audit kazanılır; state, provider ve modül bakım maliyeti eklenir.
+- Hata durumu: State corruption, drift, destructive plan, provider bug ve secret commit ele alınmalı.
+- Ölçüm: Drift count, plan failure, apply duration, rollback time ve policy violation izlenmeli.
+- Güvenlik/maliyet: State dosyası hassas veri içerebilir; her modül abstraction'ı bakım maliyeti yaratır.
+
 ## IaC'nin Temel Prensipleri ve Avantajları
 
 Infrastructure as Code yaklaşımı, altyapı yönetiminde köklü değişiklikler getiren bir paradigmadır. Bu yaklaşımın benimsenmesi, organizasyonlara sayısız avantaj sağlar ve modern yazılım geliştirme süreçlerinin vazgeçilmez bir parçası haline gelir.

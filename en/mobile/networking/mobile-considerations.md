@@ -1,5 +1,25 @@
 # Mobile-Specific Network Considerations
 
+Mobile networking should not be designed like desktop web networking. Connectivity changes, radios consume battery, apps move to background, and users care about data plans.
+
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Weak connectivity | Offline cache + retry | Show status to the user |
+| Network changes often | Idempotent request | Duplicate results must be prevented |
+| Limited data plan | Compression + pagination | Quality reduction must be managed |
+| Background sync | OS scheduler | Timing is not guaranteed |
+
+## Production Checklist
+
+- Problem: Which mobile network property breaks the flow?
+- Solution: Are timeout, retry, cache, offline state, metered network, and cancellation clear?
+- Trade-off: A more resilient network layer adds more state and testing cost.
+- Failure mode: Captive portals, network switches, airplane mode, timeout storms, and partial responses should be handled.
+- Measurement: Track network error rate, retry count, data usage, request cancellation, and offline duration.
+- Security/cost: Assume public Wi-Fi and require TLS; unnecessary transfer costs users money.
+
 ## Battery Optimization
 
 ### Network Efficiency

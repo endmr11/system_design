@@ -1,5 +1,25 @@
 # Failover Mechanisms - Spring Boot Ecosystem
 
+Failover redirects traffic to another component when a system component fails. The important decision is not only where traffic goes, but how much data loss and downtime the business can tolerate.
+
+## Quick Decision
+
+| Situation | Failover Type | Watch Out |
+| --- | --- | --- |
+| Downtime must be very low | Active-passive hot standby | Synchronization cost |
+| Two regions are actively used | Active-active | Split brain and conflict |
+| Cost matters more | Cold/warm standby | RTO is longer |
+| Database primary is lost | Automated promotion | Failback plan is required |
+
+## Production Checklist
+
+- Problem: What are the RTO and RPO targets?
+- Solution: Are health signal, promotion, traffic switch, data sync, and failback steps clear?
+- Trade-off: Faster failover requires more cost and complexity.
+- Failure mode: False-positive failover, split brain, stale DNS, and failed promotion should be handled.
+- Measurement: Track failover time, data-loss window, replication lag, health false positives, and recovery success.
+- Security/cost: Secrets/IAM must also be current in standby; standby capacity costs money while idle.
+
 ## Failover Strategies
 
 ```mermaid

@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda büyük veri setlerini verimli şekilde yüklemek ve göstermek için kullanılan temel teknikler.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Basit küçük liste | Offset pagination | Büyük veri yavaşlar |
+| Büyük ve değişen liste | Cursor pagination | Sıralama kararlı olmalı |
+| Sosyal/feed deneyimi | Infinite scroll | Refresh ve scroll restore gerekir |
+| Denetimli gezinme | Sayfalı UI | Mobilde daha az akıcı olabilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Liste hangi veri hacminde ve değişim hızında çalışacak?
+- Çözüm: Cursor, page size, prefetch, cache, empty/error state ve refresh davranışı net mi?
+- Trade-off: Infinite scroll akıcıdır; konum geri yükleme ve bellek yönetimi zorlaşır.
+- Hata durumu: Duplicate item, missing item, stale cursor, endless spinner ve memory growth ele alınmalı.
+- Ölçüm: Page latency, loaded item count, duplicate rate, scroll jank ve data usage izlenmeli.
+- Güvenlik/maliyet: Cursor tahmin edilebilir yetki açığı olmamalı; büyük page payload maliyetlidir.
+
 ## Sayfalama Mimari Desenleri
 
 ### Geleneksel Sayfalama

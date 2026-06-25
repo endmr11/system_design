@@ -2,6 +2,24 @@
 
 Chaos Engineering, sistemlerin dayanıklılığını test etmek ve güçlendirmek için kontrollü şekilde hatalar oluşturma disiplinidir. Bu yaklaşım, sistemlerin gerçek dünya koşullarındaki beklenmedik durumlara karşı nasıl davrandığını anlamaya yardımcı olur.
 
+## Hızlı Karar
+
+| Durum | Deney | Dikkat |
+| --- | --- | --- |
+| Failover güvenilmiyor | Region/instance kill | Blast radius sınırlı olmalı |
+| Dependency kırılgan | Latency/error injection | Kullanıcı etkisi ölçülmeli |
+| Retry/backpressure şüpheli | Traffic spike experiment | Downstream korunmalı |
+| Yeni sistem | Önce staging/game day | Production deneyi aceleye gelmez |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi dayanıklılık varsayımını doğruluyoruz?
+- Çözüm: Hipotez, blast radius, abort condition, gözlem metrikleri ve rollback net mi?
+- Trade-off: Deney risk taşır; yapılmazsa gerçek incident daha pahalı öğretir.
+- Hata durumu: Kontrolsüz etki, eksik alarm, yanlış hipotez ve deney sonrası aksiyon yokluğu ele alınmalı.
+- Ölçüm: Error budget burn, recovery time, alert correctness, customer impact ve action completion izlenmeli.
+- Güvenlik/maliyet: Deneyler yetkili ve kayıtlı yapılmalı; kaynak bozma maliyet ve veri riski yaratabilir.
+
 ## Chaos Engineering Temelleri
 
 ### Chaos Engineering Prensipleri

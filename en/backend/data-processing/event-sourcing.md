@@ -2,6 +2,24 @@
 
 Event Sourcing is an architectural pattern where state changes are stored as a sequence of immutable events. Instead of storing just the current state, all changes (events) that led to the current state are persisted, enabling complete audit trails and temporal queries.
 
+## Quick Decision
+
+| Situation | Use Event Sourcing | Watch Out |
+| --- | --- | --- |
+| Full audit and time travel are required | Yes | Event schema evolution gets harder |
+| Domain events are central to the business | Yes | Aggregate boundaries must be clear |
+| Only current state matters | No | A simple table is cheaper |
+| Events are only for analytics | A separate event log may be enough | Do not mix it with domain state |
+
+## Production Checklist
+
+- Problem: Which business or audit need is solved by storing historical events?
+- Solution: Are event schema, versioning, snapshots, replay, and projection strategy clear?
+- Trade-off: You gain audit and rebuild capability; you add storage, migration, and replay complexity.
+- Failure mode: Poison events, duplicate events, failed replay, schema mismatch, and projection drift should be handled.
+- Measurement: Track append latency, replay time, event-store growth, projection lag, and handler error rate.
+- Security/cost: Events create hard-to-delete history; PII, retention, and encryption should be designed early.
+
 ## Event Sourcing Architecture
 
 ```mermaid

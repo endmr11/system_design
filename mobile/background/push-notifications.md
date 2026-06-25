@@ -4,6 +4,24 @@
 
 Push bildirimleri, mobil uygulamalarda kullanıcı katılımını artıran kritik bir özelliktir. Bu dokümantasyon, ölçeklenebilir ve güvenilir push bildirim sistemlerinin tasarımını kapsar.
 
+## Hızlı Karar
+
+| İhtiyaç | Bildirim Tipi | Dikkat |
+| --- | --- | --- |
+| Kullanıcı aksiyonu gerekli | Alert notification | Spam opt-out artırır |
+| Sessiz veri yenileme | Silent push | OS teslim garantisi vermez |
+| Kritik güvenlik uyarısı | High priority | Kötüye kullanım engellenmeli |
+| Toplu kampanya | Segment + rate limit | Zaman dilimi ve izin dikkate alınmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Bildirim kullanıcı için hangi değeri yaratıyor?
+- Çözüm: Consent, token lifecycle, segmentation, retry ve deep link davranışı net mi?
+- Trade-off: Bildirim engagement artırır; fazla kullanım güven ve izin kaybı yaratır.
+- Hata durumu: Expired token, duplicate push, wrong segment, provider outage ve deep link failure ele alınmalı.
+- Ölçüm: Opt-in rate, delivery rate, open rate, unsubscribe rate ve provider error izlenmeli.
+- Güvenlik/maliyet: Bildirim içeriğinde hassas veri olmamalı; toplu gönderim provider maliyeti üretir.
+
 ## Push Bildirim Mimarisi
 
 ### Sistem Bileşenleri

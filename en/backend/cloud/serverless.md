@@ -1,5 +1,25 @@
 # Serverless and Function as a Service (FaaS)
 
+Serverless reduces server management and makes event-driven work easier, but latency, cold starts, vendor lock-in, and observability limits must be understood. The best fit is short-lived, event-triggered, independent work.
+
+## Quick Decision
+
+| Need | Is Serverless Fit? | Watch Out |
+| --- | --- | --- |
+| Short and infrequent event handler | Yes | Cold start must be acceptable |
+| Burst traffic and automatic scaling | Yes | Downstream services must scale too |
+| Long-running stateful process | Usually no | Timeout and state management get harder |
+| Very low-latency critical path | Be careful | Warmup or container service may be needed |
+
+## Production Checklist
+
+- Problem: Does serverless reduce operational load, or only change the deployment shape?
+- Solution: Are timeout, memory, retry, idempotency, DLQ, and environment config defined?
+- Trade-off: Scaling and maintenance get easier; cold starts, platform limits, and vendor dependency are added.
+- Failure mode: Duplicate events, poison messages, timeouts, throttling, and partial batch failures should be handled.
+- Measurement: Track invocation count, duration, cold start, error rate, retry count, DLQ depth, and cost.
+- Security/cost: Least-privilege IAM is required; high invocation count, log volume, and oversized memory increase the bill.
+
 ## What is Serverless?
 
 Serverless computing is a cloud computing execution model where the cloud provider dynamically manages the allocation and provisioning of servers. Developers write and deploy code without worrying about the underlying infrastructure.

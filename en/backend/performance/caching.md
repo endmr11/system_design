@@ -2,6 +2,24 @@
 
 Caching is one of the most effective optimization techniques that dramatically improves system performance. By temporarily storing data in fast-accessible locations, it minimizes expensive computation and I/O operations. Spring Boot provides comprehensive support for multi-layered caching strategies.
 
+## Quick Decision
+
+| Situation | Use Cache | Watch Out |
+| --- | --- | --- |
+| Data is read often and changes rarely | Yes | TTL and invalidation must be clear |
+| Computation is expensive | Yes | Cache key must be designed correctly |
+| Data varies by authorization | Be careful | Cross-user leakage risk |
+| Strong correctness after write | Limited | Stale reads may be unacceptable |
+
+## Production Checklist
+
+- Problem: Which expensive operation does the cache reduce?
+- Solution: Are key, TTL, invalidation, warmup, and fallback behavior clear?
+- Trade-off: Latency drops; inconsistency, memory, and operational cost are added.
+- Failure mode: Cache stampede, hot keys, stale data, eviction storms, and Redis outages should be handled.
+- Measurement: Track hit ratio, miss latency, eviction count, memory usage, and backend load.
+- Security/cost: Tenant/user separation is required when caching authorized data; large caches create memory cost.
+
 ## Cache Architecture Overview
 
 ```mermaid

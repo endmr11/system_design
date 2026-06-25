@@ -2,6 +2,24 @@
 
 Secure management of secrets is critical in modern applications. This chapter covers HashiCorp Vault integration, encrypted properties, and cloud-based secret management solutions for Spring Boot applications.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Runtime secret is needed | Vault/Cloud Secret Manager | Application bootstrap flow must be considered |
+| CI/CD secret | CI secret store | It must not appear in logs |
+| Local development | `.env` or local profile | Must not be committed to repo |
+| Frequent rotation | Dynamic secret | Connection pool is affected |
+
+## Production Checklist
+
+- Problem: Which system does the secret open, for how long, and with which permission?
+- Solution: Are storage, access policy, rotation, audit, and emergency revoke flow clear?
+- Trade-off: Central secret management improves security; it adds runtime dependency and bootstrap complexity.
+- Failure mode: Secret leaks, expired credentials, vault outage, and failed rotation should be handled.
+- Measurement: Track secret age, access anomalies, rotation success, failed fetches, and audit events.
+- Security/cost: Secrets must not be logged or baked into images; secret manager calls and HA setup add cost.
+
 ## HashiCorp Vault Integration (Spring Boot)
 
 ### Spring Cloud Vault Configuration

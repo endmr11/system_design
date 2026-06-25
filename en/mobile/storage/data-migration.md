@@ -4,6 +4,24 @@
 
 Data migration and versioning are critical aspects of mobile application development that ensure seamless user experiences across app updates while maintaining data integrity and application stability.
 
+## Quick Decision
+
+| Situation | Migration Approach | Watch Out |
+| --- | --- | --- |
+| Simple column addition | Forward migration | Default value must be clear |
+| Large data transform | Incremental/lazy migration | Startup must not be blocked |
+| Risky schema change | Backup + staged rollout | Rollback plan is needed |
+| Local cache data | Rebuildable | Clearing may be better than migration |
+
+## Production Checklist
+
+- Problem: Which user data must survive the update?
+- Solution: Are version, migration path, backup, rollback, and corruption handling clear?
+- Trade-off: Safe migration takes time; fast migration risks data loss.
+- Failure mode: Partial migration, app kill during migration, full disk, and incompatible downgrade should be handled.
+- Measurement: Track migration success, duration, failure rate, recovery rate, and affected version.
+- Security/cost: Migration logs must not contain sensitive data; old schema support creates maintenance cost.
+
 ## Database Schema Versioning
 
 ### Version Management Strategy

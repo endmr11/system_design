@@ -2,6 +2,24 @@
 
 Collecting and visualizing metrics is critical for monitoring application performance and system health.
 
+## Quick Decision
+
+| Need | Metric | Watch Out |
+| --- | --- | --- |
+| User experience | Latency, error rate | p95/p99 matter more than average |
+| System capacity | CPU, memory, saturation | Read limits and requests together |
+| Business health | Business KPI | It may be a product signal, not a technical alarm |
+| High detail | Label/cardinality control | Cardinality can explode cost |
+
+## Production Checklist
+
+- Problem: Which decision or alert does the metric support?
+- Solution: Are SLI, threshold, owner, dashboard, and alert action clear?
+- Trade-off: More metrics give visibility; they add noise and storage cost.
+- Failure mode: Bad labels, high cardinality, missed scrapes, and alert fatigue should be handled.
+- Measurement: Track scrape success, cardinality, alert precision, dashboard usage, and metric storage cost.
+- Security/cost: Do not put user data in labels; long retention and high resolution increase cost.
+
 ## Spring Boot Actuator Metrics
 
 ### Micrometer Integration

@@ -1,5 +1,25 @@
 # Canvas & Metal/OpenGL ES vs. Native UI
 
+Canvas, Metal/OpenGL ve native UI seçimi; çizim özgürlüğü, performans ve bakım maliyeti arasında verilen karardır. Standart bileşen yeterliyse native UI ile kalmak en ucuz yoldur.
+
+## Hızlı Karar
+
+| Durum | Tercih | Dikkat |
+| --- | --- | --- |
+| Standart form/liste UI | Native UI | Erişilebilirlik hazır gelir |
+| Özel 2D çizim | Canvas | Invalidasyon alanı sınırlanmalı |
+| Yüksek performans grafik | Metal/OpenGL | Cihaz ve driver farkı artar |
+| Basit dekoratif animasyon | Framework animasyonu | Custom renderer gereksizdir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Native UI hangi ihtiyacı karşılamıyor?
+- Çözüm: Render path, invalidation, touch handling, accessibility ve fallback net mi?
+- Trade-off: Custom çizim özgürlük sağlar; accessibility, test ve bakım maliyeti ekler.
+- Hata durumu: Overdraw, missed invalidation, memory spike, GPU fallback ve accessibility kaybı ele alınmalı.
+- Ölçüm: Frame time, draw calls, GPU memory, touch latency ve crash-free sessions izlenmeli.
+- Güvenlik/maliyet: Custom rendering ekran okuyucu desteğini bozabilir; düşük cihaz test maliyeti artar.
+
 ## Canvas Tabanlı Özel Çizim
 
 ### Android Canvas API

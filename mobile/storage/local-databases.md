@@ -6,6 +6,24 @@ title: Local Database Seçenekleri
 
 Mobil uygulamalarda lokal veri saklama, performans, offline çalışabilirlik ve kullanıcı deneyimi açısından kritik öneme sahiptir. Bu bölümde SQL tabanlı çözümlerden NoSQL alternatiflerine, key-value store'lardan objektif veritabanlarına kadar tüm lokal persistence seçenekleri detaylı olarak incelenmektedir.
 
+## Hızlı Karar
+
+| İhtiyaç | Seçenek | Dikkat |
+| --- | --- | --- |
+| İlişkisel sorgular | SQLite/Room/Core Data | Migration disiplini gerekir |
+| Basit ayar/token dışı veri | Key-value store | Büyük veri için uygun değil |
+| Reaktif object graph | Realm/benzeri | Vendor ve migration riski |
+| Offline sync | Local DB + sync metadata | Conflict alanları gerekir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Lokal DB hangi offline veya performans ihtiyacını çözüyor?
+- Çözüm: Schema, index, migration, encryption, backup ve sync metadata net mi?
+- Trade-off: Lokal DB hızlı ve offline çalışır; migration, güvenlik ve conflict borcu getirir.
+- Hata durumu: Corruption, migration failure, disk full, stale index ve slow query ele alınmalı.
+- Ölçüm: Query latency, DB size, migration success, corruption rate ve sync lag izlenmeli.
+- Güvenlik/maliyet: Hassas veri şifrelenmeli; fazla lokal veri backup ve silme yükü yaratır.
+
 ## SQL Tabanlı Çözümler
 
 ### SQLite/Room (Android)
@@ -278,5 +296,4 @@ flowchart LR
 ---
 
 > Modern mobil uygulamalarda doğru database seçimi, uygulama gereksinimlerine, platform kısıtlarına ve performans hedeflerine bağlıdır. SQL tabanlı çözümler complex queries ve ACID compliance gerektiren senaryolarda, NoSQL çözümler ise rapid development ve flexible schema ihtiyaçlarında tercih edilmelidir.
-
 

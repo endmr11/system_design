@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda nesne yaşam döngüsü yönetimi, bellek sızıntılarını önlemek ve performansı optimize etmek için kritik öneme sahiptir.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Ekran lifecycle'a bağlı obje | Lifecycle-aware scope | View kapanınca temizlenmeli |
+| Uzun süren iş | Cancellation token/job scope | Leak ve stale callback riski |
+| Büyük bitmap/resource | Explicit release/cache limit | OOM riski |
+| Shared singleton | Gerçekten gerekli mi kontrol et | Global state leak yaratır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi obje beklenenden uzun yaşıyor veya çok sık oluşturuluyor?
+- Çözüm: Ownership, scope, dispose/cancel, weak reference ve cleanup net mi?
+- Trade-off: Reuse allocation azaltır; yanlış reuse stale state ve leak yaratır.
+- Hata durumu: Activity/ViewController leak, retained callback, unclosed stream ve bitmap OOM ele alınmalı.
+- Ölçüm: Memory growth, object count, allocation rate, GC pressure ve leak report izlenmeli.
+- Güvenlik/maliyet: Hassas veri taşıyan objeler yaşam sonunda temizlenmeli; leak uzun oturumlarda crash maliyeti üretir.
+
 ```mermaid
 graph TD
     A[Nesne Oluşturma] --> B[Nesne Kullanımı]

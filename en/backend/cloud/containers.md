@@ -1,5 +1,25 @@
 # Containers (Docker)
 
+Containers define a packaging boundary that lets an application be built, tested, and deployed with the same image. Docker should reduce machine-specific drift; used poorly, it only creates more portable chaos.
+
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Repeatable deployment | Multi-stage Dockerfile | Build and runtime images should be separate |
+| Small and safer image | Minimal base image, non-root user | Debug tools may be missing |
+| Local multi-service development | Docker Compose | It does not replace production orchestration |
+| Fast startup | Layer cache and Spring Boot layering | Large images increase cold-start time |
+
+## Production Checklist
+
+- Problem: Which environment drift or deployment issue does the container solve?
+- Solution: Are image tags, health checks, resource limits, secret injection, and shutdown behavior defined?
+- Trade-off: Containers give portability; they add image security and registry management work.
+- Failure mode: OOMKill, crash loops, port conflicts, full disks, and signal handling should be tested.
+- Measurement: Track image size, startup time, memory/CPU limit usage, restart count, and vulnerability count.
+- Security/cost: Root users, unnecessary packages, and hard-coded secrets should be banned; large images create registry and network cost.
+
 ## Introduction
 
 Containers are lightweight, portable, and self-sufficient packages that include everything needed to run an application: code, runtime, system tools, libraries, and settings. Docker is the most popular containerization platform that enables developers to package applications into containers.

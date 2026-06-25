@@ -2,6 +2,24 @@
 
 Load balancing is a critical technique that improves system performance and availability by distributing incoming requests across multiple servers. The Spring Boot ecosystem provides various load balancing strategies at both application and infrastructure levels.
 
+## Quick Decision
+
+| Situation | Strategy | Watch Out |
+| --- | --- | --- |
+| Similar instances | Round robin / least connections | Health checks must be correct |
+| User state is local | Sticky session | Scaling and failover get harder |
+| Global traffic | Geo/latency routing | Data residency may be affected |
+| Variable capacity | Weighted routing | Weights need automation |
+
+## Production Checklist
+
+- Problem: Does the load balancer solve performance, availability, or routing policy?
+- Solution: Are health checks, timeouts, retries, connection draining, and failover behavior clear?
+- Trade-off: Traffic distribution improves availability; bad retries and health checks create outages.
+- Failure mode: Routing to unhealthy instances, thundering herd, sticky-session loss, and LB outage should be handled.
+- Measurement: Track per-target latency, error rate, active connections, rejected connections, and health state.
+- Security/cost: TLS termination and WAF placement should be clear; cross-zone/cross-region traffic can increase cost.
+
 ## Load Balancing Overview
 
 ```mermaid

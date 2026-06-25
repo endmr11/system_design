@@ -2,6 +2,24 @@
 
 **Tanım**: Sistemdeki bir bileşenin başarısız olması durumunda trafiği başka bir bileşene yönlendirme sürecidir.
 
+## Hızlı Karar
+
+| Durum | Failover Tipi | Dikkat |
+| --- | --- | --- |
+| Kesinti süresi çok düşük olmalı | Active-passive hot standby | Senkronizasyon maliyeti |
+| İki bölge aktif kullanılacak | Active-active | Split-brain ve conflict |
+| Maliyet daha önemli | Cold/warm standby | RTO daha uzun |
+| Veritabanı primary kaybı | Automated promotion | Failback planı şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: RTO ve RPO hedefleri nedir?
+- Çözüm: Health signal, promotion, traffic switch, data sync ve failback adımları net mi?
+- Trade-off: Hızlı failover daha fazla maliyet ve karmaşıklık ister.
+- Hata durumu: False positive failover, split-brain, stale DNS ve failed promotion ele alınmalı.
+- Ölçüm: Failover time, data loss window, replication lag, health false positive ve recovery success izlenmeli.
+- Güvenlik/maliyet: Yedek ortamda da secret/IAM güncel olmalı; standby kapasitesi boşta maliyet üretir.
+
 ## Failover Türleri
 
 ### Aktif-Pasif (Hot Standby)

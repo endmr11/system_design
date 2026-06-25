@@ -4,6 +4,24 @@ Continuous Integration and Continuous Deployment (CI/CD) represents the cornerst
 
 The evolution of CI/CD reflects the broader shift toward DevOps practices, where development and operations teams collaborate seamlessly to deliver value to customers. This approach eliminates traditional silos between development and operations, fostering shared responsibility for application lifecycle management. The ultimate goal is achieving a state where code changes flow smoothly from developer workstations to production environments with minimal human intervention while maintaining high quality and reliability standards.
 
+## Quick Decision
+
+| Need | Pipeline Stage | Watch Out |
+| --- | --- | --- |
+| Is every commit safe? | Build + unit test + static check | Slow pipelines kill merging |
+| Reduce release risk | Staging + smoke test + canary | Metric gates must be defined |
+| Fast rollback | Artifact versioning + deploy history | Do not use mutable artifacts |
+| Regulation/audit | Approval + immutable log | Manual approval should not become a bottleneck |
+
+## Production Checklist
+
+- Problem: Which failure should the pipeline catch before production?
+- Solution: Are build, test, scan, deploy, rollback, and secret injection steps clear?
+- Trade-off: More checks improve quality; they add pipeline time and maintenance cost.
+- Failure mode: Flaky tests, broken artifacts, failed migrations, secret leaks, and partial deploys should be handled.
+- Measurement: Track lead time, deployment frequency, change failure rate, MTTR, and pipeline failure reason.
+- Security/cost: CI secrets should be least-privilege; unnecessary parallel jobs and long caches create cost.
+
 ## Understanding CI/CD
 
 ### Continuous Integration (CI)

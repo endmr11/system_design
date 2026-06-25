@@ -2,6 +2,24 @@
 
 Database replication is a fundamental technique for copying and maintaining database data across multiple servers to ensure high availability, disaster recovery, and improved read performance. This approach is essential for building resilient, scalable systems that can handle both planned maintenance and unexpected failures.
 
+## Quick Decision
+
+| Need | Replication Model | Watch Out |
+| --- | --- | --- |
+| Read scaling | Read replica | Stale-read risk |
+| Disaster recovery | Async cross-region replica | RPO/RTO must be clear |
+| Strong correctness | Sync/quorum replication | Write latency increases |
+| Maintenance without downtime | Failover replica | Failback must be tested |
+
+## Production Checklist
+
+- Problem: Does replication solve read scaling, HA, or DR?
+- Solution: Are read routing, lag threshold, failover, backup, and promotion steps clear?
+- Trade-off: Replicas improve availability and read capacity; they add lag, conflict, and cost.
+- Failure mode: Replication lag, split brain, stale reads, failed promotion, and data loss should be handled.
+- Measurement: Track replica lag, replication errors, read/write latency, failover time, and storage growth.
+- Security/cost: Replica access must also be encrypted and authorized; each replica creates storage and compute cost.
+
 ## What is Database Replication?
 
 Database replication involves creating and maintaining multiple copies of a database across different servers or geographic locations. Each copy, called a replica, can serve different purposes: some handle read operations to distribute load, others provide backup in case of primary database failure, and some enable geographic distribution for reduced latency.

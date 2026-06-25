@@ -1,5 +1,25 @@
 # HTTP, REST, gRPC Protokolleri
 
+Protokol seçimi, istemcinin yetenekleri ile sistemin performans, sözleşme ve operasyon ihtiyaçlarını eşleştirir. Protokol değişimi mimariyi sadeleştirmiyorsa, var olan protokolü iyi tasarlamak genellikle daha ucuzdur.
+
+## Hızlı Karar
+
+| İhtiyaç | Tercih | Dikkat |
+| --- | --- | --- |
+| Public web/mobile API | HTTP/REST | Hata modeli ve versiyonlama tutarlı olmalı |
+| İç servisler arası düşük gecikme | gRPC | Protobuf sözleşmesi ve tooling gerekir |
+| Gerçek zamanlı çift yönlü kanal | WebSocket | Bağlantı yönetimi ve ölçekleme zorlaşır |
+| Tek yönlü canlı güncelleme | Server-Sent Events | Basit ama her senaryoya uymaz |
+
+## Üretim Kontrol Listesi
+
+- Problem: Protokol hangi darboğazı çözüyor: latency, payload, streaming, sözleşme veya istemci çeşitliliği?
+- Çözüm: Timeout, retry, idempotency, auth ve observability standardı protokol bazında tanımlı mı?
+- Trade-off: REST debug kolaylığı sağlar; gRPC performans sağlar; WebSocket durum yönetimi ekler.
+- Hata durumu: Deadline exceeded, connection reset, partial response ve retry storm senaryoları ele alınmalı.
+- Ölçüm: Payload size, round-trip count, connection count, p95 latency ve error code dağılımı izlenmeli.
+- Güvenlik/maliyet: TLS, mTLS, schema doğrulama ve rate limit gereksinimleri protokole göre değişir.
+
 ## Protokol Etkileşimi
 
 ```mermaid
@@ -313,4 +333,3 @@ graph TD
         K --> L[Yük Dengeleme]
     end
 ```
-

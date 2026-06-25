@@ -1,5 +1,25 @@
 # Object Lifecycle Management
 
+Object lifecycle management prevents leaks, stale callbacks, and unnecessary allocations in mobile apps. The smallest useful rule: every long-lived object needs a clear owner and cleanup path.
+
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Object tied to screen lifecycle | Lifecycle-aware scope | Clean when view closes |
+| Long-running work | Cancellation token/job scope | Leak and stale callback risk |
+| Large bitmap/resource | Explicit release/cache limit | OOM risk |
+| Shared singleton | Check if truly needed | Global state creates leaks |
+
+## Production Checklist
+
+- Problem: Which object lives too long or is created too often?
+- Solution: Are ownership, scope, dispose/cancel, weak reference, and cleanup clear?
+- Trade-off: Reuse reduces allocations; wrong reuse creates stale state and leaks.
+- Failure mode: Activity/ViewController leaks, retained callbacks, unclosed streams, and bitmap OOM should be handled.
+- Measurement: Track memory growth, object count, allocation rate, GC pressure, and leak reports.
+- Security/cost: Objects carrying sensitive data should be cleared at lifecycle end; leaks create crash cost in long sessions.
+
 ## Memory Management Fundamentals
 - **Object Lifecycle**: Creation, usage, retention, and destruction patterns
 - **Memory Pressure**: System resource constraints and application responses

@@ -2,6 +2,24 @@
 
 Backward compatibility ensures that newer versions of mobile applications continue to work with older APIs, data formats, and user expectations while introducing new features. This is crucial for maintaining user experience across diverse device ecosystems and API versions.
 
+## Quick Decision
+
+| Change | Compatibility Approach | Watch Out |
+| --- | --- | --- |
+| Add API field | Backward compatible | Old clients should ignore it |
+| Remove/change API field meaning | New version | Old mobile versions live long |
+| Local schema change | Migration | Downgrade scenario should be considered |
+| Critical minimum version | Force update | User impact and store delay |
+
+## Production Checklist
+
+- Problem: For how long must old app versions keep working?
+- Solution: Are API version, feature flag, minimum supported version, migration, and deprecation plan clear?
+- Trade-off: Long compatibility protects users; it increases backend and testing cost.
+- Failure mode: Old client crashes, unknown fields, migration failure, and forced update loops should be handled.
+- Measurement: Track version distribution, old API traffic, forced update rate, compatibility errors, and crash-free sessions.
+- Security/cost: Vulnerable old versions may require force update; old API support is maintenance cost.
+
 ## Compatibility Strategy
 
 ### Compatibility Levels

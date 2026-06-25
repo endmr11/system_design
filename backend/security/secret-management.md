@@ -2,6 +2,24 @@
 
 Modern uygulamalarda gizli bilgilerin (secret) güvenli yönetimi kritik öneme sahiptir. Bu bölümde Spring Boot uygulamalarında HashiCorp Vault entegrasyonu, şifrelenmiş özellikler ve bulut tabanlı gizli bilgi yönetimi çözümlerini ele alacağız.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Runtime secret gerekiyor | Vault/Cloud Secret Manager | Uygulama bootstrap akışı düşünülmeli |
+| CI/CD secret | CI secret store | Loglara düşmemeli |
+| Local development | `.env` veya local profile | Repo'ya commit edilmemeli |
+| Sık rotation | Dynamic secret | Connection pool etkilenir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Secret hangi sistemi, hangi süreyle, hangi yetkiyle açıyor?
+- Çözüm: Storage, access policy, rotation, audit ve emergency revoke akışı net mi?
+- Trade-off: Merkezi secret yönetimi güvenliği artırır; runtime dependency ve bootstrap karmaşıklığı ekler.
+- Hata durumu: Secret leak, expired credential, vault outage ve failed rotation ele alınmalı.
+- Ölçüm: Secret age, access anomaly, rotation success, failed fetch ve audit event izlenmeli.
+- Güvenlik/maliyet: Secret loglanmamalı ve image içine gömülmemeli; secret manager çağrıları ve HA kurulumu maliyet ekler.
+
 ## HashiCorp Vault Entegrasyonu (Spring Boot)
 
 ### Spring Cloud Vault Konfigürasyonu

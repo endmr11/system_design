@@ -2,6 +2,24 @@
 
 Modern mobile development has evolved toward declarative UI paradigms that fundamentally change how we approach animations. This comprehensive guide explores enterprise-level animation strategies using Jetpack Compose, SwiftUI, and cross-platform frameworks.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Animation depends on state change | Declarative transition | Recomposition count must be measured |
+| Simple micro-interaction | Built-in animation | Custom timeline is unnecessary |
+| Complex coordinated animation | Explicit animation controller | Lifecycle must be clear |
+| Animation inside lists | Limited and measured | Jank risk is high |
+
+## Production Checklist
+
+- Problem: Which state change does the animation explain to the user?
+- Solution: Are state source, duration, easing, cancellation, and reduce-motion behavior clear?
+- Trade-off: Animation improves comprehension; excessive animation adds latency and battery cost.
+- Failure mode: Recomposition storms, stuck animations, layout shifts, and dropped frames should be handled.
+- Measurement: Track frame time, recomposition count, jank rate, and animation cancellation.
+- Security/cost: Respect motion sensitivity settings; heavy animation is costly on low-end devices.
+
 ## Declarative Animation Philosophy
 
 ### Traditional vs. Declarative Approach

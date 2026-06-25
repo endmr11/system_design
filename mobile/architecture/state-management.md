@@ -2,6 +2,24 @@
 
 Modern mobil uygulamalarda durum yönetimi, kullanıcı deneyiminin kalitesini ve uygulama performansını doğrudan etkileyen kritik bir faktördür. Bu bölümde, sektörde kanıtlanmış durum yönetimi yaklaşımlarını derinlemesine analiz ederek, her birinin belirli kullanım senaryolarında en uygun şekilde nasıl uygulanacağını inceleyeceğiz.
 
+## Hızlı Karar
+
+| Durum | State Yaklaşımı | Dikkat |
+| --- | --- | --- |
+| Ekrana lokal geçici state | Local state | Global store'a taşıma |
+| Çok ekran paylaşımı | Scoped/global store | Ownership net olmalı |
+| Karmaşık event akışı | Reducer/MVI | Boilerplate artabilir |
+| Offline sync state'i | Persistent state | Migration ve conflict gerekir |
+
+## Üretim Kontrol Listesi
+
+- Problem: State nerede üretiliyor, nerede tüketiliyor ve ne kadar yaşıyor?
+- Çözüm: Source of truth, update path, persistence, error/loading state ve reset davranışı net mi?
+- Trade-off: Global state paylaşımı kolaylaştırır; coupling ve stale state riski ekler.
+- Hata durumu: Race condition, lost update, memory leak, duplicate event ve invalid cache ele alınmalı.
+- Ölçüm: Re-render count, frame time, state restore success ve crash-free sessions izlenmeli.
+- Güvenlik/maliyet: Token/PII state içinde gereksiz tutulmamalı; persistent state storage maliyeti ve migration borcu yaratır.
+
 ## MVVM (Model-View-ViewModel) Kapsamlı Analizi
 
 ### MVVM Örüntüsünün Mimari Temelleri

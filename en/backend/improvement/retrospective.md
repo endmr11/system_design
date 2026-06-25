@@ -2,6 +2,24 @@
 
 Retrospective and post-mortem processes, fundamental elements of continuous improvement culture, constitute critical methodologies that systematize organizational learning and optimize team performance. These structured approaches provide frameworks that extract meaningful insights from past experiences to enable future success through systematic knowledge capture and application.
 
+## Quick Decision
+
+| Situation | Process | Watch Out |
+| --- | --- | --- |
+| Sprint or project cycle ended | Retrospective | Meetings are wasted without action owners |
+| Incident occurred | Blameless post-mortem | Examine system conditions, not people |
+| Recurring operational issue | Problem review | Permanent actions must be tracked |
+| Learning after a large change | Review document | It should not become only a success story |
+
+## Production Checklist
+
+- Problem: Which decision, process, or system behavior will be improved next time?
+- Solution: Are timeline, root cause, contributing factors, action owners, and follow-up date clear?
+- Trade-off: Learning takes time; without it, the same failure repeats at higher cost.
+- Failure mode: Blame language, actionless reports, unmeasured fixes, and forgotten follow-up should be prevented.
+- Measurement: Track action completion rate, repeat incident count, MTTR change, and post-mortem publish time.
+- Security/cost: Incident reports may contain sensitive data; access and redaction rules should be defined.
+
 ## Comprehensive Retrospective Meeting Framework
 
 Retrospective meetings constitute structured discussion forums that enable systematic evaluation of team collaboration and process improvement initiatives. These meetings provide safe spaces where honest feedback is encouraged within psychologically safe environments that promote open communication and constructive criticism. Sprint-end evaluations capture immediate iteration lessons learned while identifying tactical improvements for subsequent development cycles.

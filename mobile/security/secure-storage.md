@@ -2,6 +2,24 @@
 
 Güvenli depolama, hassas verileri işleyen mobil uygulamalar için temel bir güvenlik gereksinimidir. Bu, kullanıcı kimlik bilgilerini, API tokenlarını, kişisel bilgileri ve finansal verileri içerir. Hem Android hem de iOS, mevcut olduğunda donanım güvenlik özelliklerinden yararlanan platform özel güvenli depolama mekanizmaları sağlar.
 
+## Hızlı Karar
+
+| Veri | Depolama | Dikkat |
+| --- | --- | --- |
+| Refresh token | Keychain/Keystore | Rotation ve logout temizliği |
+| Access token | Bellekte veya kısa süreli secure storage | Gereksiz kalıcılık riskli |
+| PII/offline veri | Şifreli DB/storage | Retention ve silme akışı |
+| Cache veri | Normal cache olabilir | Hassas değilse sade kal |
+
+## Üretim Kontrol Listesi
+
+- Problem: Bu veri cihazda neden saklanmalı?
+- Çözüm: Storage type, encryption, backup policy, retention, logout wipe ve migration net mi?
+- Trade-off: Yerel saklama offline deneyim sağlar; cihaz kaybı ve extraction riski getirir.
+- Hata durumu: Key invalidation, backup restore leak, rooted/jailbroken device ve stale token ele alınmalı.
+- Ölçüm: Storage error, wipe success, migration failure ve auth recovery rate izlenmeli.
+- Güvenlik/maliyet: Minimum veri sakla; hassas veri cloud backup'a karışmamalı.
+
 ## Android Güvenli Depolama
 
 ### EncryptedSharedPreferences

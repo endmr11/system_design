@@ -2,6 +2,24 @@
 
 Geriye dönük uyumluluk, mobil uygulamaların yeni sürümlerinin eski API'ler, veri formatları ve kullanıcı beklentileriyle çalışmaya devam etmesini sağlarken yeni özelliklerin de eklenmesine olanak tanır. Bu, farklı cihaz ekosistemlerinde ve API sürümlerinde kullanıcı deneyimini korumak için kritiktir.
 
+## Hızlı Karar
+
+| Değişiklik | Uyumluluk Yaklaşımı | Dikkat |
+| --- | --- | --- |
+| API alanı ekleme | Geriye uyumlu | Eski client yok saymalı |
+| API alanı silme/anlam değiştirme | Yeni versiyon | Mobil eski sürümler uzun yaşar |
+| Local schema değişimi | Migration | Downgrade senaryosu düşünülmeli |
+| Kritik minimum sürüm | Force update | Kullanıcı etkisi ve store gecikmesi |
+
+## Üretim Kontrol Listesi
+
+- Problem: Eski app sürümleri hangi süreyle çalışmaya devam etmeli?
+- Çözüm: API version, feature flag, min supported version, migration ve deprecation planı net mi?
+- Trade-off: Uzun uyumluluk kullanıcıyı korur; backend ve test maliyetini artırır.
+- Hata durumu: Old client crash, unknown field, migration failure ve forced update loop ele alınmalı.
+- Ölçüm: Version distribution, old API traffic, forced update rate, compatibility error ve crash-free sessions izlenmeli.
+- Güvenlik/maliyet: Güvenlik açığı olan eski sürüm için force update gerekebilir; eski API desteği bakım maliyetidir.
+
 ## Uyumluluk Stratejisi
 
 ### Uyumluluk Matrisi

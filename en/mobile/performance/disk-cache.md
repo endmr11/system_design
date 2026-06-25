@@ -2,6 +2,24 @@
 
 Disk cache is a critical component in mobile applications for persistent data storage and reducing network traffic.
 
+## Quick Decision
+
+| Situation | Use Disk Cache | Watch Out |
+| --- | --- | --- |
+| Large media or response | Yes | Size and eviction limits are needed |
+| Sensitive data | Carefully / encrypted | Retention should be short |
+| Frequently changing small data | Memory cache may be enough | Disk I/O is unnecessary |
+| Offline reads | Yes | Version and migration must be considered |
+
+## Production Checklist
+
+- Problem: Which network or offline cost does disk cache reduce?
+- Solution: Are key, max size, eviction, encryption, TTL, and cleanup clear?
+- Trade-off: Persistence improves speed; it adds storage, privacy, and migration cost.
+- Failure mode: Corrupted entries, full disk, stale files, permission errors, and cache poisoning should be handled.
+- Measurement: Track cache size, hit ratio, eviction count, disk I/O time, and cleanup success.
+- Security/cost: Sensitive data must be encrypted; large caches consume user storage.
+
 ## Disk Cache Fundamentals
 
 ### Storage Strategies

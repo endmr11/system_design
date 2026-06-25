@@ -1,5 +1,25 @@
 # 5.2. Rate Limiting & Throttling
 
+Rate limiting is a backpressure mechanism that protects the system from abuse, client bugs, and sudden traffic spikes. A good limit does more than reject requests; it tells the client when to retry and tells operations which resource is under pressure.
+
+## Quick Decision
+
+| Need | Approach | Note |
+| --- | --- | --- |
+| Allow short bursts | Token bucket | User experience stays smoother |
+| Require steady output rate | Leaky bucket | Queue latency must be monitored |
+| A simple counter is enough | Fixed window | Window boundaries can allow double bursts |
+| Distributed service cluster | Redis or gateway-based limit | Local counters multiply with node count |
+
+## Production Checklist
+
+- Problem: Does the limit protect a user, IP, tenant, or API key?
+- Solution: Are the limit key, time window, burst capacity, and `Retry-After` response clear?
+- Trade-off: Strict limits protect resources; overly strict limits punish real users.
+- Failure mode: Limit violations should return `429 Too Many Requests`, and logs should show identity, route, and remaining quota.
+- Measurement: Track rejected request rate, allowed request rate, Redis latency, queue depth, and downstream error rate.
+- Security/cost: Rate limits do not replace a WAF; high-cardinality keys increase Redis memory cost.
+
 ## Rate Limiting Strategies
 
 ### Token Bucket

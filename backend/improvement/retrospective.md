@@ -2,6 +2,24 @@
 
 Sürekli iyileştirme kültürünün temel unsurları olan retrospektif ve post-mortem süreçleri, organizasyonel öğrenmeyi sistematik hale getiren ve team performance'ını optimize eden critical methodology'leri oluşturur. Bu structured approach'lar, past experience'lardan meaningful insight'ları extract ederek future success'ını enable eden framework'ler provide eder.
 
+## Hızlı Karar
+
+| Durum | Süreç | Dikkat |
+| --- | --- | --- |
+| Sprint veya proje döngüsü bitti | Retrospektif | Aksiyon sahibi olmadan toplantı boşa gider |
+| Incident yaşandı | Blameless post-mortem | Kişi değil sistem koşulu incelenmeli |
+| Tekrarlayan operasyon sorunu | Problem review | Kalıcı önlem takip edilmeli |
+| Büyük değişim sonrası öğrenme | Review dokümanı | Sadece başarı hikayesi olmamalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi karar, süreç veya sistem davranışı tekrar iyileştirilecek?
+- Çözüm: Timeline, root cause, contributing factor, aksiyon sahibi ve takip tarihi net mi?
+- Trade-off: Öğrenme süreci zaman alır; yapılmazsa aynı hata daha pahalı tekrar eder.
+- Hata durumu: Suçlama dili, aksiyonsuz rapor, ölçülmeyen önlem ve unutulan follow-up engellenmeli.
+- Ölçüm: Action completion rate, repeat incident count, MTTR değişimi ve post-mortem yayın süresi izlenmeli.
+- Güvenlik/maliyet: Incident raporları hassas veri içerebilir; erişim ve redaction kuralları belirlenmeli.
+
 ## Retrospektif Toplantılarının Comprehensive Framework'ü
 
 Retrospektif toplantıları, team collaboration'ının ve process improvement'ının systematic evaluation'ını enable eden structured discussion forum'ları oluşturur. Bu meeting'ler, psychological safety environment'ında honest feedback'in encourage edildiği safe space'ler provide eder. Sprint sonu değerlendirmeleri, immediate iteration'ın lesson learned'lerini capture ederken, tactical improvement'ları identify eder.

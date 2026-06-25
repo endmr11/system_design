@@ -4,6 +4,24 @@
 
 Circuit Breaker pattern prevents cascading failures by temporarily stopping calls to failing services. When combined with Bulkhead pattern, it provides comprehensive protection against system-wide outages by isolating failures and resources.
 
+## Quick Decision
+
+| Situation | Pattern | Watch Out |
+| --- | --- | --- |
+| Dependency often times out | Circuit breaker | Fallback must be realistic |
+| One workload affects another | Bulkhead | Pool size must be measured |
+| Short failure is expected | Retry + breaker | Do not create retry storms |
+| User can see stale data | Fallback cache | Staleness must be explicit |
+
+## Production Checklist
+
+- Problem: Which dependency creates cascading failure?
+- Solution: Are timeout, failure threshold, open duration, half-open test, and fallback clear?
+- Trade-off: The system is protected; some requests intentionally fail fast.
+- Failure mode: Bad fallback, retry amplification, shared-pool exhaustion, and breaker flapping should be handled.
+- Measurement: Track breaker state, failure rate, timeout count, fallback rate, and pool saturation.
+- Security/cost: Fallback must not bypass authorization; isolated pools add capacity cost.
+
 ```mermaid
 stateDiagram-v2
     [*] --> CLOSED

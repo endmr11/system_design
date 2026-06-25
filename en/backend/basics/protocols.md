@@ -1,5 +1,25 @@
 # HTTP, REST, gRPC Protocols
 
+Protocol choice matches client capabilities with the system's performance, contract, and operational needs. If changing the protocol does not simplify the architecture, designing the existing protocol well is usually cheaper.
+
+## Quick Decision
+
+| Need | Prefer | Watch Out |
+| --- | --- | --- |
+| Public web/mobile API | HTTP/REST | Error model and versioning must be consistent |
+| Low-latency internal service calls | gRPC | Protobuf contract and tooling are required |
+| Real-time bidirectional channel | WebSocket | Connection management and scaling get harder |
+| One-way live updates | Server-Sent Events | Simple, but not fit for every scenario |
+
+## Production Checklist
+
+- Problem: Which bottleneck does the protocol solve: latency, payload, streaming, contract, or client diversity?
+- Solution: Are timeout, retry, idempotency, auth, and observability standards defined per protocol?
+- Trade-off: REST gives debugging simplicity; gRPC gives performance; WebSocket adds state management.
+- Failure mode: Deadline exceeded, connection reset, partial response, and retry storm scenarios should be handled.
+- Measurement: Track payload size, round-trip count, connection count, p95 latency, and error code distribution.
+- Security/cost: TLS, mTLS, schema validation, and rate-limit needs vary by protocol.
+
 ## Protocol Interaction
 
 ```mermaid

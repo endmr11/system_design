@@ -6,6 +6,24 @@ title: Data Migration ve Versioning
 
 Mobil uygulamalarda veri yapısının evrim geçirmesi kaçınılmazdır. Yeni özellikler, performans iyileştirmeleri ve business requirement değişiklikleri database schema'sında değişiklik gerektirir. Bu bölümde, güvenli ve etkili data migration stratejileri ile schema versioning yaklaşımları detaylı olarak ele alınmaktadır.
 
+## Hızlı Karar
+
+| Durum | Migration Yaklaşımı | Dikkat |
+| --- | --- | --- |
+| Basit kolon ekleme | Forward migration | Default değer net olmalı |
+| Büyük veri dönüşümü | Incremental/lazy migration | Startup bloklanmamalı |
+| Riskli schema değişimi | Backup + staged rollout | Rollback planı gerekir |
+| Local cache verisi | Rebuild edilebilir | Migration yerine temizleme olabilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi kullanıcı verisi update sırasında korunmalı?
+- Çözüm: Version, migration path, backup, rollback ve corruption handling net mi?
+- Trade-off: Güvenli migration zaman alır; hızlı migration veri kaybı riski taşır.
+- Hata durumu: Partial migration, app kill during migration, disk full ve incompatible downgrade ele alınmalı.
+- Ölçüm: Migration success, duration, failure rate, recovery rate ve affected version izlenmeli.
+- Güvenlik/maliyet: Migration logları hassas veri içermemeli; eski schema desteği bakım maliyeti yaratır.
+
 ## Schema Evolution Strategies
 
 ### Backward Compatible Changes

@@ -4,6 +4,24 @@
 
 Gerçek zamanlı iletişim, modern mobil uygulamalarda kullanıcı etkileşimini artıran kritik bir özelliktir. Bu dokümantasyon WebSocket, Server-Sent Events ve diğer gerçek zamanlı teknolojilerin mobil platformlarda kullanımını kapsar.
 
+## Hızlı Karar
+
+| İhtiyaç | Teknoloji | Dikkat |
+| --- | --- | --- |
+| Çift yönlü anlık iletişim | WebSocket | Reconnect ve auth yenileme gerekir |
+| Tek yönlü canlı güncelleme | SSE veya push | Mobil arka planda sınırlı |
+| Seyrek güncelleme | Polling/push yeterli | Sürekli bağlantı gereksiz olabilir |
+| Kritik teslimat | Queue + ack | Offline senaryo tasarlanmalı |
+
+## Üretim Kontrol Listesi
+
+- Problem: Gerçek zamanlılık hangi kullanıcı sonucunu iyileştiriyor?
+- Çözüm: Connection lifecycle, reconnect, heartbeat, auth refresh ve backoff net mi?
+- Trade-off: Canlı bağlantı deneyimi iyileştirir; batarya, ağ ve sunucu state maliyeti ekler.
+- Hata durumu: Connection drop, duplicate event, missed event, stale auth ve reconnect storm ele alınmalı.
+- Ölçüm: Connection count, reconnect rate, message latency, delivery success ve battery impact izlenmeli.
+- Güvenlik/maliyet: Kanal yetkisi her mesajda korunmalı; sürekli bağlantılar altyapı maliyeti üretir.
+
 ## Sistem Mimarisi
 
 ```mermaid

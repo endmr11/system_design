@@ -2,6 +2,24 @@
 
 Database sharding ve partitioning, büyük ölçekli uygulamalarda veri yönetimini optimize etmek için kullanılan kritik tekniktlerdir. Bu yaklaşımlar, veritabanı performansını artırır, ölçeklenebilirlik sağlar ve sistem dayanıklılığını güçlendirir.
 
+## Hızlı Karar
+
+| Durum | Sharding Kullan | Dikkat |
+| --- | --- | --- |
+| Tek DB kapasite sınırında | Evet | Shard key kalıcı karardır |
+| Sadece birkaç yavaş sorgu | Önce index/query optimize et | Sharding fazla pahalıdır |
+| Tenant bazlı izolasyon | Tenant shard | Büyük tenant skew yaratabilir |
+| Zaman bazlı büyük veri | Partitioning | Retention kolaylaşır |
+
+## Üretim Kontrol Listesi
+
+- Problem: Sharding hangi kapasite veya izolasyon sınırını çözüyor?
+- Çözüm: Shard key, routing, resharding, transaction sınırı ve backup stratejisi net mi?
+- Trade-off: Kapasite artar; cross-shard query, transaction ve operasyon karmaşıklığı eklenir.
+- Hata durumu: Hot shard, bad key, resharding failure, partial outage ve inconsistent backup ele alınmalı.
+- Ölçüm: Per-shard load, skew, cross-shard query count, routing error ve migration duration izlenmeli.
+- Güvenlik/maliyet: Tenant izolasyonu erişim kontrolüyle desteklenmeli; shard sayısı operasyon ve storage maliyetini artırır.
+
 ## Sharding Overview
 
 ```mermaid

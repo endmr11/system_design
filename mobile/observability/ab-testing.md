@@ -4,6 +4,24 @@
 
 A/B test altyapısı, mobil uygulamalarda kontrollü deneyler yaparak veri odaklı karar vermeyi sağlar. Bu dokümantasyon, Android, iOS, React Native ve Flutter platformlarında kapsamlı A/B test uygulamasını, istatistiksel analiz ve otomatik karar verme mekanizmalarıyla birlikte ele alır.
 
+## Hızlı Karar
+
+| Durum | Deney Yap | Dikkat |
+| --- | --- | --- |
+| Ürün etkisi belirsiz | Evet | Başarı metriği önceden seçilmeli |
+| Güvenlik/ödeme akışı | Çok dikkatli | Guardrail metrikleri şart |
+| Küçük kullanıcı sayısı | Bekle veya qualitative test | İstatistiksel güç yetmeyebilir |
+| Sadece bug fix | A/B gerekmez | Rollout/feature flag yeterli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Deney hangi kararı değiştirecek?
+- Çözüm: Hipotez, segment, success metric, guardrail, süre ve stop rule net mi?
+- Trade-off: A/B test veri sağlar; karmaşıklık, bekleme süresi ve analiz maliyeti getirir.
+- Hata durumu: Sample pollution, novelty effect, SRM, metric gaming ve yanlış segment ele alınmalı.
+- Ölçüm: Conversion, retention, crash rate, latency, sample ratio ve confidence interval izlenmeli.
+- Güvenlik/maliyet: Deney kullanıcı gizliliğine ve consent'e uymalı; fazla event maliyeti artırır.
+
 ## Firebase A/B Test
 
 ### Android Uygulaması

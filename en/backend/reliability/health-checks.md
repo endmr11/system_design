@@ -4,6 +4,24 @@
 
 Health checks and heartbeats are essential monitoring mechanisms that ensure system components are functioning correctly. They enable early detection of issues, automated recovery, and informed load balancing decisions.
 
+## Quick Decision
+
+| Need | Check | Watch Out |
+| --- | --- | --- |
+| Is process alive? | Liveness | Bad checks create restart loops |
+| Can it receive traffic? | Readiness | Dependency checks must be balanced |
+| Slow-starting app | Startup probe | Prevents false failure during startup |
+| Service-to-service life signal | Heartbeat | Network jitter must be considered |
+
+## Production Checklist
+
+- Problem: Which decision does the check drive: restart, traffic removal, alert, or failover?
+- Solution: Are endpoint, timeout, threshold, dependency scope, and response format clear?
+- Trade-off: Strict checks detect quickly; false positives create outages.
+- Failure mode: Dependency cascades, slow startup, GC pauses, and false unhealthy should be handled.
+- Measurement: Track probe failure rate, restart count, readiness duration, and false-positive rate.
+- Security/cost: Health endpoints must not leak sensitive data; expensive checks add load.
+
 ```mermaid
 graph TD
     A[Health Check] --> B[Liveness Probe]

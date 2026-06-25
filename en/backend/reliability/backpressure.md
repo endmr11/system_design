@@ -4,6 +4,24 @@
 
 Backpressure control is a critical mechanism for safely managing requests that exceed system capacity. It prevents system crashes during high traffic scenarios while maintaining performance and reliability.
 
+## Quick Decision
+
+| Situation | Backpressure | Watch Out |
+| --- | --- | --- |
+| Downstream capacity is limited | Rate limit / queue limit | Limit response should be clear to clients |
+| Queue keeps growing | Reject or shed load | Infinite queues kill systems |
+| Traffic has short bursts | Token bucket | Burst capacity must be measured |
+| Non-critical workload | Drop/defer | Priority policy is needed |
+
+## Production Checklist
+
+- Problem: Which resource is saturated: thread, DB, queue, CPU, or external service?
+- Solution: Are limit, queue size, timeout, retry, and `429/503` behavior clear?
+- Trade-off: Rejecting requests looks bad; crashing the system is worse.
+- Failure mode: Retry storms, queue overflow, thread starvation, and unfair tenant usage should be handled.
+- Measurement: Track queue depth, reject rate, saturation, retry count, and p99 latency.
+- Security/cost: Limits should be tenant-aware; unlimited capacity increases hide cost.
+
 ```mermaid
 graph TD
     A[Client Requests] --> B[Rate Limiting]

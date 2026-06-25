@@ -2,6 +2,25 @@
 
 Modern mobil uygulama geliştirme, yalnızca kod yazmaktan çok daha geniş kapsamlı bir sistem tasarımı disiplinidir. Günümüzde milyonlarca kullanıcıya hizmet veren mobil uygulamalar, karmaşık mimari kararlar, performans optimizasyonları ve kapsamlı güvenlik stratejileri gerektirir. Bu dokümantasyon, kurumsal seviyede mobil sistem tasarımının tüm yönlerini derinlemesine inceler.
 
+## Hızlı Karar
+
+| Karar Alanı | Önce Bakılacak Yer | Dikkat |
+| --- | --- | --- |
+| Uygulama mimarisi | [Architecture](./architecture/) | State ve module sınırları net olmalı |
+| Offline veri | [Storage](./storage/) | Conflict ve migration planı gerekir |
+| Ağ güvenilirliği | [Networking](./networking/resilience) | Mobil bağlantı değişkendir |
+| Performans | [UI Performance](./ui-performance/rendering) | Gerçek cihaz ölçümü şart |
+| Güvenlik | [Security](./security/) | Token ve local storage risklidir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Mobil kullanıcı hangi cihaz, ağ ve pil koşulunda bu akışı kullanıyor?
+- Çözüm: State, cache, sync, navigation, error state ve analytics standardı net mi?
+- Trade-off: Daha zengin client deneyimi offline ve state karmaşıklığı getirir.
+- Hata durumu: Cold start, offline conflict, token expiry, crash loop ve memory pressure ele alınmalı.
+- Ölçüm: Crash-free sessions, startup time, ANR/jank, network error rate ve battery impact izlenmeli.
+- Güvenlik/maliyet: Hassas veri cihazda minimum tutulmalı; çok platformlu destek test maliyeti üretir.
+
 ## Mobil Uygulama Mimarisi
 
 ```mermaid
@@ -81,14 +100,17 @@ sequenceDiagram
 ## Bölüm Listesi
 
 ### 1. Uygulama Mimarileri & State Management
+- [Uygulama Mimarileri & Durum Yönetimi](/mobile/architecture/)
 - [Mimari Pattern'ler](/mobile/architecture/patterns)
 - [State Management Stratejileri](/mobile/architecture/state-management)
+- [Clean Architecture](/mobile/architecture/clean-architecture)
 - [Component Tabanlı Tasarım](/mobile/architecture/component-based)
 - [Dependency Injection ve IoC](/mobile/architecture/dependency-injection)
 - [Modüler Mimari Yapıları](/mobile/architecture/modular-architecture)
 - [Iron Mimarisi - Flutter Durum Yönetimi](/mobile/iron-architecture)
 
 ### 2. Veri Saklama & Senkronizasyon
+- [Mobil Veri Saklama ve Senkronizasyon](/mobile/storage/)
 - [Local Database Seçenekleri](/mobile/storage/local-databases)
 - [Veri Senkronizasyon Stratejileri](/mobile/storage/sync-strategies)
 - [Conflict Resolution](/mobile/storage/conflict-resolution)
@@ -100,6 +122,11 @@ sequenceDiagram
 - [Disk Cache Stratejileri](/mobile/performance/disk-cache)
 - [Cache Invalidation Teknikleri](/mobile/performance/cache-invalidation)
 - [Object Lifecycle Management](/mobile/performance/object-lifecycle)
+- [Çok Seviyeli Caching Stratejileri](/mobile/caching/multi-level)
+- [Görsel ve Asset Caching](/mobile/caching/asset-caching)
+- [Caching Bellek Yönetimi](/mobile/caching/memory-management)
+- [Disk Cache Optimizasyonu](/mobile/caching/disk-cache)
+- [Cache Invalidation Desenleri](/mobile/caching/invalidation)
 
 ### 4. Ağ Katmanları & Veri Transferi
 - [İstek Birleştirme & Debouncing](/mobile/networking/batching-debouncing)
@@ -116,7 +143,7 @@ sequenceDiagram
 ### 5. UI/UX Performans Optimizasyonu
 - [Rendering Optimizasyonu](/mobile/ui-performance/rendering)
 - [Layout Performance](/mobile/ui-performance/layout)
-- [List ve Scroll Performance](/mobile/ui-performance/list-performance)
+- [Liste ve Kaydırma Performansı](/mobile/ui-performance/list-performance)
 - [60 FPS Garantisi](/mobile/ui-performance/fps-optimization)
 - [Memory Efficient UI](/mobile/ui-performance/memory-efficient)
 

@@ -4,6 +4,24 @@
 
 Modern mobil uygulamalarda arkaplan işleme, kullanıcı deneyimini kesintiye uğratmadan kritik görevleri yerine getirmek için hayati öneme sahiptir. Bu dokümantasyon, iOS ve Android platformlarında etkili arkaplan görev yönetimi stratejilerini kapsar.
 
+## Hızlı Karar
+
+| İş Tipi | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Ertelenebilir sync | WorkManager/BGTask | OS zamanlamasına uy |
+| Kullanıcı görünür indirme | Foreground service | Bildirim ve izin gerekir |
+| Kısa cleanup | App lifecycle task | Süre garantisi yok |
+| Kritik anlık iş | Server-side işlem | Mobil arka plana güvenme |
+
+## Üretim Kontrol Listesi
+
+- Problem: İş gerçekten cihazda arka planda mı çalışmalı?
+- Çözüm: Constraint, retry, idempotency, timeout ve user-visible state net mi?
+- Trade-off: Arka plan iş deneyimi iyileştirir; batarya ve OS kısıtlarıyla sınırlıdır.
+- Hata durumu: Task kill, duplicate execution, missed schedule ve network unavailable ele alınmalı.
+- Ölçüm: Task success, retry count, execution time, battery impact ve queue age izlenmeli.
+- Güvenlik/maliyet: Arka plan işi hassas veriyi gereksiz taşımamalı; server'a almak bazen daha ucuzdur.
+
 ## Platform-Specific Arkaplan İşleme
 
 ### iOS Background Tasks

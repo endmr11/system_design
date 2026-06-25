@@ -1,5 +1,25 @@
 # 5.3. API Gateway Kullanımı
 
+API gateway, istemci trafiği ile backend servisleri arasındaki ortak politika katmanıdır. Routing, auth, rate limit, gözlemlenebilirlik ve protokol dönüşümü burada toplanabilir; fakat iş kuralları gateway'e taşınırsa sistem merkezi bir darboğaza dönüşür.
+
+## Hızlı Karar
+
+| Durum | Gateway'e Koy | Serviste Bırak |
+| --- | --- | --- |
+| Kimlik doğrulama, TLS, rate limit | Evet | Servis yine yetki varsayımı yapmamalı |
+| Rota, header, correlation id | Evet | Servis domain kararını vermeli |
+| İş kuralı ve veri validasyonu | Hayır | Domain servisine ait |
+| Ağ retry ve circuit breaker | Sınırlı | Idempotency yoksa retry tehlikelidir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Gateway hangi ortak problemi çözüyor; sadece teknoloji eklemek için mi konuyor?
+- Çözüm: Route, timeout, retry, auth ve fallback davranışı servis bazında açık mı?
+- Trade-off: Merkezi politika yönetimi kolaylaşır; yanlış yapılandırma tüm trafiği etkiler.
+- Hata durumu: Downstream timeout, auth hatası, rate limit ve fallback cevapları ayırt edilebilir olmalı.
+- Ölçüm: Gateway p95/p99 latency, upstream latency, 4xx/5xx oranı, circuit state ve route bazlı trafik izlenmeli.
+- Güvenlik/maliyet: Gateway tek güvenlik katmanı olmamalı; tüm trafiği buradan geçirmek altyapı ve observability maliyeti ekler.
+
 ## Temel Fonksiyonlar
 
 ### Yönlendirme (Routing)

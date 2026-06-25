@@ -6,6 +6,24 @@ title: Conflict Resolution
 
 Conflict resolution is a critical aspect of mobile data synchronization when multiple clients can modify the same data simultaneously. This section covers various conflict detection mechanisms, resolution strategies, and implementation patterns to ensure data consistency while maintaining user experience.
 
+## Quick Decision
+
+| Situation | Strategy | Watch Out |
+| --- | --- | --- |
+| Low-risk field | Last-write-wins | Data loss must be acceptable |
+| User content | Manual merge | UX must be clear |
+| Counter/set-like data | CRDT | Complexity increases |
+| Critical financial data | Server authority | Offline writes should be limited |
+
+## Production Checklist
+
+- Problem: Which data loss is unacceptable during conflict?
+- Solution: Are conflict detection, merge rule, user prompt, audit, and retry clear?
+- Trade-off: Automatic resolution is fast; wrong merges damage trust.
+- Failure mode: Clock skew, duplicate sync, lost updates, and merge loops should be handled.
+- Measurement: Track conflict rate, auto-merge success, manual resolution time, and data loss reports.
+- Security/cost: Users must not see others' data in merge screens; CRDTs can increase storage cost.
+
 ## Conflict Detection
 
 ### Version-Based Detection

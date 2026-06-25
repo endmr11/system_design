@@ -2,6 +2,24 @@
 
 Sertifika sabitleme, sunucu sertifikasının bilinen güvenilir bir sertifika veya açık anahtar ile eşleştiğini doğrulayarak ortadaki adam (MITM) saldırılarını önleyen kritik bir güvenlik tekniğidir. Bu bölüm, mobil uygulamalar için kapsamlı sertifika sabitleme stratejilerini ele almaktadır.
 
+## Hızlı Karar
+
+| Durum | Pinning Kullan | Dikkat |
+| --- | --- | --- |
+| Yüksek hassasiyetli API | Evet | Backup pin şart |
+| Sık sertifika değişimi | Public key pin | Rotation planı gerekir |
+| Geliştirme ortamı | Ayrı pin/config | Prod pin gevşetilmemeli |
+| Düşük riskli public içerik | TLS yeterli olabilir | YAGNI kontrolü |
+
+## Üretim Kontrol Listesi
+
+- Problem: Pinning hangi MITM riskini azaltıyor?
+- Çözüm: Pin türü, backup pin, rotation, kill switch ve error UX net mi?
+- Trade-off: MITM riski azalır; yanlış pin tüm ağı kırabilir.
+- Hata durumu: Expired cert, pin mismatch, captive portal ve clock skew ele alınmalı.
+- Ölçüm: Pin failure, TLS error, affected version ve endpoint availability izlenmeli.
+- Güvenlik/maliyet: Pin bypass debug için bile production'a girmemeli; rotation operasyon maliyeti ister.
+
 ## Sertifika Sabitlemeyi Anlama
 
 Sertifika sabitleme, beklenen sertifika bilgilerini mobil uygulamaya gömerek ve SSL/TLS el sıkışması sırasında sunucu sertifikalarını bu bilinen güvenilir bilgilere karşı doğrulayarak çalışır.

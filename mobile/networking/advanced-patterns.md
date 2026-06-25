@@ -1,5 +1,25 @@
 # Gelişmiş Ağ Desenleri
 
+Gelişmiş ağ desenleri, yalnızca polling yetersiz kaldığında kullanılmalıdır. Mobilde her kalıcı bağlantı batarya, ağ değişimi ve lifecycle maliyeti getirir.
+
+## Hızlı Karar
+
+| İhtiyaç | Desen | Dikkat |
+| --- | --- | --- |
+| Çift yönlü canlı iletişim | WebSocket | Reconnect ve auth yenileme gerekir |
+| Tek yönlü güncelleme | SSE veya push | Arka plan kısıtları var |
+| Seyrek veri yenileme | Polling + cache | Sürekli bağlantı gereksiz |
+| Kritik teslimat | Ack + queue | Offline tekrar senaryosu şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: Bu desen hangi kullanıcı gecikmesini veya tutarsızlığı çözüyor?
+- Çözüm: Connection lifecycle, retry/backoff, auth refresh, offline queue ve fallback net mi?
+- Trade-off: Daha canlı deneyim, daha fazla batarya ve sunucu state maliyeti getirir.
+- Hata durumu: Reconnect storm, duplicate message, stale token ve network switch ele alınmalı.
+- Ölçüm: Connection count, message latency, reconnect rate, delivery success ve battery impact izlenmeli.
+- Güvenlik/maliyet: Kanal yetkisi mesaj bazında korunmalı; açık bağlantılar altyapı maliyeti üretir.
+
 ## WebSocket Uygulaması
 
 ```mermaid

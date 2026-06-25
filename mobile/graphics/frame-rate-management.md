@@ -5,6 +5,24 @@
 ### Frame Rendering Anatomy
 Modern mobil cihazlarda her frame'in 16.67ms (60 FPS) süre içinde tamamlanması gerekir. Bu süre aşıldığında "jank" denilen görsel takılmalar oluşur.
 
+## Hızlı Karar
+
+| Semptom | Önce Bak | Dikkat |
+| --- | --- | --- |
+| Scroll takılıyor | Layout/draw cost | Görünür item sayısı azaltılmalı |
+| Animasyon düşüyor | Main thread work | Ağır iş UI thread'den çıkarılmalı |
+| İlk render yavaş | Asset decode/layout | Lazy load gerekebilir |
+| Düşük cihazda sorun | Device profiling | Emulator yeterli değildir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi frame bütçesi hangi ekranda aşılıyor?
+- Çözüm: Layout, draw, animation, image decode ve background work ayrımı net mi?
+- Trade-off: Görsel detay ve dinamik layout arttıkça frame bütçesi daralır.
+- Hata durumu: Main-thread blocking, GC pause, image decode spike ve layout thrash ele alınmalı.
+- Ölçüm: p95 frame time, dropped frames, jank rate, main-thread time ve memory peak izlenmeli.
+- Güvenlik/maliyet: Performans optimizasyonu erişilebilirliği bozmasın; cihaz laboratuvarı maliyeti planlanmalı.
+
 ```
 Frame Timeline (16.67ms @ 60 FPS):
 ┌─ Input Processing (1-2ms)

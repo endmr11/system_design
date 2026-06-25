@@ -2,6 +2,24 @@
 
 The CAP Theorem, proposed by Eric Brewer, states that in distributed systems, you can only guarantee two out of three properties: Consistency, Availability, and Partition tolerance. This fundamental theorem shapes how we design and architect distributed systems.
 
+## Quick Decision
+
+| Situation | Bias | Watch Out |
+| --- | --- | --- |
+| Financial record, permission, configuration | CP | Rejecting some requests is acceptable |
+| Feed, analytics, catalog reads | AP | Stale-data policy must be explicit |
+| Multi-region active/active | AP or hybrid | Conflict resolution is required |
+| Single-region relational system | CAP may not be the main issue | Replication and failover are more practical questions |
+
+## Production Checklist
+
+- Problem: During a network partition, should users see an error, stale data, or waiting?
+- Solution: Are quorum, timeout, failover, read preference, and conflict policy defined?
+- Trade-off: CP protects correctness but can reduce availability; AP protects availability but creates temporary inconsistency.
+- Failure mode: Split brain, minority partitions, stale cache, write conflicts, and failback scenarios should be tested.
+- Measurement: Track partition events, quorum failures, replication lag, conflict count, and error-budget impact.
+- Security/cost: AP behavior is risky for auth or secrets; multi-region quorum adds latency and network cost.
+
 ## Understanding CAP Properties
 
 ### Consistency (C)

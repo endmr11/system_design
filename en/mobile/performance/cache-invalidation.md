@@ -1,5 +1,25 @@
 # Cache Invalidation Strategies
 
+Cache invalidation keeps mobile data useful without forcing every screen to hit the network. The goal is not perfect freshness everywhere; it is choosing where stale data is acceptable and where it is harmful.
+
+## Quick Decision
+
+| Situation | Strategy | Watch Out |
+| --- | --- | --- |
+| Data changes rarely | TTL | Stale data must be acceptable |
+| User performs writes | Write-through / explicit invalidate | Offline conflicts must be considered |
+| Server-side change is critical | Push/event invalidation | Needs fallback if delivery is not guaranteed |
+| Multi-layer cache | Version/tag based | Drift between layers must be monitored |
+
+## Production Checklist
+
+- Problem: Which stale data can harm the user?
+- Solution: Are TTL, version, invalidation trigger, offline fallback, and refresh policy clear?
+- Trade-off: Long cache is fast; short cache adds network/battery cost.
+- Failure mode: Stale reads, cache stampede, missed invalidation, and offline write conflicts should be handled.
+- Measurement: Track hit ratio, stale data reports, refresh latency, invalidation success, and network usage.
+- Security/cost: Authorized data requires user/tenant separation; unnecessary invalidation is expensive.
+
 ## Cache Invalidation Fundamentals
 - **Cache Invalidation Problem**: "There are only two hard things in Computer Science: cache invalidation and naming things"
 - **Consistency vs Performance**: Fresh data vs fast access trade-offs

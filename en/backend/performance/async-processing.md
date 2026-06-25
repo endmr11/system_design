@@ -2,6 +2,24 @@
 
 Asynchronous processing and message queues are fundamental building blocks of modern backend systems. These technologies provide loose coupling between systems, high throughput, fault tolerance, and scalability. The Spring Boot ecosystem offers comprehensive tools for enterprise-level event-driven architecture.
 
+## Quick Decision
+
+| Situation | Use Async | Watch Out |
+| --- | --- | --- |
+| User should not wait | Yes | Track job status |
+| Downstream is slow/unstable | Yes | Queue growth must be measured |
+| Result is needed immediately | No or hybrid | Sync error model is simpler |
+| Task can be retried | Yes | Idempotency is required |
+
+## Production Checklist
+
+- Problem: Does async improve latency, resilience, or coupling?
+- Solution: Are message schema, retry, DLQ, idempotency, ordering, and consumer scaling clear?
+- Trade-off: User flow gets faster; eventual consistency and operational complexity are added.
+- Failure mode: Poison messages, duplicate delivery, consumer lag, retry storms, and out-of-order events should be handled.
+- Measurement: Track queue depth, consumer lag, processing latency, retry count, and DLQ rate.
+- Security/cost: Sensitive data in message payloads should be minimized; broker storage and worker count create cost.
+
 ## Benefits of Asynchronous Processing
 
 **Why Use Asynchronous Processing?**

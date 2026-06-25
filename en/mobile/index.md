@@ -1,5 +1,26 @@
 # Mobile System Design
 
+Mobile system design is shaped by device limits, unreliable networks, app-store release cycles, security boundaries, and user patience. Good mobile architecture keeps the product usable under weak connectivity, low battery, old devices, and delayed updates.
+
+## Quick Decision
+
+| Decision Area | Start Here | Watch Out |
+| --- | --- | --- |
+| App architecture | [Architecture](./architecture/) | State and module boundaries must be clear |
+| Offline data | [Storage](./storage/) | Conflict and migration plans are needed |
+| Network reliability | [Networking](./networking/resilience) | Mobile connectivity is variable |
+| Performance | [UI Performance](./ui-performance/rendering) | Real-device measurement is required |
+| Security | [Security](./security/) | Tokens and local storage are risky |
+
+## Production Checklist
+
+- Problem: Under which device, network, and battery conditions does the user need this flow?
+- Solution: Are state, cache, sync, navigation, error state, and analytics standards clear?
+- Trade-off: Richer client experience adds offline and state complexity.
+- Failure mode: Cold start, offline conflicts, token expiry, crash loops, and memory pressure should be handled.
+- Measurement: Track crash-free sessions, startup time, ANR/jank, network error rate, and battery impact.
+- Security/cost: Keep sensitive data on-device to a minimum; multi-platform support creates testing cost.
+
 ## Mobile Application Architecture
 
 ```mermaid
@@ -82,8 +103,10 @@ Modern mobile application development is a much broader system design discipline
 
 ### Chapter 1: Application Architectures & State Management
 Detailed analysis of architectural patterns, state management solutions, and component-based designs in modern mobile applications.
+- [Application Architectures & State Management](/en/mobile/architecture/)
 - [Architectural Patterns (MVP, MVVM, Clean Architecture)](/en/mobile/architecture/patterns)
 - [State Management Strategies](/en/mobile/architecture/state-management)
+- [Clean Architecture](/en/mobile/architecture/clean-architecture)
 - [Component-Based Design](/en/mobile/architecture/component-based)
 - [Dependency Injection and IoC](/en/mobile/architecture/dependency-injection)
 - [Modular Architecture Structures](/en/mobile/architecture/modular-architecture)
@@ -91,6 +114,7 @@ Detailed analysis of architectural patterns, state management solutions, and com
 
 ### Chapter 2: Data Storage & Synchronization
 Local data storage solutions, data synchronization, and implementation of offline-first strategies.
+- [Mobile Data Storage & Synchronization](/en/mobile/storage/)
 - [Local Database Options](/en/mobile/storage/local-databases)
 - [Data Synchronization Strategies](/en/mobile/storage/sync-strategies)
 - [Conflict Resolution Mechanisms](/en/mobile/storage/conflict-resolution)
@@ -212,4 +236,3 @@ Get started with mobile system design using our comprehensive getting started gu
 - [Platform-Specific Quick Starts](/en/mobile/getting-started#platform-specific-quick-starts)
 - [Development Workflow](/en/mobile/getting-started#development-workflow)
 - [Performance Benchmarks](/en/mobile/getting-started#performance-benchmarks)
-

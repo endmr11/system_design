@@ -4,6 +4,24 @@ Infrastructure as Code (IaC) represents a paradigm shift in how modern organizat
 
 The fundamental principle of IaC is treating infrastructure specifications as first-class code artifacts, subject to the same rigorous practices applied to application development: version control, code review, testing, and automated deployment. This approach bridges the traditional gap between development and operations teams, fostering a culture of collaboration and shared responsibility.
 
+## Quick Decision
+
+| Need | Approach | Watch Out |
+| --- | --- | --- |
+| Repeatable environment | Terraform/CloudFormation/Pulumi | State management is critical |
+| Small single-service config | Simple manifest may be enough | Do not write unnecessary modules |
+| Multi-team infrastructure | Module + policy | Over-abstraction makes debugging harder |
+| Security standard | Policy as code | Exception process must be clear |
+
+## Production Checklist
+
+- Problem: Which manual error or drift does IaC remove?
+- Solution: Are state backend, locking, plan review, rollback, and secret management clear?
+- Trade-off: You gain repeatability and audit; you add state, provider, and module maintenance cost.
+- Failure mode: State corruption, drift, destructive plans, provider bugs, and committed secrets should be handled.
+- Measurement: Track drift count, plan failures, apply duration, rollback time, and policy violations.
+- Security/cost: State files can contain sensitive data; every module abstraction creates maintenance cost.
+
 ## Fundamental Principles and Strategic Advantages
 
 Infrastructure as Code introduces transformative changes in how organizations conceptualize, deploy, and maintain their technical infrastructure. This approach transcends mere automation, establishing a comprehensive framework for infrastructure governance and operational excellence.

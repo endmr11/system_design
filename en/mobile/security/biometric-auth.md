@@ -2,6 +2,24 @@
 
 Biometric authentication leverages unique biological characteristics to verify user identity. Modern mobile devices support various biometric modalities including fingerprint, facial recognition, iris scanning, and voice recognition. This section covers comprehensive implementation strategies for secure biometric authentication systems.
 
+## Quick Decision
+
+| Situation | Use Biometrics | Watch Out |
+| --- | --- | --- |
+| Local unlock | Yes | Does not replace server auth |
+| High-risk action | As step-up | Fallback and re-auth are needed |
+| Device has no biometrics | PIN/password fallback | Security level differs |
+| Account switch | Re-authenticate | Old user state must not remain |
+
+## Production Checklist
+
+- Problem: What does biometrics protect: app entry, token access, or transaction approval?
+- Solution: Are fallback, lockout, enrollment change, key invalidation, and UX copy clear?
+- Trade-off: UX gets faster; platform behavior and fallback security get more complex.
+- Failure mode: Biometric enrollment changes, lockout, unsupported devices, and replayed local state should be handled.
+- Measurement: Track biometric success, fallback rate, lockout rate, and auth abandonment.
+- Security/cost: A biometric result is not backend trust; sensitive keys should be protected with secure enclave/keystore.
+
 ## Biometric Authentication Architecture
 
 ## Platform Implementation

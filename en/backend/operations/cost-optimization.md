@@ -4,6 +4,24 @@ Cost optimization in modern software systems represents a fundamental shift from
 
 The complexity of cloud cost optimization extends beyond simple resource rightsizing. It encompasses strategic decision-making around architecture patterns, service selection, operational procedures, and organizational culture. Effective cost optimization requires deep understanding of application behavior, business requirements, and cloud provider pricing models. This holistic approach ensures that cost reduction efforts enhance rather than compromise system performance and reliability.
 
+## Quick Decision
+
+| Signal | First Action | Watch Out |
+| --- | --- | --- |
+| Low CPU/memory utilization | Rightsizing | Preserve peak and burst needs |
+| Predictable traffic | Reserved/savings plan | Bad commitments lock you in |
+| Storage grows quickly | Retention + lifecycle policy | Audit requirements must stay intact |
+| Log/metric bill grows | Sampling + lower cardinality | Critical signals must not disappear |
+
+## Production Checklist
+
+- Problem: Compared to which business value does the cost look too high?
+- Solution: Are owner, budget, tag standard, alert, and optimization backlog clear?
+- Trade-off: Cost reduction can reduce performance, reliability, or debugging capability.
+- Failure mode: Over-rightsizing, disabled critical resources, missing backups, and lost visibility should be handled.
+- Measurement: Track unit cost, utilization, idle resources, data transfer, storage growth, and forecast drift.
+- Security/cost: Public egress, unnecessary replicas, and high cardinality are expensive; do not disable security controls to save cost.
+
 ## Strategic Cost Structure Analysis
 
 Understanding the multifaceted nature of cloud costs is essential for developing effective optimization strategies. Modern applications generate costs across multiple dimensions, each requiring specialized approaches and monitoring mechanisms.

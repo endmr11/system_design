@@ -2,6 +2,24 @@
 
 Asenkron işlemler ve message queue'lar, modern backend sistemlerinin temel taşlarıdır. Bu teknolojiler, sistemler arası gevşek bağlantı (loose coupling), yüksek throughput, fault tolerance ve scalability sağlar. Spring Boot ekosistemi, enterprise seviyesinde event-driven architecture için kapsamlı araçlar sunar.
 
+## Hızlı Karar
+
+| Durum | Async Kullan | Dikkat |
+| --- | --- | --- |
+| Kullanıcı beklememeli | Evet | İş durumunu takip et |
+| Downstream yavaş/kararsız | Evet | Queue birikimi ölçülmeli |
+| Sonuç anında gerekli | Hayır veya hibrit | Sync hata modeli daha basit |
+| Tekrar işlenebilir görev | Evet | Idempotency şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: Async akış latency'yi mi, dayanıklılığı mı, yoksa coupling'i mi iyileştiriyor?
+- Çözüm: Message schema, retry, DLQ, idempotency, ordering ve consumer scaling net mi?
+- Trade-off: Kullanıcı akışı hızlanır; eventual consistency ve operasyon karmaşıklığı eklenir.
+- Hata durumu: Poison message, duplicate delivery, consumer lag, retry storm ve out-of-order event ele alınmalı.
+- Ölçüm: Queue depth, consumer lag, processing latency, retry count ve DLQ rate izlenmeli.
+- Güvenlik/maliyet: Mesaj payload'ında hassas veri azaltılmalı; broker storage ve worker sayısı maliyet üretir.
+
 ## Asenkron İşlemlerin Avantajları
 
 **Neden Asenkron İşlemler Kullanmalıyız?**

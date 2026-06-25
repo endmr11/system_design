@@ -2,6 +2,24 @@
 
 Service Level concepts form the foundation of Site Reliability Engineering (SRE) practices. These metrics help organizations measure and manage service reliability.
 
+## Quick Decision
+
+| Concept | Use | Watch Out |
+| --- | --- | --- |
+| SLI | Measure user experience | Must be measurable and realistic |
+| SLO | Set internal target | Too aggressive targets can block delivery |
+| SLA | Customer commitment | Creates legal/financial consequences |
+| Error budget | Manage risk decisions | Release policy should change when it is spent |
+
+## Production Checklist
+
+- Problem: Which user experience measures reliability?
+- Solution: Are SLI definition, SLO target, window, data source, and owner clear?
+- Trade-off: High SLO builds trust; it creates cost and operational pressure.
+- Failure mode: Bad SLI, missing data, dashboard drift, and SLA breach should be handled.
+- Measurement: Track error-budget burn, availability, latency, freshness, and correctness.
+- Security/cost: Measurement must be reliable before an SLA is promised; higher SLO usually requires a more expensive architecture.
+
 ## 1. Service Level Indicators (SLI)
 
 Service Level Indicators are quantitative measures of service performance and user experience.

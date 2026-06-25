@@ -6,6 +6,24 @@ title: Data Synchronization Strategies
 
 Data synchronization in mobile applications is crucial for maintaining consistency between local and remote data sources while providing optimal user experience. This section covers various synchronization patterns, conflict resolution mechanisms, and implementation strategies across different platforms.
 
+## Quick Decision
+
+| Situation | Sync Strategy | Watch Out |
+| --- | --- | --- |
+| User writes can happen offline | Queue + idempotent sync | Conflict handling is required |
+| Server-only reads | Pull sync | Cursor/version is needed |
+| Live collaborative editing | Real-time sync / CRDT | Complexity is high |
+| Large media | Chunked sync | Resume and checksum are needed |
+
+## Production Checklist
+
+- Problem: Which data must be how fresh and consistent?
+- Solution: Are sync trigger, delta format, conflict policy, retry, idempotency, and auth refresh clear?
+- Trade-off: Frequent sync improves freshness; it adds battery, data, and backend cost.
+- Failure mode: Duplicate operations, partial sync, auth expiry, clock skew, and server/client drift should be handled.
+- Measurement: Track sync latency, success rate, queue age, conflict count, and data transfer.
+- Security/cost: Sync payload should be minimal and encrypted; large delta transfers are expensive.
+
 ## Synchronization Patterns
 
 ### Pull-Based Synchronization

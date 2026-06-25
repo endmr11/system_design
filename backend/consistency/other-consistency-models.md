@@ -2,6 +2,24 @@
 
 Dağıtık sistemlerde Strong ve Eventual Consistency dışında çeşitli tutarlılık modelleri kullanılmaktadır. Bu modeller, performans ve tutarlılık arasında farklı denge noktaları (trade-off'lar) sunar.
 
+## Hızlı Karar
+
+| İhtiyaç | Model | Dikkat |
+| --- | --- | --- |
+| Kullanıcı kendi yazdığını hemen görsün | Read-your-writes | Session routing veya version token gerekir |
+| Zaman içinde geri gitmeyen okuma | Monotonic reads | Replica seçimi tutarlı olmalı |
+| Sebep-sonuç ilişkisi korunsun | Causal consistency | Vector clock/metadata maliyeti oluşur |
+| Aynı sırayı herkes görsün | Sequential consistency | Koordinasyon maliyeti artar |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kullanıcı hangi tutarsızlığı fark eder ve güven kaybeder?
+- Çözüm: Session affinity, version token, vector clock veya conflict policy açık mı?
+- Trade-off: İnce tutarlılık modelleri strong kadar pahalı olmayabilir; ama metadata ve routing karmaşıklığı ekler.
+- Hata durumu: Replica switch, stale session, clock skew, conflict merge ve cache bypass senaryoları düşünülmeli.
+- Ölçüm: Stale read oranı, conflict count, session stickiness başarısı ve replica lag izlenmeli.
+- Güvenlik/maliyet: Tutarlılık metadata'sı hassas kullanıcı ilişkilerini sızdırmamalı; sticky routing kapasite dengesini bozabilir.
+
 ## Nedensel Tutarlılık (Causal Consistency)
 
 ### Tanım ve Özellikler

@@ -1,5 +1,25 @@
 # Core Database Concepts
 
+Database choice is not just SQL vs NoSQL; the data model, query shape, consistency expectation, operational load, and cost must be evaluated together. The best database is the one that carries the system's most critical access pattern with the least complexity.
+
+## Quick Decision
+
+| Need | Starting Choice | Watch Out |
+| --- | --- | --- |
+| Strong transactions and relational model | PostgreSQL / MySQL | Schema evolution and index maintenance |
+| Flexible document shape | MongoDB-like document DB | Losing query discipline |
+| Low-latency temporary data | Redis | Memory cost and persistence expectations |
+| Large-scale search | Elasticsearch/OpenSearch | Resource usage and eventual consistency |
+
+## Production Checklist
+
+- Problem: Which queries are optimized, and which queries are intentionally allowed to stay expensive?
+- Solution: Are primary keys, indexes, transaction boundaries, migrations, and backups clear?
+- Trade-off: Normalization improves consistency; denormalization improves reads but adds synchronization debt.
+- Failure mode: Lock waits, slow queries, connection pool exhaustion, replication lag, and migration rollback need plans.
+- Measurement: Track query latency, index hit ratio, connection pool usage, disk I/O, replication lag, and storage growth.
+- Security/cost: PII fields, encryption, access roles, and retention policy should be designed early; indexes and replicas increase cost.
+
 ## Database Architecture Diagram
 
 ```mermaid
@@ -18,7 +38,7 @@ graph TD
     NoSQLApp -.-> SQLDB
 ```
 
-# Basic Database Concepts
+## Basic Database Concepts
 
 ## SQL Databases (with Spring Boot)
 

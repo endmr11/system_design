@@ -2,6 +2,24 @@
 
 Frame rate management is crucial for delivering smooth user experiences in mobile applications. This guide covers advanced techniques for maintaining consistent 60 FPS performance across different platforms and devices.
 
+## Quick Decision
+
+| Symptom | Look First | Watch Out |
+| --- | --- | --- |
+| Scrolling janks | Layout/draw cost | Reduce visible item work |
+| Animation drops frames | Main-thread work | Move heavy work off UI thread |
+| First render is slow | Asset decode/layout | Lazy loading may be needed |
+| Low-end device issue | Device profiling | Emulator is not enough |
+
+## Production Checklist
+
+- Problem: Which frame budget is exceeded on which screen?
+- Solution: Are layout, draw, animation, image decode, and background work separated?
+- Trade-off: More visual detail and dynamic layout shrink the frame budget.
+- Failure mode: Main-thread blocking, GC pauses, image decode spikes, and layout thrashing should be handled.
+- Measurement: Track p95 frame time, dropped frames, jank rate, main-thread time, and memory peak.
+- Security/cost: Performance optimization must not break accessibility; device lab cost should be planned.
+
 ## Core Concepts
 
 ### Frame Budget

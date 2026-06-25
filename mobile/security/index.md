@@ -1,4 +1,8 @@
 
+# Mobil Güvenlik ve Yetki Kontrolleri
+
+Mobil güvenlik; kimlik doğrulama, güvenli depolama, API koruması, biyometri ve sertifika sabitleme kararlarının birlikte tasarlanmasıdır. Bu bölümdeki sayfalar, kullanıcı verisini korurken uygulamanın kullanılabilir kalmasını sağlayan temel güvenlik sınırlarını açıklar.
+
 ### [API Güvenliği](/mobile/security/api-security)
 Mobil API güvenliği, sertifika sabitleme, TLS yapılandırması, istek imzalama ve yaygın API açıklarına karşı koruma gibi en iyi uygulamaları içerir.
 

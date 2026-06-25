@@ -1,5 +1,25 @@
 # 5.3. API Gateway Usage
 
+An API gateway is the shared policy layer between client traffic and backend services. Routing, auth, rate limits, observability, and protocol translation can live here; but if business rules move into the gateway, the system becomes a centralized bottleneck.
+
+## Quick Decision
+
+| Situation | Put In Gateway | Keep In Service |
+| --- | --- | --- |
+| Authentication, TLS, rate limits | Yes | The service should still not blindly trust callers |
+| Routes, headers, correlation IDs | Yes | The service owns domain decisions |
+| Business rules and data validation | No | They belong in the domain service |
+| Network retry and circuit breaker | Limited | Retry is dangerous without idempotency |
+
+## Production Checklist
+
+- Problem: Which shared problem does the gateway solve, and is it more than just added technology?
+- Solution: Are route, timeout, retry, auth, and fallback behavior explicit per service?
+- Trade-off: Central policy management gets easier; bad configuration can affect all traffic.
+- Failure mode: Downstream timeout, auth failure, rate limit, and fallback responses should be distinguishable.
+- Measurement: Track gateway p95/p99 latency, upstream latency, 4xx/5xx rate, circuit state, and traffic by route.
+- Security/cost: The gateway must not be the only security layer; routing all traffic through it adds infrastructure and observability cost.
+
 ## Core Functions
 
 ### Routing

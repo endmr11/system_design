@@ -1,5 +1,25 @@
 # 5.1. API Versioning
 
+API versioning is the discipline of changing the backend without breaking the client contract. The goal is not to create a new version for every change; it is to evolve fields, error codes, and behavior in a controlled way.
+
+## Quick Decision
+
+| Situation | Prefer | Why |
+| --- | --- | --- |
+| Public or mobile API | URL or header versioning | Mobile releases can stay old for a long time |
+| Internal service API | Header or contract-first approach | Routing and gateway rules stay simpler |
+| Backward-compatible field addition | Do not open a new version | Existing clients are unaffected |
+| Removing a field, changing meaning, changing auth scope | New major version | The contract is broken |
+
+## Production Checklist
+
+- Problem: Which clients will stay on the old version and for how long?
+- Solution: Is version selection consistent across gateway, controller, DTO, and documentation?
+- Trade-off: URL versioning is simple; header versioning is cleaner but needs more care around debugging and cache behavior.
+- Failure mode: Unknown versions should return `400`; retired versions should return `410 Gone` or a clear deprecation response.
+- Measurement: Track traffic, error rate, p95 latency, and deprecated endpoint usage by version.
+- Security/cost: Old versions must keep current auth checks; longer support windows increase test and maintenance cost.
+
 ## Why It's Necessary
 - **Ensuring sustainability of backend changes without affecting clients**
 - **Backward compatibility**

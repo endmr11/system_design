@@ -2,6 +2,24 @@
 
 Techniques for monitoring and analyzing network performance in mobile applications.
 
+## Quick Decision
+
+| Signal | Measure | Watch Out |
+| --- | --- | --- |
+| Slow screen | Endpoint latency | Track p95/p99 |
+| Frequent errors | Error code + network type | Separate offline from backend failure |
+| High data usage | Payload size | User cost |
+| Retries increase | Retry count/backoff | Retry storm risk |
+
+## Production Checklist
+
+- Problem: Which network behavior hurts user experience?
+- Solution: Are metric name, tag limits, sampling, privacy, and dashboard owner clear?
+- Trade-off: More telemetry gives visibility; it adds privacy and cost concerns.
+- Failure mode: PII logging, high cardinality, missing offline context, and sampling bias should be handled.
+- Measurement: Track latency, error rate, timeout, payload size, retry count, and network-type distribution.
+- Security/cost: URL queries or tokens must not be logged; high-cardinality analytics increase cost.
+
 ## Real-Time Monitoring
 
 ### Performance Metrics

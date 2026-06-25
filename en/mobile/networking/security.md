@@ -2,6 +2,24 @@
 
 Critical security techniques for secure network communication and data protection in mobile applications.
 
+## Quick Decision
+
+| Threat | Control | Watch Out |
+| --- | --- | --- |
+| Traffic sniffing | TLS 1.2/1.3 | Old device support must be measured |
+| MITM | Certificate pinning | Rotation plan is required |
+| Token leakage | Short lifetime + secure storage | Must not appear in logs |
+| Public Wi-Fi | Strict transport security | No HTTP fallback |
+
+## Production Checklist
+
+- Problem: Which data and credentials are protected on the network?
+- Solution: Are TLS policy, pinning, token refresh, error handling, and logging standards clear?
+- Trade-off: Pinning improves security; it can break the app during certificate changes.
+- Failure mode: Expired certs, pin mismatch, captive portals, and token replay should be handled.
+- Measurement: Track TLS errors, pin failures, auth retries, network security exceptions, and suspicious endpoints.
+- Security/cost: Sensitive data must not travel in URLs/queries; security failures must not be bypassed by fallback.
+
 ## Transport Layer Security (TLS)
 
 ### TLS Configuration

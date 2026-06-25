@@ -2,6 +2,24 @@
 
 Modern mobil uygulama geliştirmede mimari desen seçimi, projenin uzun vadeli başarısını belirleyen en kritik kararlardan biridir. Bu bölümde, sektörde yaygın olarak kullanılan başlıca mimari yaklaşımları detaylı şekilde inceleyerek, her birinin güçlü ve zayıf yönlerini gerçek dünya senaryolarıyla açıklayacağız.
 
+## Hızlı Karar
+
+| Durum | Desen | Dikkat |
+| --- | --- | --- |
+| Basit ekranlar | MVVM/MVI hafif kullanım | Tören kodu üretme |
+| Karmaşık domain | Clean Architecture | Katman sayısı gerekçeli olmalı |
+| Eski codebase | MVP/MVVM kademeli geçiş | Big rewrite risklidir |
+| Yoğun state akışı | MVI/Redux benzeri | Boilerplate ölçülmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Desen hangi karmaşıklığı yönetilebilir yapıyor?
+- Çözüm: Layer sınırları, data flow, error handling ve test yaklaşımı net mi?
+- Trade-off: Desen düzen getirir; yanlış uygulanırsa dosya ve abstraction çoğaltır.
+- Hata durumu: ViewModel şişmesi, domain leakage, cyclic dependency ve test edilemeyen UI ele alınmalı.
+- Ölçüm: Change size, test coverage, screen load time ve crash-free sessions izlenmeli.
+- Güvenlik/maliyet: Auth ve sensitive data akışı katmanlar arasında açık tutulmalı; aşırı katman bakım maliyeti üretir.
+
 ## Monolitik vs Modüler Uygulama Mimarisi
 
 ### Monolitik Uygulama Yaklaşımının Dinamikleri

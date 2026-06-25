@@ -2,6 +2,24 @@
 
 Service Discovery is a critical component in microservice architecture that enables services to dynamically find each other. In this section, we will examine detailed implementations of Spring Cloud Netflix Eureka and alternative solutions.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Services run inside Kubernetes | Kubernetes Service/DNS | Separate registry may be unnecessary |
+| VM/bare-metal microservices | Consul/Eureka | Health-check correctness is critical |
+| Multi-region discovery | Region-aware registry | Wrong region increases latency |
+| Few static services | Static config may be enough | Run a YAGNI check |
+
+## Production Checklist
+
+- Problem: Are service addresses really dynamic, or is static config enough?
+- Solution: Are registration, health checks, deregistration, TTL, and client-side cache behavior clear?
+- Trade-off: Discovery gives flexibility; it adds stale endpoints and registry dependency.
+- Failure mode: Registry outage, stale DNS, routing to unhealthy instances, and split-brain registry should be handled.
+- Measurement: Track registration count, lookup latency, health-check failures, stale routes, and registry error rate.
+- Security/cost: The registry should accept only trusted services; bad discovery affects all traffic.
+
 ```mermaid
 graph TB
     subgraph "Service Registry"

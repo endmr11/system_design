@@ -1,5 +1,25 @@
 # Serverless ve FaaS (Function as a Service)
 
+Serverless, sunucu yönetimini azaltıp olay bazlı çalışmayı kolaylaştırır; fakat latency, cold start, vendor lock-in ve gözlemlenebilirlik sınırları net bilinmelidir. En iyi kullanım, kısa süreli, olay tetikli ve bağımsız iş parçalarıdır.
+
+## Hızlı Karar
+
+| İhtiyaç | Serverless Uygun mu? | Dikkat |
+| --- | --- | --- |
+| Kısa ve seyrek çalışan event handler | Evet | Cold start kabul edilebilir olmalı |
+| Ani trafik ve otomatik ölçek | Evet | Downstream servisler de ölçeklenmeli |
+| Uzun süren stateful işlem | Genelde hayır | Timeout ve state yönetimi zorlaşır |
+| Çok düşük latency kritik path | Dikkatli | Warmup veya container servis gerekebilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Serverless operasyon yükünü mü azaltıyor, yoksa sadece deploy şeklini mi değiştiriyor?
+- Çözüm: Timeout, memory, retry, idempotency, DLQ ve environment config tanımlı mı?
+- Trade-off: Ölçekleme ve bakım kolaylaşır; cold start, platform sınırları ve vendor bağımlılığı eklenir.
+- Hata durumu: Duplicate event, poison message, timeout, throttling ve partial batch failure ele alınmalı.
+- Ölçüm: Invocation count, duration, cold start, error rate, retry count, DLQ depth ve maliyet izlenmeli.
+- Güvenlik/maliyet: Least privilege IAM şarttır; yüksek çağrı sayısı, log hacmi ve aşırı memory ayarı faturayı büyütür.
+
 ## Giriş
 
 Serverless computing, geliştiricilerin sunucu yönetimi konusunda endişe duymadan kod yazmasına olanak tanıyan bir bulut computing modelidir. Function as a Service (FaaS), serverless computing'in bir alt kümesidir ve belirli olaylar tarafından tetiklenen kısa süreli fonksiyonları çalıştırmaya odaklanır.

@@ -5,6 +5,24 @@
 ### Modern UI Framework'lerinde Paradigma Değişimi
 Declarative UI yaklaşımı, geleneksel imperative UI programlamadan köklü bir sapma temsil eder. Bu yaklaşımda kullanıcı arayüzü, mevcut duruma (state) göre otomatik olarak yeniden oluşturulur ve geliştiriciler "nasıl" değil "ne" yapılacağını tanımlar.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| State değişimine bağlı animasyon | Declarative transition | Recomposition sayısı ölçülmeli |
+| Basit mikro etkileşim | Built-in animation | Custom timeline gereksiz |
+| Karmaşık koordineli animasyon | Explicit animation controller | Lifecycle net olmalı |
+| Liste içinde animasyon | Sınırlı ve ölçülü | Jank riski yüksek |
+
+## Üretim Kontrol Listesi
+
+- Problem: Animasyon kullanıcıya hangi durum değişimini anlatıyor?
+- Çözüm: State source, duration, easing, cancellation ve accessibility reduce-motion davranışı net mi?
+- Trade-off: Animasyon anlaşılabilirlik sağlar; fazla animasyon latency ve batarya maliyeti getirir.
+- Hata durumu: Recomposition storm, stuck animation, layout shift ve dropped frame ele alınmalı.
+- Ölçüm: Frame time, recomposition count, jank rate ve animation cancellation izlenmeli.
+- Güvenlik/maliyet: Hareket hassasiyeti ayarlarına saygı duyulmalı; ağır animasyon düşük cihazda maliyetlidir.
+
 ### Jetpack Compose'da Declarative UI
 
 #### State Yönetimi ve Recomposition

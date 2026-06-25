@@ -2,6 +2,24 @@
 
 Önbellek geçersizleştirme, mobil uygulamalarda veri tutarlılığını sağlamak için kritik bir bileşendir. "Bilgisayar biliminde sadece iki zor şey vardır: önbellek geçersizleştirme ve isimlendirme."
 
+## Hızlı Karar
+
+| Durum | Strateji | Dikkat |
+| --- | --- | --- |
+| Veri az değişiyor | TTL | Stale veri kabul edilmeli |
+| Kullanıcı yazma yapıyor | Write-through / explicit invalidate | Offline conflict düşünülmeli |
+| Sunucu değişikliği kritik | Push/event invalidation | Teslim garantisi yoksa fallback gerekir |
+| Çok katmanlı cache | Version/tag tabanlı | Katmanlar arası drift izlenmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi eski veri kullanıcıya zarar verir?
+- Çözüm: TTL, version, invalidation trigger, offline fallback ve refresh policy net mi?
+- Trade-off: Uzun cache hızlıdır; kısa cache ağ/batarya maliyeti getirir.
+- Hata durumu: Stale read, cache stampede, missed invalidation ve offline write conflict ele alınmalı.
+- Ölçüm: Hit ratio, stale data report, refresh latency, invalidation success ve network usage izlenmeli.
+- Güvenlik/maliyet: Yetkili veri cache'leniyorsa kullanıcı/tenant ayrımı zorunlu; gereksiz invalidation maliyetlidir.
+
 ## TTL (Time-To-Live) Stratejileri
 
 ### Adaptif TTL Uygulaması

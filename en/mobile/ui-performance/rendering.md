@@ -2,6 +2,24 @@
 
 Modern mobile applications require high performance rendering to provide smooth user experience. This section covers rendering optimization techniques, GPU acceleration strategies, and platform-specific implementation approaches.
 
+## Quick Decision
+
+| Symptom | Approach | Watch Out |
+| --- | --- | --- |
+| First load is slow | Lazy loading | Placeholder size should be stable |
+| List is heavy | View recycling | State must not leak |
+| Image-heavy screen | Image resize/cache | Decode should not run on main thread |
+| GPU bottleneck | Reduce overdraw | Visual quality may be affected |
+
+## Production Checklist
+
+- Problem: Is render delay caused by layout, draw, image decode, or GPU?
+- Solution: Are baseline, lazy strategy, recycling key, image size, and loading/error state clear?
+- Trade-off: Lazy loading speeds startup; it adds skeleton/placeholder management.
+- Failure mode: Blank content, wrong recycled state, image flicker, and overdraw should be handled.
+- Measurement: Track time-to-first-render, frame time, image decode time, memory peak, and jank rate.
+- Security/cost: Placeholder and lazy content must not break accessibility; image variants add storage/CDN cost.
+
 ## Lazy Loading Strategies
 
 ### Image Lazy Loading

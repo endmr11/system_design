@@ -2,6 +2,24 @@
 
 Edge computing, geleneksel centralized cloud computing paradigmasını kökten değiştiren ve veri işleme süreçlerini kullanıcıya en yakın noktalara taşıyan devrimsel bir computing modelidir. Bu yaklaşım, IoT'nin yaygınlaşması, 5G teknolojisinin gelişimi ve real-time application'ların artan ihtiyaçları ile birlikte modern teknoloji landscape'inin kritik bir bileşeni haline gelmiştir.
 
+## Hızlı Karar
+
+| İhtiyaç | Edge Kullan | Dikkat |
+| --- | --- | --- |
+| Çok düşük latency | Evet | Edge node kapasitesi sınırlıdır |
+| Büyük veriyi merkeze taşımadan filtreleme | Evet | Yerel state ve güncelleme yönetimi gerekir |
+| Basit web API | Genelde hayır | Merkezi cloud daha ucuz ve sade olabilir |
+| Offline veya kesintili bağlantı | Evet | Conflict ve sync politikası şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: Edge latency, bandwidth, offline çalışma veya veri yerleşimi sorunlarından hangisini çözüyor?
+- Çözüm: Workload placement, cache invalidation, rollout, telemetry ve fallback yolu net mi?
+- Trade-off: Latency ve bandwidth kazanılır; dağıtık operasyon ve debug maliyeti artar.
+- Hata durumu: Edge node offline, stale config, partial rollout, clock drift ve local storage corruption ele alınmalı.
+- Ölçüm: Edge hit ratio, local latency, origin fallback rate, sync lag ve node health izlenmeli.
+- Güvenlik/maliyet: Edge ortamı fiziksel ve ağ açısından daha geniş saldırı yüzeyidir; node sayısı operasyon maliyetini büyütür.
+
 ## Edge Computing'in Temel Felsefesi ve Mimarisi
 
 Edge computing'in temeli, "compute where data is generated" prensibine dayanır. Geleneksel cloud model'inde veriler uzak datacenter'lara gönderilip işlendikten sonra sonuçlar geri dönerken, edge computing paradigmasında processing power kullanıcıya veya data source'una maksimum yakınlıkta konumlandırılır. Bu fundamental shift, network latency'sini dramatik şekilde azaltırken, bandwidth requirement'larını minimize eder ve real-time responsiveness sağlar.

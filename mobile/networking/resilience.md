@@ -2,6 +2,24 @@
 
 Mobil uygulamalarda ağ kesintileri ve instabilitesine karşı dayanıklılık sağlayan kritik teknikler.
 
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Geçici hata | Exponential backoff | Jitter ekle |
+| Kullanıcı tekrar deneyebilir | Manual retry | Durum açık gösterilmeli |
+| Yazma işlemi | Idempotency key | Duplicate işlem engellenmeli |
+| Offline çalışma | Queue + sync | Conflict stratejisi gerekir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Ağ hatası kullanıcı akışını nasıl kesiyor?
+- Çözüm: Timeout, retry count, backoff, cancellation, idempotency ve offline state net mi?
+- Trade-off: Retry dayanıklılık sağlar; fazla retry batarya ve backend yükü üretir.
+- Hata durumu: Retry storm, duplicate write, stale offline queue ve token expiry ele alınmalı.
+- Ölçüm: Retry count, timeout rate, offline duration, queue age ve success-after-retry izlenmeli.
+- Güvenlik/maliyet: Offline queue hassas veri saklıyorsa şifrelenmeli; gereksiz retry maliyetlidir.
+
 ## Ağ Dayanıklılığı Temelleri
 - **Mobile Network Challenges**: Intermittent connectivity, varying signal strength, network switching
 - **User Experience Goals**: Seamless operation despite network issues

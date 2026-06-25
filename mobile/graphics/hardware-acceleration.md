@@ -1,5 +1,25 @@
 # Hardware Acceleration & GPU Programming
 
+Hardware acceleration, CPU'ya pahalı gelen çizim veya hesaplama işini GPU gibi özel donanıma taşır. Ancak her işi GPU'ya atmak kazanç değildir; veri transferi, shader karmaşıklığı ve cihaz farkları ölçülmelidir.
+
+## Hızlı Karar
+
+| Durum | Yaklaşım | Dikkat |
+| --- | --- | --- |
+| Basit UI | Framework acceleration | Ek GPU kodu yazma |
+| Büyük bitmap/efekt | GPU pipeline | Memory bandwidth sınırı |
+| Custom render engine | Metal/OpenGL/Vulkan | Uzmanlık ve test maliyeti |
+| ML/compute işi | NPU/GPU delegate | Fallback şart |
+
+## Üretim Kontrol Listesi
+
+- Problem: CPU hangi işi taşıyamıyor?
+- Çözüm: GPU path, fallback, memory budget, shader compile ve device support net mi?
+- Trade-off: GPU hız sağlar; debug, battery ve compatibility maliyeti ekler.
+- Hata durumu: Driver bug, shader compile jank, GPU memory pressure ve fallback crash ele alınmalı.
+- Ölçüm: GPU time, frame time, memory bandwidth, thermal state ve battery drain izlenmeli.
+- Güvenlik/maliyet: Donanım farkları feature flag isteyebilir; düşük cihaz test kapsamı maliyetlidir.
+
 ## Modern Mobile GPU Architecture
 
 ### GPU vs CPU Performance Characteristics

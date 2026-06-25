@@ -2,6 +2,24 @@
 
 Akış işleme, gerçek zamanlı veri akışlarını sürekli olarak işleyen mimarilerdir. Bu yaklaşım, geleneksel toplu işleme (batch processing)'den farklı olarak verileri geldikçe işler ve anında sonuç üretir.
 
+## Hızlı Karar
+
+| Durum | Stream Processing Kullan | Dikkat |
+| --- | --- | --- |
+| Saniyeler içinde karar gerekiyor | Evet | Event time ve late data yönetilmeli |
+| Saatlik/günlük rapor yeterli | Hayır, batch yeterli | Operasyon daha ucuz olur |
+| Sürekli anomaly/fraud tespiti | Evet | State store ve exactly-once beklentisi net olmalı |
+| Basit queue tüketimi | Gerekmez | Worker modeli yeterli olabilir |
+
+## Üretim Kontrol Listesi
+
+- Problem: Gerçek zamanlı sonuç iş değerini nasıl değiştiriyor?
+- Çözüm: Partition key, ordering, window, checkpoint, replay ve backpressure stratejisi net mi?
+- Trade-off: Düşük gecikmeli içgörü kazanılır; state yönetimi, operasyon ve debug karmaşıklığı eklenir.
+- Hata durumu: Late event, duplicate event, consumer lag, poison message ve state corruption ele alınmalı.
+- Ölçüm: End-to-end lag, throughput, consumer lag, dropped event, checkpoint time ve processing error rate izlenmeli.
+- Güvenlik/maliyet: Stream'ler hassas veriyi çoğaltabilir; yüksek hacim broker, storage ve observability maliyetini artırır.
+
 ## Temel Kavramlar
 
 ### Olay Akışı (Event Stream)

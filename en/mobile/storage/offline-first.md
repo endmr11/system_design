@@ -4,6 +4,24 @@
 
 Offline-first design is a development methodology that prioritizes functionality even when network connectivity is unreliable or absent. This approach ensures mobile applications remain responsive and useful regardless of connection status.
 
+## Quick Decision
+
+| Situation | Use Offline-First | Watch Out |
+| --- | --- | --- |
+| Critical flow must work without connectivity | Yes | Sync and conflict handling are needed |
+| Read-only content | Cache-first may be enough | Full local DB may be unnecessary |
+| Financial final transaction | Limited | Server confirmation is required |
+| Travel/weak-network usage | Yes | Show sync status to users |
+
+## Production Checklist
+
+- Problem: What should the user be able to do without connectivity?
+- Solution: Are local source of truth, pending queue, conflict policy, sync status, and retry clear?
+- Trade-off: Offline experience builds trust; it adds state, storage, and conflict complexity.
+- Failure mode: Duplicate writes, lost updates, stale reads, sync loops, and queue corruption should be handled.
+- Measurement: Track offline usage, sync success, queue age, conflict rate, and user-visible stale data.
+- Security/cost: Offline data must be encrypted; local retention and deletion policy must be clear.
+
 ## Architecture Overview
 
 ```mermaid

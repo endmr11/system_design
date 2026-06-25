@@ -2,6 +2,24 @@
 
 Essential techniques for efficiently loading and displaying large datasets in mobile applications.
 
+## Quick Decision
+
+| Situation | Approach | Watch Out |
+| --- | --- | --- |
+| Simple small list | Offset pagination | Slows on large data |
+| Large changing list | Cursor pagination | Ordering must be stable |
+| Social/feed experience | Infinite scroll | Refresh and scroll restore are needed |
+| Controlled navigation | Paged UI | Can feel less fluid on mobile |
+
+## Production Checklist
+
+- Problem: At which data volume and change rate will the list operate?
+- Solution: Are cursor, page size, prefetch, cache, empty/error state, and refresh behavior clear?
+- Trade-off: Infinite scroll feels fluid; position restore and memory management get harder.
+- Failure mode: Duplicate items, missing items, stale cursors, endless spinners, and memory growth should be handled.
+- Measurement: Track page latency, loaded item count, duplicate rate, scroll jank, and data usage.
+- Security/cost: Cursors must not create guessable authorization gaps; large page payloads are expensive.
+
 ## Pagination Architecture Patterns
 
 ### Traditional Pagination

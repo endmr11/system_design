@@ -2,6 +2,24 @@
 
 Capacity Planning, sistem kaynaklarının gelecekteki ihtiyaçları karşılayacak şekilde planlanması ve ölçeklendirilmesidir. Etkili kapasite planlaması, performans sorunlarını önler, maliyetleri optimize eder ve kullanıcı deneyimini garanti altına alır.
 
+## Hızlı Karar
+
+| Sinyal | Aksiyon | Dikkat |
+| --- | --- | --- |
+| Kullanım trendi artıyor | Forecast + scale plan | Peak ve sezonluk etki ayrılmalı |
+| Saturation yaklaşıyor | Capacity artır veya optimize et | Kök neden ölçülmeli |
+| Kaynaklar boşta | Rightsizing | Ani burst ihtiyacı korunmalı |
+| Yeni kampanya/lansman | Load test + pre-scale | Downstream kapasite dahil edilmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi kaynak ne zaman tükenecek?
+- Çözüm: Forecast, headroom, autoscaling, load test ve rollback planı net mi?
+- Trade-off: Fazla kapasite maliyet; az kapasite kesinti üretir.
+- Hata durumu: Hot partition, autoscaling lag, quota limit ve dependency saturation ele alınmalı.
+- Ölçüm: Utilization, saturation, request rate, queue depth, forecast error ve unit cost izlenmeli.
+- Güvenlik/maliyet: Kapasite artırımı güvenlik limitlerini gevşetmemeli; rezervasyon/taahhüt kararları dikkat ister.
+
 ## Capacity Planning Temelleri
 
 ### 1. Kapasite Modelleme

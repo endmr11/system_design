@@ -2,6 +2,24 @@
 
 Secure storage is a fundamental security requirement for mobile applications handling sensitive data. This includes user credentials, API tokens, personal information, and financial data. Both Android and iOS provide platform-specific secure storage mechanisms that leverage hardware security features when available.
 
+## Quick Decision
+
+| Data | Storage | Watch Out |
+| --- | --- | --- |
+| Refresh token | Keychain/Keystore | Rotation and logout cleanup |
+| Access token | Memory or short-lived secure storage | Unnecessary persistence is risky |
+| PII/offline data | Encrypted DB/storage | Retention and deletion flow |
+| Cache data | Normal cache may be enough | Stay simple if not sensitive |
+
+## Production Checklist
+
+- Problem: Why must this data be stored on the device?
+- Solution: Are storage type, encryption, backup policy, retention, logout wipe, and migration clear?
+- Trade-off: Local storage enables offline experience; it adds device loss and extraction risk.
+- Failure mode: Key invalidation, backup restore leaks, rooted/jailbroken devices, and stale tokens should be handled.
+- Measurement: Track storage errors, wipe success, migration failures, and auth recovery rate.
+- Security/cost: Store minimum data; sensitive data must not leak into cloud backups.
+
 ## Android Secure Storage
 
 ### EncryptedSharedPreferences

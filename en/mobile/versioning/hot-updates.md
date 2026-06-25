@@ -2,6 +2,24 @@
 
 Hot updates and code push functionality allow mobile applications to update their JavaScript code, assets, and configurations without requiring users to download a new version from app stores. This capability is particularly valuable for React Native and hybrid applications.
 
+## Quick Decision
+
+| Situation | Use Hot Update | Watch Out |
+| --- | --- | --- |
+| JS/asset bug fix | Yes | Native API must not change |
+| Security vulnerability | Carefully | Store policy and review risk |
+| Native behavior change | No | App store release is needed |
+| Small config change | Remote config is better | Code push may be too much |
+
+## Production Checklist
+
+- Problem: Which issue is fixed without waiting for store release?
+- Solution: Are bundle compatibility, signature, rollout, rollback, and version targeting clear?
+- Trade-off: Fast fixes are possible; policy, testing, and binary compatibility risks are added.
+- Failure mode: Bad bundles, incompatible native modules, failed downloads, and rollback loops should be handled.
+- Measurement: Track update adoption, crash delta, download failure, rollback count, and affected version.
+- Security/cost: Updates must be signed and verified; hot updates must not be used to bypass store rules.
+
 ## Architecture Overview
 
 ### Update Types

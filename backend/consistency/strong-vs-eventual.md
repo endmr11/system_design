@@ -1,5 +1,25 @@
 # 4.1. Strong vs Eventual Consistency
 
+Tutarlılık seçimi, kullanıcının gördüğü doğruluk ile sistemin erişilebilirlik ve gecikme hedefleri arasındaki dengedir. Her veriyi strong yapmak pahalıdır; her veriyi eventual yapmak da güven kaybı yaratabilir.
+
+## Hızlı Karar
+
+| Veri / İş Akışı | Tutarlılık | Neden |
+| --- | --- | --- |
+| Para, stok, yetki, kota | Strong consistency | Yanlış sonuç doğrudan zarar verir |
+| Feed, beğeni, sayaç, öneri | Eventual consistency | Kısa süreli gecikme kabul edilebilir |
+| Kullanıcı kendi işlemini hemen görmeli | Read-your-writes | Güven hissi korunur |
+| Çok bölgeli okuma ağırlıklı sistem | Eventual + conflict policy | Erişilebilirlik ve latency öne çıkar |
+
+## Üretim Kontrol Listesi
+
+- Problem: Kullanıcı hangi yanlış veya eski veriyi tolere edemez?
+- Çözüm: Transaction sınırı, replication yöntemi, conflict çözümü ve retry davranışı açık mı?
+- Trade-off: Strong consistency doğruluğu artırır; latency ve availability maliyeti getirir.
+- Hata durumu: Replication lag, stale read, duplicate event, lost update ve split-brain senaryoları ele alınmalı.
+- Ölçüm: Lag, conflict rate, retry count, transaction abort rate ve kullanıcıya görünen stale data oranı izlenmeli.
+- Güvenlik/maliyet: Yetki ve finans verisi eventual bırakılmamalı; strong garanti için lock, quorum veya koordinasyon maliyeti ödenir.
+
 ## Strong Consistency (Kesin Tutarlılık)
 
 ### Temel Özellikler

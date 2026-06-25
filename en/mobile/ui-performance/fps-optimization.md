@@ -5,6 +5,24 @@
 ### Understanding Frame Rate Performance
 Frame rate optimization is crucial for delivering smooth user experiences in mobile applications. The human eye perceives motion as smooth when the frame rate is at least 24 FPS, but modern mobile devices target 60 FPS (16.67ms per frame) or even 120 FPS (8.33ms per frame) for premium devices.
 
+## Quick Decision
+
+| Symptom | Look First | Watch Out |
+| --- | --- | --- |
+| Scroll jank | Main-thread work | Reduce visible item cost |
+| Animation stutters | Frame time | Debug builds mislead |
+| Drops on 120Hz device | 8.33ms budget | Animation may need simplification |
+| First interaction is slow | Startup/render blocking | Lazy loading may be needed |
+
+## Production Checklist
+
+- Problem: Which screen exceeds which frame budget?
+- Solution: Are profiling device, baseline, threshold, animation scope, and fallback clear?
+- Trade-off: Rich animation and dynamic layout require more CPU/GPU/battery.
+- Failure mode: Main-thread blocking, GC pauses, overdraw, and image decode spikes should be handled.
+- Measurement: Track FPS, p95 frame time, jank rate, dropped frames, and battery impact.
+- Security/cost: Accessibility must not be disabled for performance; low-end device testing is costly but required.
+
 ### Performance Metrics
 - **Target Frame Rates**: 60 FPS (16.67ms budget), 120 FPS (8.33ms budget)
 - **Jank Detection**: Frame drops below 60 FPS threshold

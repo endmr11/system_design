@@ -1,152 +1,105 @@
 # Backend Sistem Tasarımı
 
-Backend sistem tasarımı, ölçeklenebilir, güvenilir ve yüksek performanslı sunucu tarafı uygulamaları oluşturmanın temel prensiplerini kapsar.
+Backend sistem tasarımı, bir isteğin kullanıcıdan veriye, oradan tekrar kullanıcıya güvenilir şekilde dönmesini sağlayan kararlar bütünüdür. Bu bölüm; ölçeklenebilir API'ler, veri tutarlılığı, performans, dayanıklılık, gözlemlenebilirlik, güvenlik ve maliyet dengesini birlikte düşünmek için kalıcı bir başvuru alanıdır.
 
-## Genel Sistem Mimarisi
+## Ne Zaman Kullanılır?
 
-```mermaid
-graph TB
-    Client[Client] --> LB[Load Balancer]
-    LB --> API[API Gateway]
-    API --> Auth[Authentication]
-    API --> Service1[Service 1]
-    API --> Service2[Service 2]
-    API --> Service3[Service 3]
-    
-    Service1 --> Cache[(Cache)]
-    Service1 --> DB1[(Database 1)]
-    Service2 --> DB2[(Database 2)]
-    Service3 --> MQ[Message Queue]
-    
-    MQ --> Worker[Worker Service]
-    Worker --> DB3[(Database 3)]
-    
-    subgraph Monitoring
-        Prometheus[Prometheus]
-        Grafana[Grafana]
-        Jaeger[Jaeger]
-    end
-    
-    Service1 & Service2 & Service3 --> Prometheus
-    Prometheus --> Grafana
-    Service1 & Service2 & Service3 --> Jaeger
-```
+- Yeni bir backend servisinin sınırlarını, veri sahipliğini ve API sözleşmesini tasarlarken.
+- Var olan sistemde yavaşlık, hata oranı, maliyet artışı veya operasyon karmaşası oluştuğunda.
+- Monolith, mikroservis, event-driven yapı, cache, queue, sharding veya multi-region gibi kararların trade-off'larını karşılaştırırken.
+- Yapay zeka veya dış kaynak erişimi kısıtlı olduğunda hızlıca temel ilkeleri hatırlamak için.
 
-## Veri Akış Diyagramı
+## Temel Akış
 
 ```mermaid
-sequenceDiagram
-    participant Client
-    participant API as API Gateway
-    participant Auth as Auth Service
-    participant Service as Backend Service
-    participant Cache as Cache
-    participant DB as Database
-    participant MQ as Message Queue
-
-    Client->>API: HTTP Request
-    API->>Auth: Validate Token
-    Auth-->>API: Token Valid
-    API->>Service: Forward Request
-    Service->>Cache: Check Cache
-    alt Cache Hit
-        Cache-->>Service: Return Cached Data
-    else Cache Miss
-        Service->>DB: Query Database
-        DB-->>Service: Return Data
-        Service->>Cache: Update Cache
-    end
-    Service->>MQ: Publish Event
-    Service-->>API: Return Response
-    API-->>Client: HTTP Response
+flowchart LR
+    Client[Client] --> Edge[DNS / CDN / WAF]
+    Edge --> Gateway[API Gateway]
+    Gateway --> Auth[AuthN / AuthZ]
+    Gateway --> Service[Backend Service]
+    Service --> Cache[(Cache)]
+    Service --> DB[(Primary Data Store)]
+    Service --> Queue[Message Queue]
+    Queue --> Worker[Worker]
+    Worker --> DB
+    Service --> Telemetry[Logs / Metrics / Traces]
 ```
 
-### 1. Temel Kavramlar ✅
+Bu akışta her kutu ayrı bir karar noktasıdır: gateway merkezi kontrol sağlar ama dar boğaz olabilir; cache gecikmeyi düşürür ama tutarsızlık riski ekler; queue ani yükleri emer ama gecikme ve tekrar işleme ihtimali yaratır.
 
-Bu bölümde backend sistem tasarımının temel yapı taşlarını öğreneceksiniz:
+## Karar Pusulası
 
-- **[Monolith vs. Microservice Mimari](./basics/monolith-vs-microservice)** - Monolitik ve mikroservis mimarilerinin karşılaştırması
-- **[İstek/Yanıt Döngüsü](./basics/request-response-model)** - HTTP request-response lifecycle ve inter-service communication
-- **[HTTP, REST, gRPC Protokolleri](./basics/protocols)** - API protokollerinin seçimi ve best practices
-- **[Temel Veritabanı Kavramları](./basics/database-concepts)** - SQL/NoSQL, indexing, normalization
-- **[Temel Veri Yapıları ve Algoritmalar](./basics/data-structures)** - System design context'inde algoritma seçimi
+| Soru | Önce Bakılacak Yer | Tipik Trade-off |
+| --- | --- | --- |
+| Tek servis yeterli mi? | [Monolith vs Microservice](./basics/monolith-vs-microservice) | Basit operasyon vs bağımsız ölçekleme |
+| API nasıl evrilecek? | [API Versioning](./api/api-versioning) | Geriye uyumluluk vs bakım yükü |
+| Okuma yükü nasıl azaltılır? | [Caching](./performance/caching) | Düşük gecikme vs invalidation karmaşıklığı |
+| Yazma ve okuma nasıl ölçeklenir? | [Sharding](./performance/sharding), [Replication](./performance/replication) | Kapasite artışı vs veri dağıtım maliyeti |
+| Hata yayılımı nasıl sınırlandırılır? | [Circuit Breaker](./reliability/circuit-breaker), [Backpressure](./reliability/backpressure) | Koruma vs daha fazla durum yönetimi |
+| Veri ne kadar tutarlı olmalı? | [Strong vs Eventual Consistency](./consistency/strong-vs-eventual), [CAP](./consistency/cap-theorem) | Doğruluk algısı vs erişilebilirlik |
+| Sistem nasıl izlenir? | [Logging](./observability/logging), [Metrics](./observability/metrics), [Tracing](./observability/tracing) | Görünürlük vs veri hacmi ve maliyet |
+| Sırları ve erişimi nasıl koruruz? | [Auth](./security/auth), [Secret Management](./security/secret-management), [TLS/mTLS](./security/tls) | Güvenlik vs entegrasyon karmaşıklığı |
 
-## İçerik Planı
+## Minimum Tasarım Kontrolü
 
-### 2. Performans ve Ölçeklenebilirlik ✅
-- **[Load Balancing (Yük Dengeleme)](./performance/load-balancing)** - Application & Infrastructure düzeyinde yük dengeleme
-- **[Caching (Önbellekleme)](./performance/caching)** - Distributed caching, cache patterns ve invalidation  
-- **[Database Sharding ve Partitioning](./performance/sharding)** - Horizontal/vertical partitioning, consistent hashing
-- **[Database Replication](./performance/replication)** - Master-slave, multi-master replication, read/write splitting
-- **[Asenkron İşlemler & Message Queue'lar](./performance/async-processing)** - Kafka, RabbitMQ, Redis ile async patterns
+Bir backend tasarımı tamam demeden önce şunları netleştir:
 
-### 3. Dayanıklılık ve Yüksek Erişilebilirlik ✅
-- **[Failover Mekanizmaları](./reliability/failover)** - Automated failover, consensus algorithms
-- **[Circuit Breaker ve Bulkhead Pattern](./reliability/circuit-breaker)** - Resilience4j ile fault tolerance
-- **[Health Checks & Heartbeats](./reliability/health-checks)** - Spring Boot Actuator ve monitoring
-- **[Backpressure Kontrolü](./reliability/backpressure)** - Rate limiting ve queue management
+- Problem: Sistem hangi kullanıcı veya iş akışını taşıyor, en kritik hata senaryosu ne?
+- Çözüm: Ana bileşenler, veri sahibi servisler ve senkron/asenkron sınırlar belli mi?
+- Trade-off: Seçilmeyen alternatifler ve nedenleri açık mı?
+- Örnek: En az bir başarılı istek, bir hata ve bir retry/idempotency akışı çizildi mi?
+- Ölçüm: Latency, throughput, error rate, saturation ve maliyet sinyalleri tanımlandı mı?
+- Güvenlik: Kimlik doğrulama, yetkilendirme, secret, TLS ve audit ihtiyacı karşılandı mı?
+- Maliyet: Cache, queue, veri kopyası, observability ve multi-region kararlarının bedeli biliniyor mu?
 
-### 4. Tutarlılık Modelleri ✅
-- **[Strong vs Eventual Consistency](./consistency/strong-vs-eventual)** - Tutarlılık modellerinin karşılaştırması
-- **[CAP Teoremi](./consistency/cap-theorem)** - Consistency, Availability, Partition tolerance
-- **[Paxos ve Raft Konsensüs Algoritmaları](./consistency/consensus-algorithms)** - Distributed consensus patterns
-- **[Diğer Tutarlılık Modelleri](./consistency/other-consistency-models)** - Causal, Sequential, Monotonic consistency
+## Bölüm Haritası
 
-### 5. API Tasarımı ve Gateway'ler
-- **[API Versioning](./api/api-versioning)** - API Versiyonlama
-- **[Rate Limiting & Throttling](./api/rate-limiting)** - Hız Sınırlama & Kısıtlama
-- **[API Gateway Usage](./api/api-gateway)** - API Gateway Kullanımı
-- **[GraphQL vs REST vs gRPC](./api/api-comparison)** - GraphQL vs REST vs gRPC
+### 1. Temel Kavramlar
 
-### 6. Mikroservis İletişimi ✅
-- **[Senkron vs Asenkron İletişim](./microservices/communication)** - REST/gRPC vs Event-Driven iletişim
-- **[Service Discovery](./microservices/service-discovery)** - Spring Cloud Netflix & Alternatives
-- **[Service Mesh](./microservices/service-mesh)** - Cloud-Native İletişim Infrastructure
+- [Monolith vs Microservice](./basics/monolith-vs-microservice)
+- [Request-Response Model](./basics/request-response-model)
+- [HTTP, REST, gRPC](./basics/protocols)
+- [Database Concepts](./basics/database-concepts)
+- [Data Structures](./basics/data-structures)
 
-### 7. Veri İşleme ve Akış ✅
-- **[Event Sourcing](./data-processing/event-sourcing)** - Olay kaynak modeli ve immutable event store
-- **[CQRS (Command Query Responsibility Segregation)](./data-processing/cqrs)** - Komut ve sorgu sorumluluklarını ayırma
-- **[Stream Processing (Akış İşleme)](./data-processing/stream-processing)** - Gerçek zamanlı veri akışı işleme
+### 2. Performans ve Ölçeklenebilirlik
 
-### 8. Gözlemlenebilirlik ✅
-- **[Logging (ELK Stack)](./observability/logging)** - Yapılandırılmış loglama ve ELK Stack entegrasyonu
-- **[Metrics (Prometheus, Grafana)](./observability/metrics)** - Uygulama ve sistem metrikleri toplama
-- **[Tracing (Jaeger, Zipkin)](./observability/tracing)** - Dağıtık izleme ve performans analizi
-- **[Distributed Tracing](./observability/distributed-tracing)** - Çapraz servis korelasyon ve kullanıcı yolculuğu
+- [Load Balancing](./performance/load-balancing)
+- [Caching](./performance/caching)
+- [Sharding and Partitioning](./performance/sharding)
+- [Replication](./performance/replication)
+- [Async Processing and Message Queues](./performance/async-processing)
 
-### 9. Güvenlik ✅
-- **[Authentication vs Authorization](./security/auth)** - OAuth2, JWT, method-level security
-- **[TLS/SSL & mTLS](./security/tls)** - Certificate management, HTTPS configuration
-- **[API Security](./security/api-security)** - HMAC, rate limiting, WAF integration
-- **[Secret Management](./security/secret-management)** - HashiCorp Vault, encrypted properties
+### 3. Dayanıklılık ve Tutarlılık
 
-### 10. Bulut ve Container Orkestrasyonu ✅
-- **[Containers (Docker)](./cloud/containers)** - Containerization, Docker best practices, multi-stage builds
-- **[Kubernetes Temelleri](./cloud/kubernetes)** - Pod, Service, Deployment, ConfigMap, Secret, HPA, RBAC
-- **[Helm Chart'lar](./cloud/helm)** - Kubernetes package management, templating, multi-environment deployment
-- **[Serverless ve FaaS](./cloud/serverless)** - AWS Lambda, Azure Functions, Google Cloud Functions, Serverless Framework
+- [Failover](./reliability/failover)
+- [Circuit Breaker and Bulkhead](./reliability/circuit-breaker)
+- [Health Checks](./reliability/health-checks)
+- [Backpressure](./reliability/backpressure)
+- [Consistency Models](./consistency/strong-vs-eventual)
+- [Consensus Algorithms](./consistency/consensus-algorithms)
 
-### 11. Site Reliability Engineering ✅
-- **[SLI/SLO/SLA Tanımları](./sre/sli-slo-sla)** - Service Level Indicators, Objectives ve Agreements
-- **[Incident Management](./sre/incident-management)** - Olay yönetimi ve müdahale süreçleri
-- **[Chaos Engineering](./sre/chaos-engineering)** - Kaos mühendisliği ve dayanıklılık testleri
-- **[Capacity Planning](./sre/capacity-planning)** - Kapasite planlama ve proaktif ölçeklendirme
+### 4. API, Mikroservis ve Veri Akışı
 
-### 12. Operasyon ve Maliyet Yönetimi ✅
-- **[Infrastructure as Code](./operations/iac)** - CloudFormation, Terraform ile altyapı yönetimi ve otomasyon
-- **[Maliyet İzleme ve Optimizasyon](./operations/cost-optimization)** - FinOps prensipleri ve maliyet analizi
-- **[CI/CD İş Akışları](./operations/ci-cd)** - DevOps kültürü ve sürekli entegrasyon/dağıtım
+- [API Gateway](./api/api-gateway)
+- [Rate Limiting](./api/rate-limiting)
+- [GraphQL vs REST vs gRPC](./api/api-comparison)
+- [Microservice Communication](./microservices/communication)
+- [Service Discovery](./microservices/service-discovery)
+- [Event Sourcing](./data-processing/event-sourcing)
+- [CQRS](./data-processing/cqrs)
+- [Stream Processing](./data-processing/stream-processing)
 
-### 13. Edge ve Coğrafi Dağıtık Sistemler ✅
-- **[Multi-Region Deployment](./edge/multi-region)** - Active-Active ve Active-Passive deployment stratejileri
-- **[Data Localization ve GDPR](./edge/data-localization)** - KVKK uyumluluğu ve veri lokalizasyonu
-- **[Edge Computing](./edge/edge-computing)** - Cloudflare Workers, AWS Edge Services ve real-time processing
+### 5. Operasyon, Güvenlik ve Coğrafya
 
-### 14. Sürekli İyileştirme ✅
-- **[Feedback Döngüleri](./improvement/feedback-loops)** - Kullanıcı ve sistem geri bildirimleri, A/B testing ve telemetri analizi
-- **[Blue/Green ve Canary Deployments](./improvement/deployment-strategies)** - Risk-controlled deployment stratejileri ve otomatik rollback
-- **[Retrospektif & Post-Mortem](./improvement/retrospective)** - Organizasyonel öğrenme ve sürekli iyileştirme metodolojileri
+- [Observability](./observability/logging)
+- [Security](./security/auth)
+- [Cloud and Containers](./cloud/containers)
+- [SRE](./sre/sli-slo-sla)
+- [Operations and Cost](./operations/cost-optimization)
+- [Edge and Multi-Region](./edge/multi-region)
+- [Continuous Improvement](./improvement/feedback-loops)
 
-## Başlamak İçin
+## Başlangıç Rotası
 
-**Temel Kavramlar** bölümü tamamlandı! Diğer konuların içeriklerini eklemek için hazırım. Hangi konudan devam etmek istersiniz?
+Yeni başlıyorsan sırayla [Request-Response Model](./basics/request-response-model), [Protocols](./basics/protocols), [Database Concepts](./basics/database-concepts), [Caching](./performance/caching), [Load Balancing](./performance/load-balancing), [Observability](./observability/logging) ve [Security](./security/auth) sayfalarını oku. Bir sistemi tasarlarken her bölümden yalnızca ihtiyacın olan kararı çek; gereksiz teknoloji eklemek sistem tasarımı değil, bakım borcudur.

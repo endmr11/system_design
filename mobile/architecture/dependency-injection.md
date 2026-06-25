@@ -2,6 +2,24 @@
 
 Modern mobil uygulama mimarisinde Dependency Injection (DI), loose coupling ve high cohesion prensiplerini hayata geçiren fundamental bir tasarım pattern'idir. Bu yaklaşım, bileşenler arası bağımlılıkları dışarıdan enjekte ederek testable, maintainable ve scalable kod yapıları oluşturmamızı sağlar.
 
+## Hızlı Karar
+
+| Durum | DI Kullan | Dikkat |
+| --- | --- | --- |
+| Testte dependency değişecek | Evet | Interface sadece gerekliyse |
+| App-wide servis | Container/provider | Lifecycle net olmalı |
+| Tek sınıf, tek kullanım | Constructor yeterli | Framework ekleme |
+| Platform service/mock ihtiyacı | DI faydalı | Scope karışmasın |
+
+## Üretim Kontrol Listesi
+
+- Problem: DI hangi test veya bağımlılık yönetimi sorununu çözüyor?
+- Çözüm: Scope, lifecycle, lazy/eager creation ve override stratejisi net mi?
+- Trade-off: DI test edilebilirlik sağlar; container karmaşıklığı ve runtime hata riski ekler.
+- Hata durumu: Circular dependency, memory leak, wrong scope ve hidden dependency ele alınmalı.
+- Ölçüm: Startup time, object count, memory retention ve test setup süresi izlenmeli.
+- Güvenlik/maliyet: Secret/config bağımlılıkları açık scope ile verilmemeli; gereksiz DI framework bakım maliyeti yaratır.
+
 ## Dependency Injection Pattern'inin Temeleri
 
 Dependency Injection, SOLID prensiplerine dayanan ve özellikle Dependency Inversion Principle'ı destekleyen bir implementation tekniğidir. Geleneksel yaklaşımda bir sınıf, ihtiyaç duyduğu dependencies'leri doğrudan instantiate eder; DI pattern'inde ise bu dependencies dışarıdan sağlanır.

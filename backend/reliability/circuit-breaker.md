@@ -1,5 +1,25 @@
 # Circuit Breaker ve Bulkhead Pattern
 
+Circuit breaker, hatalı veya yavaş dependency'ye çağrıları geçici olarak keserek kaskad kesintiyi önler. Bulkhead ise kaynakları izole ederek bir servisin veya tenant'ın tüm sistemi tüketmesini engeller.
+
+## Hızlı Karar
+
+| Durum | Pattern | Dikkat |
+| --- | --- | --- |
+| Dependency sık timeout oluyor | Circuit breaker | Fallback gerçekçi olmalı |
+| Bir iş yükü diğerini etkiliyor | Bulkhead | Pool boyutu ölçülmeli |
+| Kısa süreli hata bekleniyor | Retry + breaker | Retry storm yaratma |
+| Kullanıcıya eski veri gösterilebilir | Fallback cache | Staleness açık belirtilmeli |
+
+## Üretim Kontrol Listesi
+
+- Problem: Hangi bağımlılık kaskad hata yaratıyor?
+- Çözüm: Timeout, failure threshold, open duration, half-open test ve fallback net mi?
+- Trade-off: Sistem korunur; bazı istekler bilinçli olarak hızlı fail eder.
+- Hata durumu: Bad fallback, retry amplification, shared pool exhaustion ve breaker flapping ele alınmalı.
+- Ölçüm: Breaker state, failure rate, timeout count, fallback rate ve pool saturation izlenmeli.
+- Güvenlik/maliyet: Fallback yetki kontrolünü atlamamalı; izole pool'lar kapasite maliyeti ekler.
+
 ## Circuit Breaker Pattern
 
 ### Temel Kavramlar
