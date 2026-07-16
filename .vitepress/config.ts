@@ -40,6 +40,10 @@ export default withMermaid(defineConfig({
         sidebar: {
           "/backend/": [
             {
+              text: "Giriş",
+              items: [{ text: "Backend Sistem Tasarımı", link: "/backend/" }],
+            },
+            {
               text: "0. Mimari Düşünme ve Tasarım Süreci",
               items: [
                 {
@@ -55,10 +59,6 @@ export default withMermaid(defineConfig({
                   link: "/backend/architecture/back-of-the-envelope",
                 },
               ],
-            },
-            {
-              text: "Giriş",
-              items: [{ text: "Backend Sistem Tasarımı", link: "/backend/" }],
             },
             {
               text: "1. Temel Kavramlar",
@@ -701,6 +701,10 @@ export default withMermaid(defineConfig({
         sidebar: {
           "/en/backend/": [
             {
+              text: "Introduction",
+              items: [{ text: "Backend System Design", link: "/en/backend/" }],
+            },
+            {
               text: "0. Architectural Thinking and Design Process",
               items: [
                 {
@@ -716,10 +720,6 @@ export default withMermaid(defineConfig({
                   link: "/en/backend/architecture/back-of-the-envelope",
                 },
               ],
-            },
-            {
-              text: "Introduction",
-              items: [{ text: "Backend System Design", link: "/en/backend/" }],
             },
             {
               text: "1. Basic Concepts",
