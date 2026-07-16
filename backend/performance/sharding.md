@@ -493,3 +493,25 @@ graph TB
 ```
 
 Sharding, büyük ölçekli sistemlerde kaçınılmaz bir gereksinimdir, ancak complexity ekler. Doğru strateji ve implementasyon ile sistem performansını büyük ölçüde artırabilir.
+
+## Partitioning ve Rebalancing Kararı
+
+| Strateji | Güçlü yön | Risk |
+| --- | --- | --- |
+| Range partitioning | Sıralı aralık ve range scan | Hot range ve dengesiz büyüme |
+| Hash partitioning | Daha dengeli dağılım | Range query ve yeniden dağıtım maliyeti |
+| List/tenant partitioning | İzolasyon ve ownership | Büyük tenant veya cross-partition sorgu |
+| Consistent hashing | Node değişiminde sınırlı hareket | Ring, virtual node ve metadata yönetimi |
+
+Rebalancing sırasında veri yeni shard'lara kopyalanır, dual-read/dual-write veya change capture ile farklar takip edilir, doğrulama sonrası trafik kademeli taşınır. Hedef; kısa süreli bir migration değil, rollback edilebilir bir state machine'dir.
+
+```mermaid
+flowchart LR
+    Plan[Plan shard map] --> Copy[Copy existing data]
+    Copy --> Catchup[Apply changes]
+    Catchup --> Verify[Verify counts and checksums]
+    Verify --> Shift[Shift reads/writes gradually]
+    Shift --> Retire[Retire old ownership]
+```
+
+Rebalancing boyunca shard key değişmemeli veya eski key'den yeni key'e deterministik mapping bulunmalıdır. Cross-shard transaction, global unique key, pagination ve backup/restore davranışları migration öncesi test edilir. Replication, shard içindeki availability ve read scale'i artırır; sharding ise veriyi node'lara böler—aynı karar değildir.

@@ -77,6 +77,10 @@ graph TD
 
 ## İçindekiler
 
+### ✅ [Back-of-the-Envelope Kapasite Hesaplama](../architecture/back-of-the-envelope.md)
+
+Kapasite, latency budget, concurrency, storage ve bandwidth tahminlerini performans kararlarından önce kullan.
+
 ### ✅ [Load Balancing (Yük Dengeleme)](./load-balancing.md)
 
 Yük dengeleme, gelen istekleri birden fazla sunucu arasında dağıtarak sistem kapasitesini artırır ve tek nokta arızalarını önler.

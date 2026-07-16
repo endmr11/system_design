@@ -956,3 +956,38 @@ public class CommunicationMetrics {
 ```
 
 This comprehensive implementation covers all aspects of microservice communication in the Spring Boot ecosystem. Each pattern includes production-ready examples with error handling, monitoring, and performance optimizations.
+
+## Choosing a Communication Model
+
+### REST and RPC
+
+- **REST:** A good fit for public APIs, browser/mobile clients, and resource-oriented CRUD flows with strong HTTP tooling and cache compatibility.
+- **RPC/gRPC:** A good fit for typed internal contracts, low serialization overhead, streaming, and high call volume between services.
+
+Choose on more than throughput. Consider contract evolution, debuggability, client diversity, timeout, and retry behavior. RPC does not remove network failures from a distributed system.
+
+### Service-to-Service and Message Passing
+
+With synchronous calls, the result is awaited in the same request chain; timeout, retry, and circuit-breaker budgets are shared. With asynchronous messaging, producer and consumer are separated in time; the broker retains the message until the consumer acknowledges or commits it.
+
+Separate these message models:
+
+| Model | Meaning | Example |
+| --- | --- | --- |
+| Point-to-point | One consumer completes one piece of work | Email or image processing |
+| Pub/Sub | One event reaches many independent consumers | Order created → billing, analytics, notification |
+| Request/reply | A result is awaited over messaging | Long-running but controlled RPC |
+| Fire-and-forget | No result is awaited | Telemetry or low-criticality event |
+
+### Pattern Selection Matrix
+
+| Requirement | Choice | Guarantee to protect |
+| --- | --- | --- |
+| User needs an immediate result | Sync REST/RPC | Timeout and idempotent retry |
+| Work is long or retryable | Queue plus workers | Acknowledgment, DLQ, idempotency |
+| One event feeds many teams | Pub/Sub | Schema evolution and consumer isolation |
+| Strict ordering is required | Keyed partition or one queue | Partition key and replay policy |
+| Downstream is slow | Async plus bounded queue | Backpressure and queue age |
+| Critical service is unavailable | Circuit breaker plus fallback | Fail-fast and cascade boundary |
+
+Document payload schema, versioning, correlation IDs, timeouts, retry budgets, authentication, and ownership with the communication choice.

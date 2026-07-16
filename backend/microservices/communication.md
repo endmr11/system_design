@@ -956,3 +956,38 @@ public class CommunicationMetrics {
 ```
 
 Bu kapsamlı uygulama, mikroservis iletişiminin tüm yönlerini Spring Boot ekosistemi ile birlikte ele almaktadır. Her desen için üretime hazır örnekler, hata yönetimi, izleme ve performans optimizasyonları içermektedir.
+
+## İletişim Modeli Seçimi
+
+### REST ve RPC
+
+- **REST:** Public API, browser/mobile client ve kaynak odaklı CRUD akışları için sade, cache ve HTTP tooling ile uyumludur.
+- **RPC/gRPC:** İç servisler arasında typed contract, düşük serialization overhead'i, streaming ve yüksek çağrı hacmi için uygundur.
+
+Seçim yalnızca throughput ile yapılmaz. Contract evolution, debug edilebilirlik, client çeşitliliği, timeout ve retry davranışı da değerlendirilir. RPC kullanmak distributed system network hatalarını ortadan kaldırmaz.
+
+### Service-to-Service ve Message Passing
+
+Senkron çağrı sonucu aynı request zincirinde beklenir; timeout, retry ve circuit breaker latency bütçesini paylaşır. Asenkron mesajda üretici ile tüketici zaman açısından ayrılır; mesaj broker'da tutulur, consumer acknowledge/commit sonrasında ilerler.
+
+Mesaj modeli şu seçenekleri ayırmalıdır:
+
+| Model | Anlam | Uygun örnek |
+| --- | --- | --- |
+| Point-to-point | Bir iş bir consumer tarafından tamamlanır | Email veya image processing |
+| Pub/Sub | Aynı event birçok bağımsız consumer'a gider | Order created → billing, analytics, notification |
+| Request/reply | Mesaj üzerinden sonuç beklenir | Uzun süren ama kontrollü RPC |
+| Fire-and-forget | Sonuç beklenmez | Telemetry veya düşük kritik event |
+
+### Pattern Seçim Matrisi
+
+| Gereksinim | Tercih | Korunması gereken garanti |
+| --- | --- | --- |
+| Kullanıcı sonucu hemen görmeli | Sync REST/RPC | Timeout ve idempotent retry |
+| İş uzun veya tekrar denenebilir | Queue + worker | Ack, DLQ ve idempotency |
+| Bir olay çok ekibi besliyor | Pub/Sub | Schema evolution ve consumer isolation |
+| Sıkı ordering gerekiyor | Keyed partition veya tek queue | Partition key ve replay politikası |
+| Downstream yavaş | Async + bounded queue | Backpressure ve queue age |
+| Kritik servis erişilemiyor | Circuit breaker + fallback | Fail-fast ve cascade sınırı |
+
+İletişim kararıyla birlikte payload schema, versioning, correlation ID, timeout, retry budget, authentication ve ownership de belgelenmelidir.

@@ -729,3 +729,25 @@ public class CacheDisasterRecoveryService {
 ```
 
 These caching strategies significantly improve system performance and reduce database load. With Redis distributed caching, multi-level cache structures, and proper invalidation strategies, they provide production-ready caching solutions.
+
+## Cache-Through and Database-Through Terminology
+
+“Cache-through” should not be treated as one precise pattern name; describe the flow explicitly:
+
+| Pattern | Read/write flow | Source of truth |
+| --- | --- | --- |
+| Cache-aside | Application reads the DB on a miss and fills the cache | DB |
+| Read-through | Cache provider calls a DB loader on a miss | DB |
+| Write-through | A write through the cache synchronously updates the DB | DB |
+| Write-behind | Cache is updated first and the DB is updated asynchronously | DB, delayed |
+| Direct DB / DB-through | Cache is bypassed and the DB is read or written directly | DB |
+
+The cache is a speed layer. Unless explicitly designed otherwise, the database remains the source of truth. Document invalidation, TTL, stale reads, stampedes, hot keys, and failover behavior with the selected pattern.
+
+## Pattern Selection Check
+
+- Which layer calls the DB on a cache miss?
+- Can a response be returned before the DB succeeds?
+- Does a failed cache write make the mutation fail?
+- Are duplicate writes and retries idempotent?
+- Can the origin handle traffic if the cache disappears?

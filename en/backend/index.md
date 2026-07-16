@@ -39,6 +39,9 @@ Every box in this flow is a decision point: a gateway centralizes control but ca
 | How consistent must the data be? | [Strong vs Eventual Consistency](./consistency/strong-vs-eventual), [CAP](./consistency/cap-theorem) | Correctness perception vs availability |
 | How will the system be observed? | [Logging](./observability/logging), [Metrics](./observability/metrics), [Tracing](./observability/tracing) | Visibility vs data volume and cost |
 | How are access and secrets protected? | [Auth](./security/auth), [Secret Management](./security/secret-management), [TLS/mTLS](./security/tls) | Security vs integration complexity |
+| How do we explain the problem and architecture? | [System Thinking](./architecture/system-thinking), [Requirements and C4](./architecture/requirements-and-c4) | Clarity vs documentation cost |
+| How do we estimate capacity? | [Back-of-the-Envelope](./architecture/back-of-the-envelope) | Fast assumptions vs measurement accuracy |
+| Where is the transaction boundary? | [ACID and Isolation](./consistency/transactions-and-isolation) | Strong guarantees vs throughput |
 
 ## Minimum Design Check
 
@@ -53,6 +56,12 @@ Before calling a backend design complete, clarify these points:
 - Cost: Is the price of cache, queues, data copies, observability, and multi-region choices understood?
 
 ## Section Map
+
+### 0. Architectural Thinking and Design Process
+
+- [Highload and Systems Thinking](./architecture/system-thinking)
+- [Requirements, Trade-offs, and C4](./architecture/requirements-and-c4)
+- [Back-of-the-Envelope Estimation](./architecture/back-of-the-envelope)
 
 ### 1. Basic Concepts
 
@@ -76,6 +85,7 @@ Before calling a backend design complete, clarify these points:
 - [Circuit Breaker and Bulkhead](./reliability/circuit-breaker)
 - [Health Checks](./reliability/health-checks)
 - [Backpressure](./reliability/backpressure)
+- [ACID, Isolation, and Distributed Transactions](./consistency/transactions-and-isolation)
 - [Consistency Models](./consistency/strong-vs-eventual)
 - [Consensus Algorithms](./consistency/consensus-algorithms)
 
@@ -89,17 +99,24 @@ Before calling a backend design complete, clarify these points:
 - [Event Sourcing](./data-processing/event-sourcing)
 - [CQRS](./data-processing/cqrs)
 - [Stream Processing](./data-processing/stream-processing)
+- [Batch Processing and MapReduce](./data-processing/batch-processing)
 
 ### 5. Operations, Security, and Geography
 
 - [Observability](./observability/logging)
+- [Observability Stack](./observability/observability-stack)
 - [Security](./security/auth)
 - [Cloud and Containers](./cloud/containers)
 - [SRE](./sre/sli-slo-sla)
 - [Operations and Cost](./operations/cost-optimization)
 - [Edge and Multi-Region](./edge/multi-region)
+- [DNS, CDN, and Request Path](./edge/request-path)
 - [Continuous Improvement](./improvement/feedback-loops)
+
+### 15. Large-Scale System Design Scenarios
+
+- [Spotify-Scale and End-to-End Design](./scenarios/large-scale-system-design)
 
 ## Starting Route
 
-If you are new, read [Request-Response Model](./basics/request-response-model), [Protocols](./basics/protocols), [Database Concepts](./basics/database-concepts), [Caching](./performance/caching), [Load Balancing](./performance/load-balancing), [Observability](./observability/logging), and [Security](./security/auth) in order. When designing a system, pull only the decision you need from each section; adding unnecessary technology is maintenance debt, not system design.
+If you are new, read [System Thinking](./architecture/system-thinking), [Requirements and C4](./architecture/requirements-and-c4), [Back-of-the-Envelope](./architecture/back-of-the-envelope), [Request-Response Model](./basics/request-response-model), [Database Concepts](./basics/database-concepts), [Caching](./performance/caching), [Observability Stack](./observability/observability-stack), and [Large-Scale Scenario](./scenarios/large-scale-system-design) in order. When designing a system, pull only the decision you need from each section; adding unnecessary technology is maintenance debt, not system design.

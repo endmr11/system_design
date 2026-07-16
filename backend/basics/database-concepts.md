@@ -312,3 +312,40 @@ graph TD
 - Bağlantı havuzu ayarı
 - Bölümlendirme stratejileri
 - Önbellekleme uygulamaları
+
+## Veri Modeli ve Store Seçimi
+
+SQL/NoSQL kararı tek başına yeterli değildir. Önce access pattern, cardinality, write/read oranı, ordering, retention ve consistency ihtiyacı yazılır.
+
+| Store türü | Güçlü olduğu alan | Tipik risk |
+| --- | --- | --- |
+| Relational | İlişkiler, transaction, constraint, join | Yatay büyüme ve write contention |
+| Document | Aggregate odaklı esnek şema | Cross-document transaction ve join sınırlılığı |
+| Key-value/cache | Çok hızlı key lookup, session, hot data | Query esnekliği ve eviction |
+| Graph | Node-edge ilişkileri ve traversal | Genel raporlama ve operasyon maliyeti |
+| Time-series | Zaman sıralı ölçüm, retention ve downsampling | Genel transaction/query esnekliği |
+
+Document modelde birlikte okunan aggregate aynı document'ta tutulabilir; sık güncellenen veya bağımsız sahipliği olan veriler ayrılabilir. Graph model ilişkilerin kendisi sorgunun merkezindeyse değerlidir. Time-series modelde event time, high-cardinality label ve retention tasarımın parçasıdır.
+
+## Data Modeling Yaklaşımı
+
+1. Önce sorguları ve yazma akışlarını listele.
+2. Aggregate sınırlarını ve veri sahipliğini belirle.
+3. Primary key, partition key ve index'leri access pattern'e göre seç.
+4. Normalization ile update doğruluğunu, denormalization ile okuma maliyetini karşılaştır.
+5. Retention, archive, backup ve migration planını baştan yaz.
+
+SQL query language; join, transaction ve ad-hoc analizde güçlüdür. Document/key-value query'leri çoğu zaman belirli key ve index erişimlerine optimize edilir. Graph query ilişkisel traversal'ı, time-series query ise window, aggregation ve downsampling'i öne çıkarır. Query language kolaylığı, kötü access pattern'i düzeltmez.
+
+## Storage Selection Kararı
+
+| Soru | Sonuca etkisi |
+| --- | --- |
+| En kritik sorgu nedir? | Index, partition ve model |
+| Transaction sınırı nerede? | Relational veya local transaction |
+| Veri ne hızla büyüyor? | Partition, retention ve tiering |
+| Stale read kabul edilir mi? | Replica/cache kullanımı |
+| İlişki traversal mı, aggregate mı? | Graph veya document seçimi |
+| Ölçümler zaman serisi mi? | Time-series retention ve rollup |
+
+Polyglot persistence ancak her store için owner, backup, migration, monitoring ve source of truth açık olduğunda değerlidir.

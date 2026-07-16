@@ -1744,3 +1744,49 @@ public class BackpressureHandler {
     }
 }
 ```
+
+## Broker İçinde Veri Akışı
+
+Bir queue akışında producer mesajı broker'a gönderir; broker mesajı memory/disk'e yazar, uygun queue veya partition'a yerleştirir ve consumer'a teslim eder. Consumer işi başarıyla bitirdikten sonra ack/commit gönderir. Ack öncesi consumer ölürse mesaj yeniden teslim edilebilir; ack sonrası consumer sonucu kalıcılaştırmadan ölürse veri kaybı veya iş sonucu ile mesaj durumu arasında tutarsızlık oluşabilir.
+
+```mermaid
+sequenceDiagram
+    participant P as Producer
+    participant B as Broker
+    participant C as Consumer
+    P->>B: Publish message
+    B->>B: Persist and route
+    B-->>C: Deliver / poll
+    C->>C: Process and commit side effect
+    C-->>B: Ack / offset commit
+```
+
+Queue, bir işi consumer'lar arasında dağıtır. Pub/Sub'da broker aynı event'i farklı subscription veya consumer group'lara fan-out eder; her grup kendi cursor/offset'i ile ilerler. Bir consumer grubundaki iki consumer aynı partition'ı aynı anda tüketmez, fakat farklı gruplar aynı event'i bağımsız olarak alabilir.
+
+## Kafka Partition, Offset ve Consumer Group
+
+- **Partition:** Topic'in sıralı append-only log parçasıdır. Ordering yalnızca aynı partition içinde garanti edilir.
+- **Offset:** Partition içindeki mesaj pozisyonudur; consumer'ın ilerlemesi offset commit ile kaydedilir.
+- **Consumer group:** Bir topic'i birlikte tüketen consumer'lar kümesidir. Partition'lar group üyelerine atanır.
+
+Partition sayısı group içindeki faydalı paralelliğin üst sınırıdır. Consumer sayısı partition sayısından fazlaysa bazı consumer'lar boşta kalır. Rebalance sırasında assignment değişebilir; uzun işlem, yanlış heartbeat veya sık deploy consumer pause ve lag üretebilir.
+
+Key seçimi ordering ile load distribution arasında trade-off'tur. User/order key'i sıralamayı korur ama hot key yaratabilir; rastgele key dağılımı dengeler ama ilgili event'lerin sırasını kaybettirebilir.
+
+## Mesaj Teslim Garantileri
+
+| Garanti | Davranış | Uygulama sonucu |
+| --- | --- | --- |
+| At-most-once | Ack/commit önce yapılabilir | Duplicate azalır, kayıp mümkündür |
+| At-least-once | İşlemden sonra ack/commit | Kayıp azalır, duplicate beklenir |
+| Exactly-once | İşlem ve offset atomik sınırda | Dar kapsamlıdır; dış DB/API için idempotency yine gerekir |
+
+Exactly-once çoğu zaman broker'ın kendi logu ve transaction sınırı içindedir. Email, payment veya dış database gibi side effect'lerde idempotency key, unique constraint veya outbox gerekir.
+
+## Retry, DLQ ve Backpressure
+
+Transient hata için sınırlı retry, exponential backoff ve jitter uygulanır. Poison message için sonsuz retry queue'yu kilitler; retry topic veya DLQ, mesajı hata nedeni ve deneme sayısıyla birlikte ayırır. DLQ yalnızca depolama değildir; alarm, inceleme ve güvenli replay prosedürü gerekir.
+
+Backpressure, consumer kapasitesi producer hızının altına düştüğünde admission control uygular. Queue depth, oldest message age, consumer lag, processing latency ve reject rate birlikte izlenir. Worker concurrency artırmak downstream connection pool veya database'i boğuyorsa backpressure çözülmemiştir.
+
+Downstream HTTP çağrılarında [Circuit Breaker](../reliability/circuit-breaker), timeout, bulkhead ve bounded queue birlikte kullanılarak cascade failure sınırlandırılır.

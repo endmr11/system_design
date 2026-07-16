@@ -313,3 +313,40 @@ graph TD
 - Connection pool tuning
 - Partitioning strategies
 - Caching implementations
+
+## Data Modeling and Store Selection
+
+SQL/NoSQL is not enough to choose a database. First document access patterns, cardinality, read/write ratio, ordering, retention, and consistency needs.
+
+| Store type | Strong at | Typical risk |
+| --- | --- | --- |
+| Relational | Relationships, transactions, constraints, joins | Horizontal growth and write contention |
+| Document | Flexible aggregate-oriented schemas | Cross-document transactions and joins |
+| Key-value/cache | Fast key lookup, sessions, hot data | Limited query flexibility and eviction |
+| Graph | Nodes, edges, and traversals | General reporting and operational cost |
+| Time-series | Time-ordered measurements, retention, downsampling | General transaction/query flexibility |
+
+In a document model, an aggregate read together can live in one document; frequently updated or independently owned data can be separated. Graph stores are valuable when relationships are the query center. In time-series stores, event time, high-cardinality labels, and retention are part of the model.
+
+## Data Modeling Approach
+
+1. List the most important reads and writes first.
+2. Define aggregate boundaries and data ownership.
+3. Choose primary keys, partition keys, and indexes from access patterns.
+4. Compare normalization for update correctness with denormalization for read cost.
+5. Document retention, archive, backup, and migration plans early.
+
+SQL query languages are strong for joins, transactions, and ad-hoc analysis. Document/key-value queries are often optimized for known keys and indexes. Graph queries emphasize relationship traversal; time-series queries emphasize windows, aggregation, and downsampling. Query-language convenience does not fix a bad access pattern.
+
+## Storage Selection Decision
+
+| Question | Effect on the choice |
+| --- | --- |
+| What is the most critical query? | Index, partition, and model |
+| Where is the transaction boundary? | Relational or local transaction |
+| How quickly does data grow? | Partitioning, retention, and tiering |
+| Are stale reads acceptable? | Replica/cache usage |
+| Is traversal or aggregation central? | Graph or document choice |
+| Is the data time-series shaped? | Time-series retention and rollups |
+
+Polyglot persistence is useful only when every store has an owner, backup, migration, monitoring, and source of truth.

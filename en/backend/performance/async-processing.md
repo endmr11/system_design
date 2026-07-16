@@ -702,3 +702,49 @@ spec:
 ```
 
 These async processing and message queue structures improve system performance, provide scalability, and enhance fault tolerance capabilities. Combined with the Spring Boot ecosystem, they offer production-ready solutions.
+
+## Data Flow Inside a Broker
+
+In a queue flow, the producer sends a message to the broker; the broker writes it to memory or disk, places it in a queue or partition, and delivers it to a consumer. The consumer acknowledges or commits after successfully completing the work. If it dies before acknowledgment, the message may be delivered again. If it dies after acknowledgment but before persisting the result, the message state and side effect can diverge.
+
+```mermaid
+sequenceDiagram
+    participant P as Producer
+    participant B as Broker
+    participant C as Consumer
+    P->>B: Publish message
+    B->>B: Persist and route
+    B-->>C: Deliver / poll
+    C->>C: Process and commit side effect
+    C-->>B: Ack / offset commit
+```
+
+A queue distributes work among consumers. In Pub/Sub, the broker fans the same event out to different subscriptions or consumer groups; each group advances with its own cursor or offset. Two consumers in one group do not consume the same partition concurrently, while different groups can independently receive the same event.
+
+## Kafka Partitions, Offsets, and Consumer Groups
+
+- **Partition:** An ordered append-only log segment of a topic. Ordering is guaranteed only within one partition.
+- **Offset:** A message position within a partition; consumer progress is recorded by committing offsets.
+- **Consumer group:** A set of consumers sharing consumption of a topic. Partitions are assigned to group members.
+
+Partition count is the upper bound for useful parallelism within a group. If there are more consumers than partitions, some consumers are idle. Rebalances change assignments; long processing, incorrect heartbeats, or frequent deploys can cause pauses and lag.
+
+Key selection trades ordering for load distribution. A user/order key preserves related ordering but can create a hot key; a random key balances load but loses ordering between related events.
+
+## Message Delivery Guarantees
+
+| Guarantee | Behavior | Application consequence |
+| --- | --- | --- |
+| At-most-once | Acknowledge or commit can happen first | Fewer duplicates, possible loss |
+| At-least-once | Acknowledge or commit after processing | Less loss, duplicates expected |
+| Exactly-once | Processing and offset are atomic within a boundary | Narrow scope; external DB/API still needs idempotency |
+
+Exactly-once usually applies within the broker's log and transaction boundary. For email, payment, or external database side effects, use idempotency keys, unique constraints, or an outbox.
+
+## Retry, DLQ, and Backpressure
+
+Use bounded retries, exponential backoff, and jitter for transient failures. An infinite retry queue can be blocked by a poison message; a retry topic or DLQ isolates it with its error reason and attempt count. A DLQ is not only storage: it needs alerts, investigation, and a safe replay procedure.
+
+Backpressure applies admission control when consumer capacity is below producer rate. Monitor queue depth, oldest message age, consumer lag, processing latency, and reject rate together. Increasing workers is not a solution if it only saturates downstream connection pools or databases.
+
+For downstream HTTP calls, combine [Circuit Breaker](../reliability/circuit-breaker), timeouts, bulkheads, and bounded queues to contain cascade failures.

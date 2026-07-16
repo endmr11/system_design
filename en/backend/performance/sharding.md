@@ -667,3 +667,25 @@ graph TB
 ```
 
 Sharding is an inevitable requirement in large-scale systems, but it adds complexity. With the right strategy and implementation, it can significantly improve system performance.
+
+## Partitioning and Rebalancing Decision
+
+| Strategy | Strength | Risk |
+| --- | --- | --- |
+| Range partitioning | Ordered ranges and range scans | Hot ranges and uneven growth |
+| Hash partitioning | More even distribution | Range queries and redistribution cost |
+| List/tenant partitioning | Isolation and ownership | Large tenants and cross-partition queries |
+| Consistent hashing | Limited movement when nodes change | Ring, virtual-node, and metadata management |
+
+During rebalancing, data is copied to new shards, changes are tracked through dual reads/writes or change capture, and traffic is shifted gradually after verification. Treat it as a rollback-capable state machine, not a one-off copy.
+
+```mermaid
+flowchart LR
+    Plan[Plan shard map] --> Copy[Copy existing data]
+    Copy --> Catchup[Apply changes]
+    Catchup --> Verify[Verify counts and checksums]
+    Verify --> Shift[Shift reads/writes gradually]
+    Shift --> Retire[Retire old ownership]
+```
+
+During rebalancing, the shard key should remain stable or have deterministic mapping from old to new ownership. Test cross-shard transactions, global uniqueness, pagination, and backup/restore before migration. Replication improves availability and read scale within a shard; sharding distributes data across nodes—these are different decisions.

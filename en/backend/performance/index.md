@@ -77,6 +77,10 @@ graph TD
 
 ## Contents
 
+### ✅ [Back-of-the-Envelope Capacity Estimation](../architecture/back-of-the-envelope.md)
+
+Use capacity, latency-budget, concurrency, storage, and bandwidth estimates before making performance decisions.
+
 ### ✅ [Load Balancing](./load-balancing.md)
 
 Load balancing distributes incoming requests across multiple servers to increase system capacity and prevent single points of failure.

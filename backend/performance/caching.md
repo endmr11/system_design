@@ -724,3 +724,25 @@ public class CacheDisasterRecoveryService {
 ```
 
 Bu caching stratejileri, sistem performansını önemli ölçüde artırır ve database yükünü azaltır. Redis ile distributed caching, multi-level cache yapıları ve proper invalidation stratejileri ile production-ready caching solutions sağlar.
+
+## Cache-Through ve Database-Through Terminolojisi
+
+“Cache-through” tek bir resmi pattern adı gibi kullanılmamalıdır; akış açıkça adlandırılmalıdır:
+
+| Pattern | Okuma/yazma akışı | Source of truth |
+| --- | --- | --- |
+| Cache-aside | Application cache miss'te DB'den okur, cache'i doldurur | DB |
+| Read-through | Cache provider miss'te loader ile DB'yi çağırır | DB |
+| Write-through | Yazma cache üzerinden DB'ye senkron geçer | DB |
+| Write-behind | Önce cache'e yazar, DB'yi asenkron günceller | DB; gecikmeli |
+| Direct DB / DB-through | Cache bypass edilip DB'den okunur/yazılır | DB |
+
+Cache bir hız katmanıdır; iş doğruluğunun kaynağı değilse database source of truth olarak kalmalıdır. Cache invalidation, TTL, stale read, stampede, hot key ve failover davranışı seçilen pattern ile birlikte belgelenir.
+
+## Pattern Seçim Kontrolü
+
+- Cache miss sırasında DB çağrısını hangi katman yapıyor?
+- DB başarılı olmadan cache response'u kullanıcıya döner mi?
+- Cache write başarısızsa mutation başarısız mı sayılır?
+- Duplicate write ve retry idempotent mi?
+- Cache tamamen kaybolduğunda origin kapasitesi yeterli mi?

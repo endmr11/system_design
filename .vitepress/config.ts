@@ -40,6 +40,23 @@ export default withMermaid(defineConfig({
         sidebar: {
           "/backend/": [
             {
+              text: "0. Mimari Düşünme ve Tasarım Süreci",
+              items: [
+                {
+                  text: "Highload ve System Thinking",
+                  link: "/backend/architecture/system-thinking",
+                },
+                {
+                  text: "Gereksinimler, Trade-off ve C4",
+                  link: "/backend/architecture/requirements-and-c4",
+                },
+                {
+                  text: "Back-of-the-Envelope Hesaplama",
+                  link: "/backend/architecture/back-of-the-envelope",
+                },
+              ],
+            },
+            {
               text: "Giriş",
               items: [{ text: "Backend Sistem Tasarımı", link: "/backend/" }],
             },
@@ -130,6 +147,10 @@ export default withMermaid(defineConfig({
                   text: "Diğer Modeller",
                   link: "/backend/consistency/other-consistency-models",
                 },
+                {
+                  text: "ACID, Isolation ve Dağıtık Transaction'lar",
+                  link: "/backend/consistency/transactions-and-isolation",
+                },
               ],
             },
             {
@@ -179,6 +200,10 @@ export default withMermaid(defineConfig({
                   text: "Akış İşleme",
                   link: "/backend/data-processing/stream-processing",
                 },
+                {
+                  text: "Batch Processing ve MapReduce",
+                  link: "/backend/data-processing/batch-processing",
+                },
               ],
             },
             {
@@ -199,6 +224,10 @@ export default withMermaid(defineConfig({
                 {
                   text: "Dağıtık İzleme",
                   link: "/backend/observability/distributed-tracing",
+                },
+                {
+                  text: "Observability Stack",
+                  link: "/backend/observability/observability-stack",
                 },
               ],
             },
@@ -291,6 +320,10 @@ export default withMermaid(defineConfig({
                   text: "Uç Hesaplama",
                   link: "/backend/edge/edge-computing",
                 },
+                {
+                  text: "DNS, CDN ve Request Path",
+                  link: "/backend/edge/request-path",
+                },
               ],
             },
             {
@@ -307,6 +340,15 @@ export default withMermaid(defineConfig({
                 {
                   text: "Retrospektif & Olay Sonrası İnceleme",
                   link: "/backend/improvement/retrospective",
+                },
+              ],
+            },
+            {
+              text: "15. Büyük Ölçekli Sistem Tasarımı Senaryoları",
+              items: [
+                {
+                  text: "Spotify-Scale ve Uçtan Uca Tasarım",
+                  link: "/backend/scenarios/large-scale-system-design",
                 },
               ],
             },
@@ -659,6 +701,23 @@ export default withMermaid(defineConfig({
         sidebar: {
           "/en/backend/": [
             {
+              text: "0. Architectural Thinking and Design Process",
+              items: [
+                {
+                  text: "Highload and Systems Thinking",
+                  link: "/en/backend/architecture/system-thinking",
+                },
+                {
+                  text: "Requirements, Trade-offs, and C4",
+                  link: "/en/backend/architecture/requirements-and-c4",
+                },
+                {
+                  text: "Back-of-the-Envelope Estimation",
+                  link: "/en/backend/architecture/back-of-the-envelope",
+                },
+              ],
+            },
+            {
               text: "Introduction",
               items: [{ text: "Backend System Design", link: "/en/backend/" }],
             },
@@ -749,6 +808,10 @@ export default withMermaid(defineConfig({
                   text: "Other Models",
                   link: "/en/backend/consistency/other-consistency-models",
                 },
+                {
+                  text: "ACID, Isolation, and Distributed Transactions",
+                  link: "/en/backend/consistency/transactions-and-isolation",
+                },
               ],
             },
             {
@@ -801,6 +864,10 @@ export default withMermaid(defineConfig({
                   text: "Stream Processing",
                   link: "/en/backend/data-processing/stream-processing",
                 },
+                {
+                  text: "Batch Processing and MapReduce",
+                  link: "/en/backend/data-processing/batch-processing",
+                },
               ],
             },
             {
@@ -821,6 +888,10 @@ export default withMermaid(defineConfig({
                 {
                   text: "Distributed Tracing",
                   link: "/en/backend/observability/distributed-tracing",
+                },
+                {
+                  text: "Observability Stack",
+                  link: "/en/backend/observability/observability-stack",
                 },
               ],
             },
@@ -913,6 +984,10 @@ export default withMermaid(defineConfig({
                   text: "Edge Computing",
                   link: "/en/backend/edge/edge-computing",
                 },
+                {
+                  text: "DNS, CDN, and Request Path",
+                  link: "/en/backend/edge/request-path",
+                },
               ],
             },
             {
@@ -929,6 +1004,15 @@ export default withMermaid(defineConfig({
                 {
                   text: "Retrospective & Post-Mortem",
                   link: "/en/backend/improvement/retrospective",
+                },
+              ],
+            },
+            {
+              text: "15. Large-Scale System Design Scenarios",
+              items: [
+                {
+                  text: "Spotify-Scale and End-to-End Design",
+                  link: "/en/backend/scenarios/large-scale-system-design",
                 },
               ],
             },

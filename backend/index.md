@@ -39,6 +39,9 @@ Bu akışta her kutu ayrı bir karar noktasıdır: gateway merkezi kontrol sağl
 | Veri ne kadar tutarlı olmalı? | [Strong vs Eventual Consistency](./consistency/strong-vs-eventual), [CAP](./consistency/cap-theorem) | Doğruluk algısı vs erişilebilirlik |
 | Sistem nasıl izlenir? | [Logging](./observability/logging), [Metrics](./observability/metrics), [Tracing](./observability/tracing) | Görünürlük vs veri hacmi ve maliyet |
 | Sırları ve erişimi nasıl koruruz? | [Auth](./security/auth), [Secret Management](./security/secret-management), [TLS/mTLS](./security/tls) | Güvenlik vs entegrasyon karmaşıklığı |
+| Problemi ve mimariyi nasıl anlatırız? | [System Thinking](./architecture/system-thinking), [Requirements and C4](./architecture/requirements-and-c4) | Netlik vs dokümantasyon maliyeti |
+| Kapasiteyi nasıl tahmin ederiz? | [Back-of-the-Envelope](./architecture/back-of-the-envelope) | Hızlı varsayım vs ölçüm doğruluğu |
+| Transaction sınırı nerede? | [ACID and Isolation](./consistency/transactions-and-isolation) | Güçlü garanti vs throughput |
 
 ## Minimum Tasarım Kontrolü
 
@@ -53,6 +56,12 @@ Bir backend tasarımı tamam demeden önce şunları netleştir:
 - Maliyet: Cache, queue, veri kopyası, observability ve multi-region kararlarının bedeli biliniyor mu?
 
 ## Bölüm Haritası
+
+### 0. Mimari Düşünme ve Tasarım Süreci
+
+- [Highload ve System Thinking](./architecture/system-thinking)
+- [Gereksinimler, Trade-off ve C4](./architecture/requirements-and-c4)
+- [Back-of-the-Envelope Hesaplama](./architecture/back-of-the-envelope)
 
 ### 1. Temel Kavramlar
 
@@ -76,6 +85,7 @@ Bir backend tasarımı tamam demeden önce şunları netleştir:
 - [Circuit Breaker and Bulkhead](./reliability/circuit-breaker)
 - [Health Checks](./reliability/health-checks)
 - [Backpressure](./reliability/backpressure)
+- [ACID, Isolation ve Dağıtık Transaction'lar](./consistency/transactions-and-isolation)
 - [Consistency Models](./consistency/strong-vs-eventual)
 - [Consensus Algorithms](./consistency/consensus-algorithms)
 
@@ -89,17 +99,24 @@ Bir backend tasarımı tamam demeden önce şunları netleştir:
 - [Event Sourcing](./data-processing/event-sourcing)
 - [CQRS](./data-processing/cqrs)
 - [Stream Processing](./data-processing/stream-processing)
+- [Batch Processing ve MapReduce](./data-processing/batch-processing)
 
 ### 5. Operasyon, Güvenlik ve Coğrafya
 
 - [Observability](./observability/logging)
+- [Observability Stack](./observability/observability-stack)
 - [Security](./security/auth)
 - [Cloud and Containers](./cloud/containers)
 - [SRE](./sre/sli-slo-sla)
 - [Operations and Cost](./operations/cost-optimization)
 - [Edge and Multi-Region](./edge/multi-region)
+- [DNS, CDN ve Request Path](./edge/request-path)
 - [Continuous Improvement](./improvement/feedback-loops)
+
+### 15. Büyük Ölçekli Sistem Tasarımı Senaryoları
+
+- [Spotify-Scale ve Uçtan Uca Tasarım](./scenarios/large-scale-system-design)
 
 ## Başlangıç Rotası
 
-Yeni başlıyorsan sırayla [Request-Response Model](./basics/request-response-model), [Protocols](./basics/protocols), [Database Concepts](./basics/database-concepts), [Caching](./performance/caching), [Load Balancing](./performance/load-balancing), [Observability](./observability/logging) ve [Security](./security/auth) sayfalarını oku. Bir sistemi tasarlarken her bölümden yalnızca ihtiyacın olan kararı çek; gereksiz teknoloji eklemek sistem tasarımı değil, bakım borcudur.
+Yeni başlıyorsan sırayla [System Thinking](./architecture/system-thinking), [Requirements and C4](./architecture/requirements-and-c4), [Back-of-the-Envelope](./architecture/back-of-the-envelope), [Request-Response Model](./basics/request-response-model), [Database Concepts](./basics/database-concepts), [Caching](./performance/caching), [Observability Stack](./observability/observability-stack) ve [Large-Scale Scenario](./scenarios/large-scale-system-design) sayfalarını oku. Bir sistemi tasarlarken her bölümden yalnızca ihtiyacın olan kararı çek; gereksiz teknoloji eklemek sistem tasarımı değil, bakım borcudur.
